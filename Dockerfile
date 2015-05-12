@@ -27,10 +27,14 @@ RUN wget -q $CUDA_URL && \
     cd / && \
     rm -rf /opt/nvidia
 
+WORKDIR /opt/cudnn
+ENV CUDNN cudnn-6.5-linux-x64-v2
+ADD $CUDNN.tgz /opt/cudnn/
+
 RUN pip install --upgrade six
 
 ENV CUDA_ROOT /usr/local/cuda-6.5
 ENV PATH $PATH:$CUDA_ROOT/bin
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib:/opt/cudnn/$CUDNN
 CMD cd chainer && pip install -e .
 
