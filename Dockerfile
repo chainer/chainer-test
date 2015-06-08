@@ -36,5 +36,5 @@ RUN pip install --upgrade six
 ENV CUDA_ROOT /usr/local/cuda-6.5
 ENV PATH $PATH:$CUDA_ROOT/bin
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib:/opt/cudnn/$CUDNN
-CMD cd chainer && pip install -e . && python -m unittest discover -s tests/functions_tests
+CMD cd chainer && python setup.py install && pip install `chainer-cuda-requirements` && nosetests
 
