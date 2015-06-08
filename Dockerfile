@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 RUN apt-get -y update
 RUN apt-get -y upgrade
-RUN apt-get install -y g++ python-pip wget python-dev
+RUN apt-get install -y g++ gfortran python-pip wget python-dev
 
 #RUN wget -q http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1404/x86_64/cuda-repo-ubuntu1404_7.0-28_amd64.deb
 #RUN dpkg -i ./cuda-repo-ubuntu1404_7.0-28_amd64.deb
