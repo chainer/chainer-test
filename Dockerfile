@@ -33,6 +33,8 @@ ADD $CUDNN.tgz /opt/cudnn/
 
 RUN pip install --upgrade six
 
+RUN pip install numpy
+
 ENV CUDA_ROOT /usr/local/cuda-6.5
 ENV PATH $PATH:$CUDA_ROOT/bin
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib:/opt/cudnn/$CUDNN
