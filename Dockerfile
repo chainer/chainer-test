@@ -38,5 +38,5 @@ RUN pip install numpy
 ENV CUDA_ROOT /usr/local/cuda-6.5
 ENV PATH $PATH:$CUDA_ROOT/bin
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib:/opt/cudnn/$CUDNN
-CMD cd chainer && python setup.py install && pip install `chainer-cuda-requirements` && nosetests
+CMD cd chainer && python setup.py install && pip install `chainer-cuda-requirements` && pip install nose && nosetests
 
