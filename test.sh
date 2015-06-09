@@ -5,5 +5,5 @@ python setup.py install
 pip install `chainer-cuda-requirements`
 
 pip install nose coverage
-nosetests --with-coverage --cover-package=chainer
+nosetests --with-coverage --cover-branches --cover-package=chainer
 coverage xml -i
