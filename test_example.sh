@@ -1,11 +1,11 @@
 #!/bin/sh -ex
 
 cd chainer
-python setup.py install
-python cuda_deps/setup.py install
+python setup.py -q install
+python cuda_deps/setup.py -q install
 
 apt-get install -y libblas-dev liblapack-dev unzip
-pip install scikit-learn scipy
+pip install -q scikit-learn scipy
 
 cd examples
 
