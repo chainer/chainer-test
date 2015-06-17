@@ -17,11 +17,11 @@ RUN wget -q $CUDA_URL && \
     cd / && \
     rm -rf /opt/nvidia
 
+RUN pip install numpy
+
 WORKDIR /opt/cudnn
 ENV CUDNN cudnn-6.5-linux-x64-v2
 ADD $CUDNN.tgz /opt/cudnn/
-
-RUN pip install numpy
 
 ENV CUDA_ROOT /usr/local/cuda-6.5
 ENV PATH $PATH:$CUDA_ROOT/bin
