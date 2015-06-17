@@ -4,16 +4,6 @@ RUN apt-get -y update
 RUN apt-get -y upgrade
 RUN apt-get install -y g++ gfortran python-pip wget python-dev
 
-#RUN wget -q http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1404/x86_64/cuda-repo-ubuntu1404_7.0-28_amd64.deb
-#RUN dpkg -i ./cuda-repo-ubuntu1404_7.0-28_amd64.deb
-#RUN apt-get update -y
-#RUN apt-get install -y cuda
-
-#RUN wget -q http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/cuda_6.5.14_linux_64.run && chmod +x cuda_6.5.14_linux_64.run
-#RUN wget -q http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers/cuda_7.0.28_linux.run && chmod +x cuda_7.0.28_linux.run
-#RUN ./cuda_7.0.28_linux.run --silent --driver
-#RUN ./cuda_7.0.28_linux.run --silent --toolkit
-
 WORKDIR /opt/nvidia
 ENV CUDA_RUN cuda_6.5.19_linux_64.run
 ENV CUDA_URL http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/$CUDA_RUN
@@ -30,8 +20,6 @@ RUN wget -q $CUDA_URL && \
 WORKDIR /opt/cudnn
 ENV CUDNN cudnn-6.5-linux-x64-v2
 ADD $CUDNN.tgz /opt/cudnn/
-
-RUN pip install --upgrade six
 
 RUN pip install numpy
 
