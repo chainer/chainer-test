@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 RUN apt-get -y update
 RUN apt-get -y upgrade
-RUN apt-get install -y g++ gfortran python-pip wget python-dev
+RUN apt-get install -y g++ git gfortran python-pip wget python-dev
 
 WORKDIR /opt/nvidia
 ENV CUDA_RUN cuda_6.5.19_linux_64.run
