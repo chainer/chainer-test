@@ -2,7 +2,7 @@
 
 cd chainer
 python setup.py install
-python setup_cuda_deps.py install
+python cuda_deps/setup.py install
 
 pip install nose coverage coveralls
 nosetests --with-coverage --cover-branches --cover-package=chainer
