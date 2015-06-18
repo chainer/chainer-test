@@ -1,7 +1,6 @@
 FROM ubuntu:14.04
 
-RUN apt-get -y update
-RUN apt-get -y upgrade
+RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get install -y g++ gfortran python-pip wget python-dev
 
 WORKDIR /opt/nvidia
@@ -17,7 +16,6 @@ RUN wget -q $CUDA_URL && \
     cd / && \
     rm -rf /opt/nvidia
 
-RUN pip install --upgrade six
 RUN pip install numpy
 
 ENV CUDA_ROOT /usr/local/cuda-6.5
