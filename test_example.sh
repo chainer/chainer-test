@@ -44,7 +44,7 @@ cd sentiment
 # change epoch
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" train_sentiment.py
 
-sh download.sh
+python download.py
 python train_sentiment.py
 python train_sentiment.py --gpu=0
 
