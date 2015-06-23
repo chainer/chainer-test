@@ -1,0 +1,28 @@
+FROM centos:7
+
+RUN yum -y update
+RUN yum -y install gcc gcc-c++ kmod perl python-devel
+RUN curl -kL https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
+
+RUN pip install numpy
+
+WORKDIR /opt/nvidia
+ENV CUDA_RUN cuda_6.5.19_linux_64.run
+ENV CUDA_URL http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/$CUDA_RUN
+RUN curl -o $CUDA_RUN $CUDA_URL && \
+    chmod +x $CUDA_RUN && \
+    mkdir installers && \
+    ./$CUDA_RUN -extract=`pwd`/installers && \
+    cd installers && \
+    ./NVIDIA-Linux-x86_64-343.19.run -s -N --no-kernel-module && \
+    ./cuda-linux64-rel-6.5.19-18849900.run -noprompt && \
+    cd / && \
+    rm -rf /opt/nvidia
+
+WORKDIR /opt/cudnn
+ENV CUDNN cudnn-6.5-linux-x64-v2
+ADD $CUDNN.tgz /opt/cudnn/
+
+ENV CUDA_ROOT /usr/local/cuda-6.5
+ENV PATH $PATH:$CUDA_ROOT/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib
