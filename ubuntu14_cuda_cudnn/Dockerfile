@@ -1,12 +1,14 @@
 FROM ubuntu:14.04
 
 RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y g++ git gfortran python-pip wget python-dev
+RUN apt-get install -y curl g++ git gfortran python-pip python-dev
+
+RUN pip install numpy
 
 WORKDIR /opt/nvidia
 ENV CUDA_RUN cuda_6.5.19_linux_64.run
 ENV CUDA_URL http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/$CUDA_RUN
-RUN wget -q $CUDA_URL && \
+RUN curl -silent -o $CUDA_RUN $CUDA_URL && \
     chmod +x $CUDA_RUN && \
     mkdir installers && \
     ./$CUDA_RUN -extract=`pwd`/installers && \
@@ -15,8 +17,6 @@ RUN wget -q $CUDA_URL && \
     ./cuda-linux64-rel-6.5.19-18849900.run -noprompt && \
     cd / && \
     rm -rf /opt/nvidia
-
-RUN pip install numpy
 
 WORKDIR /opt/cudnn
 ENV CUDNN cudnn-6.5-linux-x64-v2
