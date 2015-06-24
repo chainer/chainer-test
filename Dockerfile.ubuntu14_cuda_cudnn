@@ -8,7 +8,7 @@ RUN pip install numpy
 WORKDIR /opt/nvidia
 ENV CUDA_RUN cuda_6.5.19_linux_64.run
 ENV CUDA_URL http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/$CUDA_RUN
-RUN curl -silent -o $CUDA_RUN $CUDA_URL && \
+RUN curl -o $CUDA_RUN $CUDA_URL && \
     chmod +x $CUDA_RUN && \
     mkdir installers && \
     ./$CUDA_RUN -extract=`pwd`/installers && \
