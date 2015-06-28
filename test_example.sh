@@ -4,7 +4,7 @@ cd chainer
 python setup.py -q install
 python cuda_deps/setup.py -q install
 
-apt-get install -y libblas-dev liblapack-dev unzip
+apt-get install -y libblas-dev liblapack-dev python-opencv
 pip install -q scikit-learn scipy
 
 cd examples
@@ -15,6 +15,7 @@ cd mnist
 
 # change epoch
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" train_mnist.py
+sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" train_mnist.py
 
 python train_mnist.py
 python train_mnist.py --gpu=0
@@ -27,6 +28,7 @@ cd ptb
 
 # change epoch
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" train_ptb.py
+sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" train_ptb.py
 # change data size
 sed -i -E "s/^whole_len\s*=.*$/whole_len = 1000/" train_ptb.py
 sed -i -E "s/evaluate(test_data)/evaluate(test_data[:10])/" train_ptb.py
