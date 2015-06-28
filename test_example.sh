@@ -16,6 +16,7 @@ cd mnist
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" train_mnist.py
 sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" train_mnist.py
 
+python download_convert.py
 python train_mnist.py
 python train_mnist.py --gpu=0
 
