@@ -5,7 +5,6 @@ python setup.py -q install
 python cuda_deps/setup.py -q install
 
 apt-get install -y libblas-dev liblapack-dev python-opencv
-pip install -q scikit-learn scipy
 
 cd examples
 
