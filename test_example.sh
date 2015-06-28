@@ -49,3 +49,13 @@ python train_sentiment.py
 python train_sentiment.py --gpu=0
 
 cd ..
+
+# imagenet
+echo "Runnig imagenet example"
+cd ../../data/imagenet
+
+python ../../chainer/examples/imagenet/compute_mean.py data.txt
+python ../../chainer/examples/imagenet/train_imagenet.py data.txt data.txt
+python ../../chainer/examples/imagenet/train_imagenet.py --gpu=0 data.txt data.txt
+
+cd ../..
