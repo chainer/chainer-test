@@ -57,6 +57,9 @@ echo "Runnig imagenet example"
 cd ../../data/imagenet
 
 python ../../chainer/examples/imagenet/compute_mean.py data.txt
-python ../../chainer/examples/imagenet/train_imagenet.py data.txt data.txt
+python ../../chainer/examples/imagenet/train_imagenet.py -a nin data.txt data.txt
+python ../../chainer/examples/imagenet/train_imagenet.py -a alexbn data.txt data.txt
+python ../../chainer/examples/imagenet/train_imagenet.py -a googlenet data.txt data.txt
+python ../../chainer/examples/imagenet/train_imagenet.py -a googlenetbn data.txt data.txt
 
 cd ../..
