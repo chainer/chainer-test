@@ -58,6 +58,5 @@ cd ../../data/imagenet
 
 python ../../chainer/examples/imagenet/compute_mean.py data.txt
 python ../../chainer/examples/imagenet/train_imagenet.py data.txt data.txt
-python ../../chainer/examples/imagenet/train_imagenet.py --gpu=0 data.txt data.txt
 
 cd ../..
