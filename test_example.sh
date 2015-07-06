@@ -44,6 +44,9 @@ cd sentiment
 
 # change epoch
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" train_sentiment.py
+# change data size
+sed -i -E "s/^train_trees = (.*)/train_trees = \1[:10]/" train_sentiment.py
+sed -i -E "s/^test_trees = (.*)/test_trees = \1[:10]/" train_sentiment.py
 
 python download.py
 python train_sentiment.py
