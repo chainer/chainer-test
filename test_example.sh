@@ -30,8 +30,9 @@ cd ptb
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" train_ptb.py
 sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" train_ptb.py
 # change data size
-sed -i -E "s/^whole_len\s*=.*$/whole_len = 1000/" train_ptb.py
-sed -i -E "s/evaluate(test_data)/evaluate(test_data[:10])/" train_ptb.py
+sed -i -E "s/^train_data = (.*)/train_data = \1[:100]/" train_ptb.py
+sed -i -E "s/^valid_data = (.*)/valid_data = \1[:100]/" train_ptb.py
+sed -i -E "s/^test_data = (.*)/test_data = \1[:100]/" train_ptb.py
 
 python download.py
 python train_ptb.py
