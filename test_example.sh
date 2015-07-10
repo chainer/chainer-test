@@ -4,7 +4,8 @@ cd chainer
 python setup.py -q install
 python cuda_deps/setup.py -q install
 
-apt-get install -y libblas-dev liblapack-dev python-opencv
+apt-get install -y libjpeg-dev
+pip install pillow
 
 cd examples
 
