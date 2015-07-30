@@ -8,7 +8,7 @@ if [ -e cuda_deps/setup.py ]; then
 fi
 
 pip install -q nose mock coverage coveralls
-nosetests --with-coverage --cover-branches --cover-package=chainer
+nosetests --processes=12 --process-timeout=10000 --with-coverage --cover-branches --cover-package=chainer
 coverage xml -i
 
 if [ $COVERALLS_REPO_TOKEN ]; then
