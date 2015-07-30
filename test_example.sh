@@ -2,7 +2,10 @@
 
 cd chainer
 python setup.py -q install
-python cuda_deps/setup.py -q install
+
+if [ -e cuda_deps/setup.py ]; then
+  python cuda_deps/setup.py -q install
+fi
 
 apt-get install -y libjpeg-dev
 pip install pillow
