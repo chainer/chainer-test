@@ -7,7 +7,7 @@ if [ -e cuda_deps/setup.py ]; then
   python cuda_deps/setup.py -q install
 fi
 
-pip install -q nose coverage coveralls
+pip install -q nose mock coverage coveralls
 nosetests --with-coverage --cover-branches --cover-package=chainer
 coverage xml -i
 
