@@ -69,4 +69,27 @@ python ../../chainer/examples/imagenet/train_imagenet.py -a alexbn data.txt data
 python ../../chainer/examples/imagenet/train_imagenet.py -a googlenet data.txt data.txt
 python ../../chainer/examples/imagenet/train_imagenet.py -a googlenetbn data.txt data.txt
 
-cd ../..
+cd ../../chainer/examples
+
+# word2vec
+echo "Running word2vec example"
+
+cd word2vec
+# note that ptb.train.txt is already downloaded
+cp ../ptb/ptb.train.txt .
+
+sed -i -E "s/n_vocab = len\(word2index\)/n_vocab = len(word2index)\ndataset = dataset[:100]/" train_word2vec.py
+
+python train_word2vec.py -e 1 -b 10
+echo "it" | python search.py
+#python train_word2vec.py -e 1 -b 10 --gpu=0
+python train_word2vec.py -e 1 -b 10 -m cbow --out-type ns
+echo "it" | python search.py
+python train_word2vec.py -e 1 -b 10 -m cbow --out-type ns --gpu=0
+echo "it" | python search.py
+python train_word2vec.py -e 1 -b 10 --out-type original
+echo "it" | python search.py
+python train_word2vec.py -e 1 -b 10 --out-type original --gpu=0
+echo "it" | python search.py
+
+cd ..
