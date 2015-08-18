@@ -82,7 +82,8 @@ sed -i -E "s/n_vocab = len\(word2index\)/n_vocab = len(word2index)\ndataset = da
 
 python train_word2vec.py -e 1 -b 10
 echo "it" | python search.py
-#python train_word2vec.py -e 1 -b 10 --gpu=0
+python train_word2vec.py -e 1 -b 10 --gpu=0
+echo "it" | python search.py
 python train_word2vec.py -e 1 -b 10 -m cbow --out-type ns
 echo "it" | python search.py
 python train_word2vec.py -e 1 -b 10 -m cbow --out-type ns --gpu=0
