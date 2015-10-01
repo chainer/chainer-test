@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 
 RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y curl g++ git gfortran python-pip python-dev
+RUN apt-get install -y curl g++ git gfortran libhdf5-dev python-pip python-dev
 
 RUN pip install numpy
 
