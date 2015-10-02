@@ -7,7 +7,7 @@ if [ -e cuda_deps/setup.py ]; then
   python cuda_deps/setup.py -q install
 fi
 
-apt-get install -y libjpeg-dev
+apt-get install -y libjpeg-dev zlib1g-dev
 pip install pillow
 
 cd examples
