@@ -5,7 +5,7 @@ PREV_VER=1.3.2
 cd chainer
 python setup.py -q install
 
-apt-get install -y libjpeg-dev
+apt-get install -y libjpeg-dev zlib1g-dev
 pip install pillow
 
 curl -L -o v${PREV_VER}.tar.gz https://github.com/pfnet/chainer/archive/v${PREV_VER}.tar.gz
