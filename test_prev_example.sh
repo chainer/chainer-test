@@ -8,7 +8,7 @@ python setup.py -q install
 apt-get install -y libjpeg-dev
 pip install pillow
 
-curl -o v${PREV_VER}.tar.gz https://github.com/pfnet/chainer/archive/v${PREV_VER}.tar.gz
+curl -L -o v${PREV_VER}.tar.gz https://github.com/pfnet/chainer/archive/v${PREV_VER}.tar.gz
 tar xzf v${PREV_VER}.tar.gz
 cd chainer-${PREV_VER}/examples
 
