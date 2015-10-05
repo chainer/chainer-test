@@ -1,8 +1,8 @@
 FROM centos:7
 
 RUN yum -y update
-RUN yum -y install gcc gcc-c++ kmod perl python-devel
-RUN curl -kL https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
+RUN yum -y install epel-release
+RUN yum -y install gcc gcc-c++ kmod libhdf5-devel perl python-devel python-pip
 
 RUN pip install numpy
 
