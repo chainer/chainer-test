@@ -1,0 +1,37 @@
+FROM ubuntu:14.04
+
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get install -y curl g++ gfortran python3-pip python3-dev
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+
+RUN pip install numpy
+
+WORKDIR /opt/nvidia
+ENV CUDA_RUN cuda_7.0.28_linux.run
+ENV CUDA_URL http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers/$CUDA_RUN
+ENV CUDA_75_RUN cuda_7.5.18_linux.run
+ENV CUDA_75_URL http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/$CUDA_75_RUN
+
+RUN mkdir installers
+RUN curl -o $CUDA_RUN $CUDA_URL && \
+    chmod +x $CUDA_RUN && \
+    ./$CUDA_RUN -extract=`pwd`/installers
+RUN curl -o $CUDA_75_RUN $CUDA_75_URL && \
+    chmod +x $CUDA_75_RUN && \
+    ./$CUDA_RUN -extract=`pwd`/installers
+
+RUN cd installers && \
+    ./NVIDIA-Linux-x86_64-352.39.run -s -N --no-kernel-module && \
+    ./cuda-linux64-rel-7.0.28-19326674.run -noprompt && \
+    cd / && \
+    rm -rf /opt/nvidia
+
+WORKDIR /opt/cudnn
+ENV CUDNN cudnn-6.5-linux-x64-v2
+ADD $CUDNN.tgz /opt/cudnn/
+
+ENV CUDA_ROOT /usr/local/cuda
+ENV PATH $PATH:$CUDA_ROOT/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64
