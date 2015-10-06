@@ -18,7 +18,7 @@ RUN curl -o $CUDA_RUN $CUDA_URL && \
     ./$CUDA_RUN -extract=`pwd`/installers
 RUN curl -o $CUDA_75_RUN $CUDA_75_URL && \
     chmod +x $CUDA_75_RUN && \
-    ./$CUDA_RUN -extract=`pwd`/installers
+    ./$CUDA_75_RUN -extract=`pwd`/installers
 
 RUN cd installers && \
     ./NVIDIA-Linux-x86_64-352.39.run -s -N --no-kernel-module && \
