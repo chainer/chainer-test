@@ -1,6 +1,0 @@
-FROM ubuntu:14.04
-
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y libhdf5-dev python-pip python-dev
-
-RUN pip install numpy

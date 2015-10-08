@@ -1,7 +1,0 @@
-FROM centos:7
-
-RUN yum -y update
-RUN yum -y install epel-release
-RUN yum -y install gcc libhdf5-devel python-devel python-pip
-
-RUN pip install numpy
