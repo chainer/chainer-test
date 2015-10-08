@@ -58,8 +58,8 @@ WORKDIR /opt/nvidia
 ENV CUDA_RUN {cuda_run}
 ENV CUDA_75_RUN {cuda75_run}
 
-RUN curl -o $CUDA_RUN {cuda_url}/$CUDA_RUN
-RUN curl -o $CUDA_75_RUN {cuda75_url}/$CUDA_75_RUN
+COPY $CUDA_RUN /opt/nvidia/
+COPY $CUDA_75_RUN /opt/nvidia/
 
 RUN mkdir installers
 RUN chmod +x $CUDA_RUN && \\
@@ -82,7 +82,7 @@ cuda75_base = '''
 WORKDIR /opt/nvidia
 ENV CUDA_RUN {cuda_run}
 
-RUN curl -o $CUDA_RUN {cuda_url}/$CUDA_RUN
+COPY $CUDA_RUN /opt/nvidia/
 
 RUN mkdir installers
 RUN chmod +x $CUDA_RUN && \\
