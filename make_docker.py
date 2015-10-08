@@ -62,9 +62,9 @@ COPY $CUDA_RUN /opt/nvidia/
 COPY $CUDA_75_RUN /opt/nvidia/
 
 RUN mkdir installers
-RUN chmod +x $CUDA_RUN && \\
+RUN chmod +x $CUDA_RUN && sync && \\
     ./$CUDA_RUN -extract=`pwd`/installers
-RUN chmod +x $CUDA_75_RUN && \\
+RUN chmod +x $CUDA_75_RUN && sync && \\
     ./$CUDA_75_RUN -extract=`pwd`/installers
 
 RUN cd installers && \\
@@ -85,7 +85,7 @@ ENV CUDA_RUN {cuda_run}
 COPY $CUDA_RUN /opt/nvidia/
 
 RUN mkdir installers
-RUN chmod +x $CUDA_RUN && \\
+RUN chmod +x $CUDA_RUN && sync && \\
     ./$CUDA_RUN -extract=`pwd`/installers
 
 RUN cd installers && \\
