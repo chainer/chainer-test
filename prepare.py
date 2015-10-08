@@ -4,7 +4,7 @@ import argparse
 import os
 import shutil
 
-def copy_file(data_dirfile_name):
+def copy_file(data_dir, file_name):
     shutil.copy(os.path.join(data_dir, file_name), '.')
 
 p = argparse.ArgumentParser()
