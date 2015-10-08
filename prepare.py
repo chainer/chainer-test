@@ -15,8 +15,10 @@ args = p.parse_args()
 
 if args.cuda == 'cuda65':
     copy_file(args.datadir, 'cuda_6.5.19_linux_64.run')
+    copy_file(args.datadir, 'cuda_7.5.18_linux.run')
 elif args.cuda == 'cuda70':
     copy_file(args.datadir, 'cuda_7.0.28_linux.run')
+    copy_file(args.datadir, 'cuda_7.5.18_linux.run')
 elif args.cuda == 'cuda75':
     copy_file(args.datadir, 'cuda_7.5.18_linux.run')
 
