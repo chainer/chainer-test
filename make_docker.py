@@ -10,7 +10,7 @@ codes['centos7_py2'] = '''FROM centos:7
 
 RUN yum -y update
 RUN yum -y install epel-release
-RUN yum -y install gcc gcc-c++ kmod libhdf5-devel python-devel python-pip
+RUN yum -y install gcc gcc-c++ kmod libhdf5-devel perl python-devel python-pip
 '''
 
 codes['ubuntu14_py2'] = '''FROM ubuntu:14.04
