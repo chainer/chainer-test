@@ -55,22 +55,19 @@ cuda75_installer = 'cuda-linux64-rel-7.5.18-19867135.run'
 
 cuda_base = '''
 WORKDIR /opt/nvidia
-ENV CUDA_RUN {cuda_run}
-ENV CUDA_75_RUN {cuda75_run}
-
-COPY $CUDA_RUN /opt/nvidia/
-COPY $CUDA_75_RUN /opt/nvidia/
-
 RUN mkdir installers
-RUN chmod +x $CUDA_RUN && sync && \\
-    ./$CUDA_RUN -extract=`pwd`/installers
-RUN chmod +x $CUDA_75_RUN && sync && \\
-    ./$CUDA_75_RUN -extract=`pwd`/installers
 
-RUN cd installers && \\
-    ./{driver} -s -N --no-kernel-module && \\
-    ./{installer} -noprompt && \\
-    cd / && \\
+COPY {cuda75_run} /opt/nvidia/
+RUN chmod +x {cuda75_run} && sync && \\
+    ./{cuda75_run} -extract=`pwd`/installers
+RUN ./installers/{driver} -s -N --no-kernel-module
+
+COPY {cuda_run} /opt/nvidia/
+RUN chmod +x {cuda_run} && sync && \\
+    ./{cuda_run} -extract=`pwd`/installers
+RUN ./installers/{installer} -noprompt
+
+RUN cd / && \\
     rm -rf /opt/nvidia
 
 ENV CUDA_ROOT /usr/local/cuda
@@ -80,17 +77,14 @@ ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64
 
 cuda75_base = '''
 WORKDIR /opt/nvidia
-ENV CUDA_RUN {cuda_run}
-
-COPY $CUDA_RUN /opt/nvidia/
-
 RUN mkdir installers
-RUN chmod +x $CUDA_RUN && sync && \\
-    ./$CUDA_RUN -extract=`pwd`/installers
 
-RUN cd installers && \\
-    ./{driver} -s -N --no-kernel-module && \\
-    ./{installer} -noprompt && \\
+COPY {cuda_run} /opt/nvidia/
+RUN chmod +x {cuda_run} && sync && \\
+    ./{cuda_run} -extract=`pwd`/installers
+
+RUN ./installers/{driver} -s -N --no-kernel-module && \\
+    ./installers/{installer} -noprompt && \\
     cd / && \\
     rm -rf /opt/nvidia
 
