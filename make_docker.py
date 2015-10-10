@@ -10,7 +10,20 @@ codes['centos7_py2'] = '''FROM centos:7
 
 RUN yum -y update
 RUN yum -y install epel-release
-RUN yum -y install gcc gcc-c++ kmod libhdf5-devel perl python-devel python-pip
+RUN yum -y install gcc gcc-c++ kmod libhdf5-devel perl
+
+RUN yum -y install python-devel python-pip
+'''
+
+codes['centos7_py3'] = '''FROM centos:7
+
+RUN yum -y update
+RUN yum -y install epel-release
+RUN yum -y install gcc gcc-c++ kmod libhdf5-devel perl
+
+RUN yum -y install python34-devel
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.4 1
+RUN curl -kL https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
 '''
 
 codes['ubuntu14_py2'] = '''FROM ubuntu:14.04
@@ -133,7 +146,7 @@ codes['cudnn3'] = cudnn_base.format(cudnn='cudnn-7.0-linux-x64-v3.0-prod')
 codes['none'] = ''
 
 p = argparse.ArgumentParser()
-p.add_argument('--base', choices=['ubuntu14_py2', 'ubuntu14_py3', 'centos7_py2'], required=True)
+p.add_argument('--base', choices=['ubuntu14_py2', 'ubuntu14_py3', 'centos7_py2', 'centos7_py3'], required=True)
 p.add_argument('--numpy', choices=['numpy19', 'numpy110'], required=True)
 p.add_argument('--cuda', choices=['none', 'cuda65', 'cuda70', 'cuda75'], required=True)
 p.add_argument('--cudnn', choices=['none', 'cudnn2', 'cudnn3'], required=True)
