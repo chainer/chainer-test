@@ -29,14 +29,17 @@ RUN curl -kL https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
 codes['ubuntu14_py2'] = '''FROM ubuntu:14.04
 
 RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y curl g++ gfortran libhdf5-dev python-pip python-dev
+RUN apt-get install -y curl g++ gfortran libhdf5-dev
+
+RUN apt-get install -y python-pip python-dev
 '''
 
 codes['ubuntu14_py3'] = '''FROM ubuntu:14.04
 
 RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y curl g++ gfortran libhdf5-dev python3-pip python3-dev
+RUN apt-get install -y curl g++ gfortran libhdf5-dev
 
+RUN apt-get install -y python3-pip python3-dev
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 '''
