@@ -20,6 +20,9 @@ Prepare these files to ```/opt/cuda```
 
 ## How to use
 
+First run `prepare.py` to copy files which are required to make a Docker image.
+And then, run `make_docker.py` to make a `Dockerfile` for an environemnt you want to test.
+
 ```
 $ ./prepare.py --cuda==cuda70 --cudnn=cudnn2
 $ ./make_docker.py --base=ubuntu14_py2 --numphy=numpy19 --cuda==cuda70 --cudnn=cudnn2
