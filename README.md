@@ -32,3 +32,9 @@ $ docker run --env COVERALLS_REPO_TOKEN=XXX..X -v ${pwd}:/work -w /work \
   --device /dev/nvidiactl:/dev/nvidiactl \
   --device /dev/nvidia-uvm:/dev/nvidia-uvm ./test.sh
 ```
+
+## In Jenkins
+
+Make a multi-configuration project.
+In the matrix configuration, make four variables, `BASE`, `CUDA`, `CUDNN` and `NUMPY`.
+You can make a configuration matrix for all combination.
