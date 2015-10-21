@@ -44,6 +44,21 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 '''
 
+codes['ubuntu14_py35'] = '''FROM ubuntu:14.04
+
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get install -y curl g++ gfortran git libhdf5-dev
+
+RUN apt-get -y install libbz2-dev libreadline-dev libssl-dev make
+RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
+ENV PYENV_ROOT=/opt/pyenv
+ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
+
+RUN pyenv install 3.5.0
+RUN pyenv global 3.5.0
+RUN pyenv rehash
+'''
+
 # numpy
 
 codes['numpy19'] = '''
@@ -149,7 +164,7 @@ codes['cudnn3'] = cudnn_base.format(cudnn='cudnn-7.0-linux-x64-v3.0-prod')
 codes['none'] = ''
 
 p = argparse.ArgumentParser()
-p.add_argument('--base', choices=['ubuntu14_py2', 'ubuntu14_py3', 'centos7_py2', 'centos7_py3'], required=True)
+p.add_argument('--base', choices=['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos7_py2', 'centos7_py3'], required=True)
 p.add_argument('--numpy', choices=['numpy19', 'numpy110'], required=True)
 p.add_argument('--cuda', choices=['none', 'cuda65', 'cuda70', 'cuda75'], required=True)
 p.add_argument('--cudnn', choices=['none', 'cudnn2', 'cudnn3'], required=True)
