@@ -1,6 +1,7 @@
 #!/bin/sh -e
 
 cd chainer
+python setup.py build
 python setup.py install
 
 pip install nose mock coverage

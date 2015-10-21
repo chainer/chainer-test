@@ -1,6 +1,7 @@
 #!/bin/sh -ex
 
 cd chainer
+python setup.py build
 python setup.py -q install
 
 pip install -q nose mock coverage coveralls
