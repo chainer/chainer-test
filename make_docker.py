@@ -163,16 +163,27 @@ codes['cudnn3'] = cudnn_base.format(cudnn='cudnn-7.0-linux-x64-v3.0-prod')
 
 codes['none'] = ''
 
+
+def set_env(env, value):
+    return 'ENV {}={}\n'.format(env, value)
+
+
 p = argparse.ArgumentParser()
 p.add_argument('--base', choices=['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos7_py2', 'centos7_py3'], required=True)
 p.add_argument('--numpy', choices=['numpy19', 'numpy110'], required=True)
 p.add_argument('--cuda', choices=['none', 'cuda65', 'cuda70', 'cuda75'], required=True)
 p.add_argument('--cudnn', choices=['none', 'cudnn2', 'cudnn3'], required=True)
+p.add_argument('--http-proxy')
+p.add_argument('--https-proxy')
 p.add_argument('-f', '--dockerfile', default='Dockerfile')
 args = p.parse_args()
 
 with open(args.dockerfile, 'w') as f:
     f.write(codes[args.base])
+    if args.http_proxy:
+        f.write(set_env('http_proxy', args.http_proxy))
+    if args.https_proxy:
+        f.write(set_env('https_proxy', args.https_proxy))
     f.write(codes[args.numpy])
     f.write(codes[args.cuda])
     f.write(codes[args.cudnn])
