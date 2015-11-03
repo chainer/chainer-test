@@ -3,7 +3,7 @@
 PREV_VER=1.3.2
 
 cd chainer
-python setup.py -q install
+python setup.py -q develop install
 
 apt-get install -y libjpeg-dev zlib1g-dev
 pip install pillow
