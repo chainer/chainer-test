@@ -10,7 +10,7 @@ codes['centos7_py2'] = '''FROM centos:7
 
 RUN yum -y update
 RUN yum -y install epel-release
-RUN yum -y install gcc gcc-c++ git kmod libhdf5-devel perl
+RUN yum -y install gcc gcc-c++ git kmod hdf5-devel perl
 
 RUN yum -y install python-devel python-pip
 '''
@@ -19,7 +19,7 @@ codes['centos7_py3'] = '''FROM centos:7
 
 RUN yum -y update
 RUN yum -y install epel-release
-RUN yum -y install gcc gcc-c++ git kmod libhdf5-devel perl
+RUN yum -y install gcc gcc-c++ git kmod hdf5-devel perl
 
 RUN yum -y install python34-devel
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.4 1
