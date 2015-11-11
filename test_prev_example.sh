@@ -6,7 +6,14 @@ cd chainer
 python setup.py -q develop install
 cd ..
 
-apt-get install -y libjpeg-dev zlib1g-dev
+if builtin command -v apt-get > /dev/null; then
+  apt-get install -y libjpeg-dev zlib1g-dev
+elif builtin command -v yum > /dev/null; then
+  yum -y install libjpeg-devel zlib-devel
+else
+  echo "both apt-get and yum command are not found"
+  exit 1
+fi
 pip install pillow
 
 curl -L -o v${PREV_VER}.tar.gz https://github.com/pfnet/chainer/archive/v${PREV_VER}.tar.gz
