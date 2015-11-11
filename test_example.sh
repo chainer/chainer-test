@@ -7,7 +7,14 @@ if [ -e cuda_deps/setup.py ]; then
   python cuda_deps/setup.py -q install
 fi
 
-apt-get install -y libjpeg-dev zlib1g-dev
+if builtin command -v apt-get > /dev/null; then
+  apt-get install -y libjpeg-dev zlib1g-dev
+elif builtin command -v yum > /dev/null; then
+  yum -y install libjpeg-devel zlib-devel
+else
+  echo "both apt-get and yum command are not found"
+  exit 1
+fi
 pip install coverage pillow
 
 run="coverage run -a --branch"
