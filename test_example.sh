@@ -26,8 +26,8 @@ echo "Running mnist example"
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" examples/mnist/train_mnist.py
 sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" examples/mnist/train_mnist.py
 
-sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" examples/mnist/train_mnist_model_parallel.py
-sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" examples/mnist/train_mnist_model_parallel.py
+#sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" examples/mnist/train_mnist_model_parallel.py
+#sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" examples/mnist/train_mnist_model_parallel.py
 
 $run examples/mnist/train_mnist.py
 $run examples/mnist/train_mnist.py --gpu=0
