@@ -21,9 +21,14 @@ RUN yum -y update
 RUN yum -y install epel-release
 RUN yum -y install gcc gcc-c++ git kmod hdf5-devel perl
 
-RUN yum -y install python34-devel
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.4 1
-RUN curl -kL https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
+RUN yum -y install bzip2-devel make openssl-devel readline-devel
+RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
+ENV PYENV_ROOT=/opt/pyenv
+ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
+
+RUN pyenv install 3.4.3
+RUN pyenv global 3.4.3
+RUN pyenv rehash
 '''
 
 codes['ubuntu14_py2'] = '''FROM ubuntu:14.04

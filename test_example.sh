@@ -7,9 +7,9 @@ if [ -e cuda_deps/setup.py ]; then
   python cuda_deps/setup.py -q install
 fi
 
-if builtin command -v apt-get > /dev/null; then
+if which apt-get; then
   apt-get install -y libjpeg-dev zlib1g-dev
-elif builtin command -v yum > /dev/null; then
+elif which yum; then
   yum -y install libjpeg-devel zlib-devel
 else
   echo "both apt-get and yum command are not found"
@@ -26,12 +26,9 @@ echo "Running mnist example"
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" examples/mnist/train_mnist.py
 sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" examples/mnist/train_mnist.py
 
-sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" examples/mnist/train_mnist_model_parallel.py
-sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" examples/mnist/train_mnist_model_parallel.py
-
 $run examples/mnist/train_mnist.py
 $run examples/mnist/train_mnist.py --gpu=0
-#$run examples/mnist/train_mnist_model_parallel.py
+$run examples/mnist/train_mnist.py --net=parallel
 
 # ptb
 echo "Running ptb example"
