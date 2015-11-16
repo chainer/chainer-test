@@ -1,6 +1,7 @@
 #!/bin/sh -ex
 
 PREV_VER=1.3.2
+CHAINER_DIR=chainer-${PREV_VER}
 
 cd chainer
 python setup.py -q develop install
@@ -18,7 +19,7 @@ pip install pillow
 
 curl -L -o v${PREV_VER}.tar.gz https://github.com/pfnet/chainer/archive/v${PREV_VER}.tar.gz
 tar xzf v${PREV_VER}.tar.gz
-cd chainer-${PREV_VER}/examples
+cd ${CHAINER_DIR}/examples
 
 # mnist
 echo "Running mnist example"
@@ -75,13 +76,13 @@ cd ..
 echo "Runnig imagenet example"
 cd ../../data/imagenet
 
-python ../../chainer/examples/imagenet/compute_mean.py data.txt
-python ../../chainer/examples/imagenet/train_imagenet.py -a nin data.txt data.txt
-python ../../chainer/examples/imagenet/train_imagenet.py -a alexbn data.txt data.txt
-python ../../chainer/examples/imagenet/train_imagenet.py -a googlenet data.txt data.txt
-python ../../chainer/examples/imagenet/train_imagenet.py -a googlenetbn data.txt data.txt
+python ../../${CHAINER_DIR}/examples/imagenet/compute_mean.py data.txt
+python ../../${CHAINER_DIR}/examples/imagenet/train_imagenet.py -a nin data.txt data.txt
+python ../../${CHAINER_DIR}/examples/imagenet/train_imagenet.py -a alexbn data.txt data.txt
+python ../../${CHAINER_DIR}/examples/imagenet/train_imagenet.py -a googlenet data.txt data.txt
+python ../../${CHAINER_DIR}/examples/imagenet/train_imagenet.py -a googlenetbn data.txt data.txt
 
-cd ../../chainer/examples
+cd ../../${CHAINER_DIR}/examples
 
 # word2vec
 echo "Running word2vec example"
