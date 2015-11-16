@@ -6,9 +6,9 @@ cd chainer
 python setup.py -q develop install
 cd ..
 
-if builtin command -v apt-get > /dev/null; then
+if which apt-get; then
   apt-get install -y libjpeg-dev zlib1g-dev
-elif builtin command -v yum > /dev/null; then
+elif which yum; then
   yum -y install libjpeg-devel zlib-devel
 else
   echo "both apt-get and yum command are not found"
@@ -92,17 +92,18 @@ cp ../ptb/ptb.train.txt .
 
 sed -i -E "s/n_vocab = len\(word2index\)/n_vocab = len(word2index)\ndataset = dataset[:100]/" train_word2vec.py
 
+# search.py is not supported in the latest
 python train_word2vec.py -e 1 -b 10
-echo "it" | python search.py
+# echo "it" | python search.py
 python train_word2vec.py -e 1 -b 10 --gpu=0
-echo "it" | python search.py
+# echo "it" | python search.py
 python train_word2vec.py -e 1 -b 10 -m cbow --out-type ns
-echo "it" | python search.py
+# echo "it" | python search.py
 python train_word2vec.py -e 1 -b 10 -m cbow --out-type ns --gpu=0
-echo "it" | python search.py
+# echo "it" | python search.py
 python train_word2vec.py -e 1 -b 10 --out-type original
-echo "it" | python search.py
+# echo "it" | python search.py
 python train_word2vec.py -e 1 -b 10 --out-type original --gpu=0
-echo "it" | python search.py
+# echo "it" | python search.py
 
 cd ..
