@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
 cd chainer
-python setup.py -q develop install
+python setup.py -q --cupy-coverage develop install
 
 pip install -q nose mock coverage coveralls
 
