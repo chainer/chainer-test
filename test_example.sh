@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
 cd chainer
-python setup.py -q develop install
+python setup.py -q --cupy-coverage develop install
 
 if [ -e cuda_deps/setup.py ]; then
   python cuda_deps/setup.py -q install
