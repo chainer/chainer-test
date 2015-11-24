@@ -162,6 +162,7 @@ ENV CUDNN cudnn-6.5-linux-x64-v2
 COPY $CUDNN.tgz /opt/cudnn/
 RUN tar zxf $CUDNN.tgz
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/cudnn/$CUDNN
+ENV LIBRARY_PATH $LIBRARY_PATH:/opt/cudnn/$CUDNN
 ENV CPATH $CPATH:/opt/cudnn/$CUDNN
 '''
 
@@ -171,6 +172,7 @@ ENV CUDNN cudnn-7.0-linux-x64-v3.0-prod
 COPY $CUDNN.tgz /opt/cudnn/
 RUN tar zxf $CUDNN.tgz
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/cudnn/cuda/lib64
+ENV LIBRARY_PATH $LIBRARY_PATH:/opt/cudnn/cuda/lib64
 ENV CPATH $CPATH:/opt/cudnn/cuda/include
 '''
 
