@@ -24,8 +24,8 @@ First run `prepare.py` to copy files which are required to make a Docker image.
 And then, run `make_docker.py` to make a `Dockerfile` for an environemnt you want to test.
 
 ```
-$ ./prepare.py --cuda==cuda70 --cudnn=cudnn2
-$ ./make_docker.py --base=ubuntu14_py2 --numphy=numpy19 --cuda==cuda70 --cudnn=cudnn2
+$ ./prepare.py --cuda=cuda70 --cudnn=cudnn2
+$ ./make_docker.py --base=ubuntu14_py2 --numpy=numpy19 --cuda=cuda70 --cudnn=cudnn2
 $ docker build -t chainer_test .
 $ docker run --env COVERALLS_REPO_TOKEN=XXX..X -v ${pwd}:/work -w /work \
   --device /dev/nvidia0:/dev/nvidia0 \
