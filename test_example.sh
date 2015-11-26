@@ -1,7 +1,11 @@
 #!/bin/sh -ex
 
 cd chainer
-python setup.py -q develop install
+rm -rf dist
+python setup.py -q sdist
+cd dist
+pip install *.tar.gz
+cd ..
 
 if [ -e cuda_deps/setup.py ]; then
   python cuda_deps/setup.py -q install
