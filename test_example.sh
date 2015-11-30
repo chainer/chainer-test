@@ -1,5 +1,7 @@
 #!/bin/sh -ex
 
+pip install -U pip
+
 cd chainer
 rm -rf dist
 python setup.py -q sdist
