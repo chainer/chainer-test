@@ -1,5 +1,7 @@
 #!/bin/sh -ex
 
+pip install -U pip
+
 PREV_VER=1.3.2
 CHAINER_DIR=chainer-${PREV_VER}
 
