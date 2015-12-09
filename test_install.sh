@@ -2,4 +2,4 @@
 
 pip install $DEPENDENCY
 
-pip install -vvvv chainer/dist/*.tar.gz
+timeout 20m pip install -vvvv chainer/dist/*.tar.gz
