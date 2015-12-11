@@ -12,6 +12,8 @@ RUN yum -y update
 RUN yum -y install epel-release
 RUN yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl
 
+ENV PATH /usr/lib64/ccache:$PATH
+
 RUN yum -y install python-devel python-pip
 '''
 
@@ -20,6 +22,8 @@ codes['centos7_py3'] = '''FROM centos:7
 RUN yum -y update
 RUN yum -y install epel-release
 RUN yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl
+
+ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y install bzip2-devel make openssl-devel readline-devel
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
@@ -36,6 +40,8 @@ codes['ubuntu14_py2'] = '''FROM ubuntu:14.04
 RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev
 
+ENV PATH /usr/lib/ccache:$PATH
+
 RUN apt-get install -y python-pip python-dev
 '''
 
@@ -43,6 +49,8 @@ codes['ubuntu14_py3'] = '''FROM ubuntu:14.04
 
 RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev
+
+ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get install -y python3-pip python3-dev
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
@@ -53,6 +61,8 @@ codes['ubuntu14_py35'] = '''FROM ubuntu:14.04
 
 RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev
+
+ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y install libbz2-dev libreadline-dev libssl-dev make
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
