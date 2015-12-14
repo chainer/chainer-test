@@ -198,7 +198,7 @@ p.add_argument('--base', choices=['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35
 p.add_argument('--numpy', choices=['numpy19', 'numpy110'], required=True)
 p.add_argument('--cuda', choices=['none', 'cuda65', 'cuda70', 'cuda75'], required=True)
 p.add_argument('--cudnn', choices=['none', 'cudnn2', 'cudnn3'], required=True)
-p.add_argument('--requires', required=False)
+p.add_argument('--requires', action='append')
 p.add_argument('--http-proxy')
 p.add_argument('--https-proxy')
 p.add_argument('-f', '--dockerfile', default='Dockerfile')
@@ -214,5 +214,5 @@ with open(args.dockerfile, 'w') as f:
     f.write(codes[args.cuda])
     f.write(codes[args.cudnn])
 
-    if args.requires:
-        f.write('RUN pip install %s' % args.requires)
+    for r in args.requires:
+        f.write('RUN pip install %s' % r)
