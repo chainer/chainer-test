@@ -103,12 +103,13 @@ cuda_base = '''
 WORKDIR /opt/nvidia
 RUN mkdir installers
 
-COPY {cuda75_run} /opt/nvidia/
+RUN curl -o {cuda_run} {cuda_url}/{cuda_run}
+RUN curl -o {cuda75_run} {cuda75_url}/{cuda75_run}
+
 RUN chmod +x {cuda75_run} && sync && \\
     ./{cuda75_run} -extract=`pwd`/installers
 RUN ./installers/{driver} -s -N --no-kernel-module
 
-COPY {cuda_run} /opt/nvidia/
 RUN chmod +x {cuda_run} && sync && \\
     ./{cuda_run} -extract=`pwd`/installers
 RUN ./installers/{installer} -noprompt
@@ -125,7 +126,8 @@ cuda75_base = '''
 WORKDIR /opt/nvidia
 RUN mkdir installers
 
-COPY {cuda_run} /opt/nvidia/
+RUN curl -o {cuda_run} {cuda_url}/{cuda_run}
+
 RUN chmod +x {cuda_run} && sync && \\
     ./{cuda_run} -extract=`pwd`/installers
 
