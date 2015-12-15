@@ -214,6 +214,7 @@ with open(args.dockerfile, 'w') as f:
     f.write(codes[args.cuda])
     f.write(codes[args.cudnn])
 
-    f.write('\n')
-    for r in args.requires:
-        f.write('RUN pip install %s\n' % r)
+    if args.requires:
+        f.write('\n')
+        for r in args.requires:
+            f.write('RUN pip install %s\n' % r)
