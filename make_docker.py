@@ -103,8 +103,8 @@ cuda_base = '''
 WORKDIR /opt/nvidia
 RUN mkdir installers
 
-RUN curl -o {cuda_run} {cuda_url}/{cuda_run}
-RUN curl -o {cuda75_run} {cuda75_url}/{cuda75_run}
+RUN curl -s -o {cuda_run} {cuda_url}/{cuda_run}
+RUN curl -s -o {cuda75_run} {cuda75_url}/{cuda75_run}
 
 RUN chmod +x {cuda75_run} && sync && \\
     ./{cuda75_run} -extract=`pwd`/installers
@@ -126,7 +126,7 @@ cuda75_base = '''
 WORKDIR /opt/nvidia
 RUN mkdir installers
 
-RUN curl -o {cuda_run} {cuda_url}/{cuda_run}
+RUN curl -s -o {cuda_run} {cuda_url}/{cuda_run}
 
 RUN chmod +x {cuda_run} && sync && \\
     ./{cuda_run} -extract=`pwd`/installers
