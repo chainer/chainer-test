@@ -96,3 +96,4 @@ echo "it" | $run examples/word2vec/search.py
 
 # show coverage
 coverage report -m --include="examples/*"
+coverage xml --include="examples/*"
