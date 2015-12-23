@@ -13,9 +13,9 @@ if [ -e cuda_deps/setup.py ]; then
   python cuda_deps/setup.py -q install
 fi
 
-if which apt-get; then
+if apt-get --version; then
   apt-get install -y libjpeg-dev zlib1g-dev
-elif which yum; then
+elif yum --version; then
   yum -y install libjpeg-devel zlib-devel
 else
   echo "both apt-get and yum command are not found"
