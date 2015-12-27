@@ -69,10 +69,10 @@ echo "Runnig imagenet example"
 
 imagenet_data=../data/imagenet/data.txt
 $run examples/imagenet/compute_mean.py -r ../data/imagenet $imagenet_data
-$run examples/imagenet/train_imagenet.py -a nin -r ../data/imagenet $imagenet_data $imagenet_data
-$run examples/imagenet/train_imagenet.py -a alexbn -r ../data/imagenet $imagenet_data $imagenet_data
-$run examples/imagenet/train_imagenet.py -a googlenet -r ../data/imagenet $imagenet_data $imagenet_data
-$run examples/imagenet/train_imagenet.py -a googlenetbn -r ../data/imagenet $imagenet_data $imagenet_data
+$run examples/imagenet/train_imagenet.py -a nin -r ../data/imagenet -B 1 -b 1 $imagenet_data $imagenet_data
+$run examples/imagenet/train_imagenet.py -a alexbn -r ../data/imagenet -B 1 -b 1 $imagenet_data $imagenet_data
+$run examples/imagenet/train_imagenet.py -a googlenet -r ../data/imagenet -B 1 -b 1 $imagenet_data $imagenet_data
+$run examples/imagenet/train_imagenet.py -a googlenetbn -r ../data/imagenet -B 1 -b 1 $imagenet_data $imagenet_data
 
 # word2vec
 echo "Running word2vec example"
