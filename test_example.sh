@@ -42,6 +42,7 @@ echo "Running ptb example"
 # change epoch
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" examples/ptb/train_ptb.py
 sed -i -E "s/^n_units\s*=\s*[0-9]+/n_units = 10/" examples/ptb/train_ptb.py
+sed -i -E "s/bprop_len = 35/bprop_len = 4/" examples/ptb/train_ptb.py
 # change data size
 sed -i -E "s/^train_data = (.*)/train_data = \1[:100]/" examples/ptb/train_ptb.py
 sed -i -E "s/^valid_data = (.*)/valid_data = \1[:100]/" examples/ptb/train_ptb.py
