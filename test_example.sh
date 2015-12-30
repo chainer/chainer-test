@@ -56,6 +56,8 @@ echo "Running sentiment example"
 
 # change epoch
 sed -i -E "s/^n_epoch\s*=\s*[0-9]+/n_epoch = 1/" examples/sentiment/train_sentiment.py
+sed -i -E "s/^batchsize\s*=\s*[0-9]+/batchsize = 1/" examples/sentiment/train_sentiment.py
+sed -i -E "s/^epoch_per_eval\s*=\s*[0-9]+/epoch_per_eval = 1/" examples/sentiment/train_sentiment.py
 # change data size
 sed -i -E "s/^train_trees = (.*)/train_trees = \1[:10]/" examples/sentiment/train_sentiment.py
 sed -i -E "s/^test_trees = (.*)/test_trees = \1[:10]/" examples/sentiment/train_sentiment.py
