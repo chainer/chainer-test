@@ -69,6 +69,8 @@ $run examples/sentiment/train_sentiment.py --gpu=0
 # imagenet
 echo "Runnig imagenet example"
 
+sed -i -E "s/if count % 100000 == 0/if count % 1 == 0/" examples/imagenet/train_imagenet.py
+
 imagenet_data=../data/imagenet/data.txt
 $run examples/imagenet/compute_mean.py -r ../data/imagenet $imagenet_data
 $run examples/imagenet/train_imagenet.py -a nin -r ../data/imagenet -B 1 -b 1 $imagenet_data $imagenet_data
