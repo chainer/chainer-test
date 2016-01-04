@@ -81,7 +81,7 @@ RUN pip install numpy==1.9.3
 '''
 
 codes['numpy110'] = '''
-RUN pip install numpy==1.10
+RUN pip install numpy==1.10.2
 '''
 
 # cuda
