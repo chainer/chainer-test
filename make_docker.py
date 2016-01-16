@@ -188,6 +188,16 @@ ENV LIBRARY_PATH $LIBRARY_PATH:/opt/cudnn/cuda/lib64
 ENV CPATH $CPATH:/opt/cudnn/cuda/include
 '''
 
+codes['cudnn4-rc'] = '''
+WORKDIR /opt/cudnn
+ENV CUDNN cudnn-7.0-linux-x64-v4.0-rc
+COPY $CUDNN.tgz /opt/cudnn/
+RUN tar zxf $CUDNN.tgz
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/cudnn/cuda/lib64
+ENV LIBRARY_PATH $LIBRARY_PATH:/opt/cudnn/cuda/lib64
+ENV CPATH $CPATH:/opt/cudnn/cuda/include
+'''
+
 codes['none'] = ''
 
 
@@ -199,7 +209,7 @@ p = argparse.ArgumentParser()
 p.add_argument('--base', choices=['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos7_py2', 'centos7_py3'], required=True)
 p.add_argument('--numpy', choices=['numpy19', 'numpy110'], required=True)
 p.add_argument('--cuda', choices=['none', 'cuda65', 'cuda70', 'cuda75'], required=True)
-p.add_argument('--cudnn', choices=['none', 'cudnn2', 'cudnn3'], required=True)
+p.add_argument('--cudnn', choices=['none', 'cudnn2', 'cudnn3', 'cudnn4-rc'], required=True)
 p.add_argument('--requires', action='append')
 p.add_argument('--http-proxy')
 p.add_argument('--https-proxy')
