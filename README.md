@@ -17,6 +17,7 @@ Prepare these files to ```/opt/cuda```
 - ```cuda_7.5.18_linux.run```
 - ```cudnn-6.5-linux-x64-v2.tgz```
 - ```cudnn-7.0-linux-x64-v3.0-prod.tgz```
+- ```cudnn-7.0-linux-x64-v4.0-rc.tgz```
 
 ## How to use
 
