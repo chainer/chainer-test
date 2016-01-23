@@ -168,35 +168,39 @@ codes['cuda75'] = cuda75_base.format(
 
 # cudnn
 
-codes['cudnn2'] = '''
+cudnn2_base = '''
 WORKDIR /opt/cudnn
-ENV CUDNN cudnn-6.5-linux-x64-v2
-COPY $CUDNN.tgz /opt/cudnn/
-RUN tar zxf $CUDNN.tgz
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/cudnn/$CUDNN
-ENV LIBRARY_PATH $LIBRARY_PATH:/opt/cudnn/$CUDNN
-ENV CPATH $CPATH:/opt/cudnn/$CUDNN
+RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz
+RUN tar -xzf {cudnn}.tgz
+RUN rm {cudnn}.tgz
+RUN cp {cudnn}/cudnn.h /usr/local/cuda/include/.
+RUN mv {cudnn}/libcudnn.so /usr/local/cuda/lib64/.
+RUN mv {cudnn}/libcudnn.so.6.5 /usr/local/cuda/lib64/.
+RUN mv {cudnn}/libcudnn.so.6.5.48 /usr/local/cuda/lib64/.
+RUN mv {cudnn}/libcudnn_static.a /usr/local/cuda/lib64/.
 '''
 
-codes['cudnn3'] = '''
+codes['cudnn2'] = cudnn2_base.format(
+    cudnn='cudnn-6.5-linux-x64-v2',
+    cudnn_ver='v2',
+)
+
+cudnn_base = '''
 WORKDIR /opt/cudnn
-ENV CUDNN cudnn-7.0-linux-x64-v3.0-prod
-COPY $CUDNN.tgz /opt/cudnn/
-RUN tar zxf $CUDNN.tgz
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/cudnn/cuda/lib64
-ENV LIBRARY_PATH $LIBRARY_PATH:/opt/cudnn/cuda/lib64
-ENV CPATH $CPATH:/opt/cudnn/cuda/include
+RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz
+RUN tar -xzf {cudnn}.tgz -C /usr/local
+RUN rm {cudnn}.tgz
 '''
 
-codes['cudnn4-rc'] = '''
-WORKDIR /opt/cudnn
-ENV CUDNN cudnn-7.0-linux-x64-v4.0-rc
-COPY $CUDNN.tgz /opt/cudnn/
-RUN tar zxf $CUDNN.tgz
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/cudnn/cuda/lib64
-ENV LIBRARY_PATH $LIBRARY_PATH:/opt/cudnn/cuda/lib64
-ENV CPATH $CPATH:/opt/cudnn/cuda/include
-'''
+codes['cudnn3'] = cudnn_base.format(
+    cudnn='cudnn-7.0-linux-x64-v3.0-prod',
+    cudnn_ver='v3',
+)
+
+codes['cudnn4-rc'] = cudnn_base.format(
+    cudnn='cudnn-7.0-linux-x64-v4.0-rc',
+    cudnn_ver='v4',
+)
 
 codes['none'] = ''
 
