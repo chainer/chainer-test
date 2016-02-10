@@ -7,7 +7,7 @@ python setup.py -q develop install
 
 pip install -q nose mock coverage coveralls
 
-if [ $CUDNN == none ]; then
+if [ $CUDNN==none ]; then
   nosetests --processes=4 --process-timeout=10000 --with-coverage --cover-branches --cover-package=chainer,cupy -a '!cudnn'
 else
   nosetests --processes=4 --process-timeout=10000 --with-coverage --cover-branches --cover-package=chainer,cupy
