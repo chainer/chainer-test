@@ -102,24 +102,36 @@ RUN ./installers/{installer} -noprompt && \\
     cd / && \\
     rm -rf /opt/nvidia
 
+RUN echo "/usr/local/cuda/lib" >> /etc/ld.so.conf.d/cuda.conf && \
+    echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/cuda.conf && \
+    ldconfig
+
 ENV CUDA_ROOT /usr/local/cuda
 ENV PATH $PATH:$CUDA_ROOT/bin
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib:/usr/local/nvidia/lib64:/usr/local/nvidia/lib
+ENV LIBRARY_PATH /usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64/stubs$LIBRARY_PATH
+
+ENV CUDA_VERSION {cuda_ver}
+LABEL com.nvidia.volumes.needed="nvidia_driver"
+LABEL com.nvidia.cuda.version="{cuda_ver}"
 '''
 
 codes['cuda65'] = cuda_base.format(
+    cuda_ver='6.5',
     cuda_run=cuda65_run,
     cuda_url=cuda65_url,
     installer=cuda65_installer,
 )
 
 codes['cuda70'] = cuda_base.format(
+    cuda_ver='7.0',
     cuda_run=cuda70_run,
     cuda_url=cuda70_url,
     installer=cuda70_installer,
 )
 
 codes['cuda75'] = cuda_base.format(
+    cuda_ver='7.5',
     cuda_run=cuda75_run,
     cuda_url=cuda75_url,
     installer=cuda75_installer,
@@ -167,8 +179,10 @@ codes['none'] = ''
 def set_env(env, value):
     return 'ENV {}={}\n'.format(env, value)
 
+
 def run_pip(requires):
     return 'RUN pip install "%s"\n' % requires
+
 
 def make_dockerfile(conf):
     dockerfile = ''
@@ -217,7 +231,7 @@ def run_with(conf, script, no_cache=False):
     work_dir = '/work'
     cmd = ['nvidia-docker', 'run',
            '-v', '%s:%s' % (host_cwd, work_dir),
-           '-w', work_dir, 
+           '-w', work_dir,
            name, script]
 
     res = subprocess.call(cmd)
