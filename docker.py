@@ -199,8 +199,9 @@ def make_dockerfile(conf):
     dockerfile += codes[conf['cuda']]
     dockerfile += codes[conf['cudnn']]
 
-    for req in conf['requires']:
-        dockerfile += run_pip(req)
+    if 'requires' in conf:
+        for req in conf['requires']:
+            dockerfile += run_pip(req)
 
     return dockerfile
 
