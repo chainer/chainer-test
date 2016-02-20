@@ -8,9 +8,9 @@ import docker
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for installation')
-    parser.add_argument('--base', choices=['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos7_py2', 'centos7_py3'], required=True)
-    parser.add_argument('--cuda', choices=['none', 'cuda65', 'cuda70', 'cuda75'], required=True)
-    parser.add_argument('--cudnn', choices=['none', 'cudnn2', 'cudnn3', 'cudnn4-rc'], required=True)
+    parser.add_argument('--base', choices=docker.base_choices, required=True)
+    parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
+    parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
     parser.add_argument('--numpy')
     parser.add_argument('--setuptools')
     parser.add_argument('--pip')

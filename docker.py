@@ -3,6 +3,11 @@ import os
 import subprocess
 
 
+base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos7_py2', 'centos7_py3']
+cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75']
+cudnn_choices = ['none', 'cudnn2', 'cudnn3', 'cudnn4-rc']
+
+
 codes = {}
 
 # base
