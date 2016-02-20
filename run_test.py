@@ -66,7 +66,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda70',
             'cudnn': 'cudnn3',
-            'requires': ['cython', 'numpy<1.11']
+            'requires': ['cython', 'numpy<1.11', 'sphinx']
         }
         script = './test_doc.sh'
 
