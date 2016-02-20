@@ -73,6 +73,8 @@ if __name__ == '__main__':
     else:
         raise
 
+    conf['requires'] += ['nose', 'mock', 'coverage']
+
     if args.http_proxy:
         conf['http_proxy'] = args.http_proxy
     if args.https_proxy:

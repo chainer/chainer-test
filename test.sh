@@ -1,7 +1,5 @@
 #!/bin/sh -ex
 
-pip install -U pip
-
 cd chainer
 python setup.py -q develop install
 

@@ -24,6 +24,8 @@ if __name__ == '__main__':
         'requires': [
             'cython',
             'nose',
+            'mock',
+            'coverage',
         ]
     }
     if args.numpy == 'numpy19':
