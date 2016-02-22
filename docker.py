@@ -186,7 +186,7 @@ def set_env(env, value):
 
 
 def run_pip(requires):
-    return 'RUN pip install "%s"\n' % requires
+    return 'RUN pip install -U "%s"\n' % requires
 
 
 def make_dockerfile(conf):
