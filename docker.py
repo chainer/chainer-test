@@ -225,7 +225,7 @@ def build_image(name, no_cache=False):
         exit(res)
 
 
-def run_with(conf, script, no_cache=False):
+def run_with(conf, script, no_cache=False, volume=None, env=None):
     write_dockerfile(conf)
     name = 'test'
 
@@ -239,6 +239,13 @@ def run_with(conf, script, no_cache=False):
            '-v', '%s:%s' % (host_cwd, work_dir),
            '-w', work_dir,
            name, script]
+
+    if volume:
+        for v in volume:
+            cmd += ['-v', '%s:%s' % (v, v)]
+    if env:
+        for var, val in env.items():
+            cmd.append('%s=%s' % (var, val))
 
     res = subprocess.call(cmd)
     if res != 0:
@@ -264,7 +271,7 @@ def run_with(conf, script, no_cache=False):
         exit(1)
 
 
-def run_interactive(conf, no_cache=False):
+def run_interactive(conf, no_cache=False, volume=None, env=None):
     name = 'test'
 
     write_dockerfile(conf)
@@ -277,5 +284,11 @@ def run_interactive(conf, no_cache=False):
            '-v', '%s:%s' % (host_cwd, work_dir),
            '-w', work_dir,
            '-i', '-t', name, '/bin/bash']
+    if volume:
+        for v in volume:
+            cmd += ['-v', '%s:%s' % (v, v)]
+    if env:
+        for var, val in env.items():
+            cmd.append('%s=%s' % (var, val))
 
     res = subprocess.call(cmd)
