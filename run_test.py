@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import os
 
 import docker
 
@@ -11,8 +12,10 @@ if __name__ == '__main__':
     parser.add_argument('--test', choices=[
         'py2', 'py3', 'py35', 'example', 'prev_example', 'doc'
     ], required=True)
+    parser.add_argument('--cupy-cache')
     parser.add_argument('--http-proxy')
     parser.add_argument('--https-proxy')
+    parser.add_argument('--coveralls')
     parser.add_argument('-i', '--interactive', action='store_true')
     args = parser.parse_args()
 
@@ -73,7 +76,17 @@ if __name__ == '__main__':
     else:
         raise
 
+    volume = []
+    env = {'CUDNN': conf['cudnn']}
+
     conf['requires'] += ['nose', 'mock', 'coverage']
+
+    if args.cupy_cache:
+        volume.append(args.cupy_cache)
+        env['CUPY_CACHE_DIR'] = args.cupy_cache
+
+    if args.coveralls and args.test == 'py2':
+        env['COVERALLS_REPO_TOKEN'] = args.coveralls
 
     if args.http_proxy:
         conf['http_proxy'] = args.http_proxy
@@ -81,6 +94,14 @@ if __name__ == '__main__':
         conf['https_proxy'] = args.https_proxy
 
     if args.interactive:
-        docker.run_interactive(conf)
+        docker.run_interactive(conf, volume=volume, env=env)
     else:
-        docker.run_with(conf, script)
+        docker.run_with(conf, script, volume=volume, env=env)
+
+        # convert coverage.xml
+        if os.path.exists('chainer/coverage.xml'):
+            with open('coverage.xml', 'w') as outputs:
+                with open('chainer/coverage.xml') as inputs:
+                    for line in inputs:
+                        outputs.write(
+                            line.replace('filename="', 'filename="chainer/'))
