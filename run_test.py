@@ -24,7 +24,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda65',
             'cudnn': 'cudnn2',
-            'requires': ['cython', 'numpy<1.11'],
+            'requires': ['pip', 'cython', 'numpy<1.11'],
         }
         script = './test.sh'
 
@@ -33,7 +33,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py3',
             'cuda': 'cuda70',
             'cudnn': 'cudnn3',
-            'requires': ['cython', 'numpy<1.10'],
+            'requires': ['pip', 'cython', 'numpy<1.10'],
         }
         script = './test.sh'
 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py35',
             'cuda': 'cuda75',
             'cudnn': 'cudnn3',
-            'requires': ['cython', 'numpy<1.10'],
+            'requires': ['pip', 'cython', 'numpy<1.10'],
         }
         script = './test.sh'
 
@@ -51,7 +51,7 @@ if __name__ == '__main__':
             'base': 'centos7_py2',
             'cuda': 'cuda75',
             'cudnn': 'cudnn3',
-            'requires': ['cython', 'numpy<1.11'],
+            'requires': ['pip', 'cython', 'numpy<1.11'],
         }
         script = './test_example.sh'
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda65',
             'cudnn': 'cudnn2',
-            'requires': ['cython', 'numpy<1.10'],
+            'requires': ['pip', 'cython', 'numpy<1.10'],
         }
         script = './test_prev_example.sh'
 
@@ -69,7 +69,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda70',
             'cudnn': 'cudnn3',
-            'requires': ['cython', 'numpy<1.11', 'sphinx']
+            'requires': ['pip', 'cython', 'numpy<1.11', 'sphinx']
         }
         script = './test_doc.sh'
 
