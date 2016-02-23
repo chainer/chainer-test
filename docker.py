@@ -1,5 +1,7 @@
 import logging
 import os
+import random
+import string
 import subprocess
 
 
@@ -225,9 +227,14 @@ def build_image(name, no_cache=False):
         exit(res)
 
 
+def make_random_name():
+    return ''.join(random.choice(string.ascii_lowercase + string.digits)
+                   for i in range(10))
+
+
 def run_with(conf, script, no_cache=False, volume=None, env=None):
     write_dockerfile(conf)
-    name = 'test'
+    name = make_random_name()
 
     build_image(name, no_cache)
 
@@ -273,7 +280,7 @@ def run_with(conf, script, no_cache=False, volume=None, env=None):
 
 
 def run_interactive(conf, no_cache=False, volume=None, env=None):
-    name = 'test'
+    name = make_random_name()
 
     write_dockerfile(conf)
     build_image(name, no_cache)
