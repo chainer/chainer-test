@@ -24,12 +24,7 @@ if __name__ == '__main__':
         'base': args.base,
         'cuda': args.cuda,
         'cudnn': args.cudnn,
-        'requires': [
-            'cython',
-            'nose',
-            'mock',
-            'coverage',
-        ]
+        'requires': ['setuptools', 'cython'],
     }
     volume = []
     env = {}
@@ -41,6 +36,12 @@ if __name__ == '__main__':
 
     if args.h5py == '2.5':
         conf['requires'].append('h5py<2.6')
+
+    conf['requires'] += [
+        'nose',
+        'mock',
+        'coverage',
+    ]
 
     if args.cupy_cache:
         volume.append(args.cupy_cache)
