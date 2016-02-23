@@ -87,6 +87,7 @@ if __name__ == '__main__':
 
     if args.coveralls and args.test == 'py2':
         env['COVERALLS_REPO_TOKEN'] = args.coveralls
+        conf['requires'].append('coveralls')
 
     if args.http_proxy:
         conf['http_proxy'] = args.http_proxy
