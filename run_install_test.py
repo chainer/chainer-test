@@ -5,6 +5,11 @@ import argparse
 import docker
 
 
+def append_requires(requires, name, ver):
+    if ver and ver != 'none':
+        requires.append('%s==%s' % (name, ver))
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for installation')
@@ -36,14 +41,10 @@ if __name__ == '__main__':
         'requires': [],
     }
 
-    if args.numpy:
-        conf['requires'].append('numpy=={0}'.format(args.numpy))
-    if args.setuptools:
-        conf['requires'].append('setuptools=={0}'.format(args.numpy))
-    if args.pip:
-        conf['requires'].append('pip=={0}'.format(args.numpy))
-    if args.cython:
-        conf['requires'].append('cython=={0}'.format(args.numpy))
+    append_requires(conf['requires'], 'numpy', args.numpy)
+    append_requires(conf['requires'], 'setuptools', args.setuptools)
+    append_requires(conf['requires'], 'pip', args.pip)
+    append_requires(conf['requires'], 'cython', args.cython)
 
     if args.http_proxy:
         conf['http_proxy'] = args.http_proxy
