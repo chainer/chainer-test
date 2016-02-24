@@ -12,7 +12,7 @@ if __name__ == '__main__':
     parser.add_argument('--test', choices=[
         'py2', 'py3', 'py35', 'example', 'prev_example', 'doc'
     ], required=True)
-    parser.add_argument('--cupy-cache')
+    parser.add_argument('--cache')
     parser.add_argument('--http-proxy')
     parser.add_argument('--https-proxy')
     parser.add_argument('--coveralls')
@@ -81,9 +81,10 @@ if __name__ == '__main__':
 
     conf['requires'] += ['nose', 'mock', 'coverage']
 
-    if args.cupy_cache:
-        volume.append(args.cupy_cache)
-        env['CUPY_CACHE_DIR'] = args.cupy_cache
+    if args.cache:
+        volume.append(args.cache)
+        env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
+        env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
 
     if args.coveralls and args.test == 'py2':
         env['COVERALLS_REPO_TOKEN'] = args.coveralls

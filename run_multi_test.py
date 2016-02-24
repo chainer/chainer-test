@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import os
 
 import docker
 
@@ -14,7 +15,7 @@ if __name__ == '__main__':
     parser.add_argument('--numpy', choices=['1.9', '1.10'], required=True)
     parser.add_argument('--h5py', choices=['none', '2.5'])
     parser.add_argument('--type', choices=['cpu', 'gpu'], required=True)
-    parser.add_argument('--cupy-cache')
+    parser.add_argument('--cache')
     parser.add_argument('--http-proxy')
     parser.add_argument('--https-proxy')
     parser.add_argument('--interactive', action='store_true')
@@ -43,9 +44,10 @@ if __name__ == '__main__':
         'coverage',
     ]
 
-    if args.cupy_cache:
-        volume.append(args.cupy_cache)
-        env['CUPY_CACHE_DIR'] = args.cupy_cache
+    if args.cache:
+        volume.append(args.cache)
+        env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
+        env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
 
     if args.type == 'cpu':
         script = './test_cpu.sh'

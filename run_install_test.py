@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import os
 
 import docker
 
@@ -21,6 +22,7 @@ if __name__ == '__main__':
     parser.add_argument('--pip')
     parser.add_argument('--cython')
 
+    parser.add_argument('--cache')
     parser.add_argument('--http-proxy')
     parser.add_argument('--https-proxy')
     args = parser.parse_args()
@@ -32,7 +34,15 @@ if __name__ == '__main__':
         'cudnn': 'none',
         'requires': ['cython'],
     }
-    docker.run_with(build_conf, './build_sdist.sh')
+    volume = []
+    env = {}
+
+    if args.cache:
+        volume.append(args.cache)
+        env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
+        env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
+
+    docker.run_with(build_conf, './build_sdist.sh', volume=volume, env=env)
 
     conf = {
         'base': args.base,
@@ -51,4 +61,4 @@ if __name__ == '__main__':
     if args.https_proxy:
         conf['https_proxy'] = args.https_proxy
 
-    docker.run_with(conf, './test_install.sh')
+    docker.run_with(conf, './test_install.sh', volume=volume, env=env)
