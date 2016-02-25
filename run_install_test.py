@@ -31,7 +31,7 @@ if __name__ == '__main__':
     build_conf = {
         'base': 'ubuntu14_py2',
         'cuda': 'cuda65',
-        'cudnn': 'none',
+        'cudnn': 'cudnn2',
         'requires': ['cython', 'numpy==1.9.3'],
     }
     volume = []
