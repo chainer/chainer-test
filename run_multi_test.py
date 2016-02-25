@@ -28,7 +28,7 @@ if __name__ == '__main__':
         'requires': ['setuptools', 'cython'],
     }
     volume = []
-    env = {}
+    env = {'CUDNN': conf['cudnn']}
 
     if args.numpy == '1.9':
         conf['requires'].append('numpy<1.10')
