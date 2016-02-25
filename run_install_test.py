@@ -28,6 +28,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # make sdist
+    # cuda, cudnn and numpy is required to make a sdist file.
     build_conf = {
         'base': 'ubuntu14_py2',
         'cuda': 'cuda65',
