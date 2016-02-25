@@ -32,7 +32,7 @@ if __name__ == '__main__':
         'base': 'ubuntu14_py2',
         'cuda': 'cuda65',
         'cudnn': 'none',
-        'requires': ['cython'],
+        'requires': ['cython', 'numpy==1.9.3'],
     }
     volume = []
     env = {}
