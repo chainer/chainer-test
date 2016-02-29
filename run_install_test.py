@@ -25,6 +25,7 @@ if __name__ == '__main__':
     parser.add_argument('--cache')
     parser.add_argument('--http-proxy')
     parser.add_argument('--https-proxy')
+    parser.add_argument('--no-cache', action='store_true')
     args = parser.parse_args()
 
     # make sdist
@@ -62,4 +63,5 @@ if __name__ == '__main__':
     if args.https_proxy:
         conf['https_proxy'] = args.https_proxy
 
-    docker.run_with(conf, './test_install.sh', volume=volume, env=env)
+    docker.run_with(conf, './test_install.sh', no_cache=args.no_cache,
+                    volume=volume, env=env)
