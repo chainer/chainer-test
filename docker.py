@@ -276,7 +276,7 @@ def run_with(conf, script, no_cache=False, volume=None, env=None):
     work_dir = '/work'
     cmd = ['nvidia-docker', 'run',
            '--volume', '%s:%s' % (host_cwd, work_dir),
-           '--workdir', work_dir]
+           '--workdir=%s' % work_dir]
 
     if volume:
         for v in volume:
