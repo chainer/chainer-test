@@ -1,6 +1,14 @@
-#!/usr/bin/env python
+import logging
+import os
+import random
+import string
+import subprocess
 
-import argparse
+
+base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos7_py2', 'centos7_py3']
+cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75']
+cudnn_choices = ['none', 'cudnn2', 'cudnn3', 'cudnn4-rc']
+
 
 codes = {}
 
@@ -74,16 +82,6 @@ RUN pyenv global 3.5.0
 RUN pyenv rehash
 '''
 
-# numpy
-
-codes['numpy19'] = '''
-RUN pip install numpy==1.9.3
-'''
-
-codes['numpy110'] = '''
-RUN pip install numpy==1.10.2
-'''
-
 # cuda
 
 cuda65_run = 'cuda_6.5.19_linux_64.run'
@@ -104,65 +102,45 @@ WORKDIR /opt/nvidia
 RUN mkdir installers
 
 RUN curl -s -o {cuda_run} {cuda_url}/{cuda_run}
-RUN curl -s -o {cuda75_run} {cuda75_url}/{cuda75_run}
-
-RUN chmod +x {cuda75_run} && sync && \\
-    ./{cuda75_run} -extract=`pwd`/installers
-RUN ./installers/{driver} -s -N --no-kernel-module
 
 RUN chmod +x {cuda_run} && sync && \\
     ./{cuda_run} -extract=`pwd`/installers
-RUN ./installers/{installer} -noprompt
-
-RUN cd / && \\
-    rm -rf /opt/nvidia
-
-ENV CUDA_ROOT /usr/local/cuda
-ENV PATH $PATH:$CUDA_ROOT/bin
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64
-'''
-
-cuda75_base = '''
-WORKDIR /opt/nvidia
-RUN mkdir installers
-
-RUN curl -s -o {cuda_run} {cuda_url}/{cuda_run}
-
-RUN chmod +x {cuda_run} && sync && \\
-    ./{cuda_run} -extract=`pwd`/installers
-
-RUN ./installers/{driver} -s -N --no-kernel-module && \\
-    ./installers/{installer} -noprompt && \\
+RUN ./installers/{installer} -noprompt && \\
     cd / && \\
     rm -rf /opt/nvidia
 
+RUN echo "/usr/local/cuda/lib" >> /etc/ld.so.conf.d/cuda.conf && \
+    echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/cuda.conf && \
+    ldconfig
+
 ENV CUDA_ROOT /usr/local/cuda
 ENV PATH $PATH:$CUDA_ROOT/bin
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib:/usr/local/nvidia/lib64:/usr/local/nvidia/lib
+ENV LIBRARY_PATH /usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64/stubs$LIBRARY_PATH
+
+ENV CUDA_VERSION {cuda_ver}
+LABEL com.nvidia.volumes.needed="nvidia_driver"
+LABEL com.nvidia.cuda.version="{cuda_ver}"
 '''
 
 codes['cuda65'] = cuda_base.format(
+    cuda_ver='6.5',
     cuda_run=cuda65_run,
     cuda_url=cuda65_url,
-    cuda75_run=cuda75_run,
-    cuda75_url=cuda75_url,
-    driver=cuda75_driver,
     installer=cuda65_installer,
 )
 
 codes['cuda70'] = cuda_base.format(
+    cuda_ver='7.0',
     cuda_run=cuda70_run,
     cuda_url=cuda70_url,
-    cuda75_run=cuda75_run,
-    cuda75_url=cuda75_url,
-    driver=cuda75_driver,
     installer=cuda70_installer,
 )
 
-codes['cuda75'] = cuda75_base.format(
+codes['cuda75'] = cuda_base.format(
+    cuda_ver='7.5',
     cuda_run=cuda75_run,
     cuda_url=cuda75_url,
-    driver=cuda75_driver,
     installer=cuda75_installer,
 )
 
@@ -209,28 +187,120 @@ def set_env(env, value):
     return 'ENV {}={}\n'.format(env, value)
 
 
-p = argparse.ArgumentParser()
-p.add_argument('--base', choices=['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos7_py2', 'centos7_py3'], required=True)
-p.add_argument('--numpy', choices=['numpy19', 'numpy110'], required=True)
-p.add_argument('--cuda', choices=['none', 'cuda65', 'cuda70', 'cuda75'], required=True)
-p.add_argument('--cudnn', choices=['none', 'cudnn2', 'cudnn3', 'cudnn4-rc'], required=True)
-p.add_argument('--requires', action='append')
-p.add_argument('--http-proxy')
-p.add_argument('--https-proxy')
-p.add_argument('-f', '--dockerfile', default='Dockerfile')
-args = p.parse_args()
+def run_pip(requires):
+    return 'RUN pip install -U "%s"\n' % requires
 
-with open(args.dockerfile, 'w') as f:
-    f.write(codes[args.base])
-    if args.http_proxy:
-        f.write(set_env('http_proxy', args.http_proxy))
-    if args.https_proxy:
-        f.write(set_env('https_proxy', args.https_proxy))
-    f.write(codes[args.numpy])
-    f.write(codes[args.cuda])
-    f.write(codes[args.cudnn])
 
-    if args.requires:
-        f.write('\n')
-        for r in args.requires:
-            f.write('RUN pip install %s\n' % r)
+def make_dockerfile(conf):
+    dockerfile = ''
+    dockerfile += codes[conf['base']]
+    if 'http_proxy' in conf:
+        dockerfile += set_env('http_proxy', conf['http_proxy'])
+    if 'https_proxy' in conf:
+        dockerfile += set_env('https_proxy', conf['https_proxy'])
+    dockerfile += codes[conf['cuda']]
+    dockerfile += codes[conf['cudnn']]
+
+    if 'requires' in conf:
+        for req in conf['requires']:
+            dockerfile += run_pip(req)
+
+    return dockerfile
+
+
+def write_dockerfile(conf):
+    dockerfile = make_dockerfile(conf)
+    with open('Dockerfile', 'w') as f:
+        f.write(dockerfile)
+
+
+def build_image(name, no_cache=False):
+    cmd = ['docker', 'build', '-t', name]
+    if no_cache:
+        cmd.append('--no-cache')
+    cmd.append('.')
+
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    subprocess.call(['grep', '-v', 'Sending build context'], stdin=p.stdout)
+    res = p.wait()
+    if res != 0:
+        logging.error('Failed to create an image')
+        logging.error('Exit code: %d' % res)
+        exit(res)
+
+
+def make_random_name():
+    return ''.join(random.choice(string.ascii_lowercase + string.digits)
+                   for i in range(10))
+
+
+def run_with(conf, script, no_cache=False, volume=None, env=None):
+    write_dockerfile(conf)
+    name = make_random_name()
+
+    build_image(name, no_cache)
+
+    # run
+    failed = False
+    host_cwd = os.getcwd()
+    work_dir = '/work'
+    cmd = ['nvidia-docker', 'run',
+           '--volume', '%s:%s' % (host_cwd, work_dir),
+           '--workdir', work_dir]
+
+    if volume:
+        for v in volume:
+            cmd += ['--volume', '%s:%s' % (v, v)]
+    if env:
+        for var, val in env.items():
+            cmd += ['-e', '%s=%s' % (var, val)]
+
+    cmd += [name, script]
+
+    res = subprocess.call(cmd)
+    if res != 0:
+        logging.error('Failed to run test')
+        logging.error('Exit code: %d' % res)
+        failed = True
+
+    # chown for clean up
+    res = subprocess.call([
+        'docker', 'run',
+        '--rm',
+        '--volume', '%s:%s' % (host_cwd, work_dir),
+        '--workdir', work_dir,
+        name,
+        '/bin/bash', '-c',
+        'chown `stat -c %u .`:`stat -c %g .` -R .'])
+    if res != 0:
+        logging.error('Failed to chown')
+        logging.error('Exit code: %d' % res)
+        failed = True
+
+    if failed:
+        exit(1)
+
+
+def run_interactive(conf, no_cache=False, volume=None, env=None):
+    name = make_random_name()
+
+    write_dockerfile(conf)
+    build_image(name, no_cache)
+
+    host_cwd = os.getcwd()
+    work_dir = '/work'
+    cmd = ['nvidia-docker', 'run',
+           '-rm',
+           '--volume', '%s:%s' % (host_cwd, work_dir),
+           '--workdir', work_dir,
+           '-i', '-t']
+    if volume:
+        for v in volume:
+            cmd += ['--volume', '%s:%s' % (v, v)]
+    if env:
+        for var, val in env.items():
+            cmd += ['-e', '%s=%s' % (var, val)]
+
+    cmd += [name, '/bin/bash']
+
+    res = subprocess.call(cmd)
