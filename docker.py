@@ -245,12 +245,12 @@ def run_with(conf, script, no_cache=False, volume=None, env=None):
     host_cwd = os.getcwd()
     work_dir = '/work'
     cmd = ['nvidia-docker', 'run',
-           '-v', '%s:%s' % (host_cwd, work_dir),
-           '-w', work_dir]
+           '--volume', '%s:%s' % (host_cwd, work_dir),
+           '--workdir', work_dir]
 
     if volume:
         for v in volume:
-            cmd += ['-v', '%s:%s' % (v, v)]
+            cmd += ['--volume', '%s:%s' % (v, v)]
     if env:
         for var, val in env.items():
             cmd += ['-e', '%s=%s' % (var, val)]
@@ -267,8 +267,8 @@ def run_with(conf, script, no_cache=False, volume=None, env=None):
     res = subprocess.call([
         'docker', 'run',
         '--rm',
-        '-v', '%s:%s' % (host_cwd, work_dir),
-        '-w', work_dir,
+        '--volume', '%s:%s' % (host_cwd, work_dir),
+        '--workdir', work_dir,
         name,
         '/bin/bash', '-c',
         'chown `stat -c %u .`:`stat -c %g .` -R .'])
@@ -291,12 +291,12 @@ def run_interactive(conf, no_cache=False, volume=None, env=None):
     work_dir = '/work'
     cmd = ['nvidia-docker', 'run',
            '-rm',
-           '-v', '%s:%s' % (host_cwd, work_dir),
-           '-w', work_dir,
+           '--volume', '%s:%s' % (host_cwd, work_dir),
+           '--workdir', work_dir,
            '-i', '-t']
     if volume:
         for v in volume:
-            cmd += ['-v', '%s:%s' % (v, v)]
+            cmd += ['--volume', '%s:%s' % (v, v)]
     if env:
         for var, val in env.items():
             cmd += ['-e', '%s=%s' % (var, val)]
