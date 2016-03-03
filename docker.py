@@ -78,8 +78,8 @@ RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN pyenv install 3.5.0
-RUN pyenv global 3.5.0
+RUN pyenv install 3.5.1
+RUN pyenv global 3.5.1
 RUN pyenv rehash
 '''
 
