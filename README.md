@@ -14,7 +14,7 @@ It is test scripts of chainer and dockerfiles for its test environment.
 Run test scripts with options that specify the environment to test.
 
 ```
-$ ./run_install_test.py --base=ubuntu14_py2 --numpy=numpy19 --cuda=cuda70 --cudnn=cudnn2
+$ ./run_multi_test.py --base=ubuntu14_py2 --numpy=numpy19 --cuda=cuda70 --cudnn=cudnn2
 ```
 
 These test scripts create `Dockerfile`, make containers, and run appropriate test scripts.
@@ -23,8 +23,8 @@ These test scripts create `Dockerfile`, make containers, and run appropriate tes
 ## Scripts to run
 
 - `run_install_test.py`: Installation test.
-- `run_test.py`: Build and run test scripts.
-- `run_multi_test.py`: Build and run test scripts with .
+- `run_test.py`: Build and run test scripts. It includes unit tests with commonly-used environment settings, tests for examples and ones for documents
+- `run_multi_test.py`: Build and run test scripts. It can test all combinations of environment setting.
 
 
 ## In Jenkins
