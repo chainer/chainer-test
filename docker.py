@@ -176,40 +176,12 @@ codes['cudnn3'] = cudnn_base.format(
     cudnn_ver='v3',
 )
 
-cudnn_local_base = '''
-WORKDIR /opt/cudnn
-COPY {cudnn}.tgz /opt/cudnn/
-RUN tar -xzf {cudnn}.tgz -C /usr/local
-RUN rm {cudnn}.tgz
-'''
-
-codes['cudnn4'] = cudnn_local_base.format(
+codes['cudnn4'] = cudnn_base.format(
     cudnn='cudnn-7.0-linux-x64-v4.0-prod',
+    cudnn_ver='v4',
 )
 
 codes['none'] = ''
-
-
-def prepare_cudnn(cudnn, archive_dir='/opt/nvidia'):
-    if cudnn == 'cudnn4':
-        archive = 'cudnn-7.0-linux-x64-v4.0-prod.tgz'
-    else:
-        return
-
-    cwd = os.getcwd()
-    source = os.path.join(archive_dir, archive)
-    target = os.path.join(cwd, archive)
-    if os.path.exists(target):
-        return
-
-    try:
-        # Trye to make a hard link
-        os.link(source, target)
-        return
-    except OSError:
-        pass
-
-    shutil.copyfile(source, target)
 
 
 def set_env(env, value):
@@ -265,7 +237,6 @@ def make_random_name():
 
 def run_with(conf, script, no_cache=False, volume=None, env=None):
     write_dockerfile(conf)
-    prepare_cudnn(conf['cudnn'])
     name = make_random_name()
 
     build_image(name, no_cache)
@@ -315,7 +286,6 @@ def run_interactive(conf, no_cache=False, volume=None, env=None):
     name = make_random_name()
 
     write_dockerfile(conf)
-    prepare_cudnn(conf['cudnn'])
     build_image(name, no_cache)
 
     host_cwd = os.getcwd()
