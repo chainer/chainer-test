@@ -25,7 +25,7 @@ $ docker run --env COVERALLS_REPO_TOKEN=XXX..X -v ${pwd}:/work -w /work \
 
 - `test.sh`: build and run all tests.
 - `test_cpu.sh`: build and run only tests for CPUs.
-- `test_example.sh`: build and run all examples.
+- `test_prev_example.sh`: build and run all examples.
 - `test_example.sh`: build and run all examples of previous version.
 - `test_doc.sh`: build the document and run document test.
 - `test_install.sh`: make source distribution package and install it with given environment.
