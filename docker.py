@@ -237,7 +237,8 @@ def make_random_name():
                    for i in range(10))
 
 
-def run_with(conf, script, no_cache=False, volume=None, env=None):
+def run_with(conf, script, no_cache=False, volume=None, env=None,
+             timeout=None):
     write_dockerfile(conf)
     name = make_random_name()
 
@@ -262,7 +263,10 @@ def run_with(conf, script, no_cache=False, volume=None, env=None):
         for var, val in env.items():
             cmd += ['-e', '%s=%s' % (var, val)]
 
-    cmd += [name, script]
+    cmd.append(name)
+    if timeout:
+        cmd += ['timeout', str(timeout)]
+    cmd.append(script)
 
     res = subprocess.call(cmd)
     if res != 0:
