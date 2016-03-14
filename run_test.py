@@ -16,6 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('--http-proxy')
     parser.add_argument('--https-proxy')
     parser.add_argument('--no-cache', action='store_true')
+    parser.add_argument('--timeout', default='1h')
     parser.add_argument('--coveralls')
     parser.add_argument('-i', '--interactive', action='store_true')
     args = parser.parse_args()
@@ -101,7 +102,8 @@ if __name__ == '__main__':
             conf, no_cache=args.no_cache, volume=volume, env=env)
     else:
         docker.run_with(
-            conf, script, no_cache=args.no_cache, volume=volume, env=env)
+            conf, script, no_cache=args.no_cache, volume=volume, env=env,
+            timeout=args.timeout)
 
         # convert coverage.xml
         if os.path.exists('chainer/coverage.xml'):
