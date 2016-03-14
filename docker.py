@@ -2,8 +2,10 @@ import logging
 import os
 import random
 import shutil
+import signal
 import string
 import subprocess
+import sys
 
 
 base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos7_py2', 'centos7_py3']
@@ -245,7 +247,11 @@ def run_with(conf, script, no_cache=False, volume=None, env=None):
     failed = False
     host_cwd = os.getcwd()
     work_dir = '/work'
+    run_name = make_random_name()
+    signal.signal(signal.SIGTERM, make_handler(run_name))
+    signal.signal(signal.SIGINT, make_handler(run_name))
     cmd = ['nvidia-docker', 'run',
+           '--name=%s' % run_name,
            '--volume', '%s:%s' % (host_cwd, work_dir),
            '--workdir=%s' % work_dir]
 
@@ -305,3 +311,17 @@ def run_interactive(conf, no_cache=False, volume=None, env=None):
     cmd += [name, '/bin/bash']
 
     res = subprocess.call(cmd)
+
+
+def make_handler(name):
+    def kill(signum, frame):
+        print('Stopping docker...')
+        cmd = ['docker', 'kill', name]
+        try:
+            subprocess.check_call(cmd)
+        except Exception as e:
+            logging.error('Failed to kill docker process')
+            logging.error(str(e))
+            sys.exit(-1)
+
+    return kill
