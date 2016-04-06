@@ -12,7 +12,8 @@ if __name__ == '__main__':
     parser.add_argument('--base', choices=docker.base_choices, required=True)
     parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
     parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
-    parser.add_argument('--numpy', choices=['1.9', '1.10'], required=True)
+    parser.add_argument('--numpy', choices=['1.9', '1.10', '1.11'],
+                        required=True)
     parser.add_argument('--h5py', choices=['none', '2.5'])
     parser.add_argument('--type', choices=['cpu', 'gpu'], required=True)
     parser.add_argument('--cache')
@@ -36,6 +37,8 @@ if __name__ == '__main__':
         conf['requires'].append('numpy<1.10')
     elif args.numpy == '1.10':
         conf['requires'].append('numpy<1.11')
+    elif args.numpy == '1.11':
+        conf['requires'].append('numpy<1.12')
 
     if args.h5py == '2.5':
         conf['requires'].append('h5py<2.6')
