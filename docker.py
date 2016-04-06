@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 
-base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos7_py2', 'centos7_py3']
+base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos6_py2', 'centos7_py2', 'centos7_py3']
 cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75']
 cudnn_choices = ['none', 'cudnn2', 'cudnn3', 'cudnn4']
 
@@ -43,6 +43,24 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
 RUN pyenv install 3.4.3
 RUN pyenv global 3.4.3
+RUN pyenv rehash
+'''
+
+codes['centos6_py2'] = '''FROM centos:6
+
+RUN yum -y update
+RUN yum -y install epel-release
+RUN yum -y install ccache gcc gcc-c++ git kmod hdf5-devel patch perl
+
+ENV PATH /usr/lib64/ccache:$PATH
+
+RUN yum -y install bzip2-devel make openssl-devel readline-devel
+RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
+ENV PYENV_ROOT=/opt/pyenv
+ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
+
+RUN pyenv install 2.7.10
+RUN pyenv global 2.7.10
 RUN pyenv rehash
 '''
 
