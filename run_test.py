@@ -31,11 +31,12 @@ if __name__ == '__main__':
         script = './test.sh'
 
     elif args.test == 'py3':
+        # TODO(unno): Fix this line after protobuf 3 is released
         conf = {
             'base': 'ubuntu14_py3',
             'cuda': 'cuda70',
             'cudnn': 'cudnn3',
-            'requires': ['setuptools', 'cython', 'numpy<1.11'],
+            'requires': ['setuptools', 'cython', 'numpy<1.11', 'protobuf==3.0.0b2.post2'],
         }
         script = './test.sh'
 
