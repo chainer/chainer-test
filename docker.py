@@ -285,8 +285,15 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
     if timeout:
         cmd += ['timeout', str(timeout)]
     cmd.append(script)
+    logging.error('cmd: {}'.format(' '.join(cmd)))
+    try:
+        output = subprocess.check_output(cmd)
+        logging.error('output:{}'.format(output))
+        res = 0
+    except CalledProcessError as e:
+        logging.error('output:{}'.format(e.output))
+        res = e.returncode
 
-    res = subprocess.call(cmd)
     if res != 0:
         logging.error('Failed to run test')
         logging.error('Exit code: %d' % res)
