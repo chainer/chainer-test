@@ -26,7 +26,7 @@ pip install coverage pillow
 run="coverage run -a --branch"
 
 # mnist
-echo "Running mnist example"
+# echo "Running mnist example"
 
 # change epoch
 # $run examples/mnist/train_mnist.py --epoch=1 --unit=10
@@ -34,21 +34,21 @@ echo "Running mnist example"
 # $run examples/mnist/train_mnist.py --net=parallel --epoch=1 --unit=10
 
 # ptb
-echo "Running ptb example"
+# echo "Running ptb example"
 
 # $run examples/ptb/download.py
 # $run examples/ptb/train_ptb.py --epoch=1 --unit=10 --test
 # $run examples/ptb/train_ptb.py --gpu=0 --epoch=1 --unit=10 --test
 
 # sentiment
-echo "Running sentiment example"
+# echo "Running sentiment example"
 
 # $run examples/sentiment/download.py
 # $run examples/sentiment/train_sentiment.py --epoch=1 --batchsize=1 --epocheval=1 --test
 # $run examples/sentiment/train_sentiment.py --gpu=0 --epoch=1 --batchsize=1 --epocheval=1 --test 
 
 # imagenet
-echo "Runnig imagenet example"
+# echo "Runnig imagenet example"
 
 # imagenet_data=../data/imagenet/data.txt
 # $run examples/imagenet/compute_mean.py -r ../data/imagenet $imagenet_data
@@ -59,7 +59,7 @@ echo "Runnig imagenet example"
 # $run examples/imagenet/train_imagenet.py --test -a googlenetbn -r ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 
 # word2vec
-echo "Running word2vec example"
+# echo "Running word2vec example"
 
 # note that ptb.train.txt is already downloaded
 
