@@ -76,6 +76,9 @@ echo "it" | $run examples/word2vec/search.py
 $run examples/word2vec/train_word2vec.py -e 1 -b 10 --out-type original --gpu=0 --test
 echo "it" | $run examples/word2vec/search.py
 
+# profiling
+$run examples/profile/profile.py -i 1 -g -1
+
 # show coverage
 coverage report -m --include="examples/*"
 coverage xml --include="examples/*"
