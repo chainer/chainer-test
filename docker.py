@@ -290,7 +290,7 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
         output = subprocess.check_output(cmd)
         logging.error('output:{}'.format(output))
         res = 0
-    except CalledProcessError as e:
+    except subprocess.CalledProcessError as e:
         logging.error('output:{}'.format(e.output))
         res = e.returncode
 
