@@ -283,7 +283,7 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
 
     cmd.append(name)
     if timeout:
-        cmd += ['timeout', str(timeout)]
+        cmd += ['timeout', str(timeout), '--preserve-status']
     cmd.append(script)
     logging.error('cmd: {}'.format(' '.join(cmd)))
     try:
