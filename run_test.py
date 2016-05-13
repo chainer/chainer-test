@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import shutil
 
 import docker
 
@@ -112,3 +113,7 @@ if __name__ == '__main__':
                     for line in inputs:
                         outputs.write(
                             line.replace('filename="', 'filename="chainer/'))
+
+        # convert coverage.xml
+        if os.path.exists('chainer/profile.csv'):
+            shutil.move('chainer/profile.csv', 'profile.csv')
