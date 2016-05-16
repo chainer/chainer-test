@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import glob
 import os
 import shutil
 
@@ -115,5 +116,6 @@ if __name__ == '__main__':
                             line.replace('filename="', 'filename="chainer/'))
 
         # convert coverage.xml
-        if os.path.exists('chainer/profile.csv'):
-            shutil.move('chainer/profile.csv', 'profile.csv')
+        for f in glob.glob('chainer/*.csv'):
+            basename = os.path.basename(f)
+            shutil.move(f, basename)

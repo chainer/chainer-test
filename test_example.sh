@@ -77,7 +77,10 @@ run="coverage run -a --branch"
 # echo "it" | $run examples/word2vec/search.py
 
 # profiling
-$run examples/profile/profile.py -i 1 -g 0 -b 1
+for model in alex overfeat vgg
+do
+    $run examples/profile/profile.py -i 3 -g 0 -b 16 -m ${model} -o ${model}.csv
+done
 
 # show coverage
 coverage report -m --include="examples/*"
