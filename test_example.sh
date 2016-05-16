@@ -79,7 +79,7 @@ run="coverage run -a --branch"
 # profiling
 for model in alex overfeat vgg
 do
-    $run examples/profile/profile.py -i 3 -g 0 -b 4 -m ${model} -o ${model}.csv
+    $run examples/profile/profile.py -i 3 -g 0 -b 2 -m ${model} -o ${model}.csv
 done
 
 # show coverage
