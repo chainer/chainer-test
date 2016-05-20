@@ -10,7 +10,7 @@ import sys
 
 base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos6_py2', 'centos7_py2', 'centos7_py3']
 cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75']
-cudnn_choices = ['none', 'cudnn2', 'cudnn3', 'cudnn4']
+cudnn_choices = ['none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5']
 
 
 codes = {}
@@ -199,6 +199,11 @@ codes['cudnn3'] = cudnn_base.format(
 codes['cudnn4'] = cudnn_base.format(
     cudnn='cudnn-7.0-linux-x64-v4.0-prod',
     cudnn_ver='v4',
+)
+
+codes['cudnn5'] = cudnn_base.format(
+    cudnn='cudnn-7.5-linux-x64-v5.0-ga',
+    cudnn_ver='v5',
 )
 
 codes['none'] = ''
