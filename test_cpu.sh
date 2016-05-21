@@ -4,6 +4,6 @@
 cd chainer
 python setup.py develop install
 
-nosetests -a '!gpu' --with-coverage --cover-branches --cover-package=chainer tests/chainer_tests
+nosetests -a '!gpu' --with-coverage --cover-branches --cover-package=chainer tests/chainer_tests -v
 
 coverage xml -i
