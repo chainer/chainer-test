@@ -115,7 +115,8 @@ if __name__ == '__main__':
                         outputs.write(
                             line.replace('filename="', 'filename="chainer/'))
 
-        # convert coverage.xml
-        for f in glob.glob('chainer/*.csv'):
-            basename = os.path.basename(f)
-            shutil.move(f, basename)
+        # move to top directory
+        profile_file = 'chainer/profile/example/profile.csv'
+        if os.path.exists(profile_file):
+            basename = os.path.basename(profile_file)
+            shutil.move(profile_file, basename)

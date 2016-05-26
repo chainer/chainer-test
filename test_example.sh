@@ -77,10 +77,18 @@ run="coverage run -a --branch"
 # echo "it" | $run examples/word2vec/search.py
 
 # profiling
-for model in alex overfeat vgg
+cd examples/profile
+if [ -e profile.csv ]
+then
+    rm profile.csv
+fi
+
+for model in alex overfeat vgg conv1 conv2 conv3 conv4 conv5
 do
-    $run examples/profile/profile.py -i 3 -g 0 -b 2 -m ${model} -o ${model}.csv
+    $run profile.py -t 10 -g 0 -b 2 -P ${model} -o ${model}.csv
 done
+paste *.csv > profile.csv
+cd ../../
 
 # show coverage
 coverage report -m --include="examples/*"
