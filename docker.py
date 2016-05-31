@@ -8,7 +8,9 @@ import subprocess
 import sys
 
 
-base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'centos6_py2', 'centos7_py2', 'centos7_py3']
+base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35',
+                'ubuntu16_py2', 'ubuntu16_py3',
+                'centos6_py2', 'centos7_py2', 'centos7_py3']
 cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75']
 cudnn_choices = ['none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5']
 
@@ -101,6 +103,28 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN pyenv install 3.5.1
 RUN pyenv global 3.5.1
 RUN pyenv rehash
+'''
+
+codes['ubuntu16_py2'] = '''FROM ubuntu:16.04
+
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev
+
+ENV PATH /usr/lib/ccache:$PATH
+
+RUN apt-get install -y python-pip python-dev
+'''
+
+codes['ubuntu16_py3'] = '''FROM ubuntu:16.04
+
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev
+
+ENV PATH /usr/lib/ccache:$PATH
+
+RUN apt-get install -y python3-pip python3-dev
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 '''
 
 # cuda
