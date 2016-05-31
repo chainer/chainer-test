@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     elif args.test == 'py35':
         conf = {
-            'base': 'ubuntu14_py35',
+            'base': 'ubuntu16_py3',
             'cuda': 'cuda75',
             'cudnn': 'cudnn5',
             'requires': ['setuptools', 'cython', 'numpy<1.10', 'h5py'],
