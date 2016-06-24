@@ -2,6 +2,7 @@
 
 import argparse
 import itertools
+import os
 import random
 
 import docker
