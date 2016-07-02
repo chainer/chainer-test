@@ -15,7 +15,6 @@ params = {
     'numpy': ['1.9', '1.10', '1.11'],
     'protobuf': ['2', '3'],
     'h5py': ['none', '2.5', '2.6'],
-    'type': ['cpu', 'gpu'],
 }
 
 
@@ -92,11 +91,6 @@ if __name__ == '__main__':
         env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
 
-    if params['type'] == 'cpu':
-        script = './test_cpu.sh'
-    elif params['type'] == 'gpu':
-        script = './test.sh'
-
     if args.http_proxy:
         conf['http_proxy'] = args.http_proxy
     if args.https_proxy:
@@ -106,6 +100,11 @@ if __name__ == '__main__':
         docker.run_interactive(
             conf, no_cache=args.no_cache, volume=volume, env=env)
     else:
+        if conf['cuda'] != 'none':
+            docker.run_with(
+                conf, './test.sh', no_cache=args.no_cache, volume=volume, env=env,
+                timeout=args.timeout)
+
         docker.run_with(
-            conf, script, no_cache=args.no_cache, volume=volume, env=env,
+            conf, './test_cpu.sh', no_cache=args.no_cache, volume=volume, env=env,
             timeout=args.timeout)
