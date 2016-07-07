@@ -81,6 +81,7 @@ if __name__ == '__main__':
         conf['requires'].append('h5py<2.6')
 
     conf['requires'] += [
+        'hacking',
         'nose',
         'mock',
         'coverage',
