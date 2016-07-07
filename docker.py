@@ -256,6 +256,7 @@ def build_image(name, no_cache=False):
 
 
 def make_random_name():
+    random.seed()
     return ''.join(random.choice(string.ascii_lowercase + string.digits)
                    for i in range(10))
 
