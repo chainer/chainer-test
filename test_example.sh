@@ -51,6 +51,7 @@ $run examples/sentiment/train_sentiment.py --gpu=0 --epoch=1 --batchsize=1 --epo
 echo "Runnig imagenet example"
 
 imagenet_data=../data/imagenet/data.txt
+$run examples/imagenet/compute_mean.py -R ../data/imagenet $imagenet_data
 $run examples/imagenet/train_imagenet.py --test -a nin -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 $run examples/imagenet/train_imagenet.py --test -a alex -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 $run examples/imagenet/train_imagenet.py --test -a googlenet -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
