@@ -31,12 +31,12 @@ echo "Running mnist example"
 # change epoch
 $run examples/mnist/train_mnist.py --epoch=1 --unit=10
 $run examples/mnist/train_mnist.py --gpu=0 --epoch=1 --unit=10
-$run examples/mnist/train_mnist.py --net=parallel --epoch=1 --unit=10
+$run examples/mnist/train_mnist_parallel.py --gpu0=0 --gpu1=1 --epoch=1 --unit=10
+$run examples/mnist/train_mnist_data_parallel.py --gpu0=0 --gpu1=1 --epoch=1 --unit=10
 
 # ptb
 echo "Running ptb example"
 
-$run examples/ptb/download.py
 $run examples/ptb/train_ptb.py --epoch=1 --unit=10 --test
 $run examples/ptb/train_ptb.py --gpu=0 --epoch=1 --unit=10 --test
 
@@ -51,12 +51,11 @@ $run examples/sentiment/train_sentiment.py --gpu=0 --epoch=1 --batchsize=1 --epo
 echo "Runnig imagenet example"
 
 imagenet_data=../data/imagenet/data.txt
-$run examples/imagenet/compute_mean.py -r ../data/imagenet $imagenet_data
-$run examples/imagenet/train_imagenet.py --test -a nin -r ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
-$run examples/imagenet/train_imagenet.py --test -a alex -r ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
-$run examples/imagenet/train_imagenet.py --test -a alexbn -r ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
-$run examples/imagenet/train_imagenet.py --test -a googlenet -r ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
-$run examples/imagenet/train_imagenet.py --test -a googlenetbn -r ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
+$run examples/imagenet/compute_mean.py -R ../data/imagenet $imagenet_data
+$run examples/imagenet/train_imagenet.py --test -a nin -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
+$run examples/imagenet/train_imagenet.py --test -a alex -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
+$run examples/imagenet/train_imagenet.py --test -a googlenet -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
+$run examples/imagenet/train_imagenet.py --test -a googlenetbn -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 
 # word2vec
 echo "Running word2vec example"
