@@ -189,8 +189,6 @@ codes['cudnn2'] = cudnn2_base.format(
 cudnn_base = '''
 WORKDIR /opt/cudnn
 RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz
-RUN mkdir -p /usr/local/cuda/include
-RUN mkdir -p /usr/local/cuda/lib64
 RUN tar -xzf {cudnn}.tgz -C /usr/local
 RUN rm {cudnn}.tgz
 '''
