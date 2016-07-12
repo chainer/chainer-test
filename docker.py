@@ -172,6 +172,8 @@ WORKDIR /opt/cudnn
 RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz
 RUN tar -xzf {cudnn}.tgz
 RUN rm {cudnn}.tgz
+RUN mkdir -p /usr/local/cuda/include
+RUN mkdir -p /usr/local/cuda/lib64
 RUN cp {cudnn}/cudnn.h /usr/local/cuda/include/.
 RUN mv {cudnn}/libcudnn.so /usr/local/cuda/lib64/.
 RUN mv {cudnn}/libcudnn.so.6.5 /usr/local/cuda/lib64/.
