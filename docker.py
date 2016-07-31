@@ -220,7 +220,7 @@ RUN curl -sL -o protobuf-cpp-{protobuf}.tar.gz https://github.com/google/protobu
 RUN tar -xzf protobuf-cpp-{protobuf}.tar.gz
 RUN curl -sL -o protobuf-python-{protobuf}.tar.gz https://github.com/google/protobuf/releases/download/v{protobuf}/protobuf-python-{protobuf}.tar.gz
 RUN tar -xzf protobuf-python-{protobuf}.tar.gz
-RUN cd protobuf-{protobuf} && ./configure && make && make install
+RUN cd protobuf-{protobuf} && ./configure && make && make install && ldconfig
 RUN cd protobuf-{protobuf}/python && python setup.py install --cpp_implementation
 '''
 
