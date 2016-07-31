@@ -14,7 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
     parser.add_argument('--numpy', choices=['1.9', '1.10', '1.11'],
                         required=True)
-    parser.add_argument('--protobuf', choices=['2', '3'])
+    parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
     parser.add_argument('--h5py', choices=['none', '2.5'])
     parser.add_argument('--pillow', choices=['none', '3.3'])
     parser.add_argument('--theano', choices=['none', '0.8'])
@@ -50,6 +50,8 @@ if __name__ == '__main__':
         conf['requires'].append('protobuf<4')
     elif args.protobuf == '2':
         conf['requires'].append('protobuf<3')
+    elif args.protobuf == 'cpp-3':
+        conf['protobuf-cpp'] = 'protobuf-cpp-3'
 
     if args.h5py == '2.5':
         conf['requires'].append('h5py<2.6')
