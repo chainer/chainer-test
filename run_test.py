@@ -26,7 +26,8 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda65',
             'cudnn': 'cudnn2',
-            'requires': ['setuptools', 'cython', 'numpy<1.12', 'h5py'],
+            'requires': [
+                'setuptools', 'cython', 'numpy<1.12', 'h5py', 'pillow'],
         }
         script = './test.sh'
 
@@ -36,7 +37,9 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py3',
             'cuda': 'cuda70',
             'cudnn': 'cudnn4',
-            'requires': ['setuptools', 'cython', 'numpy<1.11', 'protobuf==3.0.0b3'],
+            'requires': [
+                'setuptools', 'cython', 'numpy<1.11', 'protobuf==3.0.0b3',
+                'pillow'],
         }
         script = './test.sh'
 

@@ -15,6 +15,7 @@ params = {
     'numpy': ['1.9', '1.10', '1.11'],
     'protobuf': ['2', '3'],
     'h5py': ['none', '2.5', '2.6'],
+    'pillow': ['none', '3.3'],
 }
 
 
@@ -78,6 +79,10 @@ if __name__ == '__main__':
         conf['requires'].append('h5py<2.7')
     elif params['h5py'] == '2.5':
         conf['requires'].append('h5py<2.6')
+
+    if params['pillow'] == '3.3':
+        conf['requires'].append('pillow<3.4')
+
 
     conf['requires'] += [
         'hacking',
