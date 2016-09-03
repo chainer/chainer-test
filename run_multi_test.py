@@ -55,7 +55,9 @@ if __name__ == '__main__':
         conf['requires'].append('h5py<2.6')
 
     if args.pillow == '3.3':
-        conf['requires'].append('pillow<3.4')
+        conf['requires'].append(
+            ('pillow<3.4',
+             '--global-option=build_ext --global-option="--disable-jpeg"'))
 
     if args.theano == '0.8':
         conf['requires'].append('theano<0.9')
