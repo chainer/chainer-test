@@ -6,7 +6,7 @@ PREV_VER=1.5.1
 CHAINER_DIR=chainer-${PREV_VER}
 
 cd chainer
-python setup.py -q develop install
+python setup.py -q develop install --user
 cd ..
 
 if apt-get --version; then

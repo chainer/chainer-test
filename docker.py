@@ -291,6 +291,8 @@ def make_dockerfile(conf):
                     dockerfile += 'RUN yum -y install lapack-devel\n'
             dockerfile += run_pip(req)
 
+    # Make a user and home directory to install chainer
+    dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
     return dockerfile
 
 
@@ -342,7 +344,6 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
     build_image(name, no_cache)
 
     # run
-    failed = False
     host_cwd = os.getcwd()
     work_dir = '/work'
     run_name = make_random_name()
@@ -351,7 +352,8 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
     cmd = ['nvidia-docker', 'run',
            '--name=%s' % run_name,
            '-v', '%s:%s' % (host_cwd, work_dir),
-           '-w', work_dir]
+           '-w', work_dir,
+           '-u', str(os.getuid())]
 
     if gpu_id is not None:
         gpus = select_gpu(gpu_id)
@@ -373,23 +375,6 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
     if res != 0:
         logging.error('Failed to run test')
         logging.error('Exit code: %d' % res)
-        failed = True
-
-    # chown for clean up
-    res = subprocess.call([
-        'docker', 'run',
-        '--rm',
-        '-v', '%s:%s' % (host_cwd, work_dir),
-        '-w', work_dir,
-        name,
-        '/bin/bash', '-c',
-        'chown `stat -c %u .`:`stat -c %g .` -R .'])
-    if res != 0:
-        logging.error('Failed to chown')
-        logging.error('Exit code: %d' % res)
-        failed = True
-
-    if failed:
         exit(1)
 
 
@@ -405,6 +390,7 @@ def run_interactive(conf, no_cache=False, volume=None, env=None):
            '--rm',
            '-v', '%s:%s' % (host_cwd, work_dir),
            '-w', work_dir,
+           '-u', str(os.getuid()),
            '-i', '-t']
     if volume:
         for v in volume:

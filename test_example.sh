@@ -6,7 +6,7 @@ cd chainer
 rm -rf dist
 python setup.py -q sdist
 cd dist
-pip install *.tar.gz
+pip install *.tar.gz --user
 cd ..
 
 if [ -e cuda_deps/setup.py ]; then
