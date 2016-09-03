@@ -16,6 +16,7 @@ params = {
     'protobuf': ['2', '3'],
     'h5py': ['none', '2.5', '2.6'],
     'pillow': ['none', '3.3'],
+    'theano': ['none', '0.8'],
 }
 
 
@@ -83,6 +84,8 @@ if __name__ == '__main__':
     if params['pillow'] == '3.3':
         conf['requires'].append('pillow<3.4')
 
+    if params['theano'] == '0.8':
+        conf['requires'].append('theano<0.9')
 
     conf['requires'] += [
         'hacking',

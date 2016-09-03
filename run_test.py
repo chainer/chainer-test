@@ -27,7 +27,8 @@ if __name__ == '__main__':
             'cuda': 'cuda65',
             'cudnn': 'cudnn2',
             'requires': [
-                'setuptools', 'cython==0.24', 'numpy<1.12', 'h5py', 'pillow'],
+                'setuptools', 'cython==0.24', 'numpy<1.12', 'h5py', 'pillow',
+                'theano'],
         }
         script = './test.sh'
 
@@ -48,7 +49,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py35',
             'cuda': 'cuda75',
             'cudnn': 'cudnn51',
-            'requires': ['setuptools', 'cython==0.24', 'numpy<1.10', 'h5py'],
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.10', 'h5py', 'theano'],
         }
         script = './test.sh'
 

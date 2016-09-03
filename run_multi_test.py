@@ -17,6 +17,7 @@ if __name__ == '__main__':
     parser.add_argument('--protobuf', choices=['2', '3'])
     parser.add_argument('--h5py', choices=['none', '2.5'])
     parser.add_argument('--pillow', choices=['none', '3.3'])
+    parser.add_argument('--theano', choices=['none', '0.8'])
     parser.add_argument('--type', choices=['cpu', 'gpu'], required=True)
     parser.add_argument('--cache')
     parser.add_argument('--http-proxy')
@@ -53,6 +54,9 @@ if __name__ == '__main__':
 
     if args.pillow == '3.3':
         conf['requires'].append('pillow<3.4')
+
+    if args.theano == '0.8':
+        conf['requires'].append('theano<0.9')
 
     conf['requires'] += [
         'hacking',
