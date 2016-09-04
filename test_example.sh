@@ -1,6 +1,6 @@
 #!/bin/sh -ex
 
-pip install -U pip
+pip install -U pip --user
 
 cd chainer
 rm -rf dist
@@ -21,7 +21,7 @@ else
   echo "both apt-get and yum command are not found"
   exit 1
 fi
-pip install coverage pillow
+pip install coverage pillow --user
 
 run="coverage run -a --branch"
 
