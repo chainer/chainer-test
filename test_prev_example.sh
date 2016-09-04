@@ -1,6 +1,6 @@
 #!/bin/sh -ex
 
-pip install -U pip
+pip install -U pip --user
 
 PREV_VER=1.5.1
 CHAINER_DIR=chainer-${PREV_VER}
@@ -17,7 +17,7 @@ else
   echo "both apt-get and yum command are not found"
   exit 1
 fi
-pip install h5py pillow
+pip install h5py pillow --user
 
 run=python
 
