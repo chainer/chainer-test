@@ -56,7 +56,7 @@ if __name__ == '__main__':
         'base': params['base'],
         'cuda': params['cuda'],
         'cudnn': params['cudnn'],
-        'requires': ['setuptools', 'cython'],
+        'requires': ['setuptools', 'cython==0.24'],
     }
 
     volume = []

@@ -30,7 +30,7 @@ if __name__ == '__main__':
         'base': args.base,
         'cuda': args.cuda,
         'cudnn': args.cudnn,
-        'requires': ['setuptools', 'cython'],
+        'requires': ['setuptools', 'cython==0.24'],
     }
     volume = []
     env = {'CUDNN': conf['cudnn']}
