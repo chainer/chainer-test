@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+import re
 import shutil
 import signal
 import string
@@ -268,8 +269,21 @@ def make_random_name():
                    for i in range(10))
 
 
+def get_num_gpus():
+    out = subprocess.check_output('nvidia-smi -L | wc -l', shell=True)
+    return int(out)
+
+
+def select_gpu(offset):
+    num_gpus = get_num_gpus()
+    gpus = range(num_gpus)
+    offset %= len(gpus)
+    gpus = gpus[offset:] + gpus[:offset]
+    return gpus
+
+
 def run_with(conf, script, no_cache=False, volume=None, env=None,
-             timeout=None):
+             timeout=None, gpu_id=None):
     write_dockerfile(conf)
     name = make_random_name()
 
@@ -286,6 +300,10 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
            '--name=%s' % run_name,
            '-v', '%s:%s' % (host_cwd, work_dir),
            '-w', work_dir]
+
+    if gpu_id is not None:
+        gpus = select_gpu(gpu_id)
+        cmd += ['-e', 'CUDA_VISIBLE_DEVICES=' + ','.join(map(str, gpus))]
 
     if volume:
         for v in volume:

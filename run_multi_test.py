@@ -23,6 +23,9 @@ if __name__ == '__main__':
     parser.add_argument('--https-proxy')
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
+    parser.add_argument(
+        '--gpu-id', type=int,
+        help='GPU ID you want to use mainly in the script.')
     parser.add_argument('--interactive', action='store_true')
     args = parser.parse_args()
 
@@ -82,4 +85,4 @@ if __name__ == '__main__':
     else:
         docker.run_with(
             conf, script, no_cache=args.no_cache, volume=volume, env=env,
-            timeout=args.timeout)
+            timeout=args.timeout, gpu_id=args.gpu_id)
