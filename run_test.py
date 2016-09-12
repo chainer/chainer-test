@@ -31,7 +31,8 @@ if __name__ == '__main__':
             'cudnn': 'cudnn2',
             'requires': [
                 'setuptools', 'cython==0.24', 'numpy<1.12', 'h5py', 'theano',
-                ('pillow', '--global-option=build_ext --global-option="--disable-jpeg"')],
+                'wheel', 'pillow',  # wheel is required to isntall pillow
+            ]
         }
         script = './test.sh'
 
@@ -42,7 +43,8 @@ if __name__ == '__main__':
             'cudnn': 'cudnn4',
             'requires': [
                 'setuptools', 'cython==0.24', 'numpy<1.11', 'protobuf<3',
-                ('pillow', '--global-option=build_ext --global-option="--disable-jpeg"')],
+                'wheel', 'pillow',  # wheel is required to isntall pillow
+            ],
         }
         script = './test.sh'
 

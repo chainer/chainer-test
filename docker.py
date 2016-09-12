@@ -222,10 +222,7 @@ def set_env(env, value):
 
 
 def run_pip(requires):
-    if isinstance(requires, tuple):
-        return 'RUN pip install -U "%s" %s\n' % requires
-    else:
-        return 'RUN pip install -U "%s"\n' % requires
+    return 'RUN pip install -U "%s"\n' % requires
 
 
 def make_dockerfile(conf):
