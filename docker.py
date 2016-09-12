@@ -270,12 +270,8 @@ def make_random_name():
 
 
 def get_num_gpus():
-    out = subprocess.check_output(['nvidia-smi', '-q'])
-    for line in out.split('\n'):
-        m = re.match(r'Attached GPUs +: (\d+)', line)
-        if m:
-            return int(m.group(1))
-    return 0
+    out = subprocess.check_output('nvidia-smi -L | wc -l', shell=True)
+    return int(out)
 
 
 def select_gpu(offset):
