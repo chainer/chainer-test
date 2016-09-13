@@ -73,8 +73,7 @@ if __name__ == '__main__':
         conf['requires'].append('numpy<1.12')
 
     if params['protobuf'] == '3':
-        # TODO(unno): We need to fix this line when protobuf 3 is released
-        conf['requires'].append('protobuf==3.0.0b2.post2')
+        conf['requires'].append('protobuf<4')
     elif params['protobuf'] == '2':
         conf['requires'].append('protobuf<3')
 
