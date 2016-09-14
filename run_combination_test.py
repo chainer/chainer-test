@@ -84,7 +84,7 @@ if __name__ == '__main__':
         conf['requires'].append('h5py<2.6')
 
     if params['pillow'] == '3.3':
-        conf['requires'].append('pillow<3.4')
+        conf['requires'].extend(['pip', 'pillow<3.4'])
 
     if params['theano'] == '0.8':
         conf['requires'].append('theano<0.9')
