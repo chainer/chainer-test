@@ -108,7 +108,10 @@ RUN pyenv rehash
 codes['ubuntu16_py2'] = '''FROM ubuntu:16.04
 
 RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev libhdf5-serial-dev pkg-config
+RUN apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config
+
+RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
+RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 ENV PATH /usr/lib/ccache:$PATH
 
@@ -118,7 +121,10 @@ RUN apt-get install -y python-pip python-dev
 codes['ubuntu16_py3'] = '''FROM ubuntu:16.04
 
 RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev libhdf5-serial-dev pkg-config
+RUN apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config
+
+RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
+RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 ENV PATH /usr/lib/ccache:$PATH
 
