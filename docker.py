@@ -238,7 +238,10 @@ def make_dockerfile(conf):
     if 'requires' in conf:
         for req in conf['requires']:
             if 'theano' in req:
-                dockerfile += 'RUN apt-get install -y liblapack-dev\n'
+                if 'ubuntu' in conf['base']:
+                    dockerfile += 'RUN apt-get install -y liblapack-dev\n'
+                elif 'centos' in conf['base']:
+                    dockerfile += 'RUN yum -y install lapack-devel\n'
             dockerfile += run_pip(req)
 
     return dockerfile
