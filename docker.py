@@ -244,6 +244,20 @@ codes['cudnn51'] = cudnn_base.format(
     cudnn_ver='v5.1',
 )
 
+protobuf_cpp_base = '''
+WORKDIR /tmp
+RUN curl -sL -o protobuf-cpp-{protobuf}.tar.gz https://github.com/google/protobuf/releases/download/v{protobuf}/protobuf-cpp-{protobuf}.tar.gz
+RUN tar -xzf protobuf-cpp-{protobuf}.tar.gz
+RUN curl -sL -o protobuf-python-{protobuf}.tar.gz https://github.com/google/protobuf/releases/download/v{protobuf}/protobuf-python-{protobuf}.tar.gz
+RUN tar -xzf protobuf-python-{protobuf}.tar.gz
+RUN cd protobuf-{protobuf} && ./configure && make && make install && ldconfig
+RUN cd protobuf-{protobuf}/python && python setup.py install --cpp_implementation
+'''
+
+codes['protobuf-cpp-3'] = protobuf_cpp_base.format(
+    protobuf='3.0.0',
+)
+
 codes['none'] = ''
 
 
@@ -264,6 +278,9 @@ def make_dockerfile(conf):
         dockerfile += set_env('https_proxy', conf['https_proxy'])
     dockerfile += codes[conf['cuda']]
     dockerfile += codes[conf['cudnn']]
+
+    if 'protobuf-cpp' in conf:
+        dockerfile += codes[conf['protobuf-cpp']]
 
     if 'requires' in conf:
         for req in conf['requires']:

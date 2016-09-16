@@ -53,6 +53,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py3',
             'cuda': 'cuda75',
             'cudnn': 'cudnn51',
+            'protobuf-cpp': 'protobuf-cpp-3',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.10', 'h5py', 'theano'],
         }
         script = './test.sh'
