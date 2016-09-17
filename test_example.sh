@@ -9,7 +9,7 @@ cd dist
 pip install *.tar.gz --user
 cd ..
 
-pip install coverage pillow --user
+python -m pip install coverage pillow --user
 
 run="coverage run -a --branch"
 
