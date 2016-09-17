@@ -41,8 +41,9 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py3',
             'cuda': 'cuda70',
             'cudnn': 'cudnn4',
+            'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
-                'setuptools', 'cython==0.24', 'numpy<1.11', 'protobuf<3',
+                'setuptools', 'cython==0.24', 'numpy<1.11',
                 'pip', 'pillow',
             ],
         }
@@ -53,8 +54,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py3',
             'cuda': 'cuda75',
             'cudnn': 'cudnn51',
-            'protobuf-cpp': 'protobuf-cpp-3',
-            'requires': ['setuptools', 'cython==0.24', 'numpy<1.10', 'h5py', 'theano'],
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.10', 'h5py', 'theano', 'protobuf<3'],
         }
         script = './test.sh'
 
