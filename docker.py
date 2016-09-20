@@ -328,7 +328,7 @@ def get_num_gpus():
 
 def select_gpu(offset):
     num_gpus = get_num_gpus()
-    gpus = range(num_gpus)
+    gpus = list(range(num_gpus))
     offset %= len(gpus)
     gpus = gpus[offset:] + gpus[:offset]
     return gpus
