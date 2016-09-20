@@ -77,7 +77,7 @@ if __name__ == '__main__':
         conf['requires'].append('protobuf<4')
     elif params['protobuf'] == '2':
         conf['requires'].append('protobuf<3')
-    elif args.protobuf == 'cpp-3':
+    elif params['protobuf'] == 'cpp-3':
         conf['protobuf-cpp'] = 'protobuf-cpp-3'
 
     if params['h5py'] == '2.6':
