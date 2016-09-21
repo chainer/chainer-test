@@ -245,6 +245,7 @@ codes['cudnn51'] = cudnn_base.format(
 )
 
 protobuf_cpp_base = '''
+RUN echo /usr/local/lib >> /etc/ld.so.conf
 WORKDIR /tmp
 RUN curl -sL -o protobuf-cpp-{protobuf}.tar.gz https://github.com/google/protobuf/releases/download/v{protobuf}/protobuf-cpp-{protobuf}.tar.gz
 RUN tar -xzf protobuf-cpp-{protobuf}.tar.gz
