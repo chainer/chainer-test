@@ -24,7 +24,7 @@ codes['centos7_py2'] = '''FROM centos:7
 
 RUN yum -y update
 RUN yum -y install epel-release
-RUN yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl
+RUN yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make
 
 ENV PATH /usr/lib64/ccache:$PATH
 
