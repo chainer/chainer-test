@@ -256,7 +256,7 @@ RUN cd protobuf-{protobuf}/python && python setup.py install --cpp_implementatio
 '''
 
 codes['protobuf-cpp-3'] = protobuf_cpp_base.format(
-    protobuf='3.0.0',
+    protobuf='3.0.2',
 )
 
 codes['none'] = ''
