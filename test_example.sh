@@ -1,27 +1,15 @@
 #!/bin/sh -ex
 
-pip install -U pip
+pip install -U pip --user
 
 cd chainer
 rm -rf dist
 python setup.py -q sdist
 cd dist
-pip install *.tar.gz
+pip install *.tar.gz --user
 cd ..
 
-if [ -e cuda_deps/setup.py ]; then
-  python cuda_deps/setup.py -q install
-fi
-
-if apt-get --version; then
-  apt-get install -y libjpeg-dev zlib1g-dev
-elif yum --version; then
-  yum -y install libjpeg-devel zlib-devel
-else
-  echo "both apt-get and yum command are not found"
-  exit 1
-fi
-pip install coverage pillow
+python -m pip install coverage pillow --user
 
 run="coverage run -a --branch"
 

@@ -1,23 +1,15 @@
 #!/bin/sh -ex
 
-pip install -U pip
+pip install -U pip --user
 
 PREV_VER=1.5.1
 CHAINER_DIR=chainer-${PREV_VER}
 
 cd chainer
-python setup.py -q develop install
+python setup.py -q develop install --user
 cd ..
 
-if apt-get --version; then
-  apt-get install -y libjpeg-dev zlib1g-dev
-elif yum --version; then
-  yum -y install libjpeg-devel zlib-devel
-else
-  echo "both apt-get and yum command are not found"
-  exit 1
-fi
-pip install h5py pillow
+python -m pip install h5py pillow --user
 
 run=python
 

@@ -3,7 +3,7 @@
 
 cd chainer
 flake8
-python setup.py develop install
+python setup.py develop install --user
 
 nosetests --processes=4 --process-timeout=10000 -a '!gpu,!slow' --stop --with-coverage --cover-branches --cover-package=chainer tests/chainer_tests
 
