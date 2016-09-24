@@ -42,6 +42,8 @@ ENV PATH /usr/lib64/ccache:$PATH
 RUN yum -y install bzip2-devel make openssl-devel readline-devel
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
+RUN mkdir "$PYENV_ROOT/shims"
+RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
 RUN pyenv install 3.4.3
@@ -60,6 +62,8 @@ ENV PATH /usr/lib64/ccache:$PATH
 RUN yum -y install bzip2-devel make openssl-devel readline-devel
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
+RUN mkdir "$PYENV_ROOT/shims"
+RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
 RUN pyenv install 2.7.10
@@ -99,6 +103,8 @@ ENV PATH /usr/lib/ccache:$PATH
 RUN apt-get -y install libbz2-dev libreadline-dev libssl-dev make
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
+RUN mkdir "$PYENV_ROOT/shims"
+RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
 RUN pyenv install 3.5.1
