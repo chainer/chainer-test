@@ -161,6 +161,8 @@ RUN mkdir installers
 
 RUN curl -s -o {cuda_run} {cuda_url}/{cuda_run}
 
+RUN echo "{sha256sum}  {cuda_run}" | sha256sum -cw --quiet -
+
 RUN chmod +x {cuda_run} && sync && \\
     ./{cuda_run} -extract=`pwd`/installers
 RUN ./installers/{installer} -noprompt && \\
@@ -186,6 +188,7 @@ codes['cuda65'] = cuda_base.format(
     cuda_run=cuda65_run,
     cuda_url=cuda65_url,
     installer=cuda65_installer,
+    sha256sum='5279bc159b72b7445d8aae5f289d24bb4042c35422ef32da68049d8f666d3ff5',
 )
 
 codes['cuda70'] = cuda_base.format(
@@ -193,6 +196,7 @@ codes['cuda70'] = cuda_base.format(
     cuda_run=cuda70_run,
     cuda_url=cuda70_url,
     installer=cuda70_installer,
+    sha256sum='d1292e9c2bbaddad24c46e0b0d15a7130831bfac0382f7159321f41ae385a5ce',
 )
 
 codes['cuda75'] = cuda_base.format(
@@ -200,6 +204,7 @@ codes['cuda75'] = cuda_base.format(
     cuda_run=cuda75_run,
     cuda_url=cuda75_url,
     installer=cuda75_installer,
+    sha256sum='08411d536741075131a1858a68615b8b73c51988e616e83b835e4632eea75eec',
 )
 
 # cudnn
@@ -207,6 +212,7 @@ codes['cuda75'] = cuda_base.format(
 cudnn2_base = '''
 WORKDIR /opt/cudnn
 RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz
+RUN echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet -
 RUN tar -xzf {cudnn}.tgz
 RUN rm {cudnn}.tgz
 RUN mkdir -p /usr/local/cuda/include
@@ -221,11 +227,13 @@ RUN mv {cudnn}/libcudnn_static.a /usr/local/cuda/lib64/.
 codes['cudnn2'] = cudnn2_base.format(
     cudnn='cudnn-6.5-linux-x64-v2',
     cudnn_ver='v2',
+    sha256sum='4b02cb6bf9dfa57f63bfff33e532f53e2c5a12f9f1a1b46e980e626a55f380aa',
 )
 
 cudnn_base = '''
 WORKDIR /opt/cudnn
 RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz
+RUN echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet -
 RUN tar -xzf {cudnn}.tgz -C /usr/local
 RUN rm {cudnn}.tgz
 '''
@@ -233,21 +241,25 @@ RUN rm {cudnn}.tgz
 codes['cudnn3'] = cudnn_base.format(
     cudnn='cudnn-7.0-linux-x64-v3.0-prod',
     cudnn_ver='v3',
+    sha256sum='98679d5ec039acfd4d81b8bfdc6a6352d6439e921523ff9909d364e706275c2b',
 )
 
 codes['cudnn4'] = cudnn_base.format(
     cudnn='cudnn-7.0-linux-x64-v4.0-prod',
     cudnn_ver='v4',
+    sha256sum='4e64ef7716f20c87854b4421863328e17cce633330c319b5e13809b61a36f97d',
 )
 
 codes['cudnn5'] = cudnn_base.format(
     cudnn='cudnn-7.5-linux-x64-v5.0-ga',
     cudnn_ver='v5',
+    sha256sum='c4739a00608c3b66a004a74fc8e721848f9112c5cb15f730c1be4964b3a23b3a',
 )
 
 codes['cudnn51'] = cudnn_base.format(
     cudnn='cudnn-7.5-linux-x64-v5.1',
     cudnn_ver='v5.1',
+    sha256sum='40d506d0a8a00a3faccce1433346806b8cd2535683b6f08a63683ce6e474419f',
 )
 
 protobuf_cpp_base = '''
