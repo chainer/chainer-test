@@ -30,8 +30,8 @@ if __name__ == '__main__':
             'cuda': 'cuda65',
             'cudnn': 'cudnn2',
             'requires': [
-                'setuptools', 'cython==0.24', 'numpy<1.12', 'h5py', 'theano',
-                'pip', 'pillow',
+                'setuptools', 'pip', 'cython==0.24', 'numpy<1.12', 'h5py', 'theano',
+                'pillow',
             ]
         }
         script = './test.sh'
@@ -43,8 +43,8 @@ if __name__ == '__main__':
             'cudnn': 'cudnn4',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
-                'setuptools', 'cython==0.24', 'numpy<1.11',
-                'pip', 'pillow',
+                'setuptools', 'pip', 'cython==0.24', 'numpy<1.11',
+                'pillow',
             ],
         }
         script = './test.sh'

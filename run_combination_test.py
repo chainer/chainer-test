@@ -60,7 +60,7 @@ if __name__ == '__main__':
         'base': params['base'],
         'cuda': params['cuda'],
         'cudnn': params['cudnn'],
-        'requires': ['setuptools', 'cython==0.24'],
+        'requires': ['setuptools', 'pip', 'cython==0.24'],
     }
 
     volume = []
@@ -86,7 +86,7 @@ if __name__ == '__main__':
         conf['requires'].append('h5py<2.6')
 
     if params['pillow'] == '3.4':
-        conf['requires'].extend(['pip', 'pillow<3.5'])
+        conf['requires'].append('pillow<3.5')
 
     if params['theano'] == '0.8':
         conf['requires'].append('theano<0.9')
