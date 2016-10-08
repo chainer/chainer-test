@@ -15,7 +15,7 @@ params = {
     'numpy': ['1.9', '1.10', '1.11'],
     'protobuf': ['2', '3', 'cpp-3'],
     'h5py': ['none', '2.5', '2.6'],
-    'pillow': ['none', '3.3'],
+    'pillow': ['none', '3.4'],
     'theano': ['none', '0.8'],
 }
 
@@ -85,8 +85,8 @@ if __name__ == '__main__':
     elif params['h5py'] == '2.5':
         conf['requires'].append('h5py<2.6')
 
-    if params['pillow'] == '3.3':
-        conf['requires'].extend(['pip', 'pillow<3.4'])
+    if params['pillow'] == '3.4':
+        conf['requires'].extend(['pip', 'pillow<3.5'])
 
     if params['theano'] == '0.8':
         conf['requires'].append('theano<0.9')
