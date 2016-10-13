@@ -12,7 +12,7 @@ import sys
 base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35',
                 'ubuntu16_py2', 'ubuntu16_py3',
                 'centos6_py2', 'centos7_py2', 'centos7_py3']
-cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75']
+cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75', 'cuda80']
 cudnn_choices = ['none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn51']
 
 
@@ -155,11 +155,16 @@ cuda75_url = 'http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_i
 cuda75_driver = 'NVIDIA-Linux-x86_64-352.39.run'
 cuda75_installer = 'cuda-linux64-rel-7.5.18-19867135.run'
 
+cuda80_run = 'cuda_8.0.44_linux-run'
+cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers/'
+cuda80_driver = 'NVIDIA-Linux-x86_64-367.48.run'
+cuda80_installer = 'cuda-linux64-rel-8.0.44-21122537.run'
+
 cuda_base = '''
 WORKDIR /opt/nvidia
 RUN mkdir installers
 
-RUN curl -s -o {cuda_run} {cuda_url}/{cuda_run}
+RUN curl -sL -o {cuda_run} {cuda_url}/{cuda_run}
 
 RUN echo "{sha256sum}  {cuda_run}" | sha256sum -cw --quiet -
 
@@ -205,6 +210,14 @@ codes['cuda75'] = cuda_base.format(
     cuda_url=cuda75_url,
     installer=cuda75_installer,
     sha256sum='08411d536741075131a1858a68615b8b73c51988e616e83b835e4632eea75eec',
+)
+
+codes['cuda80'] = cuda_base.format(
+    cuda_ver='8.0',
+    cuda_run=cuda80_run,
+    cuda_url=cuda80_url,
+    installer=cuda80_installer,
+    sha256sum='64dc4ab867261a0d690735c46d7cc9fc60d989da0d69dc04d1714e409cacbdf0',
 )
 
 # cudnn
