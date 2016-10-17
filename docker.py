@@ -13,7 +13,9 @@ base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35',
                 'ubuntu16_py2', 'ubuntu16_py3',
                 'centos6_py2', 'centos7_py2', 'centos7_py3']
 cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75', 'cuda80']
-cudnn_choices = ['none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn51']
+cudnn_choices = [
+    'none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
+    'cudnn51-cuda8']
 
 
 codes = {}
@@ -269,10 +271,22 @@ codes['cudnn5'] = cudnn_base.format(
     sha256sum='c4739a00608c3b66a004a74fc8e721848f9112c5cb15f730c1be4964b3a23b3a',
 )
 
+codes['cudnn5-cuda8'] = cudnn_base.format(
+    cudnn='cudnn-8.0-linux-x64-v5.0-ga',
+    cudnn_ver='v5',
+    sha256sum='af80eb1ce0cb51e6a734b2bdc599e6d50b676eab3921e5bddfe5443485df86b6',
+)
+
 codes['cudnn51'] = cudnn_base.format(
     cudnn='cudnn-7.5-linux-x64-v5.1',
     cudnn_ver='v5.1',
     sha256sum='40d506d0a8a00a3faccce1433346806b8cd2535683b6f08a63683ce6e474419f',
+)
+
+codes['cudnn51-cuda8'] = cudnn_base.format(
+    cudnn='cudnn-8.0-linux-x64-v5.1',
+    cudnn_ver='v5.1',
+    sha256sum='a87cb2df2e5e7cc0a05e266734e679ee1a2fadad6f06af82a76ed81a23b102c8',
 )
 
 protobuf_cpp_base = '''
