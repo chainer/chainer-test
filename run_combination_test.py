@@ -6,7 +6,7 @@ import os
 import random
 
 import docker
-
+import six
 
 params = {
     'base': docker.base_choices,
@@ -31,7 +31,7 @@ def iter_shuffle(lst):
 def get_shuffle_params(params, index):
     keys = params.keys()
     iters = [iter_shuffle(params[key]) for key in keys]
-    vals = next(itertools.islice(itertools.izip(*iters), index, None))
+    vals = next(itertools.islice(six.moves.zip(*iters), index, None))
     return dict(zip(keys, vals))
 
 
