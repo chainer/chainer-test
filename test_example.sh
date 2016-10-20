@@ -10,7 +10,7 @@ pip install *.tar.gz --user
 cd ..
 
 python -m pip install coverage --user
-python -m pip --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
+python -m pip install --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
 
 run="coverage run -a --branch"
 
