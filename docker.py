@@ -12,8 +12,10 @@ import sys
 base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35',
                 'ubuntu16_py2', 'ubuntu16_py3',
                 'centos6_py2', 'centos7_py2', 'centos7_py3']
-cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75']
-cudnn_choices = ['none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn51']
+cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75', 'cuda80']
+cudnn_choices = [
+    'none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
+    'cudnn51-cuda8']
 
 
 codes = {}
@@ -155,11 +157,16 @@ cuda75_url = 'http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_i
 cuda75_driver = 'NVIDIA-Linux-x86_64-352.39.run'
 cuda75_installer = 'cuda-linux64-rel-7.5.18-19867135.run'
 
+cuda80_run = 'cuda_8.0.44_linux-run'
+cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers/'
+cuda80_driver = 'NVIDIA-Linux-x86_64-367.48.run'
+cuda80_installer = 'cuda-linux64-rel-8.0.44-21122537.run'
+
 cuda_base = '''
 WORKDIR /opt/nvidia
 RUN mkdir installers
 
-RUN curl -s -o {cuda_run} {cuda_url}/{cuda_run}
+RUN curl -sL -o {cuda_run} {cuda_url}/{cuda_run}
 
 RUN echo "{sha256sum}  {cuda_run}" | sha256sum -cw --quiet -
 
@@ -205,6 +212,14 @@ codes['cuda75'] = cuda_base.format(
     cuda_url=cuda75_url,
     installer=cuda75_installer,
     sha256sum='08411d536741075131a1858a68615b8b73c51988e616e83b835e4632eea75eec',
+)
+
+codes['cuda80'] = cuda_base.format(
+    cuda_ver='8.0',
+    cuda_run=cuda80_run,
+    cuda_url=cuda80_url,
+    installer=cuda80_installer,
+    sha256sum='64dc4ab867261a0d690735c46d7cc9fc60d989da0d69dc04d1714e409cacbdf0',
 )
 
 # cudnn
@@ -256,10 +271,22 @@ codes['cudnn5'] = cudnn_base.format(
     sha256sum='c4739a00608c3b66a004a74fc8e721848f9112c5cb15f730c1be4964b3a23b3a',
 )
 
+codes['cudnn5-cuda8'] = cudnn_base.format(
+    cudnn='cudnn-8.0-linux-x64-v5.0-ga',
+    cudnn_ver='v5',
+    sha256sum='af80eb1ce0cb51e6a734b2bdc599e6d50b676eab3921e5bddfe5443485df86b6',
+)
+
 codes['cudnn51'] = cudnn_base.format(
     cudnn='cudnn-7.5-linux-x64-v5.1',
     cudnn_ver='v5.1',
     sha256sum='40d506d0a8a00a3faccce1433346806b8cd2535683b6f08a63683ce6e474419f',
+)
+
+codes['cudnn51-cuda8'] = cudnn_base.format(
+    cudnn='cudnn-8.0-linux-x64-v5.1',
+    cudnn_ver='v5.1',
+    sha256sum='a87cb2df2e5e7cc0a05e266734e679ee1a2fadad6f06af82a76ed81a23b102c8',
 )
 
 protobuf_cpp_base = '''
