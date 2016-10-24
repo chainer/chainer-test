@@ -312,7 +312,11 @@ def set_env(env, value):
 
 
 def run_pip(requires):
-    return 'RUN pip install -U "%s"\n' % requires
+    if 'pillow' in requires:
+        return ('RUN pip install --global-option="build_ext" '
+                '--global_option="disable-jpeg" -U "%s"\n' % requires)
+    else:
+        return 'RUN pip install -U "%s"\n' % requires
 
 
 def make_dockerfile(conf):
