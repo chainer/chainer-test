@@ -54,10 +54,10 @@ if __name__ == '__main__':
         'requires': [],
     }
 
-    append_requires(conf['requires'], 'numpy', args.numpy)
     append_requires(conf['requires'], 'setuptools', args.setuptools)
     append_requires(conf['requires'], 'pip', args.pip)
     append_requires(conf['requires'], 'cython', args.cython)
+    append_requires(conf['requires'], 'numpy', args.numpy)
 
     if args.http_proxy:
         conf['http_proxy'] = args.http_proxy
