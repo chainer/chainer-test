@@ -314,7 +314,7 @@ def set_env(env, value):
 def run_pip(requires):
     if 'pillow' in requires:
         return ('RUN pip install --global-option="build_ext" '
-                '--global-option="disable-jpeg" -U "%s"\n' % requires)
+                '--global-option="--disable-jpeg" -U "%s"\n' % requires)
     else:
         return 'RUN pip install -U "%s"\n' % requires
 
