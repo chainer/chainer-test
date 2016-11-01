@@ -9,7 +9,7 @@ cd dist
 pip install *.tar.gz --user
 cd ..
 
-python -m pip install coverage --user
+python -m pip install coverage matplotlib --user
 python -m pip install --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
 
 run="coverage run -a --branch"
@@ -63,6 +63,12 @@ $run examples/word2vec/train_word2vec.py -e 1 -b 10 --out-type original --test
 echo "it" | $run examples/word2vec/search.py
 $run examples/word2vec/train_word2vec.py -e 1 -b 10 --out-type original --gpu=0 --test
 echo "it" | $run examples/word2vec/search.py
+
+# vae
+echo "Runnig VAE example"
+
+$run examples/vae/train_vae.py -e 1
+$run examples/vae/train_vae.py -e 1 --gpu=0
 
 # show coverage
 coverage report -m --include="examples/*"
