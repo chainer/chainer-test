@@ -24,24 +24,27 @@ codes = {}
 
 codes['centos7_py2'] = '''FROM centos:7
 
-RUN yum -y update
-RUN yum -y install epel-release
-RUN yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make
-
 ENV PATH /usr/lib64/ccache:$PATH
 
-RUN yum -y install python-devel python-pip
+RUN yum -y update && \\
+    yum -y install epel-release && \\
+    yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
+    yun clean all
+RUN yum -y install python-devel python-pip && \\
+    yun clean all
 '''
 
 codes['centos7_py3'] = '''FROM centos:7
 
-RUN yum -y update
-RUN yum -y install epel-release
-RUN yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl
-
 ENV PATH /usr/lib64/ccache:$PATH
 
-RUN yum -y install bzip2-devel make openssl-devel readline-devel
+RUN yum -y update && \\
+    yum -y install epel-release && \\
+    yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
+    yun clean all
+RUN yum -y install bzip2-devel openssl-devel readline-devel && \\
+    yum clean all
+
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
 RUN mkdir "$PYENV_ROOT/shims"
@@ -55,13 +58,14 @@ RUN pyenv rehash
 
 codes['centos6_py2'] = '''FROM centos:6
 
-RUN yum -y update
-RUN yum -y install epel-release
-RUN yum -y install ccache gcc gcc-c++ git kmod hdf5-devel patch perl
-
 ENV PATH /usr/lib64/ccache:$PATH
 
-RUN yum -y install bzip2-devel make openssl-devel readline-devel
+RUN yum -y update && \\
+    yum -y install epel-release && \\
+    yum -y install ccache gcc gcc-c++ git kmod hdf5-devel patch perl make && \\
+    yum -y install bzip2-devel openssl-devel readline-devel && \\
+    yum clean all
+
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
 RUN mkdir "$PYENV_ROOT/shims"
@@ -75,34 +79,39 @@ RUN pyenv rehash
 
 codes['ubuntu14_py2'] = '''FROM ubuntu:14.04
 
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev
-
 ENV PATH /usr/lib/ccache:$PATH
 
-RUN apt-get install -y python-pip python-dev
+RUN apt-get -y update && apt-get -y upgrade && \\
+    apt-get install -y ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get clean
+RUN apt-get install -y python-pip python-dev && \\
+    apt-get clean
 '''
 
 codes['ubuntu14_py3'] = '''FROM ubuntu:14.04
 
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev
-
 ENV PATH /usr/lib/ccache:$PATH
 
-RUN apt-get install -y python3-pip python3-dev
+RUN apt-get -y update && apt-get -y upgrade && \\
+    apt-get install -y ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get clean
+RUN apt-get install -y python3-pip python3-dev && \\
+    apt-get clean
+
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 '''
 
 codes['ubuntu14_py35'] = '''FROM ubuntu:14.04
 
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y ccache curl g++ gfortran git libhdf5-dev
-
 ENV PATH /usr/lib/ccache:$PATH
 
-RUN apt-get -y install libbz2-dev libreadline-dev libssl-dev make
+RUN apt-get -y update && apt-get -y upgrade && \\
+    apt-get install -y ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get clean
+RUN apt-get -y install libbz2-dev libreadline-dev libssl-dev make && \\
+    apt-get clean
+
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
 RUN mkdir "$PYENV_ROOT/shims"
@@ -116,28 +125,31 @@ RUN pyenv rehash
 
 codes['ubuntu16_py2'] = '''FROM ubuntu:16.04
 
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config
+ENV PATH /usr/lib/ccache:$PATH
+
+RUN apt-get -y update && apt-get -y upgrade && \\
+    apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get clean
+RUN apt-get install -y python-pip python-dev && \\
+    apt-get clean
 
 RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
 RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
-
-ENV PATH /usr/lib/ccache:$PATH
-
-RUN apt-get install -y python-pip python-dev
 '''
 
 codes['ubuntu16_py3'] = '''FROM ubuntu:16.04
 
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config
+ENV PATH /usr/lib/ccache:$PATH
+
+RUN apt-get -y update && apt-get -y upgrade && \\
+    apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get clean
+RUN apt-get install -y python3-pip python3-dev && \\
+    apt-get clean
 
 RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
 RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
-ENV PATH /usr/lib/ccache:$PATH
-
-RUN apt-get install -y python3-pip python3-dev
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 '''
@@ -164,20 +176,17 @@ cuda80_installer = 'cuda-linux64-rel-8.0.44-21122537.run'
 
 cuda_base = '''
 WORKDIR /opt/nvidia
-RUN mkdir installers
-
-RUN curl -sL -o {cuda_run} {cuda_url}/{cuda_run}
-
-RUN echo "{sha256sum}  {cuda_run}" | sha256sum -cw --quiet -
-
-RUN chmod +x {cuda_run} && sync && \\
-    ./{cuda_run} -extract=`pwd`/installers
-RUN ./installers/{installer} -noprompt && \\
+RUN mkdir installers && \\
+    curl -sL -o {cuda_run} {cuda_url}/{cuda_run} && \\
+    echo "{sha256sum}  {cuda_run}" | sha256sum -cw --quiet - && \\
+    chmod +x {cuda_run} && sync && \\
+    ./{cuda_run} -extract=`pwd`/installers && \\
+    ./installers/{installer} -noprompt && \\
     cd / && \\
     rm -rf /opt/nvidia
 
-RUN echo "/usr/local/cuda/lib" >> /etc/ld.so.conf.d/cuda.conf && \
-    echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/cuda.conf && \
+RUN echo "/usr/local/cuda/lib" >> /etc/ld.so.conf.d/cuda.conf && \\
+    echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/cuda.conf && \\
     ldconfig
 
 ENV CUDA_ROOT /usr/local/cuda
@@ -226,17 +235,17 @@ codes['cuda80'] = cuda_base.format(
 
 cudnn2_base = '''
 WORKDIR /opt/cudnn
-RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz
-RUN echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet -
-RUN tar -xzf {cudnn}.tgz
-RUN rm {cudnn}.tgz
-RUN mkdir -p /usr/local/cuda/include
-RUN mkdir -p /usr/local/cuda/lib64
-RUN cp {cudnn}/cudnn.h /usr/local/cuda/include/.
-RUN mv {cudnn}/libcudnn.so /usr/local/cuda/lib64/.
-RUN mv {cudnn}/libcudnn.so.6.5 /usr/local/cuda/lib64/.
-RUN mv {cudnn}/libcudnn.so.6.5.48 /usr/local/cuda/lib64/.
-RUN mv {cudnn}/libcudnn_static.a /usr/local/cuda/lib64/.
+RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
+    echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
+    tar -xzf {cudnn}.tgz && \\
+    rm {cudnn}.tgz && \\
+    mkdir -p /usr/local/cuda/include && \\
+    mkdir -p /usr/local/cuda/lib64 && \\
+    mv {cudnn}/cudnn.h /usr/local/cuda/include/. && \\
+    mv {cudnn}/libcudnn.so /usr/local/cuda/lib64/. && \\
+    mv {cudnn}/libcudnn.so.6.5 /usr/local/cuda/lib64/. && \\
+    mv {cudnn}/libcudnn.so.6.5.48 /usr/local/cuda/lib64/. && \\
+    mv {cudnn}/libcudnn_static.a /usr/local/cuda/lib64/.
 '''
 
 codes['cudnn2'] = cudnn2_base.format(
@@ -247,10 +256,10 @@ codes['cudnn2'] = cudnn2_base.format(
 
 cudnn_base = '''
 WORKDIR /opt/cudnn
-RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz
-RUN echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet -
-RUN tar -xzf {cudnn}.tgz -C /usr/local
-RUN rm {cudnn}.tgz
+RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
+    echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
+    tar -xzf {cudnn}.tgz -C /usr/local && \\
+    rm {cudnn}.tgz
 '''
 
 codes['cudnn3'] = cudnn_base.format(
@@ -291,13 +300,16 @@ codes['cudnn51-cuda8'] = cudnn_base.format(
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
+RUN tmpdir=`mktemp -d` && \\
+    cd $tmpdir && \\
+    curl -sL -o protobuf-cpp-{protobuf}.tar.gz https://github.com/google/protobuf/releases/download/v{protobuf}/protobuf-cpp-{protobuf}.tar.gz && \\
+    tar -xzf protobuf-cpp-{protobuf}.tar.gz && \\
+    curl -sL -o protobuf-python-{protobuf}.tar.gz https://github.com/google/protobuf/releases/download/v{protobuf}/protobuf-python-{protobuf}.tar.gz && \\
+    tar -xzf protobuf-python-{protobuf}.tar.gz && \\
+    cd protobuf-{protobuf} && CC=/usr/bin/gcc CXX=/usr/bin/g++ ./configure && make -j4 install && ldconfig && \\
+    cd python && python setup.py install --cpp_implementation && \\
+    cd /tmp && rm -rf $tmpdir
 WORKDIR /tmp
-RUN curl -sL -o protobuf-cpp-{protobuf}.tar.gz https://github.com/google/protobuf/releases/download/v{protobuf}/protobuf-cpp-{protobuf}.tar.gz
-RUN tar -xzf protobuf-cpp-{protobuf}.tar.gz
-RUN curl -sL -o protobuf-python-{protobuf}.tar.gz https://github.com/google/protobuf/releases/download/v{protobuf}/protobuf-python-{protobuf}.tar.gz
-RUN tar -xzf protobuf-python-{protobuf}.tar.gz
-RUN cd protobuf-{protobuf} && CC=/usr/bin/gcc CXX=/usr/bin/g++ ./configure && make -j4 install && ldconfig
-RUN cd protobuf-{protobuf}/python && python setup.py install --cpp_implementation
 '''
 
 codes['protobuf-cpp-3'] = protobuf_cpp_base.format(
