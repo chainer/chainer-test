@@ -29,9 +29,9 @@ ENV PATH /usr/lib64/ccache:$PATH
 RUN yum -y update && \\
     yum -y install epel-release && \\
     yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
-    yun clean all
+    yum clean all
 RUN yum -y install python-devel python-pip && \\
-    yun clean all
+    yum clean all
 '''
 
 codes['centos7_py3'] = '''FROM centos:7
@@ -41,7 +41,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 RUN yum -y update && \\
     yum -y install epel-release && \\
     yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
-    yun clean all
+    yum clean all
 RUN yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
