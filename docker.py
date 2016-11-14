@@ -298,6 +298,24 @@ codes['cudnn51-cuda8'] = cudnn_base.format(
     sha256sum='a87cb2df2e5e7cc0a05e266734e679ee1a2fadad6f06af82a76ed81a23b102c8',
 )
 
+# This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
+# installed.
+codes['cudnn51-with-dummy'] = '''
+WORKDIR /opt/cudnn
+RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
+    echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
+    tar -xzf {cudnn}.tgz -C /opt/cudnn && \\
+    rm {cudnn}.tgz
+RUN touch /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn.so
+ENV CFLAGS=-I/opt/cudnn/cuda/include
+ENV LDFLAGS=-L/opt/cudnn/cuda/lib64
+ENV LD_LIBRARY_PATH=/opt/cudnn/cuda/lib64:$LD_LIBRARY_PATH
+'''.format(
+    cudnn='cudnn-8.0-linux-x64-v5.1',
+    cudnn_ver='v5.1',
+    sha256sum='a87cb2df2e5e7cc0a05e266734e679ee1a2fadad6f06af82a76ed81a23b102c8',
+)
+
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
 RUN tmpdir=`mktemp -d` && \\

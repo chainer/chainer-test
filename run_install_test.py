@@ -16,7 +16,8 @@ if __name__ == '__main__':
         description='Test script for installation')
     parser.add_argument('--base', choices=docker.base_choices, required=True)
     parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
-    parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
+    parser.add_argument('--cudnn', choices=docker.cudnn_choices +
+                        ['cudnn51-with-dummy'], required=True)
     parser.add_argument('--numpy')
     parser.add_argument('--setuptools')
     parser.add_argument('--pip')
