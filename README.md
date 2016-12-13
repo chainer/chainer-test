@@ -7,7 +7,7 @@ It is test scripts of chainer and dockerfiles for its test environment.
 
 - nvidia-docker
 - Docker (>=1.7)
-- CUDA 7.5
+- CUDA 8.0
 
 ## How to use
 
