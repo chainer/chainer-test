@@ -5,6 +5,7 @@ It is test scripts of chainer and dockerfiles for its test environment.
 
 ## Requiements
 
+- CuPy (when GPU mode)
 - nvidia-docker
 - Docker (>=1.7)
 - CUDA 8.0
