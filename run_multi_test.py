@@ -93,6 +93,7 @@ if __name__ == '__main__':
         script = './test_cpu.sh'
     elif args.type == 'gpu':
         script = './test.sh'
+        conf['requires'].append('cupy')
 
     if args.http_proxy:
         conf['http_proxy'] = args.http_proxy
