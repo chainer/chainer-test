@@ -51,7 +51,7 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN pyenv install 3.4.3
+RUN env CFLAGS="-fPIC" pyenv install 3.4.3
 RUN pyenv global 3.4.3
 RUN pyenv rehash
 '''
@@ -72,7 +72,7 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN pyenv install 2.7.10
+RUN env CFLAGS="-fPIC" pyenv install 2.7.10
 RUN pyenv global 2.7.10
 RUN pyenv rehash
 '''
@@ -118,7 +118,7 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN pyenv install 3.5.1
+RUN env CFLAGS="-fPIC" pyenv install 3.5.1
 RUN pyenv global 3.5.1
 RUN pyenv rehash
 '''
