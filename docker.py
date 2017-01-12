@@ -9,9 +9,10 @@ import subprocess
 import sys
 
 
-base_choices = ['ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35',
-                'ubuntu16_py2', 'ubuntu16_py3',
-                'centos6_py2', 'centos7_py2', 'centos7_py3']
+base_choices = [
+    'ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'ubuntu14_py36',
+    'ubuntu16_py2', 'ubuntu16_py3',
+    'centos6_py2', 'centos7_py2', 'centos7_py3']
 cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75', 'cuda80']
 cudnn_choices = [
     'none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
@@ -102,7 +103,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 '''
 
-codes['ubuntu14_py35'] = '''FROM ubuntu:14.04
+ubuntu14_pyenv_base = '''FROM ubuntu:14.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
@@ -118,10 +119,13 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN env CFLAGS="-fPIC" pyenv install 3.5.2
-RUN pyenv global 3.5.2
+RUN env CFLAGS="-fPIC" pyenv install {python_ver}
+RUN pyenv global {python_ver}
 RUN pyenv rehash
 '''
+
+codes['ubuntu14_py35'] = ubuntu14_pyenv_base.format(python_ver='3.5.2')
+codes['ubuntu14_py36'] = ubuntu14_pyenv_base.format(python_ver='3.6.0')
 
 codes['ubuntu16_py2'] = '''FROM ubuntu:16.04
 
