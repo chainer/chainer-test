@@ -246,6 +246,8 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
     mv {cudnn}/libcudnn.so.6.5 /usr/local/cuda/lib64/. && \\
     mv {cudnn}/libcudnn.so.6.5.48 /usr/local/cuda/lib64/. && \\
     mv {cudnn}/libcudnn_static.a /usr/local/cuda/lib64/.
+
+ENV CUDNN_VER {cudnn_ver}
 '''
 
 codes['cudnn2'] = cudnn2_base.format(
@@ -260,6 +262,8 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
     echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
     tar -xzf {cudnn}.tgz -C /usr/local && \\
     rm {cudnn}.tgz
+
+ENV CUDNN_VER {cudnn_ver}
 '''
 
 codes['cudnn3'] = cudnn_base.format(
@@ -293,6 +297,24 @@ codes['cudnn51'] = cudnn_base.format(
 )
 
 codes['cudnn51-cuda8'] = cudnn_base.format(
+    cudnn='cudnn-8.0-linux-x64-v5.1',
+    cudnn_ver='v5.1',
+    sha256sum='a87cb2df2e5e7cc0a05e266734e679ee1a2fadad6f06af82a76ed81a23b102c8',
+)
+
+# This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
+# installed.
+codes['cudnn51-with-dummy'] = '''
+WORKDIR /opt/cudnn
+RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
+    echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
+    tar -xzf {cudnn}.tgz -C /opt/cudnn && \\
+    rm {cudnn}.tgz
+RUN touch /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn.so
+ENV CFLAGS=-I/opt/cudnn/cuda/include
+ENV LDFLAGS=-L/opt/cudnn/cuda/lib64
+ENV LD_LIBRARY_PATH=/opt/cudnn/cuda/lib64:$LD_LIBRARY_PATH
+'''.format(
     cudnn='cudnn-8.0-linux-x64-v5.1',
     cudnn_ver='v5.1',
     sha256sum='a87cb2df2e5e7cc0a05e266734e679ee1a2fadad6f06af82a76ed81a23b102c8',
