@@ -246,6 +246,8 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
     mv {cudnn}/libcudnn.so.6.5 /usr/local/cuda/lib64/. && \\
     mv {cudnn}/libcudnn.so.6.5.48 /usr/local/cuda/lib64/. && \\
     mv {cudnn}/libcudnn_static.a /usr/local/cuda/lib64/.
+
+ENV CUDNN_VER {cudnn_ver}
 '''
 
 codes['cudnn2'] = cudnn2_base.format(
@@ -260,6 +262,8 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
     echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
     tar -xzf {cudnn}.tgz -C /usr/local && \\
     rm {cudnn}.tgz
+
+ENV CUDNN_VER {cudnn_ver}
 '''
 
 codes['cudnn3'] = cudnn_base.format(
