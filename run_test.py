@@ -31,7 +31,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn2',
             'requires': [
                 'setuptools', 'pip', 'cython==0.24', 'numpy<1.12', 'h5py', 'theano',
-                'pillow',
+                'pillow', 'protobuf',
             ]
         }
         script = './test.sh'
