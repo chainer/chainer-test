@@ -32,6 +32,7 @@ if __name__ == '__main__':
             'requires': [
                 'setuptools', 'pip', 'cython==0.24', 'numpy<1.12', 'h5py', 'theano',
                 'pillow',
+                'protobuf',  # ignore broken protobuf 3.2.0rc1
             ]
         }
         script = './test.sh'
