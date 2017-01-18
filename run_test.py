@@ -30,7 +30,7 @@ if __name__ == '__main__':
             'cuda': 'cuda65',
             'cudnn': 'cudnn2',
             'requires': [
-                'setuptools', 'pip', 'cython==0.24', 'numpy<1.12', 'h5py', 'theano',
+                'setuptools', 'pip', 'cython==0.24', 'numpy<1.13', 'h5py', 'theano',
                 'pillow',
                 'protobuf',  # ignore broken protobuf 3.2.0rc1
             ]
@@ -44,7 +44,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn4',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
-                'setuptools', 'pip', 'cython==0.24', 'numpy<1.11',
+                'setuptools', 'pip', 'cython==0.24', 'numpy<1.12',
                 'pillow',
             ],
         }
@@ -55,7 +55,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
             'cudnn': 'cudnn51',
-            'requires': ['setuptools', 'cython==0.24', 'numpy<1.10', 'h5py', 'theano', 'protobuf<3'],
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.11', 'h5py', 'theano', 'protobuf<3'],
         }
         script = './test.sh'
 
@@ -64,7 +64,7 @@ if __name__ == '__main__':
             'base': 'centos7_py2',
             'cuda': 'cuda75',
             'cudnn': 'cudnn3',
-            'requires': ['setuptools', 'cython==0.24', 'numpy<1.12'],
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.13'],
         }
         script = './test_example.sh'
 
@@ -73,7 +73,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda65',
             'cudnn': 'cudnn5',
-            'requires': ['setuptools', 'cython==0.24', 'numpy<1.11'],
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.12'],
         }
         script = './test_prev_example.sh'
 
@@ -82,7 +82,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda70',
             'cudnn': 'cudnn3',
-            'requires': ['setuptools', 'cython==0.24', 'numpy<1.12', 'sphinx']
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.13', 'sphinx']
         }
         script = './test_doc.sh'
 
