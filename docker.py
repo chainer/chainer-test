@@ -375,9 +375,9 @@ def make_dockerfile(conf):
         for req in conf['requires']:
             if 'theano' in req:
                 if 'ubuntu' in conf['base']:
-                    dockerfile += 'RUN apt-get install -y liblapack-dev\n'
+                    dockerfile += 'RUN apt-get update && apt-get -y install liblapack-dev && apt-get clean\n'
                 elif 'centos' in conf['base']:
-                    dockerfile += 'RUN yum -y install lapack-devel\n'
+                    dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
             dockerfile += run_pip(req)
 
     # Make a user and home directory to install chainer
