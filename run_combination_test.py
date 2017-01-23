@@ -66,6 +66,9 @@ if __name__ == '__main__':
     volume = []
     env = {'CUDNN': conf['cudnn']}
 
+    if params['theano'] == '0.8':
+        conf['requires'].append('theano<0.9')
+
     if params['numpy'] == '1.9':
         conf['requires'].append('numpy<1.10')
     elif params['numpy'] == '1.10':
@@ -89,9 +92,6 @@ if __name__ == '__main__':
 
     if params['pillow'] == '3.4':
         conf['requires'].append('pillow<3.5')
-
-    if params['theano'] == '0.8':
-        conf['requires'].append('theano<0.9')
 
     conf['requires'] += [
         'hacking',
