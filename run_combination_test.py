@@ -66,6 +66,11 @@ if __name__ == '__main__':
     volume = []
     env = {'CUDNN': conf['cudnn']}
 
+    if params['h5py'] == '2.6':
+        conf['requires'].append('h5py<2.7')
+    elif params['h5py'] == '2.5':
+        conf['requires'].append('h5py<2.6')
+
     if params['theano'] == '0.8':
         conf['requires'].append('theano<0.9')
 
@@ -84,11 +89,6 @@ if __name__ == '__main__':
         conf['requires'].append('protobuf<3')
     elif params['protobuf'] == 'cpp-3':
         conf['protobuf-cpp'] = 'protobuf-cpp-3'
-
-    if params['h5py'] == '2.6':
-        conf['requires'].append('h5py<2.7')
-    elif params['h5py'] == '2.5':
-        conf['requires'].append('h5py<2.6')
 
     if params['pillow'] == '3.4':
         conf['requires'].append('pillow<3.5')
