@@ -4,6 +4,7 @@ import argparse
 import itertools
 import os
 import random
+import sys
 
 import docker
 import six
@@ -55,6 +56,7 @@ if __name__ == '__main__':
     params = get_shuffle_params(params, args.id)
     for key, value in params.items():
         print('{}: {}'.format(key, value))
+    sys.stdout.flush()
 
     conf = {
         'base': params['base'],
