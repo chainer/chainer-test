@@ -39,6 +39,13 @@ if __name__ == '__main__':
     volume = []
     env = {'CUDNN': conf['cudnn']}
 
+    if args.h5py == '2.5':
+        conf['requires'].append('numpy<1.10')
+        conf['requires'].append('h5py<2.6')
+
+    if args.theano == '0.8':
+        conf['requires'].append('theano<0.9')
+
     if args.numpy == '1.9':
         conf['requires'].append('numpy<1.10')
     elif args.numpy == '1.10':
@@ -55,14 +62,8 @@ if __name__ == '__main__':
     elif args.protobuf == 'cpp-3':
         conf['protobuf-cpp'] = 'protobuf-cpp-3'
 
-    if args.h5py == '2.5':
-        conf['requires'].append('h5py<2.6')
-
     if args.pillow == '3.4':
         conf['requires'].append('pillow<3.5')
-
-    if args.theano == '0.8':
-        conf['requires'].append('theano<0.9')
 
     conf['requires'] += [
         'hacking',
