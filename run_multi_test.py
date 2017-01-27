@@ -15,8 +15,8 @@ if __name__ == '__main__':
     parser.add_argument('--numpy', choices=['1.9', '1.10', '1.11', '1.12'],
                         required=True)
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
-    parser.add_argument('--h5py', choices=['none', '2.5'])
-    parser.add_argument('--pillow', choices=['none', '3.4'])
+    parser.add_argument('--h5py', choices=['none', '2.5', '2.6'])
+    parser.add_argument('--pillow', choices=['none', '3.4', '4.0'])
     parser.add_argument('--theano', choices=['none', '0.8'])
     parser.add_argument('--type', choices=['cpu', 'gpu'], required=True)
     parser.add_argument('--cache')
@@ -42,6 +42,8 @@ if __name__ == '__main__':
     if args.h5py == '2.5':
         conf['requires'].append('numpy<1.10')
         conf['requires'].append('h5py<2.6')
+    elif args.h5py == '2.6':
+        conf['requires'].append('h5py<2.7')
 
     if args.theano == '0.8':
         conf['requires'].append('theano<0.9')
@@ -64,6 +66,8 @@ if __name__ == '__main__':
 
     if args.pillow == '3.4':
         conf['requires'].append('pillow<3.5')
+    elif args.pillow == '4.0':
+        conf['requires'].append('pillow<4.1')
 
     conf['requires'] += [
         'hacking',
