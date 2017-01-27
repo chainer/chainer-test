@@ -33,7 +33,10 @@ def get_shuffle_params(params, index):
     keys = params.keys()
     iters = [iter_shuffle(params[key]) for key in keys]
     vals = next(itertools.islice(six.moves.zip(*iters), index, None))
-    return dict(zip(keys, vals))
+    ret = dict(zip(keys, vals))
+    if ret['numpy'] == '1.9' and ret['h5py'] != 'none':
+        ret['numpy'] = '1.10'
+    return ret
 
 
 if __name__ == '__main__':
