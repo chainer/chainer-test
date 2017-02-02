@@ -34,8 +34,11 @@ def get_shuffle_params(params, index):
     iters = [iter_shuffle(params[key]) for key in keys]
     vals = next(itertools.islice(six.moves.zip(*iters), index, None))
     ret = dict(zip(keys, vals))
+
+    # avoid SEGV
     if ret['numpy'] == '1.9' and ret['h5py'] != 'none':
         ret['numpy'] = '1.10'
+
     return ret
 
 
