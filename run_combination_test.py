@@ -71,6 +71,7 @@ if __name__ == '__main__':
     if params['h5py'] == '2.6':
         conf['requires'].append('h5py<2.7')
     elif params['h5py'] == '2.5':
+        # h5py uses numpy in its setup script
         conf['requires'].append('numpy<1.10')
         conf['requires'].append('h5py<2.6')
 
