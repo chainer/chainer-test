@@ -10,11 +10,14 @@ import docker
 def main():
     parser = argparse.ArgumentParser(
         description='Test script for Dockerfile of Chainer')
+    parser.add_argument('--subdir', '-s', choices=['python2', 'python3'],
+                        default='python2',
+                        help='Sub-directory name ("python2" or "python3")')
     parser.add_argument('--interactive', '-i', action='store_true',
                         help='Run bash instead of test')
     args = parser.parse_args()
 
-    os.chdir('chainer/docker')
+    os.chdir('chainer/docker/%s' % args.subdir)
     name = docker.make_random_name()
     docker.build_image(name)
     cmd = [
