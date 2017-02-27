@@ -28,8 +28,12 @@ def main():
     if args.interactive:
         cmd += ['-it', name, '/bin/bash']
     else:
+        if args.subdir == 'python2':
+            python_command = 'python'
+        else:
+            python_command = 'python3'
         cmd += [
-            name, 'python', '-c', 'import cupy; cupy.array([1])',
+            name, python_command, '-c', 'import cupy; cupy.array([1])',
         ]
 
     subprocess.check_call(cmd)
