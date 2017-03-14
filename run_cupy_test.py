@@ -63,7 +63,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn3',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.13', 'sphinx']
         }
-        script = './test_doc.sh'
+        script = './test_cupy_doc.sh'
 
     else:
         raise
