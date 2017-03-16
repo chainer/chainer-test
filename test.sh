@@ -1,8 +1,12 @@
 #!/bin/sh -ex
 
+cd cupy
+python setup.py build -j 4 develop install --user || python setup.py develop install --user
+cd ..
+
 cd chainer
 flake8
-python setup.py build -j 4 develop install --user || python setup.py develop install --user
+python setup.py install --user
 
 export PYTHONWARNINGS="ignore::FutureWarning"
 
