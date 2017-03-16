@@ -98,9 +98,6 @@ if __name__ == '__main__':
     else:
         raise
 
-    if args.gpu_id is not None:
-        conf['requires'].append('cupy')
-
     volume = []
     env = {'CUDNN': conf['cudnn']}
 
