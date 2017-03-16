@@ -378,8 +378,6 @@ def run_pip(requires):
         return ('RUN pip install -U olefile && '
                 'pip install --global-option="build_ext" '
                 '--global-option="--disable-jpeg" -U "%s"\n' % requires)
-    elif 'cupy' in requires:
-        return 'COPY /cupy /tmp/cupy\nRUN cd /tmp/cupy && python setup.py install\n'
     else:
         return 'RUN pip install -U "%s"\n' % requires
 
