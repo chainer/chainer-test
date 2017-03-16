@@ -406,6 +406,7 @@ def make_dockerfile(conf):
             dockerfile += run_pip(req)
 
     # Make a user and home directory to install chainer
+    dockerfile += 'RUN apt-get remove -y python3-six\n'
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
     return dockerfile
 
