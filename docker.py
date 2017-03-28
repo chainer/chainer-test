@@ -16,7 +16,7 @@ base_choices = [
 cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75', 'cuda80']
 cudnn_choices = [
     'none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
-    'cudnn51-cuda8']
+    'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8']
 
 
 codes = {}
@@ -304,6 +304,18 @@ codes['cudnn51-cuda8'] = cudnn_base.format(
     cudnn='cudnn-8.0-linux-x64-v5.1',
     cudnn_ver='v5.1',
     sha256sum='c10719b36f2dd6e9ddc63e3189affaa1a94d7d027e63b71c3f64d449ab0645ce',
+)
+
+codes['cudnn6'] = cudnn_base.format(
+    cudnn='cudnn-7.5-linux-x64-v6.0',
+    cudnn_ver='v6.0',
+    sha256sum='f01ef9edde632cf75ae38045df30d7e8ec6847f3bdd20dcf13eaa52def253fba',
+)
+
+codes['cudnn6-cuda8'] = cudnn_base.format(
+    cudnn='cudnn-8.0-linux-x64-v6.0',
+    cudnn_ver='v6.0',
+    sha256sum='36e7cd54d9f4cd448c302a40d2ed530a643e3ae32797a67739448ebe7c9f0620',
 )
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
