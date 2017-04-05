@@ -74,6 +74,15 @@ if __name__ == '__main__':
     volume = []
     env = {'CUDNN': conf['cudnn']}
 
+    if params['numpy'] == '1.9':
+        conf['requires'].append('numpy<1.10')
+    elif params['numpy'] == '1.10':
+        conf['requires'].append('numpy<1.11')
+    elif params['numpy'] == '1.11':
+        conf['requires'].append('numpy<1.12')
+    elif params['numpy'] == '1.12':
+        conf['requires'].append('numpy<1.13')
+
     if params['h5py'] == '2.6':
         conf['requires'].append('h5py<2.7')
     elif params['h5py'] == '2.5':
@@ -83,15 +92,6 @@ if __name__ == '__main__':
 
     if params['theano'] == '0.8':
         conf['requires'].append('theano<0.9')
-
-    if params['numpy'] == '1.9':
-        conf['requires'].append('numpy<1.10')
-    elif params['numpy'] == '1.10':
-        conf['requires'].append('numpy<1.11')
-    elif params['numpy'] == '1.11':
-        conf['requires'].append('numpy<1.12')
-    elif params['numpy'] == '1.12':
-        conf['requires'].append('numpy<1.13')
 
     if params['protobuf'] == '3':
         conf['requires'].append('protobuf<4')
