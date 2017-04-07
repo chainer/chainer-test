@@ -15,7 +15,7 @@ if __name__ == '__main__':
     parser.add_argument('--numpy', choices=['1.9', '1.10', '1.11', '1.12'],
                         required=True)
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
-    parser.add_argument('--h5py', choices=['none', '2.5', '2.6'])
+    parser.add_argument('--h5py', choices=['none', '2.5', '2.6', '2.7'])
     parser.add_argument('--pillow', choices=['none', '3.4', '4.0'])
     parser.add_argument('--theano', choices=['none', '0.8'])
     parser.add_argument('--type', choices=['cpu', 'gpu'], required=True)
@@ -44,6 +44,8 @@ if __name__ == '__main__':
         conf['requires'].append('h5py<2.6')
     elif args.h5py == '2.6':
         conf['requires'].append('h5py<2.7')
+    elif args.h5py == '2.7':
+        conf['requires'].append('h5py<2.8')
 
     if args.theano == '0.8':
         conf['requires'].append('theano<0.9')

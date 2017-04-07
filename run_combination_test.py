@@ -15,7 +15,7 @@ params = {
     'cudnn': docker.cudnn_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'protobuf': ['2', '3', 'cpp-3'],
-    'h5py': ['none', '2.5', '2.6'],
+    'h5py': ['none', '2.5', '2.6', '2.7'],
     'pillow': ['none', '3.4'],
     'theano': ['none', '0.8'],
 }
@@ -83,7 +83,10 @@ if __name__ == '__main__':
     elif params['numpy'] == '1.12':
         conf['requires'].append('numpy<1.13')
 
-    if params['h5py'] == '2.6':
+
+    if params['h5py'] == '2.7':
+        conf['requires'].append('h5py<2.8')
+    elif params['h5py'] == '2.6':
         conf['requires'].append('h5py<2.7')
     elif params['h5py'] == '2.5':
         # h5py uses numpy in its setup script
