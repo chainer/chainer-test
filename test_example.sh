@@ -14,6 +14,7 @@ python -m pip install olefile --user
 python -m pip install --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
 
 run="coverage run -a --branch"
+export PYTHONWARNINGS="error::DeprecationWarning,ignore::FutureWarning"
 
 # mnist
 echo "Running mnist example"
