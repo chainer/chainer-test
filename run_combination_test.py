@@ -16,7 +16,7 @@ params = {
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'protobuf': ['2', '3', 'cpp-3'],
     'h5py': ['none', '2.5', '2.6', '2.7'],
-    'pillow': ['none', '3.4'],
+    'pillow': ['none', '3.4', '4.0', '4.1'],
     'theano': ['none', '0.8'],
 }
 
@@ -105,6 +105,10 @@ if __name__ == '__main__':
 
     if params['pillow'] == '3.4':
         conf['requires'].append('pillow<3.5')
+    elif params['pillow'] == '4.0':
+        conf['requires'].append('pillow<4.1')
+    elif params['pillow'] == '4.1':
+        conf['requires'].append('pillow<4.2')
 
     conf['requires'] += [
         'hacking',
