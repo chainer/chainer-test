@@ -71,7 +71,7 @@ if __name__ == '__main__':
     volume = []
     env = {'CUDNN': conf['cudnn']}
 
-    conf['requires'] += ['hacking', 'nose', 'mock', 'coverage']
+    conf['requires'] += ['hacking', 'nose', 'mock', 'coverage', 'pynvrtc']
 
     if args.cache:
         volume.append(args.cache)
