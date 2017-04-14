@@ -27,7 +27,7 @@ if __name__ == '__main__':
     if args.test == 'py2':
         conf = {
             'base': 'ubuntu14_py2',
-            'cuda': 'cuda65',
+            'cuda': 'cuda70',
             'cudnn': 'cudnn2',
             'requires': [
                 'setuptools', 'pip', 'cython==0.24', 'numpy<1.13',
