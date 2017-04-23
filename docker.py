@@ -320,7 +320,7 @@ codes['cudnn6-cuda8'] = cudnn_base.format(
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
 # installed.
-codes['cudnn51-with-dummy'] = '''
+codes['cudnn-latest-with-dummy'] = '''
 WORKDIR /opt/cudnn
 RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
     echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
@@ -331,9 +331,9 @@ ENV CFLAGS=-I/opt/cudnn/cuda/include
 ENV LDFLAGS=-L/opt/cudnn/cuda/lib64
 ENV LD_LIBRARY_PATH=/opt/cudnn/cuda/lib64:$LD_LIBRARY_PATH
 '''.format(
-    cudnn='cudnn-8.0-linux-x64-v5.1',
-    cudnn_ver='v5.1',
-    sha256sum='a87cb2df2e5e7cc0a05e266734e679ee1a2fadad6f06af82a76ed81a23b102c8',
+    cudnn='cudnn-8.0-linux-x64-v6.0',
+    cudnn_ver='v6.0',
+    sha256sum='36e7cd54d9f4cd448c302a40d2ed530a643e3ae32797a67739448ebe7c9f0620',
 )
 
 protobuf_cpp_base = '''
