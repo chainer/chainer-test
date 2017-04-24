@@ -17,7 +17,7 @@ if __name__ == '__main__':
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
     parser.add_argument('--h5py', choices=['none', '2.5', '2.6', '2.7'])
     parser.add_argument('--pillow', choices=['none', '3.4', '4.0', '4.1'])
-    parser.add_argument('--theano', choices=['none', '0.8'])
+    parser.add_argument('--theano', choices=['none', '0.8', '0.9'])
     parser.add_argument('--type', choices=['cpu', 'gpu'], required=True)
     parser.add_argument('--cache')
     parser.add_argument('--http-proxy')
@@ -49,6 +49,8 @@ if __name__ == '__main__':
 
     if args.theano == '0.8':
         conf['requires'].append('theano<0.9')
+    elif args.theano == '0.9':
+        conf['requires'].append('theano<0.10')
 
     if args.numpy == '1.9':
         conf['requires'].append('numpy<1.10')
