@@ -96,7 +96,7 @@ if __name__ == '__main__':
     if params['theano'] == '0.8':
         conf['requires'].append('theano<0.9')
     elif params['theano'] == '0.9':
-        conf['requires'].append('theano<1')
+        conf['requires'].append('theano<0.10')
 
     if params['protobuf'] == '3':
         conf['requires'].append('protobuf<4')

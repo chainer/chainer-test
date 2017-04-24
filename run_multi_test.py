@@ -50,7 +50,7 @@ if __name__ == '__main__':
     if args.theano == '0.8':
         conf['requires'].append('theano<0.9')
     elif args.theano == '0.9':
-        conf['requires'].append('theano<1')
+        conf['requires'].append('theano<0.10')
 
     if args.numpy == '1.9':
         conf['requires'].append('numpy<1.10')
