@@ -333,7 +333,7 @@ ENV LD_LIBRARY_PATH=/opt/cudnn/cuda/lib64:$LD_LIBRARY_PATH
 '''.format(
     cudnn='cudnn-8.0-linux-x64-v6.0',
     cudnn_ver='v6.0',
-    sha256sum='36e7cd54d9f4cd448c302a40d2ed530a643e3ae32797a67739448ebe7c9f0620',
+    sha256sum='9b09110af48c9a4d7b6344eb4b3e344daa84987ed6177d5c44319732f3bb7f9c',
 )
 
 protobuf_cpp_base = '''
