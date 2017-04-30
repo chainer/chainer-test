@@ -309,13 +309,13 @@ codes['cudnn51-cuda8'] = cudnn_base.format(
 codes['cudnn6'] = cudnn_base.format(
     cudnn='cudnn-7.5-linux-x64-v6.0',
     cudnn_ver='v6.0',
-    sha256sum='f01ef9edde632cf75ae38045df30d7e8ec6847f3bdd20dcf13eaa52def253fba',
+    sha256sum='568d4b070c5f91ab8a15b287b73dd072b99c7267a43edad13f70337cd186c82c',
 )
 
 codes['cudnn6-cuda8'] = cudnn_base.format(
     cudnn='cudnn-8.0-linux-x64-v6.0',
     cudnn_ver='v6.0',
-    sha256sum='36e7cd54d9f4cd448c302a40d2ed530a643e3ae32797a67739448ebe7c9f0620',
+    sha256sum='9b09110af48c9a4d7b6344eb4b3e344daa84987ed6177d5c44319732f3bb7f9c',
 )
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
