@@ -38,7 +38,7 @@ if __name__ == '__main__':
     elif args.test == 'py3':
         conf = {
             'base': 'ubuntu14_py3',
-            'cuda': 'cuda70',
+            'cuda': 'cuda75',
             'cudnn': 'cudnn4',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
