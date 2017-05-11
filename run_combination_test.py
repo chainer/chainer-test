@@ -13,6 +13,7 @@ params = {
     'base': docker.base_choices,
     'cuda': docker.cuda_choices,
     'cudnn': docker.cudnn_choices,
+    'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'protobuf': ['2', '3', 'cpp-3'],
     'h5py': ['none', '2.5', '2.6', '2.7'],
@@ -38,6 +39,9 @@ def get_shuffle_params(params, index):
     # avoid SEGV
     if ret['numpy'] == '1.9' and ret['h5py'] != 'none':
         ret['numpy'] = '1.10'
+
+    if ret['cuda'] in ('none', 'cuda65'):
+        ret['nccl'] = 'none'
 
     return ret
 
@@ -68,6 +72,7 @@ if __name__ == '__main__':
         'base': params['base'],
         'cuda': params['cuda'],
         'cudnn': params['cudnn'],
+        'nccl': params['nccl'],
         'requires': ['setuptools', 'pip', 'cython==0.24'],
     }
 
