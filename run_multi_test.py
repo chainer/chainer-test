@@ -12,6 +12,7 @@ if __name__ == '__main__':
     parser.add_argument('--base', choices=docker.base_choices, required=True)
     parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
     parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
+    parser.add_argument('--nccl', choices=docker.nccl_choices, required=True)
     parser.add_argument('--numpy', choices=['1.9', '1.10', '1.11', '1.12'],
                         required=True)
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
@@ -34,6 +35,7 @@ if __name__ == '__main__':
         'base': args.base,
         'cuda': args.cuda,
         'cudnn': args.cudnn,
+        'nccl': args.nccl,
         'requires': ['setuptools', 'pip', 'cython==0.24'],
     }
     volume = []

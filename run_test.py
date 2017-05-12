@@ -29,6 +29,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda65',
             'cudnn': 'cudnn2',
+            'nccl': 'none',
             'requires': [
                 'setuptools', 'pip', 'cython==0.24', 'numpy<1.13', 'h5py', 'theano',
                 'pillow',
@@ -42,6 +43,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py3',
             'cuda': 'cuda70',
             'cudnn': 'cudnn4',
+            'nccl': 'nccl1.3.4',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
                 'setuptools', 'pip', 'cython==0.24', 'numpy<1.12',
@@ -55,6 +57,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
             'cudnn': 'cudnn51',
+            'nccl': 'nccl1.3.4',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.11', 'h5py', 'theano', 'protobuf<3'],
         }
         script = './test.sh'
@@ -64,6 +67,7 @@ if __name__ == '__main__':
             'base': 'centos7_py2',
             'cuda': 'cuda75',
             'cudnn': 'cudnn3',
+            'nccl': 'nccl1.3.4',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.13'],
         }
         script = './test_example.sh'
@@ -73,6 +77,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda65',
             'cudnn': 'cudnn5',
+            'nccl': 'none',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.12'],
         }
         script = './test_prev_example.sh'
@@ -82,6 +87,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda70',
             'cudnn': 'cudnn3',
+            'nccl': 'none',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.13', 'sphinx']
         }
         script = './test_doc.sh'

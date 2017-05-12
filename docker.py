@@ -17,6 +17,7 @@ cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75', 'cuda80']
 cudnn_choices = [
     'none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8']
+nccl_choices = ['none', 'nccl1.3.4']
 
 
 codes = {}
@@ -336,6 +337,17 @@ ENV LD_LIBRARY_PATH=/opt/cudnn/cuda/lib64:$LD_LIBRARY_PATH
     sha256sum='9b09110af48c9a4d7b6344eb4b3e344daa84987ed6177d5c44319732f3bb7f9c',
 )
 
+# NCCL
+
+codes['nccl1.3.4'] = '''
+WORKDIR /opt/nccl
+RUN curl -sL -o nccl1.3.4.tar.gz https://github.com/NVIDIA/nccl/archive/v1.3.4-1.tar.gz && \\
+    tar zxf nccl1.3.4.tar.gz && \\
+    cd nccl-1.3.4-1 && \\
+    NVCC_GENCODE= make -j4 && \\
+    make install
+'''
+
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
 RUN tmpdir=`mktemp -d` && \\
@@ -379,6 +391,7 @@ def make_dockerfile(conf):
         dockerfile += set_env('https_proxy', conf['https_proxy'])
     dockerfile += codes[conf['cuda']]
     dockerfile += codes[conf['cudnn']]
+    dockerfile += codes[conf['nccl']]
 
     if 'protobuf-cpp' in conf:
         dockerfile += codes[conf['protobuf-cpp']]
