@@ -14,6 +14,7 @@ params = {
     'base': docker.base_choices,
     'cuda': docker.cuda_choices[1:],  # Always use CUDA
     'cudnn': docker.cudnn_choices,
+    'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
 }
 
@@ -60,6 +61,7 @@ if __name__ == '__main__':
         'base': params['base'],
         'cuda': params['cuda'],
         'cudnn': params['cudnn'],
+        'nccl': params['nccl'],
         'requires': ['setuptools', 'pip', 'cython==0.24'],
     }
 

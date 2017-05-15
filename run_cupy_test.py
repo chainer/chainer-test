@@ -29,6 +29,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda65',
             'cudnn': 'cudnn2',
+            'nccl': 'none',
             'requires': [
                 'setuptools', 'pip', 'cython==0.24', 'numpy<1.13',
             ]
@@ -40,6 +41,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py3',
             'cuda': 'cuda70',
             'cudnn': 'cudnn4',
+            'nccl': 'nccl1.3.4',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
                 'setuptools', 'pip', 'cython==0.24', 'numpy<1.12',
@@ -52,6 +54,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
             'cudnn': 'cudnn51',
+            'nccl': 'none',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.11'],
         }
         script = './test_cupy.sh'
@@ -61,6 +64,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py2',
             'cuda': 'cuda70',
             'cudnn': 'cudnn3',
+            'nccl': 'nccl1.3.4',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.13', 'sphinx']
         }
         script = './test_cupy_doc.sh'
