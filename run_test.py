@@ -83,12 +83,15 @@ if __name__ == '__main__':
         script = './test_prev_example.sh'
 
     elif args.test == 'doc':
+        # See sphinx version RTD uses:
+        # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
         conf = {
             'base': 'ubuntu14_py2',
             'cuda': 'cuda70',
             'cudnn': 'cudnn3',
             'nccl': 'none',
-            'requires': ['setuptools', 'cython==0.24', 'numpy<1.13', 'sphinx']
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.13',
+                         'sphinx==1.5.3']
         }
         script = './test_doc.sh'
 
