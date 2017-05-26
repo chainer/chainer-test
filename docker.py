@@ -222,12 +222,9 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ g++-4.8 gfortran git libhdf5-dev autoconf xz-utils pkg-config && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils pkg-config && \\
     apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make cmake && \\
     apt-get clean
-
-RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
-RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
@@ -272,12 +269,9 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ g++-4.8 gfortran git autoconf libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get -y install curl g++ gfortran git autoconf libhdf5-dev libhdf5-serial-dev pkg-config && \\
     apt-get -y install python-pip python-dev && \\
     apt-get clean
-
-RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
-RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 '''
 
 codes['ubuntu16_py35'] = '''FROM ubuntu:16.04
@@ -286,12 +280,9 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ g++-4.8 cmake gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
+    apt-get -y install curl g++ cmake gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
-
-RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
-RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
@@ -303,12 +294,9 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ g++-4.8 cmake gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
+    apt-get -y install curl g++ cmake gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
-
-RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
-RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
