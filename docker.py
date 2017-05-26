@@ -133,13 +133,10 @@ codes['ubuntu16_py2'] = '''FROM ubuntu:16.04
 ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && apt-get -y upgrade && \\
-    apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get install -y ccache curl g++ gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
     apt-get clean
 RUN apt-get install -y python-pip python-dev && \\
     apt-get clean
-
-RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
-RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 '''
 
 codes['ubuntu16_py3'] = '''FROM ubuntu:16.04
@@ -147,13 +144,10 @@ codes['ubuntu16_py3'] = '''FROM ubuntu:16.04
 ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && apt-get -y upgrade && \\
-    apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get install -y ccache curl g++ gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
     apt-get clean
 RUN apt-get install -y python3-pip python3-dev && \\
     apt-get clean
-
-RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
-RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
