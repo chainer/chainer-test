@@ -32,6 +32,11 @@ def get_shuffle_params(params, index):
     iters = [iter_shuffle(params[key]) for key in keys]
     vals = next(itertools.islice(six.moves.zip(*iters), index, None))
     ret = dict(zip(keys, vals))
+
+    # Avoid this combination because NCCL is not supported on CUDA6.5
+    if ret['cuda'] in ('none', 'cuda65'):
+        ret['nccl'] = 'none'
+
     return ret
 
 
