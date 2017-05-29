@@ -144,6 +144,9 @@ if __name__ == '__main__':
     else:
         if conf['cuda'] != 'none':
             docker.run_with(
+                conf, './test_cupy.sh', no_cache=args.no_cache, volume=volume, env=env,
+                timeout=args.timeout, gpu_id=args.gpu_id)
+            docker.run_with(
                 conf, './test.sh', no_cache=args.no_cache, volume=volume, env=env,
                 timeout=args.timeout, gpu_id=args.gpu_id)
 
