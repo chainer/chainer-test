@@ -9,9 +9,13 @@ import sys
 import docker
 import six
 
+
+cuda_choices = list(docker.cuda_choices)
+cuda_choices.remove('cuda65')
+
 params = {
     'base': docker.base_choices,
-    'cuda': docker.cuda_choices,
+    'cuda': cuda_choices,
     'cudnn': docker.cudnn_choices,
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
