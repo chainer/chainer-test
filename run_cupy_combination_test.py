@@ -12,7 +12,7 @@ import six
 
 cuda_choices = list(docker.cuda_choices)
 cuda_choices.remove('none')
-cuda_choices.remove('cudayy65')
+cuda_choices.remove('cuda65')
 
 params = {
     'base': docker.base_choices,

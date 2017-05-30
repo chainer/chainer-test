@@ -35,8 +35,8 @@ if __name__ == '__main__':
     # cuda, cudnn and numpy is required to make a sdist file.
     build_conf = {
         'base': 'ubuntu14_py2',
-        'cuda': 'cuda65',
-        'cudnn': 'cudnn2',
+        'cuda': 'cuda80',
+        'cudnn': 'cudnn6',
         'nccl': 'none',
         'requires': ['cython==0.24', 'numpy==1.9.3'],
     }
