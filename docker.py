@@ -15,7 +15,7 @@ base_choices = [
     'centos6_py2', 'centos7_py2', 'centos7_py3']
 cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75', 'cuda80']
 cudnn_choices = [
-    'none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
+    'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8']
 nccl_choices = ['none', 'nccl1.3.4']
 
@@ -238,29 +238,6 @@ codes['cuda80'] = cuda_base.format(
 
 # cudnn
 
-cudnn2_base = '''
-WORKDIR /opt/cudnn
-RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
-    echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
-    tar -xzf {cudnn}.tgz && \\
-    rm {cudnn}.tgz && \\
-    mkdir -p /usr/local/cuda/include && \\
-    mkdir -p /usr/local/cuda/lib64 && \\
-    mv {cudnn}/cudnn.h /usr/local/cuda/include/. && \\
-    mv {cudnn}/libcudnn.so /usr/local/cuda/lib64/. && \\
-    mv {cudnn}/libcudnn.so.6.5 /usr/local/cuda/lib64/. && \\
-    mv {cudnn}/libcudnn.so.6.5.48 /usr/local/cuda/lib64/. && \\
-    mv {cudnn}/libcudnn_static.a /usr/local/cuda/lib64/.
-
-ENV CUDNN_VER {cudnn_ver}
-'''
-
-codes['cudnn2'] = cudnn2_base.format(
-    cudnn='cudnn-6.5-linux-x64-v2',
-    cudnn_ver='v2',
-    sha256sum='4b02cb6bf9dfa57f63bfff33e532f53e2c5a12f9f1a1b46e980e626a55f380aa',
-)
-
 cudnn_base = '''
 WORKDIR /opt/cudnn
 RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
@@ -270,12 +247,6 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
 
 ENV CUDNN_VER {cudnn_ver}
 '''
-
-codes['cudnn3'] = cudnn_base.format(
-    cudnn='cudnn-7.0-linux-x64-v3.0-prod',
-    cudnn_ver='v3',
-    sha256sum='98679d5ec039acfd4d81b8bfdc6a6352d6439e921523ff9909d364e706275c2b',
-)
 
 codes['cudnn4'] = cudnn_base.format(
     cudnn='cudnn-7.0-linux-x64-v4.0-prod',
