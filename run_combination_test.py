@@ -11,7 +11,6 @@ import six
 
 
 cuda_choices = list(docker.cuda_choices)
-cuda_choices.remove('cuda65')
 
 params = {
     'base': docker.base_choices,
@@ -44,7 +43,7 @@ def get_shuffle_params(params, index):
     if ret['numpy'] == '1.9' and ret['h5py'] != 'none':
         ret['numpy'] = '1.10'
 
-    if 'centos6' in ret['base'] or ret['cuda'] in ('none', 'cuda65'):
+    if 'centos6' in ret['base'] or ret['cuda'] == 'none':
         ret['nccl'] = 'none'
 
     return ret

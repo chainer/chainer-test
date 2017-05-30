@@ -13,7 +13,7 @@ base_choices = [
     'ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'ubuntu14_py36',
     'ubuntu16_py2', 'ubuntu16_py3',
     'centos6_py2', 'centos7_py2', 'centos7_py3']
-cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75', 'cuda80']
+cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8']
@@ -161,10 +161,6 @@ RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 
 # cuda
 
-cuda65_run = 'cuda_6.5.19_linux_64.run'
-cuda65_url = 'http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers'
-cuda65_installer = 'cuda-linux64-rel-6.5.19-18849900.run'
-
 cuda70_run = 'cuda_7.0.28_linux.run'
 cuda70_url = 'http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers'
 cuda70_installer = 'cuda-linux64-rel-7.0.28-19326674.run'
@@ -203,14 +199,6 @@ ENV CUDA_VERSION {cuda_ver}
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 LABEL com.nvidia.cuda.version="{cuda_ver}"
 '''
-
-codes['cuda65'] = cuda_base.format(
-    cuda_ver='6.5',
-    cuda_run=cuda65_run,
-    cuda_url=cuda65_url,
-    installer=cuda65_installer,
-    sha256sum='5279bc159b72b7445d8aae5f289d24bb4042c35422ef32da68049d8f666d3ff5',
-)
 
 codes['cuda70'] = cuda_base.format(
     cuda_ver='7.0',
