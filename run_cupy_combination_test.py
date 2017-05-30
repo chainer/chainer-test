@@ -37,7 +37,7 @@ def get_shuffle_params(params, index):
     ret = dict(zip(keys, vals))
 
     # Avoid this combination because NCCL is not supported or cannot built
-    if 'centos6' in ret['base'] or ret['cuda'] == 'none':
+    if 'centos6' in ret['base'] or ret['cuda'] == 'none' or ('ubuntu16' in ret['base'] and ret['cuda'] != 'cuda80'):
         ret['nccl'] = 'none'
 
     return ret
