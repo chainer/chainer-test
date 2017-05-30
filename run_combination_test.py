@@ -44,7 +44,7 @@ def get_shuffle_params(params, index):
     if ret['numpy'] == '1.9' and ret['h5py'] != 'none':
         ret['numpy'] = '1.10'
 
-    if ret['cuda'] in ('none', 'cuda65'):
+    if 'centos6' in ret['base'] or ret['cuda'] in ('none', 'cuda65'):
         ret['nccl'] = 'none'
 
     return ret
