@@ -48,7 +48,8 @@ if __name__ == '__main__':
         env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
 
-    docker.run_with(build_conf, './build_sdist.sh', volume=volume, env=env)
+    docker.run_with(build_conf, './build_sdist_cupy.sh', volume=volume,
+                    env=env)
 
     conf = {
         'base': args.base,
