@@ -43,7 +43,7 @@ def get_shuffle_params(params, index):
     if ret['numpy'] == '1.9' and ret['h5py'] != 'none':
         ret['numpy'] = '1.10'
 
-    if 'centos6' in ret['base'] or ret['cuda'] == 'none':
+    if 'centos6' in ret['base'] or ret['cuda'] == 'none' or ('ubuntu16' in ret['base'] and ret['cuda'] != 'cuda80'):
         ret['nccl'] = 'none'
 
     return ret
