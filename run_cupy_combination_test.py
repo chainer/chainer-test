@@ -12,7 +12,6 @@ import six
 
 cuda_choices = list(docker.cuda_choices)
 cuda_choices.remove('none')
-cuda_choices.remove('cuda65')
 
 params = {
     'base': docker.base_choices,
@@ -38,7 +37,7 @@ def get_shuffle_params(params, index):
     ret = dict(zip(keys, vals))
 
     # Avoid this combination because NCCL is not supported or cannot built
-    if 'centos6' in ret['base'] or ret['cuda'] in ('none', 'cuda65'):
+    if 'centos6' in ret['base'] or ret['cuda'] == 'none':
         ret['nccl'] = 'none'
 
     return ret
