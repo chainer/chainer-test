@@ -36,7 +36,7 @@ if __name__ == '__main__':
     build_conf = {
         'base': 'ubuntu14_py2',
         'cuda': 'cuda65',
-        'cudnn': 'cudnn2',
+        'cudnn': 'cudnn4',
         'nccl': 'none',
         'requires': ['cython==0.24', 'numpy==1.9.3'],
     }

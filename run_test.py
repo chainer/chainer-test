@@ -88,7 +88,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu14_py2',
             'cuda': 'cuda70',
-            'cudnn': 'cudnn3',
+            'cudnn': 'cudnn6',
             'nccl': 'none',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.13',
                          'sphinx==1.5.3']
