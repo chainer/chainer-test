@@ -27,8 +27,8 @@ if __name__ == '__main__':
     if args.test == 'py2':
         conf = {
             'base': 'ubuntu14_py2',
-            'cuda': 'cuda65',
-            'cudnn': 'cudnn2',
+            'cuda': 'cuda70',
+            'cudnn': 'cudnn4',
             'nccl': 'none',
             'requires': [
                 'setuptools', 'pip', 'cython==0.24', 'numpy<1.13',
@@ -39,8 +39,8 @@ if __name__ == '__main__':
     elif args.test == 'py3':
         conf = {
             'base': 'ubuntu14_py3',
-            'cuda': 'cuda70',
-            'cudnn': 'cudnn4',
+            'cuda': 'cuda75',
+            'cudnn': 'cudnn51',
             'nccl': 'nccl1.3.4',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
@@ -53,7 +53,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
-            'cudnn': 'cudnn51',
+            'cudnn': 'cudnn6',
             'nccl': 'none',
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.11'],
         }
