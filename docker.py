@@ -365,7 +365,21 @@ def make_dockerfile(conf):
             dockerfile += run_pip(req)
 
     if 'ubuntu' in conf['base']:
-        dockerfile += 'RUN apt-get remove -y python3-six\n'
+        # The system's six is too old so that we have to use a newer one.
+        # However, just running `pip install -U six` does not resolve the
+        # situation; this command installs an upgraded six to /usr/local/lib,
+        # while the old one is left at /usr/lib. Which one is used depends on
+        # the user's environment which cannot be controlled. Therefore, we
+        # remove the system's six after upgrading it.
+        # HOWEVER, this removal then causes uninstallation of the system's pip!
+        # It is because the system's pip depends on the system's six, and the
+        # dependency is managed by apt, not pip. Therefore, we also have to
+        # install a pip to /usr/local/lib using `pip install -U pip` before
+        # removing it (via removing the system's six).
+        dockerfile += '''\
+RUN pip install -U pip six
+RUN apt-get remove -y python3-six python-six
+'''
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
     return dockerfile
