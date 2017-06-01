@@ -9,9 +9,12 @@ import sys
 import docker
 import six
 
+
+cuda_choices = list(docker.cuda_choices)
+
 params = {
     'base': docker.base_choices,
-    'cuda': docker.cuda_choices,
+    'cuda': cuda_choices,
     'cudnn': docker.cudnn_choices,
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
@@ -40,7 +43,7 @@ def get_shuffle_params(params, index):
     if ret['numpy'] == '1.9' and ret['h5py'] != 'none':
         ret['numpy'] = '1.10'
 
-    if ret['cuda'] in ('none', 'cuda65'):
+    if 'centos6' in ret['base'] or ret['cuda'] == 'none' or ('ubuntu16' in ret['base'] and ret['cuda'] != 'cuda80'):
         ret['nccl'] = 'none'
 
     return ret
@@ -139,6 +142,9 @@ if __name__ == '__main__':
             conf, no_cache=args.no_cache, volume=volume, env=env)
     else:
         if conf['cuda'] != 'none':
+            docker.run_with(
+                conf, './test_cupy.sh', no_cache=args.no_cache, volume=volume, env=env,
+                timeout=args.timeout, gpu_id=args.gpu_id)
             docker.run_with(
                 conf, './test.sh', no_cache=args.no_cache, volume=volume, env=env,
                 timeout=args.timeout, gpu_id=args.gpu_id)

@@ -13,9 +13,9 @@ base_choices = [
     'ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'ubuntu14_py36',
     'ubuntu16_py2', 'ubuntu16_py3',
     'centos6_py2', 'centos7_py2', 'centos7_py3']
-cuda_choices = ['none', 'cuda65', 'cuda70', 'cuda75', 'cuda80']
+cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80']
 cudnn_choices = [
-    'none', 'cudnn2', 'cudnn3', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
+    'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8']
 nccl_choices = ['none', 'nccl1.3.4']
 
@@ -161,10 +161,6 @@ RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 
 # cuda
 
-cuda65_run = 'cuda_6.5.19_linux_64.run'
-cuda65_url = 'http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers'
-cuda65_installer = 'cuda-linux64-rel-6.5.19-18849900.run'
-
 cuda70_run = 'cuda_7.0.28_linux.run'
 cuda70_url = 'http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers'
 cuda70_installer = 'cuda-linux64-rel-7.0.28-19326674.run'
@@ -204,14 +200,6 @@ LABEL com.nvidia.volumes.needed="nvidia_driver"
 LABEL com.nvidia.cuda.version="{cuda_ver}"
 '''
 
-codes['cuda65'] = cuda_base.format(
-    cuda_ver='6.5',
-    cuda_run=cuda65_run,
-    cuda_url=cuda65_url,
-    installer=cuda65_installer,
-    sha256sum='5279bc159b72b7445d8aae5f289d24bb4042c35422ef32da68049d8f666d3ff5',
-)
-
 codes['cuda70'] = cuda_base.format(
     cuda_ver='7.0',
     cuda_run=cuda70_run,
@@ -238,29 +226,6 @@ codes['cuda80'] = cuda_base.format(
 
 # cudnn
 
-cudnn2_base = '''
-WORKDIR /opt/cudnn
-RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
-    echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
-    tar -xzf {cudnn}.tgz && \\
-    rm {cudnn}.tgz && \\
-    mkdir -p /usr/local/cuda/include && \\
-    mkdir -p /usr/local/cuda/lib64 && \\
-    mv {cudnn}/cudnn.h /usr/local/cuda/include/. && \\
-    mv {cudnn}/libcudnn.so /usr/local/cuda/lib64/. && \\
-    mv {cudnn}/libcudnn.so.6.5 /usr/local/cuda/lib64/. && \\
-    mv {cudnn}/libcudnn.so.6.5.48 /usr/local/cuda/lib64/. && \\
-    mv {cudnn}/libcudnn_static.a /usr/local/cuda/lib64/.
-
-ENV CUDNN_VER {cudnn_ver}
-'''
-
-codes['cudnn2'] = cudnn2_base.format(
-    cudnn='cudnn-6.5-linux-x64-v2',
-    cudnn_ver='v2',
-    sha256sum='4b02cb6bf9dfa57f63bfff33e532f53e2c5a12f9f1a1b46e980e626a55f380aa',
-)
-
 cudnn_base = '''
 WORKDIR /opt/cudnn
 RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
@@ -270,12 +235,6 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
 
 ENV CUDNN_VER {cudnn_ver}
 '''
-
-codes['cudnn3'] = cudnn_base.format(
-    cudnn='cudnn-7.0-linux-x64-v3.0-prod',
-    cudnn_ver='v3',
-    sha256sum='98679d5ec039acfd4d81b8bfdc6a6352d6439e921523ff9909d364e706275c2b',
-)
 
 codes['cudnn4'] = cudnn_base.format(
     cudnn='cudnn-7.0-linux-x64-v4.0-prod',
@@ -405,6 +364,22 @@ def make_dockerfile(conf):
                     dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
             dockerfile += run_pip(req)
 
+    if 'ubuntu' in conf['base']:
+        # The system's six is too old so that we have to use a newer one.
+        # However, just running `pip install -U six` does not resolve the
+        # situation; this command installs an upgraded six to /usr/local/lib,
+        # while the old one is left at /usr/lib. Which one is used depends on
+        # the user's environment which cannot be controlled. Therefore, we
+        # remove the system's six after upgrading it.
+        # HOWEVER, this removal then causes uninstallation of the system's pip!
+        # It is because the system's pip depends on the system's six, and the
+        # dependency is managed by apt, not pip. Therefore, we also have to
+        # install a pip to /usr/local/lib using `pip install -U pip` before
+        # removing it (via removing the system's six).
+        dockerfile += '''\
+RUN pip install -U pip six
+RUN apt-get remove -y python3-six python-six
+'''
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
     return dockerfile

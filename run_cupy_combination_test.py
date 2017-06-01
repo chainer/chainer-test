@@ -10,9 +10,12 @@ import docker
 import six
 
 
+cuda_choices = list(docker.cuda_choices)
+cuda_choices.remove('none')
+
 params = {
     'base': docker.base_choices,
-    'cuda': docker.cuda_choices[1:],  # Always use CUDA
+    'cuda': cuda_choices,
     'cudnn': docker.cudnn_choices,
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
@@ -33,8 +36,8 @@ def get_shuffle_params(params, index):
     vals = next(itertools.islice(six.moves.zip(*iters), index, None))
     ret = dict(zip(keys, vals))
 
-    # Avoid this combination because NCCL is not supported on CUDA6.5
-    if ret['cuda'] in ('none', 'cuda65'):
+    # Avoid this combination because NCCL is not supported or cannot built
+    if 'centos6' in ret['base'] or ret['cuda'] == 'none' or ('ubuntu16' in ret['base'] and ret['cuda'] != 'cuda80'):
         ret['nccl'] = 'none'
 
     return ret

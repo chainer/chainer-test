@@ -2,6 +2,10 @@
 
 pip install -U pip --user
 
+cd cupy
+python setup.py build -j 4 develop install --user || python setup.py develop install --user
+cd ..
+
 cd chainer
 rm -rf dist
 python setup.py -q sdist

@@ -35,8 +35,8 @@ if __name__ == '__main__':
     # cuda, cudnn and numpy is required to make a sdist file.
     build_conf = {
         'base': 'ubuntu14_py2',
-        'cuda': 'cuda65',
-        'cudnn': 'cudnn2',
+        'cuda': 'cuda70',
+        'cudnn': 'cudnn4',
         'nccl': 'none',
         'requires': ['cython==0.24', 'numpy==1.9.3'],
     }
@@ -48,7 +48,8 @@ if __name__ == '__main__':
         env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
 
-    docker.run_with(build_conf, './build_sdist.sh', volume=volume, env=env)
+    docker.run_with(build_conf, './build_sdist_cupy.sh', volume=volume,
+                    env=env)
 
     conf = {
         'base': args.base,
