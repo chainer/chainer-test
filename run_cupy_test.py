@@ -10,7 +10,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--test', choices=[
-        'py2', 'py3', 'py35', 'doc'
+        'py2', 'py3', 'py35', 'example', 'doc'
     ], required=True)
     parser.add_argument('--cache')
     parser.add_argument('--http-proxy')
@@ -58,6 +58,16 @@ if __name__ == '__main__':
             'requires': ['setuptools', 'cython==0.24', 'numpy<1.11'],
         }
         script = './test_cupy.sh'
+
+    elif args.test == 'example':
+        conf = {
+            'base': 'centos7_py2',
+            'cuda': 'cuda75',
+            'cudnn': 'cudnn4',
+            'nccl': 'nccl1.3.4',
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.13'],
+        }
+        script = './test_cupy_example.sh'
 
     elif args.test == 'doc':
         # See sphinx version RTD uses:
