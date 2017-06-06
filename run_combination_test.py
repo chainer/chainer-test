@@ -1,20 +1,16 @@
 #!/usr/bin/env python2
 
 import argparse
-import itertools
 import os
 import random
-import sys
 
 import docker
-import six
+import shuffle
 
-
-cuda_choices = list(docker.cuda_choices)
 
 params = {
     'base': docker.base_choices,
-    'cuda': cuda_choices,
+    'cuda': docker.cuda_choices,
     'cudnn': docker.cudnn_choices,
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
@@ -23,30 +19,6 @@ params = {
     'pillow': ['none', '3.4', '4.0', '4.1'],
     'theano': ['none', '0.8', '0.9'],
 }
-
-
-def iter_shuffle(lst):
-    while True:
-        l = list(lst)
-        random.shuffle(l)
-        for x in l:
-            yield x
-
-
-def get_shuffle_params(params, index):
-    keys = params.keys()
-    iters = [iter_shuffle(params[key]) for key in keys]
-    vals = next(itertools.islice(six.moves.zip(*iters), index, None))
-    ret = dict(zip(keys, vals))
-
-    # avoid SEGV
-    if ret['numpy'] == '1.9' and ret['h5py'] != 'none':
-        ret['numpy'] = '1.10'
-
-    if 'centos6' in ret['base'] or ret['cuda'] == 'none' or ('ubuntu16' in ret['base'] and ret['cuda'] != 'cuda80'):
-        ret['nccl'] = 'none'
-
-    return ret
 
 
 if __name__ == '__main__':
@@ -66,66 +38,20 @@ if __name__ == '__main__':
     parser.add_argument('--interactive', action='store_true')
     args = parser.parse_args()
 
-    params = get_shuffle_params(params, args.id)
-    for key, value in params.items():
-        print('{}: {}'.format(key, value))
-    sys.stdout.flush()
-
-    conf = {
-        'base': params['base'],
-        'cuda': params['cuda'],
-        'cudnn': params['cudnn'],
-        'nccl': params['nccl'],
-        'requires': ['setuptools', 'pip', 'cython==0.24'],
-    }
-
-    volume = []
-    env = {'CUDNN': conf['cudnn']}
-
-    if params['numpy'] == '1.9':
-        conf['requires'].append('numpy<1.10')
-    elif params['numpy'] == '1.10':
-        conf['requires'].append('numpy<1.11')
-    elif params['numpy'] == '1.11':
-        conf['requires'].append('numpy<1.12')
-    elif params['numpy'] == '1.12':
-        conf['requires'].append('numpy<1.13')
-
-
-    if params['h5py'] == '2.7':
-        conf['requires'].append('h5py<2.8')
-    elif params['h5py'] == '2.6':
-        conf['requires'].append('h5py<2.7')
-    elif params['h5py'] == '2.5':
-        # h5py uses numpy in its setup script
-        conf['requires'].append('numpy<1.10')
-        conf['requires'].append('h5py<2.6')
-
-    if params['theano'] == '0.8':
-        conf['requires'].append('theano<0.9')
-    elif params['theano'] == '0.9':
-        conf['requires'].append('theano<0.10')
-
-    if params['protobuf'] == '3':
-        conf['requires'].append('protobuf<4')
-    elif params['protobuf'] == '2':
-        conf['requires'].append('protobuf<3')
-    elif params['protobuf'] == 'cpp-3':
-        conf['protobuf-cpp'] = 'protobuf-cpp-3'
-
-    if params['pillow'] == '3.4':
-        conf['requires'].append('pillow<3.5')
-    elif params['pillow'] == '4.0':
-        conf['requires'].append('pillow<4.1')
-    elif params['pillow'] == '4.1':
-        conf['requires'].append('pillow<4.2')
-
-    conf['requires'] += [
+    conf = shuffle.make_shuffle_conf(params, args.id)
+    conf['requires'] = [
+        'setuptools',
+        'pip',
+        'cython==0.24'
+    ] + conf['requires'] + [
         'hacking',
         'nose',
         'mock',
         'coverage',
     ]
+
+    volume = []
+    env = {'CUDNN': conf['cudnn']}
 
     if args.cache:
         volume.append(args.cache)
