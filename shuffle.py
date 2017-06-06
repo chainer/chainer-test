@@ -48,6 +48,12 @@ def make_require(name, version):
     return '%s<%s' % (name, next_ver)
 
 
+def append_require(params, conf, name):
+    version = params.get(name, None)
+    if version:
+        conf['requires'].append(make_require(name, version))
+
+
 def make_conf(params):
     conf = {
         'requires': [],
@@ -62,30 +68,21 @@ def make_conf(params):
     if 'nccl' in params:
         conf['nccl'] = params['nccl']
 
-    numpy = params.get('numpy', None)
-    if numpy:
-        conf['requires'].append(make_require('numpy', numpy))
+    append_require(params, conf, 'numpy')
 
-    h5py = params.get('h5py', None)
-    if h5py == '2.5':
+    if params.get('h5py', None) == '2.5':
         # NumPy is required to install h5py in this version
         conf['requires'].append('numpy<1.10')
-    if h5py:
-        conf['requires'].append(make_require('h5py', h5py))
+    append_require(params, conf, 'h5py')
 
-    theano = params.get('theano', None)
-    if theano:
-        conf['requires'].append(make_require('theano', theano))
+    append_require(params, conf, 'theano')
 
-    protobuf = params.get('protobuf', None)
-    if protobuf == 'cpp-3':
+    if params.get('protobuf', None) == 'cpp-3':
         conf['protobuf-cpp'] = 'protobuf-cpp-3'
-    elif protobuf:
-        conf['requires'].append(make_require('protobuf', protobuf))
+    else:
+        append_require(params, conf, 'protobuf')
 
-    pillow = params.get('pillow', None)
-    if pillow:
-        conf['requires'].append(make_require('pillow', pillow))
+    append_require(params, conf, 'pillow')
 
     return conf
 
