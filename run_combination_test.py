@@ -22,8 +22,6 @@ params = {
 
 
 if __name__ == '__main__':
-    random.seed(0)
-
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--id', type=int, required=True)

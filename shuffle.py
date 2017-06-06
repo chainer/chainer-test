@@ -14,6 +14,7 @@ def iter_shuffle(lst):
 
 
 def get_shuffle_params(params, index):
+    random.seed(0)
     keys = params.keys()
     iters = [iter_shuffle(params[key]) for key in keys]
     vals = next(itertools.islice(six.moves.zip(*iters), index, None))
@@ -85,7 +86,6 @@ def make_conf(params):
     append_require(params, conf, 'pillow')
 
     return conf
-
 
 
 def make_shuffle_conf(params, index):
