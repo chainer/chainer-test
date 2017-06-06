@@ -4,25 +4,25 @@ import argparse
 import os
 
 import docker
+import shuffle
 
 
-def append_requires(requires, name, ver):
-    if ver and ver != 'none':
-        requires.append('%s==%s' % (name, ver))
+params = {
+    'base': docker.base_choices,
+    'cuda': docker.cuda_choices,
+    'cudnn': docker.cudnn_choices + ['cudnn-latest-with-dummy'],
+    'nccl': docker.nccl_choices,
+    'numpy': ['1.9', '1.10', '1.11', '1.12'],
+    'cython': [None, '0.20', '0.21', '0.23', '0.24'],
+    'setuptools': [None, '3.3', '18.2', '18.3.2'],
+    'pip': [None, '7', '8', '9'],
+}
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for installation')
-    parser.add_argument('--base', choices=docker.base_choices, required=True)
-    parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
-    parser.add_argument('--cudnn', choices=docker.cudnn_choices +
-                        ['cudnn-latest-with-dummy'], required=True)
-    parser.add_argument('--nccl', choices=docker.nccl_choices, required=True)
-    parser.add_argument('--numpy')
-    parser.add_argument('--setuptools')
-    parser.add_argument('--pip')
-    parser.add_argument('--cython')
+    parser.add_argument('--id', type=int, required=True)
 
     parser.add_argument('--cache')
     parser.add_argument('--http-proxy')
@@ -31,14 +31,12 @@ if __name__ == '__main__':
     parser.add_argument('--timeout', default='1h')
     args = parser.parse_args()
 
-    # make sdist
-    # cuda, cudnn and numpy is required to make a sdist file.
     build_conf = {
         'base': 'ubuntu14_py2',
-        'cuda': 'cuda80',
-        'cudnn': 'cudnn6',
+        'cuda': 'none',
+        'cudnn': 'none',
         'nccl': 'none',
-        'requires': ['cython==0.24', 'numpy==1.9.3'],
+        'requires': [],
     }
     volume = []
     env = {}
@@ -50,18 +48,7 @@ if __name__ == '__main__':
 
     docker.run_with(build_conf, './build_sdist.sh', volume=volume, env=env)
 
-    conf = {
-        'base': args.base,
-        'cuda': args.cuda,
-        'cudnn': args.cudnn,
-        'nccl': args.nccl,
-        'requires': [],
-    }
-
-    append_requires(conf['requires'], 'setuptools', args.setuptools)
-    append_requires(conf['requires'], 'pip', args.pip)
-    append_requires(conf['requires'], 'cython', args.cython)
-    append_requires(conf['requires'], 'numpy', args.numpy)
+    conf = shuffle.make_shuffle_conf(params, args.id)
 
     if args.http_proxy:
         conf['http_proxy'] = args.http_proxy

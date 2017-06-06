@@ -65,6 +65,9 @@ def make_conf(params):
     if 'nccl' in params:
         conf['nccl'] = params['nccl']
 
+    append_require(params, conf, 'setuptools')
+    append_require(params, conf, 'pip')
+    append_require(params, conf, 'cython')
     append_require(params, conf, 'numpy')
 
     if params.get('h5py') == '2.5':
