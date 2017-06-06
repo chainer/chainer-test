@@ -15,9 +15,9 @@ params = {
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'protobuf': ['2', '3', 'cpp-3'],
-    'h5py': ['none', '2.5', '2.6', '2.7'],
-    'pillow': ['none', '3.4', '4.0', '4.1'],
-    'theano': ['none', '0.8', '0.9'],
+    'h5py': [None, '2.5', '2.6', '2.7'],
+    'pillow': [None, '3.4', '4.0', '4.1'],
+    'theano': [None, '0.8', '0.9'],
 }
 
 

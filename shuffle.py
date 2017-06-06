@@ -32,6 +32,22 @@ def get_shuffle_params(params, index):
     return ret
 
 
+def is_valid_version(version):
+    return bool(re.match(r'\d+(\.\d+)*', version))
+
+
+def parse_version(version):
+    """Parse a version number to make an int list."""
+    return [int(num) for num in version.split('.')]
+
+
+def make_require(name, version):
+    version_number = parse_version(version)
+    version_number[-1] += 1
+    next_ver = '.'.join(str(num) for num in version_number)
+    return '%s<%s' % (name, next_ver)
+
+
 def make_conf(params):
     conf = {
         'requires': [],
@@ -47,46 +63,29 @@ def make_conf(params):
         conf['nccl'] = params['nccl']
 
     numpy = params.get('numpy', None)
-    if numpy == '1.9':
-        conf['requires'].append('numpy<1.10')
-    elif numpy == '1.10':
-        conf['requires'].append('numpy<1.11')
-    elif numpy == '1.11':
-        conf['requires'].append('numpy<1.12')
-    elif numpy == '1.12':
-        conf['requires'].append('numpy<1.13')
+    if numpy:
+        conf['requires'].append(make_require('numpy', numpy))
 
     h5py = params.get('h5py', None)
-    if h5py == '2.7':
-        conf['requires'].append('h5py<2.8')
-    elif h5py == '2.6':
-        conf['requires'].append('h5py<2.7')
-    elif h5py == '2.5':
-        # h5py uses numpy in its setup script
+    if h5py == '2.5':
+        # NumPy is required to install h5py in this version
         conf['requires'].append('numpy<1.10')
-        conf['requires'].append('h5py<2.6')
+    if h5py:
+        conf['requires'].append(make_require('h5py', h5py))
 
     theano = params.get('theano', None)
-    if theano == '0.8':
-        conf['requires'].append('theano<0.9')
-    elif theano == '0.9':
-        conf['requires'].append('theano<0.10')
+    if theano:
+        conf['requires'].append(make_require('theano', theano))
 
     protobuf = params.get('protobuf', None)
-    if protobuf == '3':
-        conf['requires'].append('protobuf<4')
-    elif protobuf == '2':
-        conf['requires'].append('protobuf<3')
-    elif protobuf == 'cpp-3':
+    if protobuf == 'cpp-3':
         conf['protobuf-cpp'] = 'protobuf-cpp-3'
+    elif protobuf:
+        conf['requires'].append(make_require('protobuf', protobuf))
 
     pillow = params.get('pillow', None)
-    if pillow == '3.4':
-        conf['requires'].append('pillow<3.5')
-    elif pillow == '4.0':
-        conf['requires'].append('pillow<4.1')
-    elif pillow == '4.1':
-        conf['requires'].append('pillow<4.2')
+    if pillow:
+        conf['requires'].append(make_require('pillow', pillow))
 
     return conf
 
