@@ -33,10 +33,6 @@ def get_shuffle_params(params, index):
     return ret
 
 
-def is_valid_version(version):
-    return bool(re.match(r'\d+(\.\d+)*', version))
-
-
 def parse_version(version):
     """Parse a version number to make an int list."""
     return [int(num) for num in version.split('.')]
