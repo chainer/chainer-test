@@ -21,7 +21,7 @@ def get_shuffle_params(params, index):
     ret = dict(zip(keys, vals))
 
     # avoid SEGV
-    if ret['numpy'] == '1.9' and ret.get('h5py', 'none') != 'none':
+    if ret['numpy'] == '1.9' and ret.get('h5py'):
         ret['numpy'] = '1.10'
 
     # nccl is only supported on CUDA8
@@ -46,7 +46,7 @@ def make_require(name, version):
 
 
 def append_require(params, conf, name):
-    version = params.get(name, None)
+    version = params.get(name)
     if version:
         conf['requires'].append(make_require(name, version))
 
@@ -67,14 +67,14 @@ def make_conf(params):
 
     append_require(params, conf, 'numpy')
 
-    if params.get('h5py', None) == '2.5':
+    if params.get('h5py') == '2.5':
         # NumPy is required to install h5py in this version
         conf['requires'].append('numpy<1.10')
     append_require(params, conf, 'h5py')
 
     append_require(params, conf, 'theano')
 
-    if params.get('protobuf', None) == 'cpp-3':
+    if params.get('protobuf') == 'cpp-3':
         conf['protobuf-cpp'] = 'protobuf-cpp-3'
     else:
         append_require(params, conf, 'protobuf')
