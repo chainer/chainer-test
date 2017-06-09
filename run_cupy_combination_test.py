@@ -1,13 +1,11 @@
 #!/usr/bin/env python2
 
 import argparse
-import itertools
 import os
 import random
-import sys
 
 import docker
-import six
+import shuffle
 
 
 cuda_choices = list(docker.cuda_choices)
@@ -22,30 +20,7 @@ params = {
 }
 
 
-def iter_shuffle(lst):
-    while True:
-        l = list(lst)
-        random.shuffle(l)
-        for x in l:
-            yield x
-
-
-def get_shuffle_params(params, index):
-    keys = params.keys()
-    iters = [iter_shuffle(params[key]) for key in keys]
-    vals = next(itertools.islice(six.moves.zip(*iters), index, None))
-    ret = dict(zip(keys, vals))
-
-    # Avoid this combination because NCCL is not supported or cannot built
-    if 'centos6' in ret['base'] or ret['cuda'] == 'none' or ('ubuntu16' in ret['base'] and ret['cuda'] != 'cuda80'):
-        ret['nccl'] = 'none'
-
-    return ret
-
-
 if __name__ == '__main__':
-    random.seed(0)
-
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--id', type=int, required=True)
@@ -60,37 +35,20 @@ if __name__ == '__main__':
     parser.add_argument('--interactive', action='store_true')
     args = parser.parse_args()
 
-    params = get_shuffle_params(params, args.id)
-    for key, value in params.items():
-        print('{}: {}'.format(key, value))
-    sys.stdout.flush()
-
-    conf = {
-        'base': params['base'],
-        'cuda': params['cuda'],
-        'cudnn': params['cudnn'],
-        'nccl': params['nccl'],
-        'requires': ['setuptools', 'pip', 'cython==0.24'],
-    }
-
-    volume = []
-    env = {'CUDNN': conf['cudnn']}
-
-    if params['numpy'] == '1.9':
-        conf['requires'].append('numpy<1.10')
-    elif params['numpy'] == '1.10':
-        conf['requires'].append('numpy<1.11')
-    elif params['numpy'] == '1.11':
-        conf['requires'].append('numpy<1.12')
-    elif params['numpy'] == '1.12':
-        conf['requires'].append('numpy<1.13')
-
-    conf['requires'] += [
+    conf = shuffle.make_shuffle_conf(params, args.id)
+    conf['requires'] = [
+        'setuptools',
+        'pip',
+        'cython==0.24'
+    ] + conf['requires'] + [
         'hacking',
         'nose',
         'mock',
         'coverage',
     ]
+
+    volume = []
+    env = {'CUDNN': conf['cudnn']}
 
     if args.cache:
         volume.append(args.cache)
