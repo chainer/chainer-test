@@ -336,9 +336,9 @@ def run_pip(requires):
     if 'pillow' in requires:
         return ('RUN pip install -U olefile && '
                 'pip install --global-option="build_ext" '
-                '--global-option="--disable-jpeg" -U "%s"\n' % requires)
+                '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % requires)
     else:
-        return 'RUN pip install -U "%s"\n' % requires
+        return 'RUN pip install -U "%s" && rm -rf ~/.cache/pip\n' % requires
 
 
 def make_dockerfile(conf):
@@ -377,7 +377,7 @@ def make_dockerfile(conf):
         # install a pip to /usr/local/lib using `pip install -U pip` before
         # removing it (via removing the system's six).
         dockerfile += '''\
-RUN pip install -U pip six
+RUN pip install -U pip six && rm -rf ~/.cache/pip
 RUN apt-get remove -y python3-six python-six
 '''
     # Make a user and home directory to install chainer
