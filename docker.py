@@ -1,8 +1,6 @@
 import logging
 import os
 import random
-import re
-import shutil
 import signal
 import string
 import subprocess
@@ -490,7 +488,7 @@ def run_interactive(conf, no_cache=False, volume=None, env=None):
 
     cmd += [name, '/bin/bash']
 
-    res = subprocess.call(cmd)
+    subprocess.call(cmd)
 
 
 def make_handler(name):
