@@ -284,6 +284,8 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
     echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
     tar -xzf {cudnn}.tgz -C /opt/cudnn && \\
     rm {cudnn}.tgz
+RUN mkdir -p /usr/local/cuda/include && \\
+    mkdir -p /usr/local/cuda/lib64
 RUN touch /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn.so
 ENV CFLAGS=-I/opt/cudnn/cuda/include
 ENV LDFLAGS=-L/opt/cudnn/cuda/lib64
