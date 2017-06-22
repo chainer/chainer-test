@@ -72,6 +72,7 @@ def make_conf(params):
     append_require(params, conf, 'pip')
     append_require(params, conf, 'cython')
     append_require(params, conf, 'numpy')
+    append_require(params, conf, 'scipy')
 
     if params.get('h5py') == '2.5':
         # NumPy is required to install h5py in this version
