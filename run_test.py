@@ -3,6 +3,7 @@
 import argparse
 import os
 
+import argconfig
 import docker
 
 
@@ -12,9 +13,6 @@ if __name__ == '__main__':
     parser.add_argument('--test', choices=[
         'py2', 'py3', 'py35', 'example', 'prev_example', 'doc'
     ], required=True)
-    parser.add_argument('--cache')
-    parser.add_argument('--http-proxy')
-    parser.add_argument('--https-proxy')
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
     parser.add_argument('--coveralls')
@@ -22,6 +20,7 @@ if __name__ == '__main__':
         '--gpu-id', type=int,
         help='GPU ID you want to use mainly in the script.')
     parser.add_argument('-i', '--interactive', action='store_true')
+    argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
     if args.test == 'py2':
@@ -100,22 +99,12 @@ if __name__ == '__main__':
 
     volume = []
     env = {'CUDNN': conf['cudnn']}
-
     conf['requires'] += ['hacking', 'nose', 'mock', 'coverage']
-
-    if args.cache:
-        volume.append(args.cache)
-        env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
-        env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
+    argconfig.parse_args(args, env, conf, volume)
 
     if args.coveralls and args.test == 'py2':
         env['COVERALLS_REPO_TOKEN'] = args.coveralls
         conf['requires'].append('coveralls')
-
-    if args.http_proxy:
-        conf['http_proxy'] = args.http_proxy
-    if args.https_proxy:
-        conf['https_proxy'] = args.https_proxy
 
     if args.interactive:
         docker.run_interactive(
