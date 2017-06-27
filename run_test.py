@@ -11,7 +11,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--test', choices=[
-        'py2', 'py3', 'py35', 'example', 'prev_example', 'doc'
+        'chainer-py2', 'chainer-py3', 'chainer-py35', 'chainer-example',
+        'chainer-prev_example', 'chainer-doc'
+        'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-example', 'cupy-doc'
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
@@ -23,7 +25,7 @@ if __name__ == '__main__':
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
-    if args.test == 'py2':
+    if args.test == 'chainer-py2':
         conf = {
             'base': 'ubuntu14_py2',
             'cuda': 'cuda70',
@@ -37,7 +39,7 @@ if __name__ == '__main__':
         }
         script = './test.sh'
 
-    elif args.test == 'py3':
+    elif args.test == 'chainer-py3':
         conf = {
             'base': 'ubuntu14_py3',
             'cuda': 'cuda75',
@@ -51,7 +53,7 @@ if __name__ == '__main__':
         }
         script = './test.sh'
 
-    elif args.test == 'py35':
+    elif args.test == 'chainer-py35':
         conf = {
             'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
@@ -61,7 +63,7 @@ if __name__ == '__main__':
         }
         script = './test.sh'
 
-    elif args.test == 'example':
+    elif args.test == 'chainer-example':
         conf = {
             'base': 'centos7_py2',
             'cuda': 'cuda75',
@@ -71,7 +73,7 @@ if __name__ == '__main__':
         }
         script = './test_example.sh'
 
-    elif args.test == 'prev_example':
+    elif args.test == 'chainer-prev_example':
         conf = {
             'base': 'ubuntu14_py2',
             'cuda': 'cuda80',
@@ -81,7 +83,7 @@ if __name__ == '__main__':
         }
         script = './test_prev_example.sh'
 
-    elif args.test == 'doc':
+    elif args.test == 'chainer-doc':
         # See sphinx version RTD uses:
         # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
         conf = {
@@ -93,6 +95,64 @@ if __name__ == '__main__':
                          'sphinx==1.5.3']
         }
         script = './test_doc.sh'
+
+    elif args.test == 'cupy-py2':
+        conf = {
+            'base': 'ubuntu14_py2',
+            'cuda': 'cuda70',
+            'cudnn': 'cudnn4',
+            'nccl': 'none',
+            'requires': [
+                'setuptools', 'pip', 'cython==0.24', 'numpy<1.13',
+            ]
+        }
+        script = './test_cupy.sh'
+
+    elif args.test == 'cupy-py3':
+        conf = {
+            'base': 'ubuntu14_py3',
+            'cuda': 'cuda75',
+            'cudnn': 'cudnn51',
+            'nccl': 'nccl1.3.4',
+            'protobuf-cpp': 'protobuf-cpp-3',
+            'requires': [
+                'setuptools', 'pip', 'cython==0.24', 'numpy<1.12',
+            ],
+        }
+        script = './test_cupy.sh'
+
+    elif args.test == 'cupy-py35':
+        conf = {
+            'base': 'ubuntu16_py3',
+            'cuda': 'cuda80',
+            'cudnn': 'cudnn6',
+            'nccl': 'none',
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.11'],
+        }
+        script = './test_cupy.sh'
+
+    elif args.test == 'cupy-example':
+        conf = {
+            'base': 'centos7_py2',
+            'cuda': 'cuda75',
+            'cudnn': 'cudnn4',
+            'nccl': 'nccl1.3.4',
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.13'],
+        }
+        script = './test_cupy_example.sh'
+
+    elif args.test == 'cupy-doc':
+        # See sphinx version RTD uses:
+        # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
+        conf = {
+            'base': 'ubuntu14_py2',
+            'cuda': 'cuda70',
+            'cudnn': 'cudnn6',
+            'nccl': 'nccl1.3.4',
+            'requires': ['setuptools', 'cython==0.24', 'numpy<1.13',
+                         'sphinx==1.5.3']
+        }
+        script = './test_cupy_doc.sh'
 
     else:
         raise
@@ -115,9 +175,11 @@ if __name__ == '__main__':
             timeout=args.timeout, gpu_id=args.gpu_id)
 
         # convert coverage.xml
-        if os.path.exists('chainer/coverage.xml'):
+        for directory in ['chainer', 'cupy']:
+            if not os.path.exists('%s/coverage.xml' % directory):
+                continue
             with open('coverage.xml', 'w') as outputs:
-                with open('chainer/coverage.xml') as inputs:
+                with open('%s/coverage.xml' % directory) as inputs:
                     for line in inputs:
-                        outputs.write(
-                            line.replace('filename="', 'filename="chainer/'))
+                        outputs.write(line.replace(
+                            'filename="', 'filename="%s/' % directory))
