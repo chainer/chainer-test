@@ -29,8 +29,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 RUN yum -y update && \\
     yum -y install epel-release && \\
     yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
-    yum clean all
-RUN yum -y install python-devel python-pip && \\
+    yum -y install python-devel python-pip && \\
     yum clean all
 '''
 
@@ -41,8 +40,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 RUN yum -y update && \\
     yum -y install epel-release && \\
     yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
-    yum clean all
-RUN yum -y install bzip2-devel openssl-devel readline-devel && \\
+    yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
@@ -81,10 +79,10 @@ codes['ubuntu14_py2'] = '''FROM ubuntu:14.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
-RUN apt-get -y update && apt-get -y upgrade && \\
-    apt-get install -y ccache curl g++ gfortran git libhdf5-dev && \\
-    apt-get clean
-RUN apt-get install -y python-pip python-dev && \\
+RUN apt-get -y update && \\
+    apt-get -y upgrade && \\
+    apt-get -y install ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install python-pip python-dev && \\
     apt-get clean
 '''
 
@@ -92,10 +90,10 @@ codes['ubuntu14_py3'] = '''FROM ubuntu:14.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
-RUN apt-get -y update && apt-get -y upgrade && \\
-    apt-get install -y ccache curl g++ gfortran git libhdf5-dev && \\
-    apt-get clean
-RUN apt-get install -y python3-pip python3-dev && \\
+RUN apt-get -y update && \\
+    apt-get -y upgrade && \\
+    apt-get -y install ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
@@ -106,10 +104,10 @@ ubuntu14_pyenv_base = '''FROM ubuntu:14.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
-RUN apt-get -y update && apt-get -y upgrade && \\
-    apt-get install -y ccache curl g++ gfortran git libhdf5-dev && \\
-    apt-get clean
-RUN apt-get -y install libbz2-dev libreadline-dev libssl-dev make && \\
+RUN apt-get -y update && \\
+    apt-get -y upgrade && \\
+    apt-get -y install  ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install libbz2-dev libreadline-dev libssl-dev make && \\
     apt-get clean
 
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
@@ -130,10 +128,10 @@ codes['ubuntu16_py2'] = '''FROM ubuntu:16.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
-RUN apt-get -y update && apt-get -y upgrade && \\
-    apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
-    apt-get clean
-RUN apt-get install -y python-pip python-dev && \\
+RUN apt-get -y update && \\
+    apt-get -y upgrade && \\
+    apt-get -y install ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get -y install python-pip python-dev && \\
     apt-get clean
 
 RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
@@ -144,10 +142,10 @@ codes['ubuntu16_py3'] = '''FROM ubuntu:16.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
-RUN apt-get -y update && apt-get -y upgrade && \\
-    apt-get install -y ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
-    apt-get clean
-RUN apt-get install -y python3-pip python3-dev && \\
+RUN apt-get -y update && \\
+    apt-get -y upgrade && \\
+    apt-get -y install ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
 RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
