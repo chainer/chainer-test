@@ -3,6 +3,7 @@
 import argparse
 import os
 
+import argconfig
 import docker
 import shuffle
 
@@ -24,11 +25,9 @@ if __name__ == '__main__':
         description='Test script for installation')
     parser.add_argument('--id', type=int, required=True)
 
-    parser.add_argument('--cache')
-    parser.add_argument('--http-proxy')
-    parser.add_argument('--https-proxy')
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
+    argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
     build_conf = {
@@ -40,20 +39,12 @@ if __name__ == '__main__':
     }
     volume = []
     env = {}
-
-    if args.cache:
-        volume.append(args.cache)
-        env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
-        env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
-
+    argconfig.parse_args(args, env, build_conf, volume)
     docker.run_with(build_conf, './build_sdist.sh', volume=volume, env=env)
 
     conf = shuffle.make_shuffle_conf(params, args.id)
-
-    if args.http_proxy:
-        conf['http_proxy'] = args.http_proxy
-    if args.https_proxy:
-        conf['https_proxy'] = args.https_proxy
-
+    volume = []
+    env = {}
+    argconfig.parse_args(args, env, conf, volume)
     docker.run_with(conf, './test_install.sh', no_cache=args.no_cache,
                     volume=volume, env=env, timeout=args.timeout)

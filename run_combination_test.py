@@ -4,6 +4,7 @@ import argparse
 import os
 import random
 
+import argconfig
 import docker
 import shuffle
 
@@ -25,15 +26,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--id', type=int, required=True)
-    parser.add_argument('--cache')
-    parser.add_argument('--http-proxy')
-    parser.add_argument('--https-proxy')
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
     parser.add_argument(
         '--gpu-id', type=int,
         help='GPU ID you want to use mainly in the script.')
     parser.add_argument('--interactive', action='store_true')
+    argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
     conf = shuffle.make_shuffle_conf(params, args.id)
@@ -51,15 +50,7 @@ if __name__ == '__main__':
     volume = []
     env = {'CUDNN': conf['cudnn']}
 
-    if args.cache:
-        volume.append(args.cache)
-        env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
-        env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
-
-    if args.http_proxy:
-        conf['http_proxy'] = args.http_proxy
-    if args.https_proxy:
-        conf['https_proxy'] = args.https_proxy
+    argconfig.parse_args(args, env, conf, volume)
 
     if args.interactive:
         docker.run_interactive(
