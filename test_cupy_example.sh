@@ -18,3 +18,8 @@ run="coverage run -a --branch"
 $run examples/kmeans/kmeans.py -m 1
 $run examples/kmeans/kmeans.py -m 1 --use-custom-kernel
 $run examples/kmeans/kmeans.py -m 1 -o kmeans.png
+
+
+# SGEMM
+
+$run examples/gemm/sgemm.py
