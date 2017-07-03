@@ -44,3 +44,24 @@ def parse_args(args, env, conf, volume):
     https_proxy = get_arg_value(args, 'https-proxy')
     if https_proxy is not None:
         conf['https_proxy'] = https_proxy
+
+
+def set_coveralls(env):
+    if 'BUILD_NUMBER' in os.environ and 'JOB_NAME' in os.environ:
+        job = os.getenv('JOB_NAME').split('/')[0]
+        build_num = os.getenv('BUILD_NUMBER')
+        build = '%s#%s' % (job, build_num)
+        env['COVERALLS_BUILD'] = build
+
+    elif 'ghprbPullId' in os.environ:
+        env['COVERALLS_PR'] = os.getenv('ghprbPullId')
+    elif 'PR' in os.environ:
+        env['COVERALLS_PR'] = os.getenv('PR')
+    
+    if 'ghprbSourceBranch' in os.environ:
+        branch = os.getenv('ghprbSourceBranch')
+        env['COVERALLS_BRANCH'] = branch
+
+    if 'CHAINER_TEST_COVERALLS_REPO_TOKEN' in os.environ:
+        env['COVERALLS_REPO_TOKEN'] = os.get_env(
+            'CHAINER_TEST_COVERALLS_REPO_TOKEN')
