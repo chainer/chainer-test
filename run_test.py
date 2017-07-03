@@ -159,12 +159,10 @@ if __name__ == '__main__':
 
     volume = []
     env = {'CUDNN': conf['cudnn']}
-    conf['requires'] += ['hacking', 'nose', 'mock', 'coverage']
-    argconfig.parse_args(args, env, conf, volume)
+    conf['requires'] += ['hacking', 'nose', 'mock', 'coverage', 'coveralls']
 
-    if args.coveralls and args.test == 'py2':
-        env['COVERALLS_REPO_TOKEN'] = args.coveralls
-        conf['requires'].append('coveralls')
+    argconfig.parse_args(args, env, conf, volume)
+    argconfig.set_coveralls(env)
 
     if args.interactive:
         docker.run_interactive(
