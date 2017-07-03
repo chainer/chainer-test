@@ -106,7 +106,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install  ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install ccache curl g++ gfortran git libhdf5-dev && \\
     apt-get -y install libbz2-dev libreadline-dev libssl-dev make && \\
     apt-get clean
 
