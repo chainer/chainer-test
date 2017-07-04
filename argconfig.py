@@ -36,7 +36,7 @@ def parse_args(args, env, conf, volume):
         volume.append(cache)
         env['CUPY_CACHE_DIR'] = os.path.join(cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(cache, '.ccache')
-        
+
     http_proxy = get_arg_value(args, 'http-proxy')
     if http_proxy is not None:
         conf['http_proxy'] = http_proxy
@@ -57,11 +57,11 @@ def set_coveralls(env):
         env['COVERALLS_PR'] = os.getenv('ghprbPullId')
     elif 'PR' in os.environ:
         env['COVERALLS_PR'] = os.getenv('PR')
-    
+
     if 'ghprbSourceBranch' in os.environ:
         branch = os.getenv('ghprbSourceBranch')
         env['COVERALLS_BRANCH'] = branch
 
     if 'CHAINER_TEST_COVERALLS_REPO_TOKEN' in os.environ:
-        env['COVERALLS_REPO_TOKEN'] = os.get_env(
+        env['COVERALLS_REPO_TOKEN'] = os.getenv(
             'CHAINER_TEST_COVERALLS_REPO_TOKEN')
