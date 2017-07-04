@@ -53,7 +53,7 @@ def set_coveralls(env):
         build = '%s#%s' % (job, build_num)
         env['COVERALLS_BUILD'] = build
 
-    elif 'ghprbPullId' in os.environ:
+    if 'ghprbPullId' in os.environ:
         env['COVERALLS_PR'] = os.getenv('ghprbPullId')
     elif 'PR' in os.environ:
         env['COVERALLS_PR'] = os.getenv('PR')
