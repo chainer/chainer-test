@@ -25,8 +25,10 @@ echo "Running mnist example"
 # change epoch
 $run examples/mnist/train_mnist.py --epoch=1 --unit=10
 $run examples/mnist/train_mnist.py --gpu=0 --epoch=1 --unit=10
-$run examples/mnist/train_mnist_custom_loop.py --epoch=1 --unit=10
-$run examples/mnist/train_mnist_custom_loop.py --gpu=0 --epoch=1 --unit=10
+if [ -f examples/mnist/train_mnist_custom_loop.py ]; then
+  $run examples/mnist/train_mnist_custom_loop.py --epoch=1 --unit=10
+  $run examples/mnist/train_mnist_custom_loop.py --gpu=0 --epoch=1 --unit=10
+fi
 $run examples/mnist/train_mnist_model_parallel.py --gpu0=0 --gpu1=1 --epoch=1 --unit=10
 $run examples/mnist/train_mnist_data_parallel.py --gpu0=0 --gpu1=1 --epoch=1 --unit=10
 
