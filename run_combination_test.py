@@ -15,6 +15,7 @@ params = {
     'cudnn': docker.cudnn_choices,
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
+    'scipy': [None, '0.19'],
     'protobuf': ['2', '3', 'cpp-3'],
     'h5py': [None, '2.5', '2.6', '2.7'],
     'pillow': [None, '3.4', '4.0', '4.1'],
