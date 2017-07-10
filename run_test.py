@@ -12,8 +12,8 @@ if __name__ == '__main__':
         description='Test script for multi-environment')
     parser.add_argument('--test', choices=[
         'chainer-py2', 'chainer-py3', 'chainer-py35', 'chainer-example',
-        'chainer-prev_example', 'chainer-doc'
-        'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-example', 'cupy-doc'
+        'chainer-prev_example', 'chainer-doc',
+        'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-example', 'cupy-doc',
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
