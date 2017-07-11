@@ -16,6 +16,4 @@ else
   nosetests --processes=4 --process-timeout=10000 --stop --with-coverage --cover-branches --cover-package=chainer -a '!slow'
 fi
 
-coverage xml -i
-
 python ../push_coveralls.py

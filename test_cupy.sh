@@ -12,6 +12,4 @@ else
   nosetests --processes=4 --process-timeout=10000 --stop --with-coverage --cover-branches --cover-package=cupy -a '!slow'
 fi
 
-coverage xml -i
-
 python ../push_coveralls.py
