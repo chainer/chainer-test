@@ -95,7 +95,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'cython==0.24', 'numpy<1.13',
+                'pip==9.0.1', 'setuptools', 'cython==0.24', 'numpy<1.13',
                 'scipy<0.19', 'sphinx==1.5.3',
             ]
         }
@@ -160,8 +160,8 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6',
             'nccl': 'nccl1.3.4',
             'requires': [
-                'setuptools', 'cython==0.24', 'numpy<1.13', 'scipy<0.19',
-                'sphinx==1.5.3',
+                'pip==9.0.1', 'setuptools', 'cython==0.24', 'numpy<1.13',
+                'scipy<0.19', 'sphinx==1.5.3',
             ]
         }
         script = './test_cupy_doc.sh'
