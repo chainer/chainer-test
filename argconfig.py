@@ -33,6 +33,11 @@ def setup_argument_parser(parser):
         'it is used when `--coveralls-repo=cupy` is selected. '
         'use CHAINER_TEST_COVERALLS_CUPY_TOKEN environment '
         'variable by default.')
+    parser.add_argument(
+        '--coveralls-branch',
+        help='branch name to report Coveralls. '
+        'use ghprbSourceBranch environment varialbe by default. '
+        'if both are not specified it is ignored.')
 
 
 def get_arg_value(args, arg_key, env_key=None):
@@ -76,7 +81,9 @@ def set_coveralls(args, env):
     elif 'PR' in os.environ:
         env['COVERALLS_PR'] = os.getenv('PR')
 
-    if 'ghprbSourceBranch' in os.environ:
+    if args.coveralls_branch:
+        env['COVERALLS_BRANCH'] = args.coveralls_branch
+    elif 'ghprbSourceBranch' in os.environ:
         branch = os.getenv('ghprbSourceBranch')
         env['COVERALLS_BRANCH'] = branch
 
