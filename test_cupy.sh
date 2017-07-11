@@ -14,6 +14,4 @@ fi
 
 coverage xml -i
 
-if [ $COVERALLS_REPO_TOKEN ]; then
-  python ../push_coveralls.py
-fi
+python ../push_coveralls.py
