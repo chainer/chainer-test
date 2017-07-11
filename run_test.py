@@ -173,13 +173,3 @@ if __name__ == '__main__':
         docker.run_with(
             conf, script, no_cache=args.no_cache, volume=volume, env=env,
             timeout=args.timeout, gpu_id=args.gpu_id)
-
-        # convert coverage.xml
-        for directory in ['chainer', 'cupy']:
-            if not os.path.exists('%s/coverage.xml' % directory):
-                continue
-            with open('coverage.xml', 'w') as outputs:
-                with open('%s/coverage.xml' % directory) as inputs:
-                    for line in inputs:
-                        outputs.write(line.replace(
-                            'filename="', 'filename="%s/' % directory))
