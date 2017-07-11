@@ -17,7 +17,6 @@ if __name__ == '__main__':
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
-    parser.add_argument('--coveralls')
     parser.add_argument(
         '--gpu-id', type=int,
         help='GPU ID you want to use mainly in the script.')
@@ -162,7 +161,10 @@ if __name__ == '__main__':
     conf['requires'] += ['hacking', 'nose', 'mock', 'coverage', 'coveralls']
 
     argconfig.parse_args(args, env, conf, volume)
-    argconfig.set_coveralls(env)
+
+    # coverage result is reported when the same type of a test is executed
+    if args.coveralls_repo and args.coveralls_repo in args.test:
+        argconfig.set_coveralls(args, env)
 
     if args.interactive:
         docker.run_interactive(

@@ -16,6 +16,23 @@ def setup_argument_parser(parser):
         help='https proxy server (http://hostname:PORT). '
         'use CHAINER_TEST_HTTPS_PROXY environment variable by default.')
 
+    parser.add_argument(
+        '--coveralls-repo', choices=['chainer', 'cupy'],
+        help='reporsitoy to report coverage information to Coveralls. '
+        '[chainer, cupy]')
+    parser.add_argument(
+        '--coveralls-chainer-token',
+        help='repo token of Chainer for Coveralls. '
+        'it is used when `--coveralls-repo=chainer` is selected. '
+        'use CHAINER_TEST_COVERALLS_CHAINER_TOKEN environment '
+        'variable by default.')
+    parser.add_argument(
+        '--coveralls-cupy-token',
+        help='repo token of CuPy for Coveralls. '
+        'it is used when `--coveralls-repo=cupy` is selected. '
+        'use CHAINER_TEST_COVERALLS_CUPY_TOKEN environment '
+        'variable by default.')
+
 
 def get_arg_value(args, arg_key, env_key=None):
     key = arg_key.replace('-', '_')
@@ -46,7 +63,7 @@ def parse_args(args, env, conf, volume):
         conf['https_proxy'] = https_proxy
 
 
-def set_coveralls(env):
+def set_coveralls(args, env):
     if 'BUILD_NUMBER' in os.environ and 'JOB_NAME' in os.environ:
         job = os.getenv('JOB_NAME').split('/')[0]
         build_num = os.getenv('BUILD_NUMBER')
@@ -62,6 +79,17 @@ def set_coveralls(env):
         branch = os.getenv('ghprbSourceBranch')
         env['COVERALLS_BRANCH'] = branch
 
-    if 'CHAINER_TEST_COVERALLS_REPO_TOKEN' in os.environ:
-        env['COVERALLS_REPO_TOKEN'] = os.getenv(
-            'CHAINER_TEST_COVERALLS_REPO_TOKEN')
+    if args.coveralls_repo == 'chainer':
+        repo_token = get_arg_value(args, 'coveralls-chainer-token')
+        if repo_token is None:
+            print('--coveralls-repo=chainer is specified but '
+                  '--coveralls-chainer-token is not given')
+        else:
+            env['COVERALLS_REPO_TOKEN'] = repo_token
+    if args.coveralls_repo == 'cupy':
+        repo_token = get_arg_value(args, 'coveralls-cupy-token')
+        if repo_token is None:
+            print('--coveralls-repo=cupy is specified but '
+                  '--coveralls-cupy-token is not given')
+        else:
+            env['COVERALLS_REPO_TOKEN'] = repo_token
