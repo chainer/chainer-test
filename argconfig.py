@@ -1,4 +1,5 @@
 import argparse
+import logging
 import os
 
 
@@ -82,14 +83,16 @@ def set_coveralls(args, env):
     if args.coveralls_repo == 'chainer':
         repo_token = get_arg_value(args, 'coveralls-chainer-token')
         if repo_token is None:
-            print('--coveralls-repo=chainer is specified but '
-                  '--coveralls-chainer-token is not given')
+            logging.warning(
+                '--coveralls-repo=chainer is specified but '
+                '--coveralls-chainer-token is not given')
         else:
             env['COVERALLS_REPO_TOKEN'] = repo_token
     if args.coveralls_repo == 'cupy':
         repo_token = get_arg_value(args, 'coveralls-cupy-token')
         if repo_token is None:
-            print('--coveralls-repo=cupy is specified but '
-                  '--coveralls-cupy-token is not given')
+            logging.warning(
+                '--coveralls-repo=cupy is specified but '
+                '--coveralls-cupy-token is not given')
         else:
             env['COVERALLS_REPO_TOKEN'] = repo_token
