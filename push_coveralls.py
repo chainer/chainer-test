@@ -14,6 +14,10 @@ def main():
     parser.add_argument('--branch', help='branch name')
     args = parser.parse_args()
 
+    if 'COVERALLS_REPO_TOKEN' not in os.environ:
+        print('COVERALLS_REPO_TOKEN environment variable is not set')
+        return
+
     if args.build:
         build = args.build
     elif 'COVERALLS_BUILD' in os.environ:
