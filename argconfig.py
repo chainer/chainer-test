@@ -5,6 +5,10 @@ import os
 
 def setup_argument_parser(parser):
     parser.add_argument(
+        '--gpu-id', type=int,
+        help='GPU ID you want to use mainly in the script.
+        use EXECUTOR_NUMBER environment variable by default.')
+    parser.add_argument(
         '--cache',
         help='cache directory to store cupy cache and ccache. '
         'use CHAINER_TEST_CACHE environment variable by default.')
@@ -54,6 +58,10 @@ def get_arg_value(args, arg_key, env_key=None):
 
 
 def parse_args(args, env, conf, volume):
+    gpu_id = get_arg_value(args, 'gpu_id', 'EXECUTOR_NUMBER')
+    if gpu_id is not None:
+        args.gpu_id = int(gpu_id)
+
     cache = get_arg_value(args, 'cache')
     if cache is not None:
         volume.append(cache)
