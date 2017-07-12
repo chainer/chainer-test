@@ -29,9 +29,6 @@ if __name__ == '__main__':
     parser.add_argument('--id', type=int, required=True)
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
-    parser.add_argument(
-        '--gpu-id', type=int,
-        help='GPU ID you want to use mainly in the script.')
     parser.add_argument('--interactive', action='store_true')
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
