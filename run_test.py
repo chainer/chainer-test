@@ -17,7 +17,6 @@ if __name__ == '__main__':
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
-    parser.add_argument('--coveralls')
     parser.add_argument(
         '--gpu-id', type=int,
         help='GPU ID you want to use mainly in the script.')
@@ -171,12 +170,13 @@ if __name__ == '__main__':
 
     volume = []
     env = {'CUDNN': conf['cudnn']}
-    conf['requires'] += ['hacking', 'nose', 'mock', 'coverage']
+    conf['requires'] += ['hacking', 'nose', 'mock', 'coverage', 'coveralls']
+
     argconfig.parse_args(args, env, conf, volume)
 
-    if args.coveralls and args.test == 'py2':
-        env['COVERALLS_REPO_TOKEN'] = args.coveralls
-        conf['requires'].append('coveralls')
+    # coverage result is reported when the same type of a test is executed
+    if args.coveralls_repo and args.coveralls_repo in args.test:
+        argconfig.set_coveralls(args, env)
 
     if args.interactive:
         docker.run_interactive(
@@ -185,13 +185,3 @@ if __name__ == '__main__':
         docker.run_with(
             conf, script, no_cache=args.no_cache, volume=volume, env=env,
             timeout=args.timeout, gpu_id=args.gpu_id)
-
-        # convert coverage.xml
-        for directory in ['chainer', 'cupy']:
-            if not os.path.exists('%s/coverage.xml' % directory):
-                continue
-            with open('coverage.xml', 'w') as outputs:
-                with open('%s/coverage.xml' % directory) as inputs:
-                    for line in inputs:
-                        outputs.write(line.replace(
-                            'filename="', 'filename="%s/' % directory))
