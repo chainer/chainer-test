@@ -6,8 +6,8 @@ import os
 def setup_argument_parser(parser):
     parser.add_argument(
         '--gpu-id', type=int,
-        help='GPU ID you want to use mainly in the script.
-        use EXECUTOR_NUMBER environment variable by default.')
+        help='GPU ID you want to use mainly in the script.'
+        'use EXECUTOR_NUMBER environment variable by default.')
     parser.add_argument(
         '--cache',
         help='cache directory to store cupy cache and ccache. '
