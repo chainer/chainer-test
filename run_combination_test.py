@@ -39,7 +39,6 @@ if __name__ == '__main__':
         'pip',
         'cython==0.24'
     ] + conf['requires'] + [
-        'hacking',
         'nose',
         'mock',
         'coverage',

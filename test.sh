@@ -5,7 +5,6 @@ python setup.py build -j 4 develop install --user || python setup.py develop ins
 cd ..
 
 cd chainer
-flake8
 python setup.py install --user
 
 export PYTHONWARNINGS="ignore::FutureWarning"

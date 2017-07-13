@@ -167,7 +167,7 @@ if __name__ == '__main__':
 
     volume = []
     env = {'CUDNN': conf['cudnn']}
-    conf['requires'] += ['hacking', 'nose', 'mock', 'coverage', 'coveralls']
+    conf['requires'] += ['nose', 'mock', 'coverage', 'coveralls']
 
     argconfig.parse_args(args, env, conf, volume)
 

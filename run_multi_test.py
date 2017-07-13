@@ -78,7 +78,6 @@ if __name__ == '__main__':
         conf['requires'].append('pillow<4.2')
 
     conf['requires'] += [
-        'hacking',
         'nose',
         'mock',
         'coverage',
