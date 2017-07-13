@@ -16,7 +16,7 @@ params = {
     'cuda': cuda_choices,
     'cudnn': docker.cudnn_choices + ['cudnn-latest-with-dummy'],
     'nccl': docker.nccl_choices,
-    'numpy': ['1.9', '1.10', '1.11', '1.12'],
+    'numpy': ['1.9', '1.10', '1.11', '1.12', '1.13'],
     'cython': [None, '0.21', '0.24', '0.25'],
     'setuptools': [None, '3.3', '18.2', '18.3.2'],
     'pip': [None, '7', '8', '9'],
