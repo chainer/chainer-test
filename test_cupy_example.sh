@@ -22,4 +22,7 @@ $run examples/kmeans/kmeans.py -m 1 -o kmeans.png
 
 # SGEMM
 
-$run examples/gemm/sgemm.py
+if [ -f examples/gemm/sgemm.py ]; then
+  $run examples/gemm/sgemm.py
+fi
+
