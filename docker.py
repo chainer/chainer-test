@@ -320,7 +320,7 @@ WORKDIR /tmp
 '''
 
 codes['protobuf-cpp-3'] = protobuf_cpp_base.format(
-    protobuf='3.1.0',
+    protobuf='3.2.0',
 )
 
 codes['none'] = ''
