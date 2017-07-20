@@ -43,7 +43,7 @@ echo "Running sentiment example"
 
 $run examples/sentiment/download.py
 $run examples/sentiment/train_sentiment.py --epoch=1 --batchsize=1 --epocheval=1 --test
-$run examples/sentiment/train_sentiment.py --gpu=0 --epoch=1 --batchsize=1 --epocheval=1 --test 
+$run examples/sentiment/train_sentiment.py --gpu=0 --epoch=1 --batchsize=1 --epocheval=1 --test
 
 # imagenet
 echo "Runnig imagenet example"
@@ -76,8 +76,8 @@ echo "it" | $run examples/word2vec/search.py
 # vae
 echo "Runnig VAE example"
 
-$run examples/vae/train_vae.py -e 1
-$run examples/vae/train_vae.py -e 1 --gpu=0
+MPLBACKEND=Agg $run examples/vae/train_vae.py -e 1
+MPLBACKEND=Agg $run examples/vae/train_vae.py -e 1 --gpu=0
 
 # dcgan
 echo "Runnig DCGAN example"
