@@ -3,12 +3,9 @@ language: python
 cache:
   - pip
 
-matrix:
-  include:
-    - os: linux
-      python: "2.7"
-    - os: linux
-      python: "3.5.1"
+python:
+  - "2.7"
+  - "3.5"
 
 install:
   - pip install -U pip wheel
@@ -20,4 +17,3 @@ script:
   - test ! -s check_autopep8
 
 sudo: false
-
