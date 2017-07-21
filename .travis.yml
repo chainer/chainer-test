@@ -1,0 +1,19 @@
+language: python
+
+cache:
+  - pip
+
+python:
+  - "2.7"
+  - "3.5"
+
+install:
+  - pip install -U pip wheel
+  - pip install hacking autopep8
+
+script:
+  - flake8
+  - autopep8 *.py --global-config .pep8 --diff | tee check_autopep8
+  - test ! -s check_autopep8
+
+sudo: false
