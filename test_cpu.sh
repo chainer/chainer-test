@@ -2,7 +2,6 @@
 
 
 cd chainer
-flake8
 python setup.py develop install --user
 
 export PYTHONWARNINGS="ignore::FutureWarning"
