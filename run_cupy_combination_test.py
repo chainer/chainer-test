@@ -17,7 +17,7 @@ params = {
     'cuda': cuda_choices,
     'cudnn': docker.cudnn_choices,
     'nccl': docker.nccl_choices,
-    'numpy': ['1.9', '1.10', '1.11', '1.12', '1.13'],
+    'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'scipy': [None, '0.18'],
 }
 
