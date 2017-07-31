@@ -30,6 +30,9 @@ def get_shuffle_params(params, index):
        ('ubuntu16' in ret['base'] and ret['cuda'] != 'cuda80'):
         ret['nccl'] = 'none'
 
+    if 'centos6' in ret['base'] and ret.get('protobuf') == 'cpp-3':
+        ret['protobuf'] = '3'
+
     return ret
 
 
