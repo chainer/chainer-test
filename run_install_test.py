@@ -12,7 +12,7 @@ params = {
     'base': docker.base_choices,
     'cuda_cudnn': docker.get_cuda_cudnn_choices('chainer', with_dummy=True),
     'nccl': docker.nccl_choices,
-    'numpy': ['1.9', '1.10', '1.11', '1.12'],
+    'numpy': ['1.9', '1.10', '1.11', '1.12', '1.13'],
     'cython': [None, '0.20', '0.21', '0.22', '0.23', '0.24', '0.25', '0.26'],
     'setuptools': [None, '3.3', '18.2', '18.3.2'],
     'pip': [None, '7', '8', '9'],
