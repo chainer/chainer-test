@@ -17,7 +17,7 @@ params = {
     'cudnn': docker.cudnn_choices + ['cudnn-latest-with-dummy'],
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
-    'cython': [None, '0.21', '0.24', '0.25'],
+    'cython': [None, '0.23', '0.24', '0.25', '0.26'],
     'setuptools': [None, '3.3', '18.2', '18.3.2'],
     'pip': [None, '7', '8', '9'],
 }
@@ -40,7 +40,7 @@ if __name__ == '__main__':
         'cuda': 'cuda70',
         'cudnn': 'cudnn4',
         'nccl': 'none',
-        'requires': ['cython==0.24', 'numpy==1.9.3'],
+        'requires': ['cython==0.26', 'numpy==1.9.3'],
     }
     volume = []
     env = {}

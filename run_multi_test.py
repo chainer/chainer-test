@@ -36,7 +36,7 @@ if __name__ == '__main__':
         'cuda': args.cuda,
         'cudnn': args.cudnn,
         'nccl': args.nccl,
-        'requires': ['setuptools', 'pip', 'cython==0.24'],
+        'requires': ['setuptools', 'pip', 'cython==0.26'],
     }
     volume = []
     env = {'CUDNN': conf['cudnn']}
