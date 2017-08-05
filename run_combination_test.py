@@ -37,7 +37,7 @@ if __name__ == '__main__':
     conf['requires'] = [
         'setuptools',
         'pip',
-        'cython==0.24'
+        'cython==0.26'
     ] + conf['requires'] + [
         'nose',
         'mock',
