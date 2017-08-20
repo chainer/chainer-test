@@ -26,8 +26,8 @@ def get_shuffle_params(params, index):
 
     # nccl is only supported on CUDA8
     if 'centos6' in ret['base'] or \
-       ret['cuda'] == 'none' or \
-       ('ubuntu16' in ret['base'] and ret['cuda'] != 'cuda80'):
+       ret['cuda_cudnn'][0] == 'none' or \
+       ('ubuntu16' in ret['base'] and ret['cuda_cudnn'][0] != 'cuda80'):
         ret['nccl'] = 'none'
 
     if 'centos6' in ret['base'] and ret.get('protobuf') == 'cpp-3':
@@ -61,10 +61,8 @@ def make_conf(params):
 
     if 'base' in params:
         conf['base'] = params['base']
-    if 'cuda' in params:
-        conf['cuda'] = params['cuda']
-    if 'cudnn' in params:
-        conf['cudnn'] = params['cudnn']
+    if 'cuda_cudnn' in params:
+        conf['cuda'], conf['cudnn'] = params['cuda_cudnn']
     if 'nccl' in params:
         conf['nccl'] = params['nccl']
 
