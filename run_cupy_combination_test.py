@@ -7,11 +7,22 @@ import random
 import argconfig
 import docker
 import shuffle
+import version
 
 
 cuda_cudnn_choices = [
     (cuda, cudnn) for cuda, cudnn in docker.cuda_cudnn_choices
     if cuda != 'none']
+
+cupy_major = version.get_cupy_version()[0]
+
+if cupy_major <= 1:
+    cuda_cudnn = [
+        (cuda, cudnn) for cuda, cudnn in cuda_cudnn_choices
+        if cuda != 'cuda90' and 'cudnn7' not in cudnn]
+else:
+    cuda_cudnn = docker.cuda_cudnn_choices
+
 
 params = {
     'base': docker.base_choices,

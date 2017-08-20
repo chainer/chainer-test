@@ -7,11 +7,22 @@ import random
 import argconfig
 import docker
 import shuffle
+import version
+
+
+chainer_major = version.get_chainer_version()[0]
+
+if chainer_major <= 2:
+    cuda_cudnn = [
+        (cuda, cudnn) for cuda, cudnn in docker.cuda_cudnn_choices
+        if cuda != 'cuda90' and 'cudnn7' not in cudnn]
+else:
+    cuda_cudnn = docker.cuda_cudnn_choices
 
 
 params = {
     'base': docker.base_choices,
-    'cuda_cudnn': docker.cuda_cudnn_choices,
+    'cuda_cudnn': cuda_cudnn,
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'scipy': [None, '0.18'],
