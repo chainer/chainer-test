@@ -93,6 +93,10 @@ if __name__ == '__main__':
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.24', 'numpy<1.13',
                 'scipy<0.19', 'sphinx==1.5.3',
+
+                # Use pyOpenSSL to avoid SNIMissingWarning (Python<2.7.9)
+                # See: http://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+                'urllib3[secure]',
             ]
         }
         script = './test_doc.sh'
