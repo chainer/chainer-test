@@ -15,6 +15,21 @@ cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9']
+cuda_cudnn_choices = [
+    ('none', 'none'),
+    ('cuda70', 'none'),
+    ('cuda70', 'cudnn4'),
+    ('cuda75', 'none'),
+    ('cuda75', 'cudnn4'),
+    ('cuda75', 'cudnn5'),
+    ('cuda75', 'cudnn51'),
+    ('cuda75', 'cudnn6'),
+    ('cuda80', 'none'),
+    ('cuda80', 'cudnn5-cuda8'),
+    ('cuda80', 'cudnn51-cuda8'),
+    ('cuda80', 'cudnn6-cuda8'),
+    ('cuda80', 'cudnn7-cuda8'),
+]
 nccl_choices = ['none', 'nccl1.3.4']
 
 
