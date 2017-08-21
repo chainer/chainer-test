@@ -6,31 +6,11 @@ import os
 import argconfig
 import docker
 import shuffle
-import version
 
-
-cuda_cudnn_choices = [
-    (cuda, cudnn) for cuda, cudnn in docker.cuda_cudnn_choices
-    if cuda != 'none']
-
-cupy_major = version.get_cupy_version()[0]
-
-if cupy_major <= 1:
-    cuda_cudnn = [
-        (cuda, cudnn) for cuda, cudnn in cuda_cudnn_choices
-        if cuda != 'cuda90' and 'cudnn7' not in cudnn]
-else:
-    cuda_cudnn = docker.cuda_cudnn_choices
-
-cuda_cudnn_choices += [
-    ('cuda70', 'cudnn-latest-with-dummy'),
-    ('cuda75', 'cudnn-latest-with-dummy'),
-    ('cuda80', 'cudnn-latest-with-dummy'),
-]
 
 params = {
     'base': docker.base_choices,
-    'cuda_cudnn': cuda_cudnn_choices,
+    'cuda_cudnn': docker.get_cuda_cudnn_choices('cupy', with_dummy=True),
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'cython': [None, '0.21', '0.24', '0.25'],
