@@ -2,11 +2,14 @@ import os
 import re
 
 
+version_pattern = '([0-9]+)\\.([0-9]+)\\.([0-9]+)([a-z][a-z\\.0-9]+)?'
+
+
 def get_version(setup_path):
     with open(setup_path) as f:
         for line in f:
             m = re.match(
-                ' *version=\'([0-9]+)\\.([0-9]+)\\.([0-9]+)([a-c][0-9]?)?\'',
+                ' *version=\'%s\'' % version_pattern,
                 line)
             if m:
                 major = int(m.group(1))
