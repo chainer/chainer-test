@@ -8,13 +8,13 @@ import docker
 import shuffle
 
 
-cuda_choices = list(docker.cuda_choices)
-cuda_choices.remove('none')
+cuda_cudnn_choices = [
+    (cuda, cudnn) for cuda, cudnn in docker.cuda_cudnn_choices
+    if cuda != 'none']
 
 params = {
     'base': docker.base_choices,
-    'cuda': cuda_choices,
-    'cudnn': docker.cudnn_choices + ['cudnn-latest-with-dummy'],
+    'cuda_cudnn': cuda_cudnn_choices,
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'cython': [None, '0.21', '0.24', '0.25', '0.26'],

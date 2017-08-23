@@ -10,8 +10,7 @@ import shuffle
 
 params = {
     'base': docker.base_choices,
-    'cuda': docker.cuda_choices,
-    'cudnn': docker.cudnn_choices + ['cudnn-latest-with-dummy'],
+    'cuda_cudnn': docker.cuda_cudnn_choices,
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'cython': [None, '0.20', '0.21', '0.22', '0.23', '0.24', '0.25', '0.26'],
