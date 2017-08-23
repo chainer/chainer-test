@@ -6,6 +6,8 @@ import string
 import subprocess
 import sys
 
+import version
+
 
 base_choices = [
     'ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'ubuntu14_py36',
@@ -15,22 +17,44 @@ cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9']
-cuda_cudnn_choices = [
-    ('none', 'none'),
-    ('cuda70', 'none'),
-    ('cuda70', 'cudnn4'),
-    ('cuda75', 'none'),
-    ('cuda75', 'cudnn4'),
-    ('cuda75', 'cudnn5'),
-    ('cuda75', 'cudnn51'),
-    ('cuda75', 'cudnn6'),
-    ('cuda80', 'none'),
-    ('cuda80', 'cudnn5-cuda8'),
-    ('cuda80', 'cudnn51-cuda8'),
-    ('cuda80', 'cudnn6-cuda8'),
-    ('cuda80', 'cudnn7-cuda8'),
-]
 nccl_choices = ['none', 'nccl1.3.4']
+
+
+def get_cuda_cudnn_choices(target, with_dummy=False):
+    assert target in ['chainer', 'cupy']
+
+    choices = [
+        ('cuda70', 'none'),
+        ('cuda70', 'cudnn4'),
+        ('cuda75', 'none'),
+        ('cuda75', 'cudnn4'),
+        ('cuda75', 'cudnn5'),
+        ('cuda75', 'cudnn51'),
+        ('cuda75', 'cudnn6'),
+        ('cuda80', 'none'),
+        ('cuda80', 'cudnn5-cuda8'),
+        ('cuda80', 'cudnn51-cuda8'),
+        ('cuda80', 'cudnn6-cuda8'),
+    ]
+
+    if target == 'chainer':
+        choices = [('none', 'none')] + choices
+
+    cupy_major = version.get_cupy_version()[0]
+    if cupy_major >= 2:
+        # v2
+        choices += [
+            ('cuda80', 'cudnn7-cuda8'),
+        ]
+
+    if with_dummy:
+        choices += [
+            ('cuda70', 'cudnn-latest-with-dummy'),
+            ('cuda75', 'cudnn-latest-with-dummy'),
+            ('cuda80', 'cudnn-latest-with-dummy'),
+        ]
+
+    return choices
 
 
 codes = {}

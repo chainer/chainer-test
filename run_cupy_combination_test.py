@@ -9,13 +9,9 @@ import docker
 import shuffle
 
 
-cuda_cudnn_choices = [
-    (cuda, cudnn) for cuda, cudnn in docker.cuda_cudnn_choices
-    if cuda != 'none']
-
 params = {
     'base': docker.base_choices,
-    'cuda_cudnn': cuda_cudnn_choices,
+    'cuda_cudnn': docker.get_cuda_cudnn_choices('cupy'),
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'scipy': [None, '0.18'],

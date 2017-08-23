@@ -11,7 +11,7 @@ import shuffle
 
 params = {
     'base': docker.base_choices,
-    'cuda_cudnn': docker.cuda_cudnn_choices,
+    'cuda_cudnn': docker.get_cuda_cudnn_choices('chainer'),
     'nccl': docker.nccl_choices,
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'scipy': [None, '0.18'],
