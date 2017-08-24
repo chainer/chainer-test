@@ -78,7 +78,7 @@ if __name__ == '__main__':
             'cuda': 'cuda80',
             'cudnn': 'cudnn5',
             'nccl': 'none',
-            'requires': ['setuptools', 'cython==0.26', 'numpy<1.12'],
+            'requires': ['setuptools', 'pip', 'cython==0.26', 'numpy<1.12'],
         }
         script = './test_prev_example.sh'
 
