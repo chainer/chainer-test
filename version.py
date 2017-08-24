@@ -6,6 +6,8 @@ version_pattern = '([0-9]+)\\.([0-9]+)\\.([0-9]+)([a-z][a-z\\.0-9]+)?'
 
 
 def get_version(setup_path):
+    if not os.isfile(setup_path):
+        return None
     with open(setup_path) as f:
         for line in f:
             m = re.match(
@@ -27,4 +29,6 @@ def get_chainer_version():
 
 def get_cupy_version():
     setup_path = os.path.join(os.path.dirname(__file__), 'cupy', 'setup.py')
+    if setup_path is None:
+        return None
     return get_version(setup_path)
