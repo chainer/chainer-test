@@ -40,13 +40,14 @@ def get_cuda_cudnn_choices(target, with_dummy=False):
     if target == 'chainer':
         choices = [('none', 'none')] + choices
 
-    cupy_major = version.get_cupy_version()[0]
-
-    if cupy_major is not None and cupy_major >= 2:
-        # v2
-        choices += [
-            ('cuda80', 'cudnn7-cuda8'),
-        ]
+    cupy_version = version.get_cupy_version()
+    if cupy_version is not None:
+        cupy_major = cupy_version[0]
+        if cupy_major >= 2:
+            # v2
+            choices += [
+                ('cuda80', 'cudnn7-cuda8'),
+            ]
 
     if with_dummy:
         choices += [

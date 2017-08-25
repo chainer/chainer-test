@@ -29,6 +29,4 @@ def get_chainer_version():
 
 def get_cupy_version():
     setup_path = os.path.join(os.path.dirname(__file__), 'cupy', 'setup.py')
-    if setup_path is None:
-        return None
     return get_version(setup_path)
