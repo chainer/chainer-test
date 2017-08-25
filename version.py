@@ -6,7 +6,7 @@ version_pattern = '([0-9]+)\\.([0-9]+)\\.([0-9]+)([a-z][a-z\\.0-9]+)?'
 
 
 def get_version(setup_path):
-    if not os.isfile(setup_path):
+    if not os.path.isfile(setup_path):
         return None
     with open(setup_path) as f:
         for line in f:
