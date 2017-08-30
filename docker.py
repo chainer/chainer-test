@@ -59,6 +59,15 @@ def get_cuda_cudnn_choices(target, with_dummy=False):
     return choices
 
 
+def get_numpy_choices():
+    choices = ['1.9', '1.10', '1.11', '1.12'],
+    cupy_version = version.get_cupy_version()
+    if cupy_version is not None and cupy_version[0] >= 2:
+        # cupy v2
+        choices.append('1.13')
+    return choices
+
+
 codes = {}
 
 # base
