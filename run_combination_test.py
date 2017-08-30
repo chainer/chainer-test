@@ -1,8 +1,6 @@
 #!/usr/bin/env python2
 
 import argparse
-import os
-import random
 
 import argconfig
 import docker
@@ -13,7 +11,7 @@ params = {
     'base': docker.base_choices,
     'cuda_cudnn': docker.get_cuda_cudnn_choices('chainer'),
     'nccl': docker.nccl_choices,
-    'numpy': ['1.9', '1.10', '1.11', '1.12'],
+    'numpy': docker.get_numpy_choices(),
     'scipy': [None, '0.18'],
     'protobuf': ['2', '3', 'cpp-3'],
     'h5py': [None, '2.5', '2.6', '2.7'],
