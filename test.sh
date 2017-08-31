@@ -7,7 +7,7 @@ cd ..
 cd chainer
 python setup.py install --user
 
-export PYTHONWARNINGS="ignore::FutureWarning"
+export PYTHONWARNINGS="error::DeprecationWarning,ignore::FutureWarning,ignore::DeprecationWarning:nose.importer,ignore::DeprecationWarning:site"
 
 if [ $CUDNN = none ]; then
   nosetests --processes=4 --process-timeout=10000 --stop --with-coverage --cover-branches --cover-package=chainer -a '!cudnn,!slow'
