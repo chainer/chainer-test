@@ -19,6 +19,8 @@ python -m pip install --global-option="build_ext" --global-option="--disable-jpe
 
 run="coverage run -a --branch"
 
+export MPLBACKEND=Agg
+
 # mnist
 echo "Running mnist example"
 
@@ -76,8 +78,8 @@ echo "it" | $run examples/word2vec/search.py
 # vae
 echo "Runnig VAE example"
 
-MPLBACKEND=Agg $run examples/vae/train_vae.py -e 1
-MPLBACKEND=Agg $run examples/vae/train_vae.py -e 1 --gpu=0
+$run examples/vae/train_vae.py -e 1
+$run examples/vae/train_vae.py -e 1 --gpu=0
 
 # dcgan
 echo "Runnig DCGAN example"
