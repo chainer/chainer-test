@@ -22,6 +22,8 @@ python -m pip install --global-option="build_ext" --global-option="--disable-jpe
 
 run="coverage run -a --branch"
 
+export MPLBACKEND=Agg
+
 cd ..
 curl -L -o v${PREV_VER}.tar.gz https://github.com/pfnet/chainer/archive/v${PREV_VER}.tar.gz
 tar xzf v${PREV_VER}.tar.gz
