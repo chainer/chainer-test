@@ -37,7 +37,7 @@ if __name__ == '__main__':
         'cuda': 'cuda70',
         'cudnn': 'cudnn4',
         'nccl': 'none',
-        'requires': ['cython==0.26', 'numpy==1.9.3'],
+        'requires': ['cython==0.26.1', 'numpy==1.9.3'],
     }
     volume = []
     env = {}
