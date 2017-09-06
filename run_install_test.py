@@ -25,6 +25,8 @@ if __name__ == '__main__':
 
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
+    parser.add_argument('-i', '--interactive', action='store_true')
+
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
@@ -44,5 +46,9 @@ if __name__ == '__main__':
     volume = []
     env = {}
     argconfig.parse_args(args, env, conf, volume)
-    docker.run_with(conf, './test_install.sh', no_cache=args.no_cache,
-                    volume=volume, env=env, timeout=args.timeout)
+    if args.interactive:
+        docker.run_interactive(
+            conf, no_cache=args.no_cache, volume=volume, env=env)
+    else:
+        docker.run_with(conf, './test_install.sh', no_cache=args.no_cache,
+                        volume=volume, env=env, timeout=args.timeout)
