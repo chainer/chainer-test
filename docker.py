@@ -500,6 +500,7 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
     signal.signal(signal.SIGTERM, make_handler(run_name))
     signal.signal(signal.SIGINT, make_handler(run_name))
     cmd = ['nvidia-docker', 'run',
+           '--rm',
            '--name=%s' % run_name,
            '-v', '%s:%s' % (host_cwd, work_dir),
            '-w', work_dir,
