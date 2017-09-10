@@ -82,8 +82,8 @@ echo "it" | $run examples/word2vec/search.py
 # vae
 echo "Runnig VAE example"
 
-$run examples/vae/train_vae.py -e 1
-$run examples/vae/train_vae.py -e 1 --gpu=0
+$run examples/vae/train_vae.py -e 1 --test
+$run examples/vae/train_vae.py -e 1 --gpu=0 --test
 
 # dcgan
 echo "Runnig DCGAN example"
