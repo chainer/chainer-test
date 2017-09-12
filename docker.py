@@ -248,9 +248,9 @@ RUN echo "/usr/local/cuda/lib" >> /etc/ld.so.conf.d/cuda.conf && \\
     echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/cuda.conf && \\
     ldconfig
 
-ENV CUDA_ROOT /usr/local/cuda
-ENV PATH $PATH:$CUDA_ROOT/bin
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib:/usr/local/nvidia/lib64:/usr/local/nvidia/lib
+ENV CUDA_PATH /usr/local/cuda
+ENV PATH $PATH:$CUDA_PATH/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_PATH/lib64:$CUDA_PATH/lib:/usr/local/nvidia/lib64:/usr/local/nvidia/lib
 ENV LIBRARY_PATH /usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64/stubs$LIBRARY_PATH
 
 ENV CUDA_VERSION {cuda_ver}
