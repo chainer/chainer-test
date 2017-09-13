@@ -78,7 +78,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf && \\
     yum -y install python-devel python-pip && \\
     yum clean all
 '''
@@ -89,7 +89,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -110,7 +110,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install ccache gcc gcc-c++ git kmod hdf5-devel patch perl make && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel patch perl make autoconf && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -131,7 +131,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf && \\
     apt-get -y install python-pip python-dev && \\
     apt-get -y install libffi-dev libssl-dev && \\
     apt-get clean
@@ -143,7 +143,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
@@ -157,7 +157,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf && \\
     apt-get -y install libbz2-dev libreadline-dev libssl-dev make && \\
     apt-get clean
 
@@ -181,7 +181,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get -y install curl g++ g++-4.8 gfortran git autoconf libhdf5-dev libhdf5-serial-dev pkg-config && \\
     apt-get -y install python-pip python-dev && \\
     apt-get clean
 
@@ -195,7 +195,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get -y install curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
@@ -204,6 +204,21 @@ RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+'''
+
+# ccache
+
+ccache = '''WORKDIR /opt/ccache
+RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.3.4.tar.gz && \\
+    tar -xzf ccache.tar.gz && cd ccache-3.3.4 && \\
+    ./autogen.sh && ./configure && make && \\
+    cp ccache /usr/bin/ccache && \\
+    cd /usr/lib || cd /usr/lib64 && \\
+    mkdir ccache && cd ccache && \\
+    ln -s /usr/bin/ccache gcc && \\
+    ln -s /usr/bin/ccache g++ && \\
+    ln -s /usr/bin/ccache nvcc && \\
+    cd / && rm -rf /opt/ccache
 '''
 
 # cuda
@@ -237,9 +252,9 @@ RUN echo "/usr/local/cuda/lib" >> /etc/ld.so.conf.d/cuda.conf && \\
     echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/cuda.conf && \\
     ldconfig
 
-ENV CUDA_ROOT /usr/local/cuda
-ENV PATH $PATH:$CUDA_ROOT/bin
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib:/usr/local/nvidia/lib64:/usr/local/nvidia/lib
+ENV CUDA_PATH /usr/local/cuda
+ENV PATH $PATH:$CUDA_PATH/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_PATH/lib64:$CUDA_PATH/lib:/usr/local/nvidia/lib64:/usr/local/nvidia/lib
 ENV LIBRARY_PATH /usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64/stubs$LIBRARY_PATH
 
 ENV CUDA_VERSION {cuda_ver}
@@ -409,6 +424,7 @@ def make_dockerfile(conf):
         dockerfile += set_env('http_proxy', conf['http_proxy'])
     if 'https_proxy' in conf:
         dockerfile += set_env('https_proxy', conf['https_proxy'])
+    dockerfile += ccache
     dockerfile += codes[conf['cuda']]
     dockerfile += codes[conf['cudnn']]
     dockerfile += codes[conf['nccl']]
