@@ -219,6 +219,7 @@ RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.3.4.
     ln -s /usr/bin/ccache g++ && \\
     ln -s /usr/bin/ccache nvcc && \\
     cd / && rm -rf /opt/ccache
+ENV CUPY_BUILD_USE_CCACHE 1
 '''
 
 # cuda
