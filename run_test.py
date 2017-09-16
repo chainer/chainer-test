@@ -185,7 +185,14 @@ if __name__ == '__main__':
 
     volume = []
     env = {'CUDNN': conf['cudnn']}
-    conf['requires'] += ['nose', 'mock', 'coverage', 'coveralls']
+    conf['requires'] += [
+        'pytest',
+        'pytest-timeout',  # For timeout
+        'pytest-xdist',  # For parallelized testing
+        'pytest-cov',  # For coverage report
+        'nose',
+        'mock',
+        'coveralls']
 
     argconfig.parse_args(args, env, conf, volume)
 
