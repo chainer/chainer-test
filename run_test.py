@@ -188,7 +188,6 @@ if __name__ == '__main__':
     conf['requires'] += [
         'pytest',
         'pytest-timeout',  # For timeout
-        'pytest-xdist',  # For parallelized testing
         'pytest-cov',  # For coverage report
         'nose',
         'mock',
