@@ -213,12 +213,14 @@ RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.3.4.
     tar -xzf ccache.tar.gz && cd ccache-3.3.4 && \\
     ./autogen.sh && ./configure && make && \\
     cp ccache /usr/bin/ccache && \\
-    cd /usr/lib || cd /usr/lib64 && \\
+    cd / && rm -rf /opt/ccache && \\
+    cd /usr/lib64 || cd /usr/lib && \\
     mkdir ccache && cd ccache && \\
     ln -s /usr/bin/ccache gcc && \\
     ln -s /usr/bin/ccache g++ && \\
-    ln -s /usr/bin/ccache nvcc && \\
-    cd / && rm -rf /opt/ccache
+    cd && \\
+    ln -s /usr/bin/ccache nvcc
+ENV NVCC=/root/nvcc
 '''
 
 # cuda
