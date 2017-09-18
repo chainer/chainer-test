@@ -218,6 +218,8 @@ RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.3.4.
     mkdir ccache && cd ccache && \\
     ln -s /usr/bin/ccache gcc && \\
     ln -s /usr/bin/ccache g++ && \\
+    ln -s /usr/bin/ccache x86_64-linux-gnu-gcc && \\
+    ln -s /usr/bin/ccache x86_64-redhat-linux-gnu-gcc && \\
     cd && \\
     ln -s /usr/bin/ccache nvcc
 ENV NVCC=/root/nvcc
