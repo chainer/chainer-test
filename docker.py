@@ -428,9 +428,9 @@ def make_dockerfile(conf):
         dockerfile += set_env('http_proxy', conf['http_proxy'])
     if 'https_proxy' in conf:
         dockerfile += set_env('https_proxy', conf['https_proxy'])
-    dockerfile += ccache
     dockerfile += codes[conf['cuda']]
     dockerfile += codes[conf['cudnn']]
+    dockerfile += ccache
     dockerfile += codes[conf['nccl']]
 
     if 'protobuf-cpp' in conf:
