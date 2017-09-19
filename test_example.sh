@@ -13,7 +13,7 @@ cd dist
 pip install *.tar.gz --user
 cd ..
 
-python -m pip install coverage matplotlib --user
+python -m pip install coverage matplotlib nltk progressbar2 --user
 python -m pip install olefile --user
 python -m pip install --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
 
