@@ -6,9 +6,9 @@ python setup.py build -j 4 develop install --user || python setup.py develop ins
 export PYTHONWARNINGS="ignore::FutureWarning"
 
 if [ $CUDNN = none ]; then
-  nosetests --stop --with-coverage --cover-branches --cover-package=cupy -a '!cudnn,!slow' tests
+  nosetests --with-coverage --cover-branches --cover-package=cupy -a '!cudnn,!slow' tests
 else
-  nosetests --stop --with-coverage --cover-branches --cover-package=cupy -a '!slow' tests
+  nosetests --with-coverage --cover-branches --cover-package=cupy -a '!slow' tests
 fi
 
 python ../push_coveralls.py
