@@ -221,10 +221,8 @@ RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.3.4.
     ln -s /usr/bin/ccache x86_64-linux-gnu-gcc && \\
     ln -s /usr/bin/ccache x86_64-linux-gnu-g++ && \\
     ln -s /usr/bin/ccache x86_64-redhat-linux-gcc && \\
-    ln -s /usr/bin/ccache x86_64-redhat-linux-g++ && \\
-    cd /usr && mkdir -p libexec/ccache && cd libexec/ccache &&\\
-    ln -s /usr/bin/ccache nvcc
-ENV NVCC=/usr/libexec/ccache/nvcc
+    ln -s /usr/bin/ccache x86_64-redhat-linux-g++
+ENV NVCC="ccache nvcc"
 '''
 
 # cuda
