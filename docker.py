@@ -469,18 +469,12 @@ def write_dockerfile(conf):
 
 
 def build_image(name, no_cache=False):
-    cmd = ['docker', 'build', '-t', name]
+    cmd = ['docker', 'build', '-q', '-t', name]
     if no_cache:
         cmd.append('--no-cache')
     cmd.append('.')
 
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    subprocess.call(['grep', '-v', 'Sending build context'], stdin=p.stdout)
-    res = p.wait()
-    if res != 0:
-        logging.error('Failed to create an image')
-        logging.error('Exit code: %d' % res)
-        exit(res)
+    subprocess.check_call(cmd)
 
 
 def make_random_name():
