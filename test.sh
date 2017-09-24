@@ -11,9 +11,9 @@ export PYTHONWARNINGS="ignore::FutureWarning"
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 if [ $CUDNN = none ]; then
-  nosetests --stop --with-coverage --cover-branches --cover-package=chainer -a '!cudnn,!slow' tests
+  nosetests --with-coverage --cover-branches --cover-package=chainer -a '!cudnn,!slow' tests
 else
-  nosetests --stop --with-coverage --cover-branches --cover-package=chainer -a '!slow' tests
+  nosetests --with-coverage --cover-branches --cover-package=chainer -a '!slow' tests
 fi
 
 python ../push_coveralls.py
