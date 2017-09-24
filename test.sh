@@ -8,6 +8,7 @@ cd chainer
 python setup.py install --user
 
 export PYTHONWARNINGS="ignore::FutureWarning"
+export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 if [ $CUDNN = none ]; then
   nosetests --with-coverage --cover-branches --cover-package=chainer -a '!cudnn,!slow' tests
