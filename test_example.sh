@@ -88,9 +88,9 @@ $run examples/dcgan/train_dcgan.py -b 1 -e 1 -i ../data/dcgan --n_hidden=10 --sn
 $run examples/dcgan/train_dcgan.py -b 1 -e 1 --gpu=0 -i ../data/dcgan --n_hidden=10 --snapshot_interval 1 --display_interval 1
 
 # seq2seq
-if [ -f chainer/examples/seq2seq.py ]; then
-  $run chainer/examples/seq2seq/seq2seq.py data/seq2seq/source.txt data/seq2seq/target.txt data/seq2seq/source.vocab.txt data/seq2seq/target.vocab.txt --unit 8  --validation-source data/seq2seq/source.txt --validation-target data/seq2seq/target.txt
-  $run chainer/examples/seq2seq/seq2seq.py data/seq2seq/source.txt data/seq2seq/target.txt data/seq2seq/source.vocab.txt data/seq2seq/target.vocab.txt --unit 8  --validation-source data/seq2seq/source.txt --validation-target data/seq2seq/target.txt --gpu=0
+if [ -f examples/seq2seq.py ]; then
+  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt
+  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt --gpu=0
 fi
 
 # show coverage
