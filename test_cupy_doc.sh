@@ -5,4 +5,5 @@ python setup.py -q build -j 4 develop install --user || python setup.py -q devel
 
 cd docs
 make html
+make clean
 make doctest
