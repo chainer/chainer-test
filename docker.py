@@ -213,12 +213,16 @@ RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.3.4.
     tar -xzf ccache.tar.gz && cd ccache-3.3.4 && \\
     ./autogen.sh && ./configure && make && \\
     cp ccache /usr/bin/ccache && \\
-    cd /usr/lib || cd /usr/lib64 && \\
+    cd / && rm -rf /opt/ccache && \\
+    cd /usr/lib64 || cd /usr/lib && \\
     mkdir ccache && cd ccache && \\
     ln -s /usr/bin/ccache gcc && \\
     ln -s /usr/bin/ccache g++ && \\
-    ln -s /usr/bin/ccache nvcc && \\
-    cd / && rm -rf /opt/ccache
+    ln -s /usr/bin/ccache x86_64-linux-gnu-gcc && \\
+    ln -s /usr/bin/ccache x86_64-linux-gnu-g++ && \\
+    ln -s /usr/bin/ccache x86_64-redhat-linux-gcc && \\
+    ln -s /usr/bin/ccache x86_64-redhat-linux-g++
+ENV NVCC="ccache nvcc"
 '''
 
 # cuda
@@ -424,9 +428,9 @@ def make_dockerfile(conf):
         dockerfile += set_env('http_proxy', conf['http_proxy'])
     if 'https_proxy' in conf:
         dockerfile += set_env('https_proxy', conf['https_proxy'])
-    dockerfile += ccache
     dockerfile += codes[conf['cuda']]
     dockerfile += codes[conf['cudnn']]
+    dockerfile += ccache
     dockerfile += codes[conf['nccl']]
 
     if 'protobuf-cpp' in conf:
