@@ -13,7 +13,7 @@ base_choices = [
     'ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'ubuntu14_py36',
     'ubuntu16_py2', 'ubuntu16_py3',
     'centos6_py2', 'centos7_py2', 'centos7_py3']
-cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80']
+cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9']
@@ -35,6 +35,7 @@ def get_cuda_cudnn_choices(target, with_dummy=False):
         ('cuda80', 'cudnn5-cuda8'),
         ('cuda80', 'cudnn51-cuda8'),
         ('cuda80', 'cudnn6-cuda8'),
+        ('cuda90', 'none'),
     ]
 
     if target == 'chainer':
@@ -47,6 +48,7 @@ def get_cuda_cudnn_choices(target, with_dummy=False):
             # v2
             choices += [
                 ('cuda80', 'cudnn7-cuda8'),
+                ('cuda90', 'cudnn7-cuda9'),
             ]
 
     if with_dummy:
@@ -54,6 +56,7 @@ def get_cuda_cudnn_choices(target, with_dummy=False):
             ('cuda70', 'cudnn-latest-with-dummy'),
             ('cuda75', 'cudnn-latest-with-dummy'),
             ('cuda80', 'cudnn-latest-with-dummy'),
+            ('cuda90', 'cudnn-latest-with-dummy'),
         ]
 
     return choices
