@@ -237,9 +237,14 @@ cuda75_driver = 'NVIDIA-Linux-x86_64-352.39.run'
 cuda75_installer = 'cuda-linux64-rel-7.5.18-19867135.run'
 
 cuda80_run = 'cuda_8.0.44_linux-run'
-cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers/'
+cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
 cuda80_driver = 'NVIDIA-Linux-x86_64-367.48.run'
 cuda80_installer = 'cuda-linux64-rel-8.0.44-21122537.run'
+
+cuda90_run = 'cuda_9.0.176_384.81_linux-run'
+cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers'
+cuda90_driver = 'NVIDIA-Linux-x86_64-384.81.run'
+cuda90_installer = 'cuda-linux.9.0.176-22781540.run'
 
 cuda_base = '''
 WORKDIR /opt/nvidia
@@ -288,6 +293,14 @@ codes['cuda80'] = cuda_base.format(
     cuda_url=cuda80_url,
     installer=cuda80_installer,
     sha256sum='64dc4ab867261a0d690735c46d7cc9fc60d989da0d69dc04d1714e409cacbdf0',
+)
+
+codes['cuda90'] = cuda_base.format(
+    cuda_ver='9.0',
+    cuda_run=cuda90_run,
+    cuda_url=cuda90_url,
+    installer=cuda90_installer,
+    sha256sum='96863423feaa50b5c1c5e1b9ec537ef7ba77576a3986652351ae43e66bcd080c',
 )
 
 # cudnn
