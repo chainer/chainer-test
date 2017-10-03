@@ -1,5 +1,7 @@
 #!/bin/sh -ex
 
+# Chainer setup script installs specific version of CuPy.
+# We need to install Chainer first for test.
 cd chainer
 python setup.py install --user
 cd ..
