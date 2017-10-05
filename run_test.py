@@ -5,6 +5,7 @@ import os
 
 import argconfig
 import docker
+import version
 
 
 if __name__ == '__main__':
@@ -18,8 +19,21 @@ if __name__ == '__main__':
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
     parser.add_argument('-i', '--interactive', action='store_true')
+    parser.add_argument(
+        '--clone-cupy', action='store_true',
+        help='clone cupy repository based on chainer version. '
+        'this option is used for testing chainer.')
+    parser.add_argument(
+        '--clone-chainer', action='store_true',
+        help='clone chainer repository based on cupy version. '
+        'this option is used for testing cupy.')
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
+
+    if args.clone_cupy:
+        version.clone_cupy()
+    if args.clone_chainer:
+        version.clone_chainer()
 
     if args.test == 'chainer-py2':
         conf = {

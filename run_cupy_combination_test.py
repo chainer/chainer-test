@@ -7,6 +7,7 @@ import random
 import argconfig
 import docker
 import shuffle
+import version
 
 
 params = {
@@ -25,8 +26,15 @@ if __name__ == '__main__':
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
     parser.add_argument('--interactive', action='store_true')
+    parser.add_argument(
+        '--clone-chainer', action='store_true',
+        help='clone chainer repository based on cupy version.')
+
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
+
+    if args.clone_chainer:
+        version.clone_chainer()
 
     conf = shuffle.make_shuffle_conf(params, args.id)
     conf['requires'] = [
