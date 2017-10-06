@@ -60,7 +60,7 @@ def clone_cupy():
 
 
 def clone_chainer():
-    """Clone cupy repository based on chainer version."""
+    """Clone chainer repository based on cupy version."""
     if is_master_branch('cupy'):
         chainer_branch = 'master'
     else:
