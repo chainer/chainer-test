@@ -86,6 +86,7 @@ if __name__ == '__main__':
 
     if args.cache:
         volume.append(args.cache)
+        env['CUDA_CACHE_PATH'] = os.path.join(args.cache, '.nv')
         env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
 

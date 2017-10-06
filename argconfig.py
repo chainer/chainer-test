@@ -65,6 +65,7 @@ def parse_args(args, env, conf, volume):
     cache = get_arg_value(args, 'cache')
     if cache is not None:
         volume.append(cache)
+        env['CUDA_CACHE_PATH'] = os.path.join(cache, '.nv')
         env['CUPY_CACHE_DIR'] = os.path.join(cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(cache, '.ccache')
 
