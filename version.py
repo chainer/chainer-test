@@ -43,7 +43,7 @@ def is_master_branch(directory):
 
 def git_clone(organization, name, branch):
     print('cloning %s/%s %s' % (organization, name, branch))
-    repository = 'git@github.com:%s/%s.git' % (organization, name)
+    repository = 'https://github.com/%s/%s.git' % (organization, name)
     subprocess.check_call([
         'git', 'clone', repository, '--depth=1', '-b', branch])
 
