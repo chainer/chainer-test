@@ -12,9 +12,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--test', choices=[
-        'chainer-py2', 'chainer-py3', 'chainer-py35', 'chainer-example',
-        'chainer-prev_example', 'chainer-doc',
-        'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-example', 'cupy-doc',
+        'chainer-py2', 'chainer-py3', 'chainer-py35', 'chainer-slow',
+        'chainer-example', 'chainer-prev_example', 'chainer-doc',
+        'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-slow',
+        'cupy-example', 'cupy-doc',
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
@@ -75,6 +76,19 @@ if __name__ == '__main__':
             ],
         }
         script = './test.sh'
+
+    elif args.test == 'chainer-slow':
+        conf = {
+            'base': 'ubuntu16_py3',
+            'cuda': 'cuda80',
+            'cudnn': 'cudnn6',
+            'nccl': 'nccl1.3.4',
+            'requires': [
+                'setuptools', 'cython==0.26.1', 'numpy<1.11',
+                'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
+            ],
+        }
+        script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
         conf = {
@@ -148,6 +162,18 @@ if __name__ == '__main__':
             ],
         }
         script = './test_cupy.sh'
+
+    elif args.test == 'cupy-slow':
+        conf = {
+            'base': 'ubuntu16_py3',
+            'cuda': 'cuda80',
+            'cudnn': 'cudnn6',
+            'nccl': 'none',
+            'requires': [
+                'setuptools', 'cython==0.26.1', 'numpy<1.11', 'scipy<0.19',
+            ],
+        }
+        script = './test_cupy_slow.sh'
 
     elif args.test == 'cupy-example':
         conf = {
