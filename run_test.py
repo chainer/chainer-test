@@ -52,7 +52,7 @@ if __name__ == '__main__':
     elif args.test == 'chainer-py3':
         conf = {
             'base': 'ubuntu14_py3',
-            'cuda': 'cuda75',
+            'cuda': 'cuda80',
             'cudnn': 'cudnn51',
             'nccl': 'nccl1.3.4',
             'protobuf-cpp': 'protobuf-cpp-3',
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     elif args.test == 'chainer-py35':
         conf = {
             'base': 'ubuntu16_py3',
-            'cuda': 'cuda80',
+            'cuda': 'cuda90',
             'cudnn': 'cudnn6',
             'nccl': 'nccl1.3.4',
             'requires': [
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     elif args.test == 'chainer-prev_example':
         conf = {
             'base': 'ubuntu14_py2',
-            'cuda': 'cuda80',
+            'cuda': 'cuda90',
             'cudnn': 'cudnn5',
             'nccl': 'none',
             'requires': ['setuptools', 'pip', 'cython==0.26.1', 'numpy<1.12'],
@@ -131,7 +131,7 @@ if __name__ == '__main__':
     elif args.test == 'cupy-py3':
         conf = {
             'base': 'ubuntu14_py3',
-            'cuda': 'cuda75',
+            'cuda': 'cuda80',
             'cudnn': 'cudnn51',
             'nccl': 'nccl1.3.4',
             'protobuf-cpp': 'protobuf-cpp-3',
@@ -144,7 +144,7 @@ if __name__ == '__main__':
     elif args.test == 'cupy-py35':
         conf = {
             'base': 'ubuntu16_py3',
-            'cuda': 'cuda80',
+            'cuda': 'cuda90',
             'cudnn': 'cudnn6',
             'nccl': 'none',
             'requires': [

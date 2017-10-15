@@ -13,7 +13,7 @@ base_choices = [
     'ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'ubuntu14_py36',
     'ubuntu16_py2', 'ubuntu16_py3',
     'centos6_py2', 'centos7_py2', 'centos7_py3']
-cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80']
+cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9']
@@ -35,6 +35,7 @@ def get_cuda_cudnn_choices(target, with_dummy=False):
         ('cuda80', 'cudnn5-cuda8'),
         ('cuda80', 'cudnn51-cuda8'),
         ('cuda80', 'cudnn6-cuda8'),
+        ('cuda90', 'none'),
     ]
 
     if target == 'chainer':
@@ -47,6 +48,7 @@ def get_cuda_cudnn_choices(target, with_dummy=False):
             # v2
             choices += [
                 ('cuda80', 'cudnn7-cuda8'),
+                ('cuda90', 'cudnn7-cuda9'),
             ]
 
     if with_dummy:
@@ -54,6 +56,7 @@ def get_cuda_cudnn_choices(target, with_dummy=False):
             ('cuda70', 'cudnn-latest-with-dummy'),
             ('cuda75', 'cudnn-latest-with-dummy'),
             ('cuda80', 'cudnn-latest-with-dummy'),
+            ('cuda90', 'cudnn-latest-with-dummy'),
         ]
 
     return choices
@@ -237,9 +240,14 @@ cuda75_driver = 'NVIDIA-Linux-x86_64-352.39.run'
 cuda75_installer = 'cuda-linux64-rel-7.5.18-19867135.run'
 
 cuda80_run = 'cuda_8.0.44_linux-run'
-cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers/'
+cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
 cuda80_driver = 'NVIDIA-Linux-x86_64-367.48.run'
 cuda80_installer = 'cuda-linux64-rel-8.0.44-21122537.run'
+
+cuda90_run = 'cuda_9.0.176_384.81_linux-run'
+cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers'
+cuda90_driver = 'NVIDIA-Linux-x86_64-384.81.run'
+cuda90_installer = 'cuda-linux.9.0.176-22781540.run'
 
 cuda_base = '''
 WORKDIR /opt/nvidia
@@ -288,6 +296,14 @@ codes['cuda80'] = cuda_base.format(
     cuda_url=cuda80_url,
     installer=cuda80_installer,
     sha256sum='64dc4ab867261a0d690735c46d7cc9fc60d989da0d69dc04d1714e409cacbdf0',
+)
+
+codes['cuda90'] = cuda_base.format(
+    cuda_ver='9.0',
+    cuda_run=cuda90_run,
+    cuda_url=cuda90_url,
+    installer=cuda90_installer,
+    sha256sum='96863423feaa50b5c1c5e1b9ec537ef7ba77576a3986652351ae43e66bcd080c',
 )
 
 # cudnn
