@@ -25,8 +25,10 @@ def get_shuffle_params(params, index):
         ret['numpy'] = '1.10'
 
     # nccl is only supported on CUDA8
+    # CUDA 9 does not support nccl 1.3
     if 'centos6' in ret['base'] or \
        ret['cuda_cudnn'][0] == 'none' or \
+       (ret['cuda_cudnn'][0] == 'cuda90' and 'nccl1.3' in ret['nccl']) or \
        ('ubuntu16' in ret['base'] and ret['cuda_cudnn'][0] != 'cuda80'):
         ret['nccl'] = 'none'
 
