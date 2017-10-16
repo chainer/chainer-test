@@ -53,7 +53,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu14_py3',
             'cuda': 'cuda80',
-            'cudnn': 'cudnn51',
+            'cudnn': 'cudnn51-cuda8',
             'nccl': 'nccl1.3.4',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
@@ -67,8 +67,8 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py3',
             'cuda': 'cuda90',
-            'cudnn': 'cudnn6',
-            'nccl': 'nccl1.3.4',
+            'cudnn': 'cudnn7-cuda9',
+            'nccl': 'none',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.11',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
@@ -80,7 +80,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'centos7_py2',
             'cuda': 'cuda75',
-            'cudnn': 'cudnn4',
+            'cudnn': 'cudnn6',
             'nccl': 'nccl1.3.4',
             'requires': ['setuptools', 'cython==0.26.1', 'numpy<1.13'],
         }
@@ -90,7 +90,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu14_py2',
             'cuda': 'cuda90',
-            'cudnn': 'cudnn5',
+            'cudnn': 'cudnn7-cuda9',
             'nccl': 'none',
             'requires': ['setuptools', 'pip', 'cython==0.26.1', 'numpy<1.12'],
         }
@@ -102,7 +102,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu14_py2',
             'cuda': 'cuda70',
-            'cudnn': 'cudnn6',
+            'cudnn': 'cudnn4',
             'nccl': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'numpy<1.13',
@@ -132,7 +132,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu14_py3',
             'cuda': 'cuda80',
-            'cudnn': 'cudnn51',
+            'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
@@ -145,7 +145,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py3',
             'cuda': 'cuda90',
-            'cudnn': 'cudnn6',
+            'cudnn': 'cudnn7-cuda9',
             'nccl': 'none',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.11', 'scipy<0.19',
@@ -157,7 +157,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'centos7_py2',
             'cuda': 'cuda75',
-            'cudnn': 'cudnn4',
+            'cudnn': 'cudnn5',
             'nccl': 'nccl1.3.4',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.13', 'scipy<0.19',
@@ -170,8 +170,8 @@ if __name__ == '__main__':
         # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
         conf = {
             'base': 'ubuntu14_py2',
-            'cuda': 'cuda70',
-            'cudnn': 'cudnn6',
+            'cuda': 'cuda80',
+            'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'numpy<1.13',
