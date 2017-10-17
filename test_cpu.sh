@@ -7,4 +7,4 @@ python setup.py develop install --user
 export PYTHONWARNINGS="ignore::FutureWarning"
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
-nosetests -a '!gpu,!slow' --with-coverage --cover-branches --cover-package=chainer tests/chainer_tests
+python -m pytest --timeout=60 --cov -m 'not gpu and not multi_gpu and not slow' tests/chainer-tests
