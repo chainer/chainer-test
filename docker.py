@@ -403,6 +403,29 @@ RUN curl -sL -o nccl1.3.4.tar.gz https://github.com/NVIDIA/nccl/archive/v1.3.4-1
     make install
 '''
 
+nccl_base = '''
+RUN mkdir nccl && cd nccl && \\
+    curl -sL -o {libnccl2}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/{libnccl2}.deb && \\
+    curl -sL -o {libnccl_dev}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/{libnccl_dev}.deb && \\
+    ar vx {libnccl2}.deb && \\
+    tar xvf data.tar.xz && \\
+    ar vx {libnccl_dev}.deb && \\
+    tar xvf data.tar.xz && \\
+    cp ./usr/include/* /usr/local/cuda/include && \\
+    cp ./usr/lib/x86_64-linux-gnu/* /usr/local/cuda/lib64 && \\
+    cd .. && rm -rf nccl
+'''
+
+codes['nccl2.0.5-cuda8'] = nccl_base.format(
+    libnccl2='libnccl2_2.0.5-2+cuda8.0_amd64',
+    libnccl_dev='libnccl-dev_2.0.5-2+cuda8.0_amd64',
+)
+
+codes['nccl2.0.5-cuda9'] = nccl_base.format(
+    libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
+    libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
+)
+
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
 RUN tmpdir=`mktemp -d` && \\
