@@ -16,9 +16,9 @@ export PYTHONWARNINGS="ignore::FutureWarning"
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 if [ $CUDNN = none ]; then
-  python -m pytest --timeout=60 --cov -m 'not cudnn and not slow' tests
+  python -m pytest --timeout=60 --cov=chainer -m 'not cudnn and not slow' tests
 else
-  python -m pytest --timeout=60 --cov -m 'not slow' tests
+  python -m pytest --timeout=60 --cov=chainer -m 'not slow' tests
 fi
 
 python ../push_coveralls.py
