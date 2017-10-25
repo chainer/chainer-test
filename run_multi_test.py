@@ -78,6 +78,9 @@ if __name__ == '__main__':
         conf['requires'].append('pillow<4.2')
 
     conf['requires'] += [
+        'pytest',
+        'pytest-timeout',  # For timeout
+        'pytest-cov',  # For coverage report
         'nose',
         'mock',
         'coverage',
