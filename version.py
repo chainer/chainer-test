@@ -1,3 +1,4 @@
+import imp
 import os
 import re
 import subprocess
@@ -6,31 +7,66 @@ import subprocess
 version_pattern = '([0-9]+)\\.([0-9]+)\\.([0-9]+)([a-z][a-z\\.0-9]+)?'
 
 
-def get_version(setup_path):
+def parse_version(version):
+    m = re.match(version_pattern, version)
+    if m:
+        major = int(m.group(1))
+        minor = int(m.group(2))
+        revision = int(m.group(3))
+        pre = m.group(4)
+        return major, minor, revision, pre
+    else:
+        return None
+
+
+def get_version_from_setup(setup_path):
     if not os.path.isfile(setup_path):
         return None
     with open(setup_path) as f:
         for line in f:
-            m = re.match(
-                ' *version=\'%s\'' % version_pattern,
-                line)
-            if m:
-                major = int(m.group(1))
-                minor = int(m.group(2))
-                revision = int(m.group(3))
-                pre = m.group(4)
-                return major, minor, revision, pre
+            m = re.match(' *version=\'(.*)\'', line)
+            if not m:
+                continue
+            version = m.group(1)
+            version_tuple = parse_version(version)
+            if version_tuple is None:
+                raise RuntimeError(
+                    'cannot parse version: %s (%s)' % (version, setup_path))
+            return version_tuple
     raise RuntimeError('version information is not fouond: %s' % setup_path)
 
 
+def get_version_from_version_file(version_file_path):
+    version = imp.load_source(
+        '_version', version_file_path).__version__
+    version_tuple = parse_version(version)
+    if version_tuple is None:
+        raise RuntimeError(
+            'cannot parse version: %s (%s)' % (version, version_file_path))
+    return version_tuple
+
+
+def get_version(path, module):
+    version_path = os.path.join(path, module, '_version.py')
+    if os.path.exists(version_path):
+        return get_version_from_version_file(version_path)
+    else:
+        # Old version cupy does not have '_verison.py' and instead version
+        # is written in setup.py directrly.
+        # TODO(unno): Remove this code when all versions of chainer/cupy
+        #   use '_version.py'.
+        setup_path = os.path.join(path, 'setup.py')
+        return get_version_from_setup(setup_path)
+
+
 def get_chainer_version():
-    setup_path = os.path.join(os.path.dirname(__file__), 'chainer', 'setup.py')
-    return get_version(setup_path)
+    chainer_path = os.path.join(os.path.dirname(__file__), 'chainer')
+    return get_version(chainer_path, 'chainer')
 
 
 def get_cupy_version():
-    setup_path = os.path.join(os.path.dirname(__file__), 'cupy', 'setup.py')
-    return get_version(setup_path)
+    cupy_path = os.path.join(os.path.dirname(__file__), 'cupy')
+    return get_version(cupy_path, 'cupy')
 
 
 def is_master_branch(directory):
