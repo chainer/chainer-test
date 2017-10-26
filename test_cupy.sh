@@ -9,6 +9,7 @@ export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 pytest_opts=(
     --timeout=60
     --cov
+    --showlocals  # Show local variables on error
 )
 
 if [ $CUDNN = none ]; then
