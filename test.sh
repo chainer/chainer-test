@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/bash -ex
 
 # Chainer setup script installs specific version of CuPy.
 # We need to install Chainer first for test.
@@ -15,10 +15,17 @@ cd chainer
 export PYTHONWARNINGS="ignore::FutureWarning"
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
+pytest_opts=(
+    --timeout=60
+    --cov
+    --showlocals  # Show local variables on error
+)
+
 if [ $CUDNN = none ]; then
-  python -m pytest --timeout=60 --cov -m 'not cudnn and not slow' tests
+  pytest_opts+=(-m 'not cudnn and not slow')
 else
-  python -m pytest --timeout=60 --cov -m 'not slow' tests
+  pytest_opts+=(-m 'not slow')
 fi
 
+python -m pytest "${pytest_opts[@]}" tests
 python ../push_coveralls.py
