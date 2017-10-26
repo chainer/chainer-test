@@ -16,8 +16,7 @@ def parse_version(version):
         pre = m.group(4)
         return major, minor, revision, pre
     else:
-        raise RuntimeError(
-            'cannot parse version: %s (%s)' % (version, setup_path))
+        return None
 
 
 def get_version_from_setup(setup_path):
@@ -26,15 +25,25 @@ def get_version_from_setup(setup_path):
     with open(setup_path) as f:
         for line in f:
             m = re.match(' *version=\'(.*)\'', line)
-            if m:
-                return parse_version(m.group(1))
+            if not m:
+                continue
+            version = m.group(1)
+            version_tuple = parse_version(version)
+            if version_tuple is None:
+                raise RuntimeError(
+                    'cannot parse version: %s (%s)' % (version, setup_path))
+            return version_tuple
     raise RuntimeError('version information is not fouond: %s' % setup_path)
 
 
 def get_version_from_version_file(version_file_path):
     version = imp.load_source(
         '_version', version_file_path).__version__
-    return parse_version(version)
+    version_tuple = parse_version(version)
+    if version_tuple is None:
+        raise RuntimeError(
+            'cannot parse version: %s (%s)' % (version, version_file_path))
+    return version_tuple
 
 
 def get_version(path, module):
@@ -44,7 +53,7 @@ def get_version(path, module):
     else:
         # Old version cupy does not have '_verison.py' and instead version
         # is written in setup.py directrly.
-        # TODO (unno): Remove this code when all versions of chainer/cupy
+        # TODO(unno): Remove this code when all versions of chainer/cupy
         #   use '_version.py'.
         setup_path = os.path.join(path, 'setup.py')
         return get_version_from_setup(setup_path)
