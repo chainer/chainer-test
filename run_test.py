@@ -100,17 +100,13 @@ if __name__ == '__main__':
         # See sphinx version RTD uses:
         # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
         conf = {
-            'base': 'ubuntu14_py2',
-            'cuda': 'cuda70',
-            'cudnn': 'cudnn4',
+            'base': 'ubuntu16_py3',
+            'cuda': 'cuda80',
+            'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'numpy<1.13',
                 'scipy<0.19', 'sphinx==1.5.3', 'sphinx_rtd_theme',
-
-                # Use pyOpenSSL to avoid SNIMissingWarning (Python<2.7.9)
-                # See: http://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
-                'urllib3[secure]',
             ]
         }
         script = './test_doc.sh'
@@ -169,7 +165,7 @@ if __name__ == '__main__':
         # See sphinx version RTD uses:
         # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
         conf = {
-            'base': 'ubuntu14_py2',
+            'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',
