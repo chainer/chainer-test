@@ -187,8 +187,9 @@ if __name__ == '__main__':
     env = {'CUDNN': conf['cudnn']}
     conf['requires'] += [
         'pytest',
-        'pytest-timeout',  # For timeout
         'pytest-cov',  # For coverage report
+        'pytest-timeout',  # For timeout
+        'pytest-warnings',  # To change warnings configuration
         'nose',
         'mock',
         'coveralls']
