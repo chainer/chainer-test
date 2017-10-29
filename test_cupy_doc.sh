@@ -6,4 +6,6 @@ python setup.py -q build -j 4 develop install --user || python setup.py -q devel
 cd docs
 make html
 make clean
+# The doctest has some bug. We need two pass doctest
+make doctest
 make doctest
