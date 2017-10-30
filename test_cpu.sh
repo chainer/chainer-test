@@ -4,7 +4,6 @@
 cd chainer
 python setup.py develop install --user
 
-export PYTHONWARNINGS="ignore::FutureWarning"
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 export CHAINER_TEST_GPU_LIMIT=0
