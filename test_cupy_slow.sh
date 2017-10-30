@@ -7,7 +7,7 @@ export PYTHONWARNINGS="ignore::FutureWarning"
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 if [ $CUDNN = none ]; then
-  python -m pytest --cov-report=xml --cov -m 'slow and not cudnn' tests
+  python -m pytest --cov -m 'slow and not cudnn' tests
 else
-  python -m pytest --cov-report=xml --cov -m 'slow' tests
+  python -m pytest --cov -m 'slow' tests
 fi
