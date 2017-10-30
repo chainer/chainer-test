@@ -12,7 +12,6 @@ cd ..
 
 cd chainer
 
-export PYTHONWARNINGS="ignore::FutureWarning"
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 if [ $CUDNN = none ]; then
