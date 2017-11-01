@@ -8,6 +8,7 @@ export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 pytest_opts=(
     --timeout=300
+    --junit-xml=result.xml
     --cov
     --showlocals  # Show local variables on error
 )
