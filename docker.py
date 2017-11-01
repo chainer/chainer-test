@@ -452,15 +452,6 @@ def make_dockerfile(conf):
     if 'protobuf-cpp' in conf:
         dockerfile += codes[conf['protobuf-cpp']]
 
-    if 'requires' in conf:
-        for req in conf['requires']:
-            if 'theano' in req:
-                if 'ubuntu' in conf['base']:
-                    dockerfile += 'RUN apt-get update && apt-get -y install liblapack-dev && apt-get clean\n'
-                elif 'centos' in conf['base']:
-                    dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
-            dockerfile += run_pip(req)
-
     if 'ubuntu' in conf['base']:
         # The system's six is too old so that we have to use a newer one.
         # However, just running `pip install -U six` does not resolve the
@@ -474,9 +465,23 @@ def make_dockerfile(conf):
         # install a pip to /usr/local/lib using `pip install -U pip` before
         # removing it (via removing the system's six).
         dockerfile += '''\
-RUN pip install -U pip six && rm -rf ~/.cache/pip
-RUN apt-get remove -y python3-six python-six
+RUN pip install -U pip six setuptools && rm -rf ~/.cache/pip
+RUN apt-get remove -y \\
+        python3-pip python-pip python-pip-whl \\
+        python3-six python-six python-six-whl \\
+        python3-setuptools python-setuptools python-setuptools-whl \\
+        python-pkg-resources python3-pkg-resources
 '''
+
+    if 'requires' in conf:
+        for req in conf['requires']:
+            if 'theano' in req:
+                if 'ubuntu' in conf['base']:
+                    dockerfile += 'RUN apt-get update && apt-get -y install liblapack-dev && apt-get clean\n'
+                elif 'centos' in conf['base']:
+                    dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
+            dockerfile += run_pip(req)
+
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
     return dockerfile
