@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/bash -ex
 
 cd cupy
 python setup.py build -j 4 develop install --user || python setup.py develop install --user
