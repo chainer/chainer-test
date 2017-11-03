@@ -554,7 +554,10 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
 
     cmd.append(name)
     if timeout:
-        cmd += ['timeout', str(timeout)]
+        # First send SIGINT, and if the command is still running after
+        # 1 minute, send SIGKILL.
+        cmd += ['timeout', '--signal', 'INT',
+                '--kill-after', '1m', str(timeout)]
     cmd.append(script)
 
     res = subprocess.call(cmd)
