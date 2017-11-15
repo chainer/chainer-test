@@ -120,7 +120,7 @@ if __name__ == '__main__':
             'nccl': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'numpy<1.13',
-                'scipy<0.19', 'sphinx==1.5.3', 'sphinx_rtd_theme',
+                'scipy<0.19', 'theano', 'sphinx==1.5.3', 'sphinx_rtd_theme',
             ]
         }
         script = './test_doc.sh'
