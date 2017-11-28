@@ -7,6 +7,8 @@ cd ..
 cd chainer
 python setup.py -q build -j 4 develop install --user || python setup.py -q develop install --user
 
+python -m pip install matplotlib --user
+
 cd docs
 
 # Generate HTML and preserve it for preview.
