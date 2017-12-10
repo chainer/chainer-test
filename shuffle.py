@@ -26,7 +26,7 @@ def get_shuffle_params(params, index):
 
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
     if ('centos6' in ret['base'] or
-        'ubuntu16' in ret['base'] and cuda < 'cuda8'):
+            'ubuntu16' in ret['base'] and cuda < 'cuda8'):
         # nccl is not supported on these environment
         ret['cuda_cudnn_nccl'] = (cuda, cudnn, 'none')
 
