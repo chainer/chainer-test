@@ -62,7 +62,6 @@ def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
     if target == 'chainer':
         choices = [('none', 'none', 'none')] + choices
 
-    print(choices)
     return choices
 
 
