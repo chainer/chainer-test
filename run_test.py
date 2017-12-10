@@ -69,7 +69,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py3',
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
-            'nccl': 'nccl2.0.5-cuda9',
+            'nccl': 'nccl2.0-cuda9',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.11',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
@@ -156,7 +156,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py3',
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
-            'nccl': 'nccl2.0.5-cuda9',
+            'nccl': 'nccl2.0-cuda9',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.11', 'scipy<0.19',
             ],
