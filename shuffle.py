@@ -25,8 +25,9 @@ def get_shuffle_params(params, index):
         ret['numpy'] = '1.10'
 
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
-    if 'centos6' in ret['base']:
-        # nccl is not supported on centos6
+    if ('centos6' in ret['base'] or
+        'ubuntu16' in ret['base'] and cuda < 'cuda8'):
+        # nccl is not supported on these environment
         ret['cuda_cudnn_nccl'] = (cuda, cudnn, 'none')
 
     if 'centos6' in ret['base'] and ret.get('protobuf') == 'cpp-3':
