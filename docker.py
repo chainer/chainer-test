@@ -176,7 +176,7 @@ RUN pyenv rehash
 '''
 
 codes['ubuntu14_py35'] = ubuntu14_pyenv_base.format(python_ver='3.5.4')
-codes['ubuntu14_py36'] = ubuntu14_pyenv_base.format(python_ver='3.6.2')
+codes['ubuntu14_py36'] = ubuntu14_pyenv_base.format(python_ver='3.6.3')
 
 codes['ubuntu16_py2'] = '''FROM ubuntu:16.04
 
