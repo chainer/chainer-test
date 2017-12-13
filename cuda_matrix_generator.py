@@ -48,7 +48,9 @@ def _get_fully_qualified_version_id(cuda, libver, matrix):
 
 
 def get_cudnn_id(cuda, cudnn):
-    """Translate cuDNN version (without CUDA version suffix) into
+    """Returns translated version representation of cuDNN.
+
+    This method translates cuDNN version (without CUDA version suffix) into
     fully-qualified version identifier.
 
     e.g., ('cuda70', 'cudnn6') -> 'cudnn6'
@@ -58,7 +60,9 @@ def get_cudnn_id(cuda, cudnn):
 
 
 def get_nccl_id(cuda, nccl):
-    """Translate NCCL version (without CUDA version suffix) into
+    """Returns translated version representation of NCCL.
+
+    This method translates NCCL version (without CUDA version suffix) into
     fully-qualified version identifier.
 
     e.g., ('cuda70', 'nccl1.3.4') -> 'nccl1.3.4'
