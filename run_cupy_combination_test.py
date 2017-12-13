@@ -12,8 +12,7 @@ import version
 
 params = {
     'base': docker.base_choices,
-    'cuda_cudnn': docker.get_cuda_cudnn_choices('cupy'),
-    'nccl': docker.nccl_choices,
+    'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('cupy'),
     'numpy': docker.get_numpy_choices(),
     'scipy': [None, '0.19'],
 }

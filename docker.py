@@ -17,47 +17,50 @@ cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9']
-nccl_choices = ['none', 'nccl1.3.4']
+nccl_choices = ['none', 'nccl1.3.4', 'nccl2.0-cuda8', 'nccl2.0-cuda9']
+
+cuda_cudnns = {
+    'cuda70': ['cudnn4'],
+    'cuda75': ['cudnn4', 'cudnn5', 'cudnn51', 'cudnn6'],
+    'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
+               'cudnn7-cuda8'],
+    'cuda90': ['cudnn7-cuda9'],
+}
+cuda_nccls = {
+    'cuda70': ['nccl1.3.4'],
+    'cuda75': ['nccl1.3.4'],
+    'cuda80': ['nccl1.3.4', 'nccl2.0-cuda8'],
+    'cuda90': ['nccl2.0-cuda9'],  # CUDA 9 does not support nccl 1.3
+}
 
 
-def get_cuda_cudnn_choices(target, with_dummy=False):
+def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
     assert target in ['chainer', 'cupy']
-
-    choices = [
-        ('cuda70', 'none'),
-        ('cuda70', 'cudnn4'),
-        ('cuda75', 'none'),
-        ('cuda75', 'cudnn4'),
-        ('cuda75', 'cudnn5'),
-        ('cuda75', 'cudnn51'),
-        ('cuda75', 'cudnn6'),
-        ('cuda80', 'none'),
-        ('cuda80', 'cudnn5-cuda8'),
-        ('cuda80', 'cudnn51-cuda8'),
-        ('cuda80', 'cudnn6-cuda8'),
-        ('cuda90', 'none'),
-    ]
-
-    if target == 'chainer':
-        choices = [('none', 'none')] + choices
 
     cupy_version = version.get_cupy_version()
     if cupy_version is not None:
         cupy_major = cupy_version[0]
-        if cupy_major >= 2:
-            # v2
-            choices += [
-                ('cuda80', 'cudnn7-cuda8'),
-                ('cuda90', 'cudnn7-cuda9'),
-            ]
+    else:
+        cupy_major = -1
 
-    if with_dummy:
-        choices += [
-            ('cuda70', 'cudnn-latest-with-dummy'),
-            ('cuda75', 'cudnn-latest-with-dummy'),
-            ('cuda80', 'cudnn-latest-with-dummy'),
-            ('cuda90', 'cudnn-latest-with-dummy'),
-        ]
+    choices = []
+    for cuda in cuda_choices:
+        if cuda == 'none':
+            continue
+        cudnns = ['none'] + cuda_cudnns[cuda]
+        nccls = ['none'] + cuda_nccls[cuda]
+        if cupy_major < 2:
+            # only cupy>=v2 supports cudnn7
+            cudnns = [c for c in cudnns if c < 'cudnn7']
+        if with_dummy:
+            cudnns += ['cudnn-latest-with-dummy']
+
+        for cudnn in cudnns:
+            for nccl in nccls:
+                choices.append((cuda, cudnn, nccl))
+
+    if target == 'chainer':
+        choices = [('none', 'none', 'none')] + choices
 
     return choices
 
@@ -81,7 +84,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf xz && \\
     yum -y install python-devel python-pip && \\
     yum clean all
 '''
@@ -92,7 +95,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf xz && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -134,7 +137,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install python-pip python-dev && \\
     apt-get -y install libffi-dev libssl-dev && \\
     apt-get clean
@@ -146,7 +149,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
@@ -160,7 +163,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install libbz2-dev libreadline-dev libssl-dev make && \\
     apt-get clean
 
@@ -402,6 +405,29 @@ RUN curl -sL -o nccl1.3.4.tar.gz https://github.com/NVIDIA/nccl/archive/v1.3.4-1
     NVCC_GENCODE= make -j4 && \\
     make install
 '''
+
+nccl_base = '''
+RUN mkdir nccl && cd nccl && \\
+    curl -sL -o {libnccl2}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/{libnccl2}.deb && \\
+    curl -sL -o {libnccl_dev}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/{libnccl_dev}.deb && \\
+    ar vx {libnccl2}.deb && \\
+    tar xvf data.tar.xz && \\
+    ar vx {libnccl_dev}.deb && \\
+    tar xvf data.tar.xz && \\
+    cp ./usr/include/* /usr/local/cuda/include && \\
+    cp ./usr/lib/x86_64-linux-gnu/* /usr/local/cuda/lib64 && \\
+    cd .. && rm -rf nccl
+'''
+
+codes['nccl2.0-cuda8'] = nccl_base.format(
+    libnccl2='libnccl2_2.0.5-2+cuda8.0_amd64',
+    libnccl_dev='libnccl-dev_2.0.5-2+cuda8.0_amd64',
+)
+
+codes['nccl2.0-cuda9'] = nccl_base.format(
+    libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
+    libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
+)
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf

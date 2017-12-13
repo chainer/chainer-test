@@ -24,13 +24,11 @@ def get_shuffle_params(params, index):
     if ret['numpy'] == '1.9' and ret.get('h5py'):
         ret['numpy'] = '1.10'
 
-    # nccl is only supported on CUDA8
-    # CUDA 9 does not support nccl 1.3
-    if 'centos6' in ret['base'] or \
-       ret['cuda_cudnn'][0] == 'none' or \
-       (ret['cuda_cudnn'][0] == 'cuda90' and 'nccl1.3' in ret['nccl']) or \
-       ('ubuntu16' in ret['base'] and ret['cuda_cudnn'][0] != 'cuda80'):
-        ret['nccl'] = 'none'
+    cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
+    if ('centos6' in ret['base'] or
+            'ubuntu16' in ret['base'] and cuda < 'cuda8'):
+        # nccl is not supported on these environment
+        ret['cuda_cudnn_nccl'] = (cuda, cudnn, 'none')
 
     if 'centos6' in ret['base'] and ret.get('protobuf') == 'cpp-3':
         ret['protobuf'] = '3'
@@ -63,10 +61,8 @@ def make_conf(params):
 
     if 'base' in params:
         conf['base'] = params['base']
-    if 'cuda_cudnn' in params:
-        conf['cuda'], conf['cudnn'] = params['cuda_cudnn']
-    if 'nccl' in params:
-        conf['nccl'] = params['nccl']
+    if 'cuda_cudnn_nccl' in params:
+        conf['cuda'], conf['cudnn'], conf['nccl'] = params['cuda_cudnn_nccl']
 
     append_require(params, conf, 'setuptools')
     append_require(params, conf, 'pip')

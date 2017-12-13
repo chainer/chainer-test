@@ -10,8 +10,7 @@ import version
 
 params = {
     'base': docker.base_choices,
-    'cuda_cudnn': docker.get_cuda_cudnn_choices('chainer'),
-    'nccl': docker.nccl_choices,
+    'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('chainer'),
     'numpy': docker.get_numpy_choices(),
     'scipy': [None, '0.18'],
     'protobuf': ['2', '3', 'cpp-3'],
