@@ -21,7 +21,7 @@ _base_choices = [
     ('centos7_py34-pyenv', '3.4.7')]
 
 base_choices = [a[0] for a in _base_choices]
-cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90']
+cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90', 'cuda91']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9']
@@ -33,12 +33,15 @@ cuda_cudnns = {
     'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
                'cudnn7-cuda8'],
     'cuda90': ['cudnn7-cuda9'],
+    'cuda91': ['cudnn7-cuda9'],
 }
 cuda_nccls = {
     'cuda70': ['nccl1.3.4'],
     'cuda75': ['nccl1.3.4'],
     'cuda80': ['nccl1.3.4', 'nccl2.0-cuda8'],
-    'cuda90': ['nccl2.0-cuda9'],  # CUDA 9 does not support nccl 1.3
+    # CUDA 9 does not support nccl 1.3
+    'cuda90': ['nccl2.0-cuda9'],
+    'cuda91': ['nccl2.0-cuda9'],
 }
 
 
@@ -268,6 +271,12 @@ cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installer
 cuda90_driver = 'NVIDIA-Linux-x86_64-384.81.run'
 cuda90_installer = 'cuda-linux.9.0.176-22781540.run'
 
+cuda91_run = 'cuda_9.1.85_387.26_linux'
+cuda91_url = 'https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers'
+cuda91_driver = 'NVIDIA-Linux-x86_64-387.26.run'
+cuda91_installer = 'cuda-linux.9.1.85-23083092.run'
+
+
 cuda_base = '''
 WORKDIR /opt/nvidia
 RUN mkdir installers && \\
@@ -323,6 +332,14 @@ codes['cuda90'] = cuda_base.format(
     cuda_url=cuda90_url,
     installer=cuda90_installer,
     sha256sum='96863423feaa50b5c1c5e1b9ec537ef7ba77576a3986652351ae43e66bcd080c',
+)
+
+codes['cuda91'] = cuda_base.format(
+    cuda_ver='9.1',
+    cuda_run=cuda91_run,
+    cuda_url=cuda91_url,
+    installer=cuda91_installer,
+    sha256sum='8496c72b16fee61889f9281449b5d633d0b358b46579175c275d85c9205fe953',
 )
 
 # cudnn
