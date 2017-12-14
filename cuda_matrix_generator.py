@@ -12,9 +12,10 @@ def _generate_matrix(libname, matrix):
     This can be used for Jenkins configuration.
     """
     conditions = []
-    for cuda in sorted(matrix.keys()):
+    for cuda in sorted(matrix.keys()) + ['none']:
+        fq_versions = matrix.get(cuda, []) + ['none']
         versions = sorted(set(
-            [fq_libver.split('-')[0] for fq_libver in matrix[cuda]]))
+            [fq_ver.split('-')[0] for fq_ver in fq_versions]))
         conditions += [
             '(CUDA == \'{}\' && {} in {})'.format(cuda, libname, versions)
         ]
