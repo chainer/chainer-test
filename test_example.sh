@@ -89,8 +89,8 @@ $run examples/dcgan/train_dcgan.py -b 1 -e 1 --gpu=0 -i ../data/dcgan --n_hidden
 
 # seq2seq
 if [ -f examples/seq2seq/seq2seq.py ]; then
-  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt
-  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt --gpu=0
+  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt --validation-interval 1
+  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt --validation-interval 1 --gpu=0
 fi
 
 # show coverage
