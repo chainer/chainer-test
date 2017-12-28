@@ -119,8 +119,9 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'requires': [
-                'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'numpy<1.13',
-                'scipy<0.19', 'theano', 'sphinx==1.5.3', 'sphinx_rtd_theme',
+                'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'matplotlib',
+                'numpy<1.13', 'scipy<0.19', 'theano', 'sphinx==1.5.3',
+                'sphinx_rtd_theme',
             ]
         }
         script = './test_doc.sh'
