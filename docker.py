@@ -465,6 +465,7 @@ def partition_requirements(package, requires):
             others.append(req)
     return target, others
 
+
 def make_dockerfile(conf):
     dockerfile = ''
     dockerfile += codes[conf['base']]
