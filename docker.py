@@ -454,13 +454,16 @@ def set_env(env, value):
     return 'ENV {}={}\n'.format(env, value)
 
 
-def run_pip(requires):
-    if 'pillow' in requires:
-        return ('RUN pip install -U olefile && '
-                'pip install --global-option="build_ext" '
-                '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % requires)
-    else:
-        return 'RUN pip install -U "%s" && rm -rf ~/.cache/pip\n' % requires
+def partition_requirements(package, requires):
+    target = None
+    others = []
+
+    for req in requires:
+        if package in req:
+            target = req
+        else:
+            others.append(req)
+    return target, others
 
 
 def make_dockerfile(conf):
@@ -500,13 +503,23 @@ RUN apt-get remove -y \\
 '''
 
     if 'requires' in conf:
-        for req in conf['requires']:
-            if 'theano' in req:
-                if 'ubuntu' in conf['base']:
-                    dockerfile += 'RUN apt-get update && apt-get -y install liblapack-dev && apt-get clean\n'
-                elif 'centos' in conf['base']:
-                    dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
-            dockerfile += run_pip(req)
+        requires = conf['requires']
+        if any(['theano' in req for req in requires]):
+            if 'ubuntu' in conf['base']:
+                dockerfile += 'RUN apt-get update && apt-get -y install liblapack-dev && apt-get clean\n'
+            elif 'centos' in conf['base']:
+                dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
+
+        pillow, requires = partition_requirements('pillow', requires)
+
+        if pillow is not None:
+            dockerfile += ('RUN pip install -U olefile && '
+                           'pip install --global-option="build_ext" '
+                           '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
+
+        dockerfile += (
+            'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
+            ' '.join(['"%s"' % req for req in requires]))
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
