@@ -24,6 +24,19 @@ def get_shuffle_params(params, index):
     if ret['numpy'] == '1.9' and ret.get('h5py'):
         ret['numpy'] = '1.10'
 
+    # Avoid unsupported NumPy/SciPy version for the Python version.
+    if 'py35' in ret['base']:
+        # Python 3.5 is first supported in NumPy 1.11.
+        if ret['numpy'] in ['1.9', '1.10']:
+            ret['numpy'] = '1.11'
+    elif 'py36' in ret['base']:
+        # Python 3.6 is first supported in NumPy 1.12.
+        if ret['numpy'] in ['1.9', '1.10', '1.11']:
+            ret['numpy'] = '1.12'
+        # Python 3.6 is first supported in SciPy 1.19.
+        if ret.get('scipy', None) in ['0.18']:
+            ret['scipy'] = '0.19'
+
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
     if ('centos6' in ret['base'] or
             'ubuntu16' in ret['base'] and cuda < 'cuda8'):
