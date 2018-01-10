@@ -6,6 +6,7 @@ import six
 
 import docker
 
+
 def iter_shuffle(lst):
     while True:
         l = list(lst)
