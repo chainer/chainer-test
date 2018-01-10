@@ -4,6 +4,7 @@ import sys
 
 import six
 
+import docker
 
 def iter_shuffle(lst):
     while True:
@@ -51,7 +52,14 @@ def make_require(name, version):
 def append_require(params, conf, name):
     version = params.get(name)
     if version:
-        conf['requires'].append(make_require(name, version))
+        overwrite_requires_version(conf, name, make_require(name, version))
+
+
+def overwrite_requires_version(conf, name, requirement):
+    # Overwrite the requirements for the package `name` already
+    # defined in `requires`.
+    _, conf['requires'] = docker.partition_requirements(name, conf['requires'])
+    conf['requires'].append(requirement)
 
 
 def make_conf(params):
@@ -72,7 +80,7 @@ def make_conf(params):
 
     if params.get('h5py') == '2.5':
         # NumPy is required to install h5py in this version
-        conf['requires'].append('numpy<1.10')
+        overwrite_requires_version(conf, 'numpy', 'numpy<1.10')
     append_require(params, conf, 'h5py')
 
     append_require(params, conf, 'theano')
