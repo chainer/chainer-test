@@ -30,7 +30,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     build_conf = {
-        'base': 'ubuntu14_py2',
+        'base': 'ubuntu14_py27',
         'cuda': 'none',
         'cudnn': 'none',
         'nccl': 'none',
