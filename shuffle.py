@@ -97,8 +97,17 @@ def make_conf(params):
 
 def make_shuffle_conf(params, index):
     params = get_shuffle_params(params, index)
+
+    print('--- Shuffle Parameters ---')
     for key, value in params.items():
         print('{}: {}'.format(key, value))
     sys.stdout.flush()
 
-    return make_conf(params)
+    conf = make_conf(params)
+
+    print('--- Configuration ---')
+    for key, value in conf.items():
+        print('{}: {}'.format(key, value))
+    sys.stdout.flush()
+
+    return conf
