@@ -86,6 +86,7 @@ if __name__ == '__main__':
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.11',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
+                'pillow',
             ],
         }
         script = './test_slow.sh'
