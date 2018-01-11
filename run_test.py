@@ -113,6 +113,8 @@ if __name__ == '__main__':
     elif args.test == 'chainer-doc':
         # See sphinx version RTD uses:
         # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
+        # Also note that NumPy 1.14 is required to run doctest, as doctests
+        # uses NumPy 1.14 textual representation of arrays.
         conf = {
             'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
@@ -120,7 +122,7 @@ if __name__ == '__main__':
             'nccl': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'matplotlib',
-                'numpy<1.13', 'scipy<0.19', 'theano', 'sphinx==1.5.3',
+                'numpy>=1.14', 'scipy<0.19', 'theano', 'sphinx==1.5.3',
                 'sphinx_rtd_theme',
             ]
         }
@@ -191,13 +193,15 @@ if __name__ == '__main__':
     elif args.test == 'cupy-doc':
         # See sphinx version RTD uses:
         # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
+        # Also note that NumPy 1.14 is required to run doctest, as doctests
+        # uses NumPy 1.14 textual representation of arrays.
         conf = {
             'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',
             'requires': [
-                'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'numpy<1.13',
+                'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'numpy>=1.14',
                 'scipy<0.19', 'sphinx==1.5.3', 'sphinx_rtd_theme',
             ]
         }
