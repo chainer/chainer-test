@@ -113,8 +113,9 @@ if __name__ == '__main__':
     elif args.test == 'chainer-doc':
         # See sphinx version RTD uses:
         # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
-        # Also note that NumPy 1.14 is required to run doctest, as doctests
-        # uses NumPy 1.14 textual representation of arrays.
+        # Also note that NumPy 1.14 or later is required to run doctest, as
+        # the document uses new textual representation of arrays introduced in
+        # NumPy 1.14.
         conf = {
             'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
@@ -193,8 +194,9 @@ if __name__ == '__main__':
     elif args.test == 'cupy-doc':
         # See sphinx version RTD uses:
         # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
-        # Also note that NumPy 1.14 is required to run doctest, as doctests
-        # uses NumPy 1.14 textual representation of arrays.
+        # Also note that NumPy 1.14 or later is required to run doctest, as
+        # the document uses new textual representation of arrays introduced in
+        # NumPy 1.14.
         conf = {
             'base': 'ubuntu16_py3',
             'cuda': 'cuda80',
