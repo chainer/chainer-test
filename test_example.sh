@@ -89,8 +89,15 @@ $run examples/dcgan/train_dcgan.py -b 1 -e 1 --gpu=0 -i ../data/dcgan --n_hidden
 
 # seq2seq
 if [ -f examples/seq2seq/seq2seq.py ]; then
-  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt --validation-interval 1
-  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt --validation-interval 1 --gpu=0
+  # TODO: seq2seq example in v3 branch does not support --validation-interval option.
+  # Remove this code after when we stop maintaining v3 branch.
+  VALIDATION_OPTS=""
+  if grep validation-interval examples/seq2seq/seq2seq.py; then
+    VALIDATION_OPTS="--validation-interval 1"
+  fi
+
+  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt ${VALIDATION_OPTS}
+  $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt ${VALIDATION_OPTS} --gpu=0
 fi
 
 # show coverage
