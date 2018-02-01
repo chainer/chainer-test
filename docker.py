@@ -563,7 +563,7 @@ def select_gpu(offset):
 
 
 def run_with(conf, script, no_cache=False, volume=None, env=None,
-             timeout=None, gpu_id=None):
+             timeout=None, gpu_id=None, use_root=False):
     write_dockerfile(conf)
     name = make_random_name()
 
@@ -579,8 +579,9 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
            '--rm',
            '--name=%s' % run_name,
            '-v', '%s:%s' % (host_cwd, work_dir),
-           '-w', work_dir,
-           '-u', str(os.getuid())]
+           '-w', work_dir]
+    if not use_root:
+        cmd += ['-u', str(os.getuid())]
 
     if gpu_id is not None:
         gpus = select_gpu(gpu_id)
@@ -605,7 +606,8 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
         exit(1)
 
 
-def run_interactive(conf, no_cache=False, volume=None, env=None):
+def run_interactive(
+        conf, no_cache=False, volume=None, env=None, use_root=False):
     name = make_random_name()
 
     write_dockerfile(conf)
@@ -617,8 +619,9 @@ def run_interactive(conf, no_cache=False, volume=None, env=None):
            '--rm',
            '-v', '%s:%s' % (host_cwd, work_dir),
            '-w', work_dir,
-           '-u', str(os.getuid()),
            '-i', '-t']
+    if not use_root:
+        cmd += ['-u', str(os.getuid())]
     if volume:
         for v in volume:
             cmd += ['-v', '%s:%s' % (v, v)]
