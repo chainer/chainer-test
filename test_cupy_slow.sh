@@ -15,7 +15,7 @@ pytest_opts=(
 if [ $CUDNN = none ]; then
   pytest_opts+=(-m 'slow and not cudnn')
 else
-  pytest_opts+=(-m 'slow')
+  pytest_opts+=(-m 'slow and not ideep')
 fi
 
 python -m pytest "${pytest_opts[@]}" tests

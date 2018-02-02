@@ -6,6 +6,9 @@ import six
 
 import docker
 
+# TODO(niboshi): Avoid using this
+import _ideep_workarounds
+
 
 def iter_shuffle(lst):
     while True:
@@ -103,6 +106,9 @@ def make_conf(params):
         conf['protobuf-cpp'] = 'protobuf-cpp-3'
     else:
         append_require(params, conf, 'protobuf')
+
+    if params.get('ideep') is not None:
+        append_require(params, conf, _ideep_workarounds.get_package_spec(params.get('ideep')))
 
     append_require(params, conf, 'pillow')
 

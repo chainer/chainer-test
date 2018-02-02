@@ -8,6 +8,9 @@ import sys
 
 import version
 
+# TODO(niboshi): Avoid using this
+import _ideep_workarounds
+
 
 base_choices = [
     'ubuntu14_py27', 'ubuntu14_py34',
@@ -86,7 +89,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf xz && \\
+    yum -y install gcc gcc-c++ cmake git kmod hdf5-devel perl make autoconf xz && \\
     yum -y install python-devel python-pip && \\
     yum clean all
 '''
@@ -97,7 +100,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf xz && \\
+    yum -y install gcc gcc-c++ cmake git kmod hdf5-devel perl make autoconf xz && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -118,7 +121,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel patch perl make autoconf && \\
+    yum -y install gcc gcc-c++ cmake git kmod hdf5-devel patch perl make autoconf && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -139,7 +142,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
+    apt-get -y install curl g++ cmake gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install python-pip python-dev && \\
     apt-get -y install libffi-dev libssl-dev && \\
     apt-get clean
@@ -151,7 +154,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
+    apt-get -y install curl g++ cmake gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
@@ -165,7 +168,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
+    apt-get -y install curl g++ cmake gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install libbz2-dev libreadline-dev libssl-dev make && \\
     apt-get clean
 
@@ -189,7 +192,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ g++-4.8 gfortran git autoconf libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get -y install curl g++ g++-4.8 cmake gfortran git autoconf libhdf5-dev libhdf5-serial-dev pkg-config && \\
     apt-get -y install python-pip python-dev && \\
     apt-get clean
 
@@ -203,7 +206,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
+    apt-get -y install curl g++ g++-4.8 cmake gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
@@ -519,9 +522,23 @@ RUN apt-get remove -y \\
                            'pip install --global-option="build_ext" '
                            '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
 
+        # TODO(niboshi): Remove this workaround.
+        # iDeep 1.0.0 has problematic dependency on NumPy
+        # (installation will fail if numpy is not installed, because its
+        # 'setup.py' explicitly import numpy).
+        # To avoid that issue, ideep must be installed AFTER numpy.
+        # In this call, ideep requirement will be removed from `requires` in-place, if any.
+        ideep_req = _ideep_workarounds.pop_ideep_requirement(requires)
+
         dockerfile += (
             'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
             ' '.join(['"%s"' % req for req in requires]))
+
+        # TODO(niboshi): Remove this workaround.
+        # Installing ideep AFTER numpy.
+        if ideep_req is not None:
+            dockerfile += (
+                'RUN pip install -U "%s" && rm -rf ~/.cache/pip\n' % ideep_req)
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
