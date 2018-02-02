@@ -523,6 +523,9 @@ RUN apt-get remove -y \\
             ' '.join(['"%s"' % req for req in requires]))
 
         if scipy is not None:
+            # SciPy depends on C-API interface of NumPy.
+            # When you install different version of NumPy, it breaks compatibility and causes an error.
+            # So you need to install SciPy from its source to link NumPy you use.
             dockerfile += 'RUN pip install --no-binary scipy -U "%s" && rm -rf ~/.cache/pip\n' % scipy
 
     # Make a user and home directory to install chainer
