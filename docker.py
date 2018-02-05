@@ -8,9 +8,6 @@ import sys
 
 import version
 
-# TODO(niboshi): Avoid using this
-import _ideep_workarounds
-
 
 base_choices = [
     'ubuntu14_py27', 'ubuntu14_py34',
@@ -522,23 +519,9 @@ RUN apt-get remove -y \\
                            'pip install --global-option="build_ext" '
                            '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
 
-        # TODO(niboshi): Remove this workaround.
-        # iDeep 1.0.0 has problematic dependency on NumPy
-        # (installation will fail if numpy is not installed, because its
-        # 'setup.py' explicitly import numpy).
-        # To avoid that issue, ideep must be installed AFTER numpy.
-        # In this call, ideep requirement will be removed from `requires` in-place, if any.
-        ideep_req = _ideep_workarounds.pop_ideep_requirement(requires)
-
         dockerfile += (
             'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
             ' '.join(['"%s"' % req for req in requires]))
-
-        # TODO(niboshi): Remove this workaround.
-        # Installing ideep AFTER numpy.
-        if ideep_req is not None:
-            dockerfile += (
-                'RUN pip install -U "%s" && rm -rf ~/.cache/pip\n' % ideep_req)
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()

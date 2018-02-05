@@ -7,9 +7,6 @@ import argconfig
 import docker
 import version
 
-# TODO(niboshi): Avoid using this
-import _ideep_workarounds
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -60,7 +57,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'nccl1.3.4',
             'protobuf-cpp': 'protobuf-cpp-3',
-            'ideep': _ideep_workarounds.get_package_spec('1.0.0'),
+            'ideep': 'ideep4py==1.0.1',
             'requires': [
                 'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.12',
                 'pillow',
@@ -74,7 +71,7 @@ if __name__ == '__main__':
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',
-            'ideep': _ideep_workarounds.get_package_spec('1.0.0'),
+            'ideep': 'ideep4py==1.0.1',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.10',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
@@ -88,7 +85,7 @@ if __name__ == '__main__':
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',
-            'ideep': _ideep_workarounds.get_package_spec('1.0.0'),
+            'ideep': 'ideep4py==1.0.1',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.11',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
@@ -128,7 +125,7 @@ if __name__ == '__main__':
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
-            'ideep': _ideep_workarounds.get_package_spec('1.0.0'),
+            'ideep': 'ideep4py==1.0.1',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'matplotlib',
                 'numpy>=1.14', 'scipy<0.19', 'theano', 'sphinx==1.5.3',
