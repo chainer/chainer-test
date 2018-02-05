@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     if args.test == 'chainer-py2':
         conf = {
-            'base': 'ubuntu14_py2',
+            'base': 'ubuntu14_py27',
             'cuda': 'cuda70',
             'cudnn': 'cudnn4',
             'nccl': 'none',
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     elif args.test == 'chainer-py3':
         conf = {
-            'base': 'ubuntu14_py3',
+            'base': 'ubuntu14_py34',
             'cuda': 'cuda80',
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'nccl1.3.4',
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
     elif args.test == 'chainer-py35':
         conf = {
-            'base': 'ubuntu16_py3',
+            'base': 'ubuntu16_py35',
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     elif args.test == 'chainer-slow':
         conf = {
-            'base': 'ubuntu16_py3',
+            'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',
@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     elif args.test == 'chainer-example':
         conf = {
-            'base': 'centos7_py2',
+            'base': 'centos7_py27',
             'cuda': 'cuda75',
             'cudnn': 'cudnn6',
             'nccl': 'nccl1.3.4',
@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
     elif args.test == 'chainer-prev_example':
         conf = {
-            'base': 'ubuntu14_py2',
+            'base': 'ubuntu14_py27',
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'none',
@@ -118,7 +118,7 @@ if __name__ == '__main__':
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
-            'base': 'ubuntu16_py3',
+            'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
@@ -132,7 +132,7 @@ if __name__ == '__main__':
 
     elif args.test == 'cupy-py2':
         conf = {
-            'base': 'ubuntu14_py2',
+            'base': 'ubuntu14_py27',
             'cuda': 'cuda70',
             'cudnn': 'cudnn4',
             'nccl': 'none',
@@ -145,7 +145,7 @@ if __name__ == '__main__':
 
     elif args.test == 'cupy-py3':
         conf = {
-            'base': 'ubuntu14_py3',
+            'base': 'ubuntu14_py34',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',
@@ -158,7 +158,7 @@ if __name__ == '__main__':
 
     elif args.test == 'cupy-py35':
         conf = {
-            'base': 'ubuntu16_py3',
+            'base': 'ubuntu16_py35',
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',
@@ -170,7 +170,7 @@ if __name__ == '__main__':
 
     elif args.test == 'cupy-slow':
         conf = {
-            'base': 'ubuntu16_py3',
+            'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
@@ -182,7 +182,7 @@ if __name__ == '__main__':
 
     elif args.test == 'cupy-example':
         conf = {
-            'base': 'centos7_py2',
+            'base': 'centos7_py27',
             'cuda': 'cuda75',
             'cudnn': 'cudnn5',
             'nccl': 'nccl1.3.4',
@@ -199,7 +199,7 @@ if __name__ == '__main__':
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
-            'base': 'ubuntu16_py3',
+            'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',

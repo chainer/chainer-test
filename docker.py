@@ -10,9 +10,11 @@ import version
 
 
 base_choices = [
-    'ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'ubuntu14_py36',
-    'ubuntu16_py2', 'ubuntu16_py3',
-    'centos6_py2', 'centos7_py2', 'centos7_py3']
+    'ubuntu14_py27', 'ubuntu14_py34',
+    'ubuntu14_py35-pyenv', 'ubuntu14_py36-pyenv',
+    'ubuntu16_py27', 'ubuntu16_py35',
+    'centos6_py27-pyenv',
+    'centos7_py27', 'centos7_py34-pyenv']
 cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
@@ -78,7 +80,7 @@ codes = {}
 
 # base
 
-codes['centos7_py2'] = '''FROM centos:7
+codes['centos7_py27'] = '''FROM centos:7
 
 ENV PATH /usr/lib64/ccache:$PATH
 
@@ -89,7 +91,7 @@ RUN yum -y update && \\
     yum clean all
 '''
 
-codes['centos7_py3'] = '''FROM centos:7
+codes['centos7_py34-pyenv'] = '''FROM centos:7
 
 ENV PATH /usr/lib64/ccache:$PATH
 
@@ -110,7 +112,7 @@ RUN pyenv global 3.4.7
 RUN pyenv rehash
 '''
 
-codes['centos6_py2'] = '''FROM centos:6
+codes['centos6_py27-pyenv'] = '''FROM centos:6
 
 ENV PATH /usr/lib64/ccache:$PATH
 
@@ -131,7 +133,7 @@ RUN pyenv global 2.7.14
 RUN pyenv rehash
 '''
 
-codes['ubuntu14_py2'] = '''FROM ubuntu:14.04
+codes['ubuntu14_py27'] = '''FROM ubuntu:14.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
@@ -143,7 +145,7 @@ RUN apt-get -y update && \\
     apt-get clean
 '''
 
-codes['ubuntu14_py3'] = '''FROM ubuntu:14.04
+codes['ubuntu14_py34'] = '''FROM ubuntu:14.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
@@ -178,10 +180,10 @@ RUN pyenv global {python_ver}
 RUN pyenv rehash
 '''
 
-codes['ubuntu14_py35'] = ubuntu14_pyenv_base.format(python_ver='3.5.4')
-codes['ubuntu14_py36'] = ubuntu14_pyenv_base.format(python_ver='3.6.3')
+codes['ubuntu14_py35-pyenv'] = ubuntu14_pyenv_base.format(python_ver='3.5.4')
+codes['ubuntu14_py36-pyenv'] = ubuntu14_pyenv_base.format(python_ver='3.6.3')
 
-codes['ubuntu16_py2'] = '''FROM ubuntu:16.04
+codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
@@ -195,7 +197,7 @@ RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
 RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 '''
 
-codes['ubuntu16_py3'] = '''FROM ubuntu:16.04
+codes['ubuntu16_py35'] = '''FROM ubuntu:16.04
 
 ENV PATH /usr/lib/ccache:$PATH
 

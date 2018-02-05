@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # make sdist
     # cuda, cudnn and numpy is required to make a sdist file.
     build_conf = {
-        'base': 'ubuntu14_py2',
+        'base': 'ubuntu14_py27',
         'cuda': 'cuda70',
         'cudnn': 'cudnn4',
         'nccl': 'none',
