@@ -231,8 +231,9 @@ if __name__ == '__main__':
 
     if args.interactive:
         docker.run_interactive(
-            conf, no_cache=args.no_cache, volume=volume, env=env)
+            conf, no_cache=args.no_cache, volume=volume, env=env,
+            use_root=args.root)
     else:
         docker.run_with(
             conf, script, no_cache=args.no_cache, volume=volume, env=env,
-            timeout=args.timeout, gpu_id=args.gpu_id)
+            timeout=args.timeout, gpu_id=args.gpu_id, use_root=args.root)

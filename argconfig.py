@@ -12,6 +12,10 @@ def setup_argument_parser(parser):
         help='cache directory to store cupy cache and ccache. '
         'use CHAINER_TEST_CACHE environment variable by default.')
     parser.add_argument(
+        '--root', action='store_true',
+        help='run the Docker container with a root user.')
+
+    parser.add_argument(
         '--http-proxy',
         help='http proxy server (http://hostname:PORT). '
         'use CHAINER_TEST_HTTP_PROXY environment variable by default.')

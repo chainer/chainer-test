@@ -50,7 +50,9 @@ if __name__ == '__main__':
     argconfig.parse_args(args, env, conf, volume)
     if args.interactive:
         docker.run_interactive(
-            conf, no_cache=args.no_cache, volume=volume, env=env)
+            conf, no_cache=args.no_cache, volume=volume, env=env,
+            use_root=args.root)
     else:
-        docker.run_with(conf, './test_cupy_install.sh', no_cache=args.no_cache,
-                        volume=volume, env=env, timeout=args.timeout)
+        docker.run_with(
+            conf, './test_cupy_install.sh', no_cache=args.no_cache,
+            volume=volume, env=env, timeout=args.timeout, use_root=args.root)
