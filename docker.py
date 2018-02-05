@@ -24,8 +24,11 @@ base_choices = [a[0] for a in _base_choices]
 cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90', 'cuda91']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
-    'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9']
-nccl_choices = ['none', 'nccl1.3.4', 'nccl2.0-cuda8', 'nccl2.0-cuda9']
+    'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9',
+    'cudnn7-cuda91']
+nccl_choices = [
+    'none', 'nccl1.3.4', 'nccl2.0-cuda8', 'nccl2.0-cuda9',
+    'nccl2.1.4-cuda91']
 
 cuda_cudnns = {
     'cuda70': ['cudnn4'],
@@ -33,7 +36,7 @@ cuda_cudnns = {
     'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
                'cudnn7-cuda8'],
     'cuda90': ['cudnn7-cuda9'],
-    'cuda91': ['cudnn7-cuda9'],
+    'cuda91': ['cudnn7-cuda91'],
 }
 cuda_nccls = {
     'cuda70': ['nccl1.3.4'],
@@ -41,7 +44,7 @@ cuda_nccls = {
     'cuda80': ['nccl1.3.4', 'nccl2.0-cuda8'],
     # CUDA 9 does not support nccl 1.3
     'cuda90': ['nccl2.0-cuda9'],
-    'cuda91': ['nccl2.0-cuda9'],
+    'cuda91': ['nccl2.1.4-cuda91'],
 }
 
 
@@ -408,6 +411,12 @@ codes['cudnn7-cuda9'] = cudnn_base.format(
     sha256sum='09583e93110cee2bf76ea355e1d9c7c366a50ad858362064f7c927cc46209ef9',
 )
 
+codes['cudnn7-cuda91'] = cudnn_base.format(
+    cudnn='cudnn-9.1-linux-x64-v7',
+    cudnn_ver='v7.0.5',
+    sha256sum='1ead5da7324db35dcdb3721a8d4fc020b217c68cdb3b3daa1be81eb2456bd5e5',
+)
+
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
 # installed.
 codes['cudnn-latest-with-dummy'] = '''
@@ -460,6 +469,11 @@ codes['nccl2.0-cuda8'] = nccl_base.format(
 codes['nccl2.0-cuda9'] = nccl_base.format(
     libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
+)
+
+codes['nccl2.1.4-cuda91'] = nccl_base.format(
+    libnccl2='libnccl2_2.1.4-1+cuda9.1_amd64',
+    libnccl_dev='libnccl-dev_2.1.4-1+cuda9.1_amd64',
 )
 
 protobuf_cpp_base = '''
