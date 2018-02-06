@@ -15,6 +15,18 @@ def iter_shuffle(lst):
             yield x
 
 
+def _is_ideep_supported(python_version):
+    pyver = python_version
+    if pyver[0] == 2:
+        return pyver >= (2, 7, 5)
+    assert pyver[0] == 3
+    if pyver[:2] < (3, 5):
+        return False
+    if pyver[:2] == (3, 5):
+        return pyver >= (3, 5, 2)
+    return True
+
+
 def get_shuffle_params(params, index):
     random.seed(0)
     keys = params.keys()
@@ -26,18 +38,24 @@ def get_shuffle_params(params, index):
     if ret['numpy'] == '1.9' and ret.get('h5py'):
         ret['numpy'] = '1.10'
 
+    py_ver = docker.get_python_version(ret['base'])
+
     # Avoid unsupported NumPy/SciPy version for the Python version.
-    if 'py35' in ret['base']:
+    if py_ver[:2] == (3, 5):
         # Python 3.5 is first supported in NumPy 1.11.
         if ret['numpy'] in ['1.9', '1.10']:
             ret['numpy'] = '1.11'
-    elif 'py36' in ret['base']:
+    elif py_ver[:2] == (3, 6):
         # Python 3.6 is first supported in NumPy 1.12.
         if ret['numpy'] in ['1.9', '1.10', '1.11']:
             ret['numpy'] = '1.12'
         # Python 3.6 is first supported in SciPy 1.19.
         if ret.get('scipy', None) in ['0.18']:
             ret['scipy'] = '0.19'
+
+    # Avoid iDeep in unsupported Python versions
+    if not _is_ideep_supported(py_ver):
+        ret['ideep'] = None
 
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
     if ('centos6' in ret['base'] or
