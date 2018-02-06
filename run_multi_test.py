@@ -13,6 +13,7 @@ if __name__ == '__main__':
     parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
     parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
     parser.add_argument('--nccl', choices=docker.nccl_choices, required=True)
+    parser.add_argument('--ideep', choices=['none', '1.0.1'], required=True)
     parser.add_argument('--numpy', choices=['1.9', '1.10', '1.11', '1.12'],
                         required=True)
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
@@ -76,6 +77,9 @@ if __name__ == '__main__':
         conf['requires'].append('pillow<4.1')
     elif args.pillow == '4.1':
         conf['requires'].append('pillow<4.2')
+
+    if args.ideep != 'none':
+        conf['requires'].append('ideep4py=={}'.format(args.ideep))
 
     conf['requires'] += [
         'pytest',

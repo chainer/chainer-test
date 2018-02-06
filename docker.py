@@ -9,12 +9,18 @@ import sys
 import version
 
 
-base_choices = [
-    'ubuntu14_py27', 'ubuntu14_py34',
-    'ubuntu14_py35-pyenv', 'ubuntu14_py36-pyenv',
-    'ubuntu16_py27', 'ubuntu16_py35',
-    'centos6_py27-pyenv',
-    'centos7_py27', 'centos7_py34-pyenv']
+_base_choices = [
+    ('ubuntu14_py27', '2.7.6'),
+    ('ubuntu14_py34', '3.4.0'),
+    ('ubuntu14_py35-pyenv', '3.5.4'),
+    ('ubuntu14_py36-pyenv', '3.6.3'),
+    ('ubuntu16_py27', '2.7.12'),
+    ('ubuntu16_py35', '3.5.2'),
+    ('centos6_py27-pyenv', '2.7.14'),
+    ('centos7_py27', '2.7.5'),
+    ('centos7_py34-pyenv', '3.4.7')]
+
+base_choices = [a[0] for a in _base_choices]
 cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
@@ -34,6 +40,12 @@ cuda_nccls = {
     'cuda80': ['nccl1.3.4', 'nccl2.0-cuda8'],
     'cuda90': ['nccl2.0-cuda9'],  # CUDA 9 does not support nccl 1.3
 }
+
+
+def get_python_version(base):
+    """Returns the python version to be installed in a tuple."""
+    ver = next(a[1] for a in _base_choices if a[0] == base)
+    return tuple([int(s) for s in ver.split('.')])
 
 
 def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
@@ -180,8 +192,10 @@ RUN pyenv global {python_ver}
 RUN pyenv rehash
 '''
 
-codes['ubuntu14_py35-pyenv'] = ubuntu14_pyenv_base.format(python_ver='3.5.4')
-codes['ubuntu14_py36-pyenv'] = ubuntu14_pyenv_base.format(python_ver='3.6.3')
+codes['ubuntu14_py35-pyenv'] = ubuntu14_pyenv_base.format(
+    python_ver=get_python_version('ubuntu14_py35-pyenv'))
+codes['ubuntu14_py36-pyenv'] = ubuntu14_pyenv_base.format(
+    python_ver=get_python_version('ubuntu14_py36-pyenv'))
 
 codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
 
