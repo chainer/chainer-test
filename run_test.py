@@ -57,7 +57,6 @@ if __name__ == '__main__':
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'nccl1.3.4',
             'protobuf-cpp': 'protobuf-cpp-3',
-            'ideep': 'ideep4py==1.0.1',
             'requires': [
                 'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.12',
                 'pillow',
