@@ -70,10 +70,10 @@ if __name__ == '__main__':
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',
-            'ideep': 'ideep4py==1.0.1',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.10',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
+                'ideep4py==1.0.1',
             ],
         }
         script = './test.sh'
@@ -84,11 +84,11 @@ if __name__ == '__main__':
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',
-            'ideep': 'ideep4py==1.0.1',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.11',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
+                'ideep4py==1.0.1',
             ],
         }
         script = './test_slow.sh'
@@ -124,11 +124,11 @@ if __name__ == '__main__':
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
-            'ideep': 'ideep4py==1.0.1',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'matplotlib',
                 'numpy>=1.14', 'scipy<0.19', 'theano', 'sphinx==1.5.3',
                 'sphinx_rtd_theme',
+                'ideep4py==1.0.1',
             ]
         }
         script = './test_doc.sh'
