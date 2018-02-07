@@ -520,13 +520,14 @@ RUN apt-get remove -y \\
 
     if 'requires' in conf:
         requires = conf['requires']
-        if any(['theano' in req for req in requires]):
+        if any(['theano' in req or 'scipy' in req for req in requires]):
             if 'ubuntu' in conf['base']:
                 dockerfile += 'RUN apt-get update && apt-get -y install liblapack-dev && apt-get clean\n'
             elif 'centos' in conf['base']:
                 dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
 
         pillow, requires = partition_requirements('pillow', requires)
+        scipy, requires = partition_requirements('scipy', requires)
 
         if pillow is not None:
             dockerfile += ('RUN pip install -U olefile && '
@@ -536,6 +537,12 @@ RUN apt-get remove -y \\
         dockerfile += (
             'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
             ' '.join(['"%s"' % req for req in requires]))
+
+        if scipy is not None:
+            # SciPy depends on C-API interface of NumPy.
+            # When you install different version of NumPy, it breaks compatibility and causes an error.
+            # So you need to install SciPy from its source to link NumPy you use.
+            dockerfile += 'RUN pip install --no-binary scipy -U "%s" && rm -rf ~/.cache/pip\n' % scipy
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
