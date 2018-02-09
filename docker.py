@@ -456,24 +456,30 @@ RUN mkdir nccl && cd nccl && \\
     tar xvf data.tar.xz && \\
     ar vx {libnccl_dev}.deb && \\
     tar xvf data.tar.xz && \\
-    cp ./usr/include/* /usr/local/cuda/include && \\
-    cp ./usr/lib/x86_64-linux-gnu/* /usr/local/cuda/lib64 && \\
+    cp .{include_dir}/* /usr/local/cuda/include && \\
+    cp .{lib_dir}/* /usr/local/cuda/lib64 && \\
     cd .. && rm -rf nccl
 '''
 
 codes['nccl2.0-cuda8'] = nccl_base.format(
     libnccl2='libnccl2_2.0.5-2+cuda8.0_amd64',
     libnccl_dev='libnccl-dev_2.0.5-2+cuda8.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
 codes['nccl2.0-cuda9'] = nccl_base.format(
     libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
 codes['nccl2.1.4-cuda91'] = nccl_base.format(
     libnccl2='libnccl2_2.1.4-1+cuda9.1_amd64',
     libnccl_dev='libnccl-dev_2.1.4-1+cuda9.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib',
 )
 
 protobuf_cpp_base = '''
