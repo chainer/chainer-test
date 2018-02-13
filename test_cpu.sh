@@ -13,7 +13,16 @@ pytest_opts=(
     --junit-xml=result.xml
     --cov
     --showlocals  # Show local variables on error
-    -m 'not cudnn and not slow'
 )
+
+pytest_marks=(
+    not cudnn and not slow
+)
+
+if [ $IDEEP = none ]; then
+  pytest_marks+=(and not ideep)
+fi
+
+pytest_opts+=(-m "${pytest_marks[*]}")
 
 python -m pytest "${pytest_opts[@]}" tests/chainer_tests

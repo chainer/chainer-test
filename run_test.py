@@ -216,8 +216,13 @@ if __name__ == '__main__':
     else:
         raise
 
+    use_ideep = any(['ideep4py' in req for req in conf['requires']])
+
     volume = []
-    env = {'CUDNN': conf['cudnn']}
+    env = {
+        'CUDNN': conf['cudnn'],
+        'IDEEP': 'ideep4py' if use_ideep else 'none',
+    }
     conf['requires'] += [
         'pytest',
         'pytest-timeout',  # For timeout
