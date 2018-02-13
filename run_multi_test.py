@@ -39,8 +39,6 @@ if __name__ == '__main__':
         'nccl': args.nccl,
         'requires': ['setuptools', 'pip', 'cython==0.26.1'],
     }
-    volume = []
-    env = {'CUDNN': conf['cudnn']}
 
     if args.h5py == '2.5':
         conf['requires'].append('numpy<1.10')
@@ -80,6 +78,14 @@ if __name__ == '__main__':
 
     if args.ideep != 'none':
         conf['requires'].append('ideep4py=={}'.format(args.ideep))
+
+    use_ideep = any(['ideep4py' in req for req in conf['requires']])
+
+    volume = []
+    env = {
+        'CUDNN': conf['cudnn'],
+        'IDEEP': 'ideep4py' if use_ideep else 'none',
+    }
 
     conf['requires'] += [
         'pytest',
