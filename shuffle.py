@@ -119,7 +119,7 @@ def make_conf(params):
     append_require(params, conf, 'numpy')
     append_require(params, conf, 'scipy')
 
-    # Note: h5py 2.5 uses NumPy is its setup script and NumPy needs to be
+    # Note: h5py 2.5 uses NumPy in its setup script, so NumPy needs to be
     # installed before h5py.
     append_require(params, conf, 'h5py')
 
