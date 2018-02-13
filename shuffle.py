@@ -132,8 +132,8 @@ def make_conf(params):
         append_require(params, conf, 'protobuf')
 
     if params.get('ideep') is not None:
-        append_require(
-            params, conf, 'ideep4py=={}'.format(params.get('ideep')))
+        overwrite_requires_version(
+            conf, 'ideep4py', 'ideep4py=={}'.format(params.get('ideep')))
 
     append_require(params, conf, 'pillow')
 
