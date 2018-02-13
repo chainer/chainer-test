@@ -119,9 +119,8 @@ def make_conf(params):
     append_require(params, conf, 'numpy')
     append_require(params, conf, 'scipy')
 
-    if params.get('h5py') == '2.5':
-        # NumPy is required to install h5py in this version
-        overwrite_requires_version(conf, 'numpy', 'numpy<1.10')
+    # Note: h5py 2.5 uses NumPy is its setup script and NumPy needs to be
+    # installed before h5py.
     append_require(params, conf, 'h5py')
 
     append_require(params, conf, 'theano')
