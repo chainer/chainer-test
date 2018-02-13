@@ -57,6 +57,10 @@ def get_shuffle_params(params, index):
     if not _is_ideep_supported(py_ver):
         ret['ideep'] = None
 
+    # TODO(kmaehashi) Currently iDeep can only be tested on Ubuntu.
+    if 'ubuntu' not in ret['base']:
+        ret['ideep'] = None
+
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
     if ('centos6' in ret['base'] or
             'ubuntu16' in ret['base'] and cuda < 'cuda8'):
