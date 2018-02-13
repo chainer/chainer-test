@@ -533,7 +533,8 @@ RUN apt-get remove -y \\
                 dockerfile += 'RUN apt-get update && apt-get -y install libgoogle-glog0 && apt-get clean\n'
             else:
                 # TODO(kmaehashi) support CentOS 7
-                raise RuntimeError('ideep4py test not supported on this system so far')
+                raise RuntimeError(
+                    'ideep4py test not supported on this system so far')
 
         pillow, requires = partition_requirements('pillow', requires)
         scipy, requires = partition_requirements('scipy', requires)

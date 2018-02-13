@@ -58,7 +58,7 @@ def get_shuffle_params(params, index):
         ret['ideep'] = None
 
     # TODO(kmaehashi) Currently iDeep can only be tested on Ubuntu.
-    if not 'ubuntu' in ret['base']:
+    if 'ubuntu' not in ret['base']:
         ret['ideep'] = None
 
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
