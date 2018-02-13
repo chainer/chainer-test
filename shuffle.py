@@ -61,6 +61,11 @@ def get_shuffle_params(params, index):
     if 'ubuntu' not in ret['base']:
         ret['ideep'] = None
 
+    # iDeep requires NumPy 1.13.0 or later.
+    if ret.get('ideep'):
+        if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12']:
+            ret['numpy'] = '1.13'
+
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
     if ('centos6' in ret['base'] or
             'ubuntu16' in ret['base'] and cuda < 'cuda8'):
