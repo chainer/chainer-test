@@ -61,6 +61,11 @@ def get_shuffle_params(params, index):
     if 'ubuntu' not in ret['base']:
         ret['ideep'] = None
 
+    # iDeep requires NumPy 1.13.0 or later.
+    if ret.get('ideep'):
+        if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12']:
+            ret['numpy'] = '1.13'
+
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
     if ('centos6' in ret['base'] or
             'ubuntu16' in ret['base'] and cuda < 'cuda8'):
@@ -114,9 +119,8 @@ def make_conf(params):
     append_require(params, conf, 'numpy')
     append_require(params, conf, 'scipy')
 
-    if params.get('h5py') == '2.5':
-        # NumPy is required to install h5py in this version
-        overwrite_requires_version(conf, 'numpy', 'numpy<1.10')
+    # Note: h5py 2.5 uses NumPy in its setup script, so NumPy needs to be
+    # installed before h5py.
     append_require(params, conf, 'h5py')
 
     append_require(params, conf, 'theano')
@@ -127,8 +131,8 @@ def make_conf(params):
         append_require(params, conf, 'protobuf')
 
     if params.get('ideep') is not None:
-        append_require(
-            params, conf, 'ideep4py=={}'.format(params.get('ideep')))
+        overwrite_requires_version(
+            conf, 'ideep4py', 'ideep4py=={}'.format(params.get('ideep')))
 
     append_require(params, conf, 'pillow')
 

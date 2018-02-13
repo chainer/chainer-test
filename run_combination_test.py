@@ -52,8 +52,13 @@ if __name__ == '__main__':
         'coveralls',
     ]
 
+    use_ideep = any(['ideep4py' in req for req in conf['requires']])
+
     volume = []
-    env = {'CUDNN': conf['cudnn']}
+    env = {
+        'CUDNN': conf['cudnn'],
+        'IDEEP': 'ideep4py' if use_ideep else 'none',
+    }
 
     argconfig.parse_args(args, env, conf, volume)
     argconfig.set_coveralls(args, env)

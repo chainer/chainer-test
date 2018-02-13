@@ -43,7 +43,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn4',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.14',
+                'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.10',
                 'scipy<0.19', 'h5py', 'theano', 'pillow',
                 'protobuf',  # ignore broken protobuf 3.2.0rc1
             ]
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',
             'requires': [
-                'setuptools', 'cython==0.26.1', 'numpy<1.10',
+                'setuptools', 'cython==0.26.1', 'numpy<1.14',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py==1.0.2',
             ],
@@ -85,7 +85,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3.4',
             'requires': [
-                'setuptools', 'cython==0.26.1', 'numpy<1.11',
+                'setuptools', 'cython==0.26.1', 'numpy<1.14',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
                 'ideep4py==1.0.2',
@@ -216,8 +216,13 @@ if __name__ == '__main__':
     else:
         raise
 
+    use_ideep = any(['ideep4py' in req for req in conf['requires']])
+
     volume = []
-    env = {'CUDNN': conf['cudnn']}
+    env = {
+        'CUDNN': conf['cudnn'],
+        'IDEEP': 'ideep4py' if use_ideep else 'none',
+    }
     conf['requires'] += [
         'pytest',
         'pytest-timeout',  # For timeout

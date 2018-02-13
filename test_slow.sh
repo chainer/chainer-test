@@ -21,10 +21,18 @@ pytest_opts=(
     --showlocals  # Show local variables on error
 )
 
+pytest_marks=(
+    slow
+)
+
 if [ $CUDNN = none ]; then
-  pytest_opts+=(-m 'slow and not cudnn')
-else
-  pytest_opts+=(-m 'slow')
+  pytest_marks+=(and not cudnn)
 fi
+
+if [ $IDEEP = none ]; then
+  pytest_marks+=(and not ideep)
+fi
+
+pytest_opts+=(-m "${pytest_marks[*]}")
 
 python -m pytest "${pytest_opts[@]}" tests
