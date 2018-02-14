@@ -10,11 +10,9 @@ import shuffle
 
 params = {
     'base': docker.base_choices,
-    'cuda_cudnn': docker.get_cuda_cudnn_choices('cupy', with_dummy=True),
-    'nccl': docker.nccl_choices,
+    'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('cupy', with_dummy=True),
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
-    'cython': [None, '0.21', '0.24', '0.25', '0.26'],
-    'setuptools': [None, '3.3', '18.2', '18.3.2'],
+    'cython': [None, '0.26.1', '0.27.1'],
     'pip': [None, '7', '8', '9'],
 }
 
@@ -26,17 +24,19 @@ if __name__ == '__main__':
 
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='1h')
+    parser.add_argument('-i', '--interactive', action='store_true')
+
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
     # make sdist
     # cuda, cudnn and numpy is required to make a sdist file.
     build_conf = {
-        'base': 'ubuntu14_py2',
+        'base': 'ubuntu14_py27',
         'cuda': 'cuda70',
         'cudnn': 'cudnn4',
         'nccl': 'none',
-        'requires': ['cython==0.26', 'numpy==1.9.3'],
+        'requires': ['cython==0.26.1', 'numpy==1.9.3'],
     }
     volume = []
     env = {}
@@ -48,5 +48,11 @@ if __name__ == '__main__':
     volume = []
     env = {}
     argconfig.parse_args(args, env, conf, volume)
-    docker.run_with(conf, './test_cupy_install.sh', no_cache=args.no_cache,
-                    volume=volume, env=env, timeout=args.timeout)
+    if args.interactive:
+        docker.run_interactive(
+            conf, no_cache=args.no_cache, volume=volume, env=env,
+            use_root=args.root)
+    else:
+        docker.run_with(
+            conf, './test_cupy_install.sh', no_cache=args.no_cache,
+            volume=volume, env=env, timeout=args.timeout, use_root=args.root)

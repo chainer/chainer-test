@@ -13,6 +13,7 @@ if __name__ == '__main__':
     parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
     parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
     parser.add_argument('--nccl', choices=docker.nccl_choices, required=True)
+    parser.add_argument('--ideep', choices=['none', '1.0.1'], required=True)
     parser.add_argument('--numpy', choices=['1.9', '1.10', '1.11', '1.12'],
                         required=True)
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
@@ -36,10 +37,8 @@ if __name__ == '__main__':
         'cuda': args.cuda,
         'cudnn': args.cudnn,
         'nccl': args.nccl,
-        'requires': ['setuptools', 'pip', 'cython==0.26'],
+        'requires': ['setuptools', 'pip', 'cython==0.26.1'],
     }
-    volume = []
-    env = {'CUDNN': conf['cudnn']}
 
     if args.h5py == '2.5':
         conf['requires'].append('numpy<1.10')
@@ -77,7 +76,21 @@ if __name__ == '__main__':
     elif args.pillow == '4.1':
         conf['requires'].append('pillow<4.2')
 
+    if args.ideep != 'none':
+        conf['requires'].append('ideep4py=={}'.format(args.ideep))
+
+    use_ideep = any(['ideep4py' in req for req in conf['requires']])
+
+    volume = []
+    env = {
+        'CUDNN': conf['cudnn'],
+        'IDEEP': 'ideep4py' if use_ideep else 'none',
+    }
+
     conf['requires'] += [
+        'pytest',
+        'pytest-timeout',  # For timeout
+        'pytest-cov',  # For coverage report
         'nose',
         'mock',
         'coverage',
@@ -86,6 +99,7 @@ if __name__ == '__main__':
 
     if args.cache:
         volume.append(args.cache)
+        env['CUDA_CACHE_PATH'] = os.path.join(args.cache, '.nv')
         env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
 

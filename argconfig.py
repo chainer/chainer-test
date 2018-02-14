@@ -1,4 +1,3 @@
-import argparse
 import logging
 import os
 
@@ -12,6 +11,10 @@ def setup_argument_parser(parser):
         '--cache',
         help='cache directory to store cupy cache and ccache. '
         'use CHAINER_TEST_CACHE environment variable by default.')
+    parser.add_argument(
+        '--root', action='store_true',
+        help='run the Docker container with a root user.')
+
     parser.add_argument(
         '--http-proxy',
         help='http proxy server (http://hostname:PORT). '
@@ -65,6 +68,7 @@ def parse_args(args, env, conf, volume):
     cache = get_arg_value(args, 'cache')
     if cache is not None:
         volume.append(cache)
+        env['CUDA_CACHE_PATH'] = os.path.join(cache, '.nv')
         env['CUPY_CACHE_DIR'] = os.path.join(cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(cache, '.ccache')
 

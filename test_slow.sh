@@ -22,7 +22,7 @@ pytest_opts=(
 )
 
 pytest_marks=(
-    not slow
+    slow
 )
 
 if [ $CUDNN = none ]; then
@@ -36,4 +36,3 @@ fi
 pytest_opts+=(-m "${pytest_marks[*]}")
 
 python -m pytest "${pytest_opts[@]}" tests
-python ../push_coveralls.py

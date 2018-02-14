@@ -13,11 +13,9 @@ pytest_opts=(
 )
 
 if [ $CUDNN = none ]; then
-  pytest_opts+=(-m 'not cudnn and not slow')
+  pytest_opts+=(-m 'slow and not cudnn')
 else
-  pytest_opts+=(-m 'not slow')
+  pytest_opts+=(-m 'slow')
 fi
 
 python -m pytest "${pytest_opts[@]}" tests
-
-python ../push_coveralls.py

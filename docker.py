@@ -9,52 +9,72 @@ import sys
 import version
 
 
-base_choices = [
-    'ubuntu14_py2', 'ubuntu14_py3', 'ubuntu14_py35', 'ubuntu14_py36',
-    'ubuntu16_py2', 'ubuntu16_py3',
-    'centos6_py2', 'centos7_py2', 'centos7_py3']
-cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80']
+_base_choices = [
+    ('ubuntu14_py27', '2.7.6'),
+    ('ubuntu14_py34', '3.4.0'),
+    ('ubuntu14_py35-pyenv', '3.5.4'),
+    ('ubuntu14_py36-pyenv', '3.6.3'),
+    ('ubuntu16_py27', '2.7.12'),
+    ('ubuntu16_py35', '3.5.2'),
+    ('centos6_py27-pyenv', '2.7.14'),
+    ('centos7_py27', '2.7.5'),
+    ('centos7_py34-pyenv', '3.4.7')]
+
+base_choices = [a[0] for a in _base_choices]
+cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9']
-nccl_choices = ['none', 'nccl1.3.4']
+nccl_choices = ['none', 'nccl1.3.4', 'nccl2.0-cuda8', 'nccl2.0-cuda9']
+
+cuda_cudnns = {
+    'cuda70': ['cudnn4'],
+    'cuda75': ['cudnn4', 'cudnn5', 'cudnn51', 'cudnn6'],
+    'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
+               'cudnn7-cuda8'],
+    'cuda90': ['cudnn7-cuda9'],
+}
+cuda_nccls = {
+    'cuda70': ['nccl1.3.4'],
+    'cuda75': ['nccl1.3.4'],
+    'cuda80': ['nccl1.3.4', 'nccl2.0-cuda8'],
+    'cuda90': ['nccl2.0-cuda9'],  # CUDA 9 does not support nccl 1.3
+}
 
 
-def get_cuda_cudnn_choices(target, with_dummy=False):
+def get_python_version(base):
+    """Returns the python version to be installed in a tuple."""
+    ver = next(a[1] for a in _base_choices if a[0] == base)
+    return tuple([int(s) for s in ver.split('.')])
+
+
+def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
     assert target in ['chainer', 'cupy']
-
-    choices = [
-        ('cuda70', 'none'),
-        ('cuda70', 'cudnn4'),
-        ('cuda75', 'none'),
-        ('cuda75', 'cudnn4'),
-        ('cuda75', 'cudnn5'),
-        ('cuda75', 'cudnn51'),
-        ('cuda75', 'cudnn6'),
-        ('cuda80', 'none'),
-        ('cuda80', 'cudnn5-cuda8'),
-        ('cuda80', 'cudnn51-cuda8'),
-        ('cuda80', 'cudnn6-cuda8'),
-    ]
-
-    if target == 'chainer':
-        choices = [('none', 'none')] + choices
 
     cupy_version = version.get_cupy_version()
     if cupy_version is not None:
         cupy_major = cupy_version[0]
-        if cupy_major >= 2:
-            # v2
-            choices += [
-                ('cuda80', 'cudnn7-cuda8'),
-            ]
+    else:
+        cupy_major = -1
 
-    if with_dummy:
-        choices += [
-            ('cuda70', 'cudnn-latest-with-dummy'),
-            ('cuda75', 'cudnn-latest-with-dummy'),
-            ('cuda80', 'cudnn-latest-with-dummy'),
-        ]
+    choices = []
+    for cuda in cuda_choices:
+        if cuda == 'none':
+            continue
+        cudnns = ['none'] + cuda_cudnns[cuda]
+        nccls = ['none'] + cuda_nccls[cuda]
+        if cupy_major < 2:
+            # only cupy>=v2 supports cudnn7
+            cudnns = [c for c in cudnns if c < 'cudnn7']
+        if with_dummy:
+            cudnns += ['cudnn-latest-with-dummy']
+
+        for cudnn in cudnns:
+            for nccl in nccls:
+                choices.append((cuda, cudnn, nccl))
+
+    if target == 'chainer':
+        choices = [('none', 'none', 'none')] + choices
 
     return choices
 
@@ -72,24 +92,24 @@ codes = {}
 
 # base
 
-codes['centos7_py2'] = '''FROM centos:7
+codes['centos7_py27'] = '''FROM centos:7
 
 ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf xz && \\
     yum -y install python-devel python-pip && \\
     yum clean all
 '''
 
-codes['centos7_py3'] = '''FROM centos:7
+codes['centos7_py34-pyenv'] = '''FROM centos:7
 
 ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install ccache gcc gcc-c++ git kmod hdf5-devel perl make && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf xz && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -104,13 +124,13 @@ RUN pyenv global 3.4.7
 RUN pyenv rehash
 '''
 
-codes['centos6_py2'] = '''FROM centos:6
+codes['centos6_py27-pyenv'] = '''FROM centos:6
 
 ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install ccache gcc gcc-c++ git kmod hdf5-devel patch perl make && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel patch perl make autoconf && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -120,30 +140,30 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" pyenv install 2.7.13
-RUN pyenv global 2.7.13
+RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" pyenv install 2.7.14
+RUN pyenv global 2.7.14
 RUN pyenv rehash
 '''
 
-codes['ubuntu14_py2'] = '''FROM ubuntu:14.04
+codes['ubuntu14_py27'] = '''FROM ubuntu:14.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install python-pip python-dev && \\
     apt-get -y install libffi-dev libssl-dev && \\
     apt-get clean
 '''
 
-codes['ubuntu14_py3'] = '''FROM ubuntu:14.04
+codes['ubuntu14_py34'] = '''FROM ubuntu:14.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
@@ -157,7 +177,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ gfortran git libhdf5-dev && \\
+    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install libbz2-dev libreadline-dev libssl-dev make && \\
     apt-get clean
 
@@ -172,16 +192,18 @@ RUN pyenv global {python_ver}
 RUN pyenv rehash
 '''
 
-codes['ubuntu14_py35'] = ubuntu14_pyenv_base.format(python_ver='3.5.4')
-codes['ubuntu14_py36'] = ubuntu14_pyenv_base.format(python_ver='3.6.2')
+codes['ubuntu14_py35-pyenv'] = ubuntu14_pyenv_base.format(python_ver='.'.join(
+    [str(x) for x in get_python_version('ubuntu14_py35-pyenv')]))
+codes['ubuntu14_py36-pyenv'] = ubuntu14_pyenv_base.format(python_ver='.'.join(
+    [str(x) for x in get_python_version('ubuntu14_py36-pyenv')]))
 
-codes['ubuntu16_py2'] = '''FROM ubuntu:16.04
+codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get -y install curl g++ g++-4.8 gfortran git autoconf libhdf5-dev libhdf5-serial-dev pkg-config && \\
     apt-get -y install python-pip python-dev && \\
     apt-get clean
 
@@ -189,13 +211,13 @@ RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
 RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 '''
 
-codes['ubuntu16_py3'] = '''FROM ubuntu:16.04
+codes['ubuntu16_py35'] = '''FROM ubuntu:16.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install ccache curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config && \\
+    apt-get -y install curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
@@ -204,6 +226,25 @@ RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+'''
+
+# ccache
+
+ccache = '''WORKDIR /opt/ccache
+RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.3.4.tar.gz && \\
+    tar -xzf ccache.tar.gz && cd ccache-3.3.4 && \\
+    ./autogen.sh && ./configure && make && \\
+    cp ccache /usr/bin/ccache && \\
+    cd / && rm -rf /opt/ccache && \\
+    cd /usr/lib64 || cd /usr/lib && \\
+    mkdir ccache && cd ccache && \\
+    ln -s /usr/bin/ccache gcc && \\
+    ln -s /usr/bin/ccache g++ && \\
+    ln -s /usr/bin/ccache x86_64-linux-gnu-gcc && \\
+    ln -s /usr/bin/ccache x86_64-linux-gnu-g++ && \\
+    ln -s /usr/bin/ccache x86_64-redhat-linux-gcc && \\
+    ln -s /usr/bin/ccache x86_64-redhat-linux-g++
+ENV NVCC="ccache nvcc"
 '''
 
 # cuda
@@ -218,9 +259,14 @@ cuda75_driver = 'NVIDIA-Linux-x86_64-352.39.run'
 cuda75_installer = 'cuda-linux64-rel-7.5.18-19867135.run'
 
 cuda80_run = 'cuda_8.0.44_linux-run'
-cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers/'
+cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
 cuda80_driver = 'NVIDIA-Linux-x86_64-367.48.run'
 cuda80_installer = 'cuda-linux64-rel-8.0.44-21122537.run'
+
+cuda90_run = 'cuda_9.0.176_384.81_linux-run'
+cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers'
+cuda90_driver = 'NVIDIA-Linux-x86_64-384.81.run'
+cuda90_installer = 'cuda-linux.9.0.176-22781540.run'
 
 cuda_base = '''
 WORKDIR /opt/nvidia
@@ -237,9 +283,9 @@ RUN echo "/usr/local/cuda/lib" >> /etc/ld.so.conf.d/cuda.conf && \\
     echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/cuda.conf && \\
     ldconfig
 
-ENV CUDA_ROOT /usr/local/cuda
-ENV PATH $PATH:$CUDA_ROOT/bin
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDA_ROOT/lib:/usr/local/nvidia/lib64:/usr/local/nvidia/lib
+ENV CUDA_PATH /usr/local/cuda
+ENV PATH $PATH:$CUDA_PATH/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$CUDA_PATH/lib64:$CUDA_PATH/lib:/usr/local/nvidia/lib64:/usr/local/nvidia/lib
 ENV LIBRARY_PATH /usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64/stubs$LIBRARY_PATH
 
 ENV CUDA_VERSION {cuda_ver}
@@ -269,6 +315,14 @@ codes['cuda80'] = cuda_base.format(
     cuda_url=cuda80_url,
     installer=cuda80_installer,
     sha256sum='64dc4ab867261a0d690735c46d7cc9fc60d989da0d69dc04d1714e409cacbdf0',
+)
+
+codes['cuda90'] = cuda_base.format(
+    cuda_ver='9.0',
+    cuda_run=cuda90_run,
+    cuda_url=cuda90_url,
+    installer=cuda90_installer,
+    sha256sum='96863423feaa50b5c1c5e1b9ec537ef7ba77576a3986652351ae43e66bcd080c',
 )
 
 # cudnn
@@ -327,14 +381,14 @@ codes['cudnn6-cuda8'] = cudnn_base.format(
 
 codes['cudnn7-cuda8'] = cudnn_base.format(
     cudnn='cudnn-8.0-linux-x64-v7',
-    cudnn_ver='v7.0.1',
-    sha256sum='288d844ab289b56d0c7b6719a34c7c0b57a01c58ffbe4d582c9b539da96ed2a7',
+    cudnn_ver='v7.0.3',
+    sha256sum='e44dd20750ea1fa287ed0576c71d7ba30383aabdaacd18df173947cf7a53fc3f',
 )
 
 codes['cudnn7-cuda9'] = cudnn_base.format(
     cudnn='cudnn-9.0-linux-x64-v7',
-    cudnn_ver='v7.0.1',
-    sha256sum='32d0caf6250ea8d2c3c80649ea6a032e46741d78bdca40c37b8ac67b00fe3244',
+    cudnn_ver='v7.0.3',
+    sha256sum='09583e93110cee2bf76ea355e1d9c7c366a50ad858362064f7c927cc46209ef9',
 )
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
@@ -368,6 +422,29 @@ RUN curl -sL -o nccl1.3.4.tar.gz https://github.com/NVIDIA/nccl/archive/v1.3.4-1
     make install
 '''
 
+nccl_base = '''
+RUN mkdir nccl && cd nccl && \\
+    curl -sL -o {libnccl2}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/{libnccl2}.deb && \\
+    curl -sL -o {libnccl_dev}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/{libnccl_dev}.deb && \\
+    ar vx {libnccl2}.deb && \\
+    tar xvf data.tar.xz && \\
+    ar vx {libnccl_dev}.deb && \\
+    tar xvf data.tar.xz && \\
+    cp ./usr/include/* /usr/local/cuda/include && \\
+    cp ./usr/lib/x86_64-linux-gnu/* /usr/local/cuda/lib64 && \\
+    cd .. && rm -rf nccl
+'''
+
+codes['nccl2.0-cuda8'] = nccl_base.format(
+    libnccl2='libnccl2_2.0.5-2+cuda8.0_amd64',
+    libnccl_dev='libnccl-dev_2.0.5-2+cuda8.0_amd64',
+)
+
+codes['nccl2.0-cuda9'] = nccl_base.format(
+    libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
+    libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
+)
+
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
 RUN tmpdir=`mktemp -d` && \\
@@ -393,13 +470,16 @@ def set_env(env, value):
     return 'ENV {}={}\n'.format(env, value)
 
 
-def run_pip(requires):
-    if 'pillow' in requires:
-        return ('RUN pip install -U olefile && '
-                'pip install --global-option="build_ext" '
-                '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % requires)
-    else:
-        return 'RUN pip install -U "%s" && rm -rf ~/.cache/pip\n' % requires
+def partition_requirements(package, requires):
+    target = None
+    others = []
+
+    for req in requires:
+        if package in req:
+            target = req
+        else:
+            others.append(req)
+    return target, others
 
 
 def make_dockerfile(conf):
@@ -411,19 +491,11 @@ def make_dockerfile(conf):
         dockerfile += set_env('https_proxy', conf['https_proxy'])
     dockerfile += codes[conf['cuda']]
     dockerfile += codes[conf['cudnn']]
+    dockerfile += ccache
     dockerfile += codes[conf['nccl']]
 
     if 'protobuf-cpp' in conf:
         dockerfile += codes[conf['protobuf-cpp']]
-
-    if 'requires' in conf:
-        for req in conf['requires']:
-            if 'theano' in req:
-                if 'ubuntu' in conf['base']:
-                    dockerfile += 'RUN apt-get update && apt-get -y install liblapack-dev && apt-get clean\n'
-                elif 'centos' in conf['base']:
-                    dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
-            dockerfile += run_pip(req)
 
     if 'ubuntu' in conf['base']:
         # The system's six is too old so that we have to use a newer one.
@@ -438,9 +510,50 @@ def make_dockerfile(conf):
         # install a pip to /usr/local/lib using `pip install -U pip` before
         # removing it (via removing the system's six).
         dockerfile += '''\
-RUN pip install -U pip six && rm -rf ~/.cache/pip
-RUN apt-get remove -y python3-six python-six
+RUN pip install -U pip six setuptools && rm -rf ~/.cache/pip
+RUN apt-get remove -y \\
+        python3-pip python-pip python-pip-whl \\
+        python3-six python-six python-six-whl \\
+        python3-setuptools python-setuptools python-setuptools-whl \\
+        python-pkg-resources python3-pkg-resources
 '''
+
+    if 'requires' in conf:
+        requires = conf['requires']
+        if any(['theano' in req or 'scipy' in req for req in requires]):
+            if 'ubuntu' in conf['base']:
+                dockerfile += 'RUN apt-get update && apt-get -y install liblapack-dev && apt-get clean\n'
+            elif 'centos' in conf['base']:
+                dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
+
+        if any(['ideep4py' in req for req in requires]):
+            if 'ubuntu16' in conf['base']:
+                dockerfile += 'RUN apt-get update && apt-get -y install libgoogle-glog0v5 && apt-get clean\n'
+            elif 'ubuntu14' in conf['base']:
+                dockerfile += 'RUN apt-get update && apt-get -y install libgoogle-glog0 && apt-get clean\n'
+            else:
+                # TODO(kmaehashi) support CentOS 7
+                raise RuntimeError(
+                    'ideep4py test not supported on this system so far')
+
+        pillow, requires = partition_requirements('pillow', requires)
+        scipy, requires = partition_requirements('scipy', requires)
+
+        if pillow is not None:
+            dockerfile += ('RUN pip install -U olefile && '
+                           'pip install --global-option="build_ext" '
+                           '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
+
+        dockerfile += (
+            'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
+            ' '.join(['"%s"' % req for req in requires]))
+
+        if scipy is not None:
+            # SciPy depends on C-API interface of NumPy.
+            # When you install different version of NumPy, it breaks compatibility and causes an error.
+            # So you need to install SciPy from its source to link NumPy you use.
+            dockerfile += 'RUN pip install --no-binary scipy -U "%s" && rm -rf ~/.cache/pip\n' % scipy
+
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
     return dockerfile
@@ -454,17 +567,13 @@ def write_dockerfile(conf):
 
 def build_image(name, no_cache=False):
     cmd = ['docker', 'build', '-t', name]
+    if not sys.stdout.isatty():
+        cmd.append('-q')
     if no_cache:
         cmd.append('--no-cache')
     cmd.append('.')
 
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    subprocess.call(['grep', '-v', 'Sending build context'], stdin=p.stdout)
-    res = p.wait()
-    if res != 0:
-        logging.error('Failed to create an image')
-        logging.error('Exit code: %d' % res)
-        exit(res)
+    subprocess.check_call(cmd)
 
 
 def make_random_name():
@@ -487,7 +596,7 @@ def select_gpu(offset):
 
 
 def run_with(conf, script, no_cache=False, volume=None, env=None,
-             timeout=None, gpu_id=None):
+             timeout=None, gpu_id=None, use_root=False):
     write_dockerfile(conf)
     name = make_random_name()
 
@@ -500,10 +609,12 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
     signal.signal(signal.SIGTERM, make_handler(run_name))
     signal.signal(signal.SIGINT, make_handler(run_name))
     cmd = ['nvidia-docker', 'run',
+           '--rm',
            '--name=%s' % run_name,
            '-v', '%s:%s' % (host_cwd, work_dir),
-           '-w', work_dir,
-           '-u', str(os.getuid())]
+           '-w', work_dir]
+    if not use_root:
+        cmd += ['-u', str(os.getuid())]
 
     if gpu_id is not None:
         gpus = select_gpu(gpu_id)
@@ -528,7 +639,8 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
         exit(1)
 
 
-def run_interactive(conf, no_cache=False, volume=None, env=None):
+def run_interactive(
+        conf, no_cache=False, volume=None, env=None, use_root=False):
     name = make_random_name()
 
     write_dockerfile(conf)
@@ -540,8 +652,9 @@ def run_interactive(conf, no_cache=False, volume=None, env=None):
            '--rm',
            '-v', '%s:%s' % (host_cwd, work_dir),
            '-w', work_dir,
-           '-u', str(os.getuid()),
            '-i', '-t']
+    if not use_root:
+        cmd += ['-u', str(os.getuid())]
     if volume:
         for v in volume:
             cmd += ['-v', '%s:%s' % (v, v)]
