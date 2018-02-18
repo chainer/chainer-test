@@ -16,7 +16,7 @@ def setup_docker_dir () {
 
 def start_test (test, coveralls_token) {
     withCredentials([string(credentialsId: 'Coveralls Token (chainer/chainer)', variable: 'CHAINER_TEST_COVERALLS_CHAINER_TOKEN')]) {
-        sh "python jobs/chainer_master.py --test ${test} --vm_name ${vm_name} --coveralls_token ${CHAINER_TEST_COVERALLS_CHAINER_TOKEN}"
+        sh "python jobs/chainer_pr.py --test ${test} --vm_name ${vm_name} --coveralls_token ${CHAINER_TEST_COVERALLS_CHAINER_TOKEN}"
     }
 }
 
@@ -38,7 +38,6 @@ pipeline {
             steps {
                 script {
                     vm_name = get_free_slave()
-                    sleep 60
                 }
             }
         }

@@ -118,6 +118,7 @@ def get_vm_ip(name, silent=False):
 
 
 def setup_docker_dir(ip):
+    run('rm -rf /home/jenkins/.ssh/known_hosts', silent=True)
     cmd = """ \
     az storage account keys list -g {resource_group} \
     -n {storage_account} --query \"[0].value\" -o tsv
@@ -127,19 +128,19 @@ def setup_docker_dir(ip):
     )
     key = run(cmd, silent=True).strip()
 
-    run_on_vm(ip, 'sudo nvidia-smi -pm 1')
-    run_on_vm(ip, 'sudo nvidia-smi')
-    run_on_vm(ip, 'if [ ! -d /mnt/data ]; then sudo mkdir /mnt/data; fi')
+    run_on_vm(ip, 'sudo nvidia-smi -pm 1', silent=True)
+    # run_on_vm(ip, 'sudo nvidia-smi')
+    run_on_vm(ip, 'if [ ! -d /mnt/data ]; then sudo mkdir /mnt/data; fi', silent=True)
     run_on_vm(ip, "sudo mount -t cifs //slavedata.file.core.windows.net/docker-cache /mnt/data -o vers=3.0,username={storage_account},password={key},dir_mode=0777,file_mode=0777,sec=ntlmssp,mfsymlinks".format(
         storage_account=STORAGE_ACCOUNT, key=key), silent=True)
-    run_on_vm(ip, "if [ ! -d /mnt/data/docker ]; then sudo mkdir /mnt/data/docker; fi")
-    run_on_vm(ip, "sudo service docker stop")
-    run_on_vm(ip, "sudo rm -rf /var/lib/docker")
-    run_on_vm(ip, "sudo ln -s /mnt/data/docker /var/lib/docker")
-    run_on_vm(ip, "if ! grep -q 'devicemapper' /lib/systemd/system/docker.service; then sudo sed -E -i \"s/dockerd/dockerd --storage-driver=devicemapper/g\" /lib/systemd/system/docker.service; fi")
-    run_on_vm(ip, "sudo systemctl daemon-reload")
-    run_on_vm(ip, "sudo service docker start")
-    run_on_vm(ip, "sudo docker images")
+    run_on_vm(ip, "if [ ! -d /mnt/data/docker ]; then sudo mkdir /mnt/data/docker; fi", silent=True)
+    run_on_vm(ip, "sudo service docker stop", silent=True)
+    run_on_vm(ip, "sudo rm -rf /var/lib/docker", silent=True)
+    run_on_vm(ip, "sudo ln -s /mnt/data/docker /var/lib/docker", silent=True)
+    run_on_vm(ip, "if ! grep -q 'devicemapper' /lib/systemd/system/docker.service; then sudo sed -E -i \"s/dockerd/dockerd --storage-driver=devicemapper/g\" /lib/systemd/system/docker.service; fi", silent=True)
+    run_on_vm(ip, "sudo systemctl daemon-reload", silent=True)
+    run_on_vm(ip, "sudo service docker start", silent=True)
+    # run_on_vm(ip, "sudo docker images")
 
 
 def get_free_slave(silent=False):
