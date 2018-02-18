@@ -7,10 +7,7 @@ import subprocess
 import argparse
 
 RESOURCE_GROUP = 'chainer-jenkins'
-STORAGE_ACCOUNT = 'slavedata'
 IMAGE_NAME = 'slave-image'
-PUBLIC_KEY_PATH = '/home/jenkins/.ssh/id_rsa.pub'
-SECRET_KEY_PATH = '/home/jenkins/.ssh/id_rsa'
 VM_SIZE = 'Standard_NC12'
 
 
@@ -25,9 +22,9 @@ def run(cmd, silent=False):
 
 def run_on_vm(ip, cmd, silent=False):
     cmd = """ \
-    ssh -i {secret_key_path} -o StrictHostKeyChecking=no \
+    ssh -o StrictHostKeyChecking=no \
     jenkins@{ip} \"{cmd}\"
-    """.format(secret_key_path=SECRET_KEY_PATH, ip=ip, cmd=cmd)
+    """.format(ip=ip, cmd=cmd)
     ret = subprocess.check_output(cmd, shell=True)
     ret = ret.decode('utf-8')
     if not silent:
@@ -51,13 +48,12 @@ def create_vm(name, silent=False):
     cmd = """ \
     az vm create -g {resource_group} -n {name} \
     --image {image_name} --public-ip-address \"\" \
-    --admin-username jenkins --ssh-key-value {public_key_path} \
+    --admin-username jenkins --generate-ssh-keys \
     --size {vm_size} -o json
     """.format(
         resource_group=RESOURCE_GROUP,
         name=name,
         image_name=IMAGE_NAME,
-        public_key_path=PUBLIC_KEY_PATH,
         vm_size=VM_SIZE,
     )
     return json.loads(run(cmd, silent=silent))
@@ -117,32 +113,6 @@ def get_vm_ip(name, silent=False):
     return run(cmd, silent=silent).strip()
 
 
-def setup_docker_dir(ip):
-    run('rm -rf /home/jenkins/.ssh/known_hosts', silent=True)
-    cmd = """ \
-    az storage account keys list -g {resource_group} \
-    -n {storage_account} --query \"[0].value\" -o tsv
-    """.format(
-        resource_group=RESOURCE_GROUP,
-        storage_account=STORAGE_ACCOUNT
-    )
-    key = run(cmd, silent=True).strip()
-
-    run_on_vm(ip, 'sudo nvidia-smi -pm 1', silent=True)
-    # run_on_vm(ip, 'sudo nvidia-smi')
-    run_on_vm(ip, 'if [ ! -d /mnt/data ]; then sudo mkdir /mnt/data; fi', silent=True)
-    run_on_vm(ip, "sudo mount -t cifs //slavedata.file.core.windows.net/docker-cache /mnt/data -o vers=3.0,username={storage_account},password={key},dir_mode=0777,file_mode=0777,sec=ntlmssp,mfsymlinks".format(
-        storage_account=STORAGE_ACCOUNT, key=key), silent=True)
-    run_on_vm(ip, "if [ ! -d /mnt/data/docker ]; then sudo mkdir /mnt/data/docker; fi", silent=True)
-    run_on_vm(ip, "sudo service docker stop", silent=True)
-    run_on_vm(ip, "sudo rm -rf /var/lib/docker", silent=True)
-    run_on_vm(ip, "sudo ln -s /mnt/data/docker /var/lib/docker", silent=True)
-    run_on_vm(ip, "if ! grep -q 'devicemapper' /lib/systemd/system/docker.service; then sudo sed -E -i \"s/dockerd/dockerd --storage-driver=devicemapper/g\" /lib/systemd/system/docker.service; fi", silent=True)
-    run_on_vm(ip, "sudo systemctl daemon-reload", silent=True)
-    run_on_vm(ip, "sudo service docker start", silent=True)
-    # run_on_vm(ip, "sudo docker images")
-
-
 def get_free_slave(silent=False):
     slaves = get_slaves_list(silent=silent)
 
@@ -172,9 +142,6 @@ if __name__ == '__main__':
     parser_get_free_slave = subparsers.add_parser('get-slaves-list')
     parser_get_free_slave = subparsers.add_parser('get-free-slave')
 
-    parser_setup_docker_dir = subparsers.add_parser('setup-docker-dir')
-    parser_setup_docker_dir.add_argument('vm_name', type=str)
-
     parser_deallocate_vm = subparsers.add_parser('deallocate-vm')
     parser_deallocate_vm.add_argument('vm_name', type=str)
 
@@ -191,9 +158,6 @@ if __name__ == '__main__':
     elif args.cmd == 'get-free-slave':
         vm_name = get_free_slave(silent=True)
         print(vm_name)
-    elif args.cmd == 'setup-docker-dir':
-        ip = get_vm_ip(args.vm_name)
-        setup_docker_dir(ip)
     elif args.cmd == 'deallocate-vm':
         deallocate_vm(args.vm_name)
     elif args.cmd == 'delete-vm':
