@@ -566,7 +566,7 @@ def write_dockerfile(conf):
 
 
 def build_image(name, no_cache=False):
-    cmd = ['docker', 'build', '-t', name]
+    cmd = ['sudo', 'docker', 'build', '-t', name]
     if not sys.stdout.isatty():
         cmd.append('-q')
     if no_cache:
@@ -608,7 +608,7 @@ def run_with(conf, script, no_cache=False, volume=None, env=None,
     run_name = make_random_name()
     signal.signal(signal.SIGTERM, make_handler(run_name))
     signal.signal(signal.SIGINT, make_handler(run_name))
-    cmd = ['nvidia-docker', 'run',
+    cmd = ['sudo', 'nvidia-docker', 'run',
            '--rm',
            '--name=%s' % run_name,
            '-v', '%s:%s' % (host_cwd, work_dir),
@@ -648,7 +648,7 @@ def run_interactive(
 
     host_cwd = os.getcwd()
     work_dir = '/work'
-    cmd = ['nvidia-docker', 'run',
+    cmd = ['sudo', 'nvidia-docker', 'run',
            '--rm',
            '-v', '%s:%s' % (host_cwd, work_dir),
            '-w', work_dir,
@@ -670,7 +670,7 @@ def run_interactive(
 def make_handler(name):
     def kill(signum, frame):
         print('Stopping docker...')
-        cmd = ['docker', 'kill', name]
+        cmd = ['sudo', 'docker', 'kill', name]
         try:
             subprocess.check_call(cmd)
         except Exception as e:
