@@ -20,11 +20,11 @@ def run(cmd, silent=False):
     return ret
 
 
-def run_on_vm(ip, cmd, silent=False):
+def run_on_vm(name, cmd, silent=False):
     cmd = """ \
     ssh -o StrictHostKeyChecking=no \
-    jenkins@{ip} \"{cmd}\"
-    """.format(ip=ip, cmd=cmd)
+    jenkins@{name} \"{cmd}\"
+    """.format(name=name, cmd=cmd)
     ret = subprocess.check_output(cmd, shell=True)
     ret = ret.decode('utf-8')
     if not silent:
@@ -56,7 +56,45 @@ def create_vm(name, silent=False):
         image_name=IMAGE_NAME,
         vm_size=VM_SIZE,
     )
-    return json.loads(run(cmd, silent=silent))
+    ret = json.loads(run(cmd, silent=silent))
+
+    cmd = """ \
+    az disk create -g {resource_group} -n {name} --size-gb 512 --sku Standard_LRS
+    """.format(
+        resource_group=RESOURCE_GROUP,
+        name=name,
+    )
+    run(cmd, silent=silent)
+
+    cmd = """ \
+    az vm disk attach -g {resource_group} --disk {name} --vm-name {name}
+    """.format(
+        resource_group=RESOURCE_GROUP,
+        name=name,
+    )
+    run(cmd, silent=silent)
+
+    with open('make_partition.sh', 'w') as fp:
+        fp.write(""" \
+        #!/bin/sh
+        echo \"n
+        p
+        l
+
+
+        w
+        \" | sudo fdisk /dev/sdc
+        sudo mkfs.ext4 /dev/sdc
+        sudo mkdir /cache
+        sudo mount -t ext4 /dev/sdc /cache
+        sudo chown -R jenkins:jenkins /cache
+        echo "/dev/sdc  /cache  ext4    defaults,nofail 0   0" | sudo tee -a /etc/fstab
+        """)
+    run("rm -rf ~/.ssh/known_hosts")
+    run("scp -o StrictHostKeyChecking=no make_partition.sh {name}:/home/jenkins".format(name=name))
+    run_on_vm(name, "sh make_partition.sh", silent=silent)
+
+    return ret
 
 
 def get_nic_info(nic_name, silent=False):
@@ -80,6 +118,8 @@ def delete_vm(name):
     run("az vm delete -g {resource_group} -n {name} -y".format(resource_group=RESOURCE_GROUP, name=name))
     run("az disk delete -g {resource_group} -n {disk_name} -y".format(
         resource_group=RESOURCE_GROUP, disk_name=disk_name))
+    run("az disk delete -g {resource_group} -n {name} -y".format(
+        resource_group=RESOURCE_GROUP, name=name))
     run("az network nic delete -g {resource_group} -n {nic_name}".format(
         resource_group=RESOURCE_GROUP, nic_name=nic_name))
     run("az network nsg delete -g {resource_group} -n {nsg_name}".format(
@@ -91,7 +131,7 @@ def deallocate_vm(name, silent=False):
     az vm deallocate -g {resource_group} -n {name} -o json
     """.format(
         resource_group=RESOURCE_GROUP,
-        name=name
+        name=name,
     )
     return json.loads(run(cmd, silent=silent))
 
@@ -106,11 +146,13 @@ def start_vm(name, silent=False):
     return json.loads(run(cmd, silent=silent))
 
 
-def get_vm_ip(name, silent=False):
+def get_vm_ip(name, silent=False, resource_group=None):
+    if resource_group is None:
+        resource_group = RESOURCE_GROUP
     cmd = """ \
     az vm list-ip-addresses -g {resource_group} -n {name} \
     --query \"[0].virtualMachine.network.privateIpAddresses[0]\" -o tsv
-    """.format(resource_group=RESOURCE_GROUP, name=name)
+    """.format(resource_group=resource_group, name=name)
     return run(cmd, silent=silent).strip()
 
 
@@ -137,20 +179,19 @@ def get_free_slave(silent=False):
 
 
 def setup_docker_dir(name, storage_driver):
-    ip = get_vm_ip(name)
     run('rm -rf /home/jenkins/.ssh/known_hosts', silent=True)
-    run_on_vm(ip, 'sudo nvidia-smi -pm 1', silent=True)
-    run_on_vm(ip, "sudo service docker stop", silent=True)
-    run_on_vm(ip, "sudo rm -rf /var/lib/docker", silent=True)
-    run_on_vm(ip, "sudo mkdir -p /mnt/docker", silent=True)
-    run_on_vm(ip, "sudo ln -s /mnt/docker /var/lib/docker", silent=True)
-    run_on_vm(ip, "sudo sed -i -E 's/ --storage-driver=\w+//g' /lib/systemd/system/docker.service", silent=True)
+    run_on_vm(name, 'sudo nvidia-smi -pm 1', silent=True)
+    run_on_vm(name, "sudo service docker stop", silent=True)
+    run_on_vm(name, "sudo rm -rf /var/lib/docker", silent=True)
+    run_on_vm(name, "if [ ! -d /cache/docker ]; then sudo mkdir -p /cache/docker; fi", silent=True)
+    run_on_vm(name, "sudo ln -s /cache/docker /var/lib/docker", silent=True)
+    run_on_vm(name, "sudo sed -i -E 's/ --storage-driver=\w+//g' /lib/systemd/system/docker.service", silent=True)
     run_on_vm(
-        ip, "sudo sed -i -E 's/dockerd/dockerd --storage-driver={sd}/g' /lib/systemd/system/docker.service".format(
+        name, "sudo sed -i -E 's/dockerd/dockerd --storage-driver={sd}/g' /lib/systemd/system/docker.service".format(
             sd=storage_driver), silent=True)
-    run_on_vm(ip, "sudo systemctl daemon-reload", silent=True)
-    run_on_vm(ip, "sudo service docker start", silent=True)
-    run_on_vm(ip, "sudo docker images")
+    run_on_vm(name, "sudo systemctl daemon-reload", silent=True)
+    run_on_vm(name, "sudo service docker start", silent=True)
+    run_on_vm(name, "sudo docker images")
 
 
 if __name__ == '__main__':
@@ -166,7 +207,10 @@ if __name__ == '__main__':
 
     parser_setup_docker_dir = subparsers.add_parser('setup-docker-dir')
     parser_setup_docker_dir.add_argument('vm_name', type=str)
-    parser_setup_docker_dir.add_argument('--storage-driver', '-d', type=str, default='devicemapper')
+    parser_setup_docker_dir.add_argument('--storage-driver', '-d', type=str, default='overlay2')
+
+    parser_create_vm = subparsers.add_parser('create-vm')
+    parser_create_vm.add_argument('vm_name', type=str)
 
     parser_deallocate_vm = subparsers.add_parser('deallocate-vm')
     parser_deallocate_vm.add_argument('vm_name', type=str)
@@ -190,6 +234,8 @@ if __name__ == '__main__':
         print(vm_name)
     elif args.cmd == 'setup-docker-dir':
         setup_docker_dir(args.vm_name, args.storage_driver)
+    elif args.cmd == 'create-vm':
+        create_vm(args.vm_name)
     elif args.cmd == 'deallocate-vm':
         deallocate_vm(args.vm_name)
     elif args.cmd == 'delete-vm':

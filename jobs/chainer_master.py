@@ -10,20 +10,23 @@ CHAINER_TEST_REPO = 'https://github.com/mitmul/chainer-test.git'
 CHAINER_TEST_BRANCH = 'jenkins-script'
 CHAINRE_REPO = 'https://github.com/chainer/chainer.git'
 CHAINER_BRANCH = 'master'
-CACHE_DIR_ON_SLAVE = '/data/cache'
+CACHE_DIR_ON_SLAVE = '/cache'
+RESOURCE_GROUP = 'chainer-jenkins'
 
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--build_id', type=str)
     parser.add_argument('--test', type=str)
     parser.add_argument('--vm_name', type=str)
     parser.add_argument('--coveralls_token', type=str)
     args = parser.parse_args()
 
     cmd = """ \
-    rm -rf {test} && \
-    mkdir {test} && \
+    if [ ! -d {test} ]; then mkdir {test}; fi && \
     cd {test} && \
+    mkdir \#{build_id} && \
+    cd \#{build_id} && \
     git clone -b {chainer_test_branch} {chainer_test_repo} && \
     cd chainer-test && \
     git clone -b {chainer_branch} {chainer_repo} && \
@@ -34,6 +37,7 @@ def main():
     --coveralls-chainer-token {coveralls_token} \
     --clone-cupy
     """.format(
+        build_id=args.build_id,
         test=args.test,
         chainer_test_branch=CHAINER_TEST_BRANCH,
         chainer_test_repo=CHAINER_TEST_REPO,
@@ -42,9 +46,7 @@ def main():
         cache_dir_on_slave=CACHE_DIR_ON_SLAVE,
         coveralls_token=args.coveralls_token
     )
-
-    ip = get_vm_ip(args.vm_name)
-    run_on_vm(ip, cmd)
+    run_on_vm(args.vm_name, cmd)
 
 
 if __name__ == '__main__':
