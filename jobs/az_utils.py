@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # # -*- coding: utf-8 -*-
 
+import argparse
 import json
 import re
 import subprocess
-import argparse
 
-RESOURCE_GROUP = 'chainer-jenkins'
-IMAGE_NAME = 'slave-image'
-VM_SIZE = 'Standard_NC12'
+RESOURCE_GROUP = ''
+IMAGE_NAME = ''
+VM_SIZE = ''
 
 
 def run(cmd, silent=False):
@@ -135,12 +135,35 @@ def get_free_slave(silent=False):
     return vm_name
 
 
+def setup_docker_dir(name):
+    ip = get_vm_ip(name)
+    run('rm -rf /home/jenkins/.ssh/known_hosts', silent=True)
+    run_on_vm(ip, 'sudo nvidia-smi -pm 1', silent=True)
+    # run_on_vm(ip, 'sudo nvidia-smi')
+    run_on_vm(ip, 'if [ ! -d /data ]; then sudo mkdir /data; fi', silent=True)
+    run_on_vm(ip, "if [ ! -d /data/docker ]; then sudo mkdir /data/docker; fi", silent=True)
+    run_on_vm(ip, "sudo service docker stop", silent=True)
+    run_on_vm(ip, "sudo rm -rf /var/lib/docker", silent=True)
+    run_on_vm(ip, "sudo ln -s /data/docker /var/lib/docker", silent=True)
+    run_on_vm(ip, "if ! grep -q 'devicemapper' /lib/systemd/system/docker.service; then sudo sed -i -E 's/dockerd/dockerd --storage-driver=devicemapper/g' /lib/systemd/system/docker.service; fi", silent=True)
+    run_on_vm(ip, "sudo systemctl daemon-reload", silent=True)
+    run_on_vm(ip, "sudo service docker start", silent=True)
+    # run_on_vm(ip, "sudo docker images")
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('--resource-group', '-g', type=str, default='chainer-jenkins')
+    parser.add_argument('--image', '-n', type=str, default='slave-image')
+    parser.add_argument('--size', '-s', type=str, default='Standard_NC12')
+
     subparsers = parser.add_subparsers(dest='cmd')
 
     parser_get_free_slave = subparsers.add_parser('get-slaves-list')
     parser_get_free_slave = subparsers.add_parser('get-free-slave')
+
+    parser_setup_docker_dir = subparsers.add_parser('setup-docker-dir')
+    parser_setup_docker_dir.add_argument('vm_name', type=str)
 
     parser_deallocate_vm = subparsers.add_parser('deallocate-vm')
     parser_deallocate_vm.add_argument('vm_name', type=str)
@@ -153,11 +176,17 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    RESOURCE_GROUP = args.resource_group
+    IMAGE_NAME = args.image
+    VM_SIZE = args.size
+
     if args.cmd == 'get-slaves-list':
         get_slaves_list()
     elif args.cmd == 'get-free-slave':
         vm_name = get_free_slave(silent=True)
         print(vm_name)
+    elif args.cmd == 'setup-docker-dir':
+        setup_docker_dir(args.vm_name)
     elif args.cmd == 'deallocate-vm':
         deallocate_vm(args.vm_name)
     elif args.cmd == 'delete-vm':
