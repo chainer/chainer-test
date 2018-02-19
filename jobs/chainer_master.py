@@ -10,7 +10,7 @@ CHAINER_TEST_REPO = 'https://github.com/mitmul/chainer-test.git'
 CHAINER_TEST_BRANCH = 'jenkins-script'
 CHAINRE_REPO = 'https://github.com/chainer/chainer.git'
 CHAINER_BRANCH = 'master'
-CACHE_DIR_ON_SLAVE = '/mnt/data/cache'
+CACHE_DIR_ON_SLAVE = '/data/cache'
 
 
 def main():
