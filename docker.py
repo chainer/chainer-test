@@ -27,8 +27,8 @@ cudnn_choices = [
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9',
     'cudnn7-cuda91']
 nccl_choices = [
-    'none', 'nccl1.3.4', 'nccl2.0-cuda8', 'nccl2.0-cuda9',
-    'nccl2.1.4-cuda91']
+    'none', 'nccl1.3', 'nccl2.0-cuda8', 'nccl2.0-cuda9',
+    'nccl2.1-cuda91']
 
 cuda_cudnns = {
     'cuda70': ['cudnn4'],
@@ -39,12 +39,12 @@ cuda_cudnns = {
     'cuda91': ['cudnn7-cuda91'],
 }
 cuda_nccls = {
-    'cuda70': ['nccl1.3.4'],
-    'cuda75': ['nccl1.3.4'],
-    'cuda80': ['nccl1.3.4', 'nccl2.0-cuda8'],
+    'cuda70': ['nccl1.3'],
+    'cuda75': ['nccl1.3'],
+    'cuda80': ['nccl1.3', 'nccl2.0-cuda8'],
     # CUDA 9 does not support nccl 1.3
     'cuda90': ['nccl2.0-cuda9'],
-    'cuda91': ['nccl2.1.4-cuda91'],
+    'cuda91': ['nccl2.1-cuda91'],
 }
 
 
@@ -439,7 +439,7 @@ ENV LD_LIBRARY_PATH=/opt/cudnn/cuda/lib64:$LD_LIBRARY_PATH
 
 # NCCL
 
-codes['nccl1.3.4'] = '''
+codes['nccl1.3'] = '''
 WORKDIR /opt/nccl
 RUN curl -sL -o nccl1.3.4.tar.gz https://github.com/NVIDIA/nccl/archive/v1.3.4-1.tar.gz && \\
     tar zxf nccl1.3.4.tar.gz && \\
@@ -475,7 +475,7 @@ codes['nccl2.0-cuda9'] = nccl_base.format(
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
-codes['nccl2.1.4-cuda91'] = nccl_base.format(
+codes['nccl2.1-cuda91'] = nccl_base.format(
     libnccl2='libnccl2_2.1.4-1+cuda9.1_amd64',
     libnccl_dev='libnccl-dev_2.1.4-1+cuda9.1_amd64',
     include_dir='/usr/include',

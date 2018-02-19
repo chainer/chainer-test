@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import argparse
 import os
@@ -55,7 +55,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py34',
             'cuda': 'cuda80',
             'cudnn': 'cudnn51-cuda8',
-            'nccl': 'nccl1.3.4',
+            'nccl': 'nccl1.3',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
                 'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.12',
@@ -69,7 +69,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py35',
             'cuda': 'cuda91',
             'cudnn': 'cudnn7-cuda91',
-            'nccl': 'nccl2.1.4-cuda91',
+            'nccl': 'nccl2.1-cuda91',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.10',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
@@ -83,7 +83,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
-            'nccl': 'nccl1.3.4',
+            'nccl': 'nccl1.3',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.11',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
@@ -98,7 +98,7 @@ if __name__ == '__main__':
             'base': 'centos7_py27',
             'cuda': 'cuda75',
             'cudnn': 'cudnn6',
-            'nccl': 'nccl1.3.4',
+            'nccl': 'nccl1.3',
             'requires': ['setuptools', 'cython==0.26.1', 'numpy<1.13'],
         }
         script = './test_example.sh'
@@ -151,7 +151,7 @@ if __name__ == '__main__':
             'base': 'ubuntu14_py34',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
-            'nccl': 'nccl1.3.4',
+            'nccl': 'nccl1.3',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
                 'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.12',
@@ -164,7 +164,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py35',
             'cuda': 'cuda91',
             'cudnn': 'cudnn7-cuda91',
-            'nccl': 'nccl2.1.4-cuda91',
+            'nccl': 'nccl2.1-cuda91',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.10', 'scipy<0.19',
             ],
@@ -188,7 +188,7 @@ if __name__ == '__main__':
             'base': 'centos7_py27',
             'cuda': 'cuda75',
             'cudnn': 'cudnn5',
-            'nccl': 'nccl1.3.4',
+            'nccl': 'nccl1.3',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.13', 'scipy<0.19',
             ],
@@ -205,7 +205,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
-            'nccl': 'nccl1.3.4',
+            'nccl': 'nccl1.3',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'numpy>=1.14',
                 'scipy<0.19', 'sphinx==1.5.3', 'sphinx_rtd_theme',
