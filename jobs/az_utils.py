@@ -78,7 +78,8 @@ def delete_vm(name):
     nsg_name = nic_info['networkSecurityGroup']['id'].split('/')[-1]
 
     run("az vm delete -g {resource_group} -n {name} -y".format(resource_group=RESOURCE_GROUP, name=name))
-    run("az disk delete -g {resource_group} -n {disk_name} -y".format(resource_group=RESOURCE_GROUP, disk_name=disk_name))
+    run("az disk delete -g {resource_group} -n {disk_name} -y".format(
+        resource_group=RESOURCE_GROUP, disk_name=disk_name))
     run("az network nic delete -g {resource_group} -n {nic_name}".format(
         resource_group=RESOURCE_GROUP, nic_name=nic_name))
     run("az network nsg delete -g {resource_group} -n {nsg_name}".format(
@@ -139,11 +140,14 @@ def setup_docker_dir(name, storage_driver):
     ip = get_vm_ip(name)
     run('rm -rf /home/jenkins/.ssh/known_hosts', silent=True)
     run_on_vm(ip, 'sudo nvidia-smi -pm 1', silent=True)
-    run_on_vm(ip, "if [ ! -d /data/docker_{name} ]; then sudo mkdir -p /data/docker_{name}; fi".format(name=name), silent=True)
-    run_on_vm(ip, "sudo ln -s /data/docker_{name} /var/lib/docker".format(name=name), silent=True)
     run_on_vm(ip, "sudo service docker stop", silent=True)
+    run_on_vm(ip, "sudo rm -rf /var/lib/docker", silent=True)
+    run_on_vm(ip, "sudo mkdir -p /mnt/docker", silent=True)
+    run_on_vm(ip, "sudo ln -s /mnt/docker /var/lib/docker", silent=True)
     run_on_vm(ip, "sudo sed -i -E 's/ --storage-driver=\w+//g' /lib/systemd/system/docker.service", silent=True)
-    run_on_vm(ip, "sudo sed -i -E 's/dockerd/dockerd --storage-driver={sd}/g' /lib/systemd/system/docker.service".format(sd=storage_driver), silent=True)
+    run_on_vm(
+        ip, "sudo sed -i -E 's/dockerd/dockerd --storage-driver={sd}/g' /lib/systemd/system/docker.service".format(
+            sd=storage_driver), silent=True)
     run_on_vm(ip, "sudo systemctl daemon-reload", silent=True)
     run_on_vm(ip, "sudo service docker start", silent=True)
     run_on_vm(ip, "sudo docker images")
