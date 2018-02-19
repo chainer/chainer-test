@@ -135,22 +135,18 @@ def get_free_slave(silent=False):
     return vm_name
 
 
-def setup_docker_dir(name):
+def setup_docker_dir(name, storage_driver):
     ip = get_vm_ip(name)
     run('rm -rf /home/jenkins/.ssh/known_hosts', silent=True)
     run_on_vm(ip, 'sudo nvidia-smi -pm 1', silent=True)
-    # run_on_vm(ip, 'sudo nvidia-smi')
-    run_on_vm(ip, "if [ ! -d /data/docker/devicemapper ]; then sudo mkdir -p /data/docker/devicemapper; fi", silent=True)
-    run_on_vm(ip, "if [ ! -d /data/docker/image/devicemapper ]; then sudo mkdir -p /data/docker/image/devicemapper; fi", silent=True)
+    run_on_vm(ip, "if [ ! -d /data/docker_{name} ]; then sudo mkdir -p /data/docker_{name}; fi".format(name=name), silent=True)
+    run_on_vm(ip, "sudo ln -s /data/docker_{name} /var/lib/docker".format(name=name), silent=True)
     run_on_vm(ip, "sudo service docker stop", silent=True)
-    run_on_vm(ip, "sudo rm -rf /var/lib/docker/devicemapper", silent=True)
-    run_on_vm(ip, "sudo rm -rf /var/lib/docker/image/devicemapper", silent=True)
-    run_on_vm(ip, "sudo ln -s /data/docker/devicemapper /var/lib/docker/devicemapper", silent=True)
-    run_on_vm(ip, "sudo ln -s /data/docker/image/devicemapper /var/lib/docker/image/devicemapper", silent=True)
-    run_on_vm(ip, "if ! grep -q 'devicemapper' /lib/systemd/system/docker.service; then sudo sed -i -E 's/dockerd/dockerd --storage-driver=devicemapper/g' /lib/systemd/system/docker.service; fi", silent=True)
+    run_on_vm(ip, "sudo sed -i -E 's/ --storage-driver=\w+//g' /lib/systemd/system/docker.service", silent=True)
+    run_on_vm(ip, "sudo sed -i -E 's/dockerd/dockerd --storage-driver={sd}/g' /lib/systemd/system/docker.service".format(sd=storage_driver), silent=True)
     run_on_vm(ip, "sudo systemctl daemon-reload", silent=True)
     run_on_vm(ip, "sudo service docker start", silent=True)
-    # run_on_vm(ip, "sudo docker images")
+    run_on_vm(ip, "sudo docker images")
 
 
 if __name__ == '__main__':
@@ -166,6 +162,7 @@ if __name__ == '__main__':
 
     parser_setup_docker_dir = subparsers.add_parser('setup-docker-dir')
     parser_setup_docker_dir.add_argument('vm_name', type=str)
+    parser_setup_docker_dir.add_argument('--storage-driver', '-d', type=str, default='devicemapper')
 
     parser_deallocate_vm = subparsers.add_parser('deallocate-vm')
     parser_deallocate_vm.add_argument('vm_name', type=str)
@@ -188,7 +185,7 @@ if __name__ == '__main__':
         vm_name = get_free_slave(silent=True)
         print(vm_name)
     elif args.cmd == 'setup-docker-dir':
-        setup_docker_dir(args.vm_name)
+        setup_docker_dir(args.vm_name, args.storage_driver)
     elif args.cmd == 'deallocate-vm':
         deallocate_vm(args.vm_name)
     elif args.cmd == 'delete-vm':
