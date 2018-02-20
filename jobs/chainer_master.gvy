@@ -25,6 +25,7 @@ pipeline {
                         script: "python jobs/az_utils.py get-free-slave",
                         returnStdout: true
                     )
+                    echo vm_name
                     sleep 90
                 }
             }
