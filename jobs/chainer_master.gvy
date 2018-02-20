@@ -4,7 +4,7 @@ import groovy.transform.Field
 
 def start_test (test) {
     withCredentials([string(credentialsId: 'CHAINER_TEST_COVERALLS_CHAINER_TOKEN', variable: 'coveralls_token')]) {
-        sh "python jobs/chainer_master.py --build_id ${BUILD_NUMBER} --test ${test} --vm_name ${vm_name} --coveralls_token ${coveralls_token}"
+        sh "python jobs/chainer_master.py --coveralls_token ${coveralls_token} --build_id ${BUILD_NUMBER} --test ${test} --vm_name ${vm_name}"
     }
 }
 
@@ -25,7 +25,6 @@ pipeline {
                         script: "python jobs/az_utils.py get-free-slave",
                         returnStdout: true
                     )
-                    echo vm_name
                     sleep 90
                 }
             }
@@ -33,6 +32,7 @@ pipeline {
         stage ('Mount NFS for Docker dir') {
             steps {
                 script {
+                    sh "echo ${vm_name}"
                     sh "python jobs/az_utils.py setup-docker-dir ${vm_name}"
                 }
             }

@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import os
 import re
 import subprocess
 
@@ -90,8 +91,8 @@ def create_vm(name, silent=False):
         sudo chown -R jenkins:jenkins /cache
         echo "/dev/sdc  /cache  ext4    defaults,nofail 0   0" | sudo tee -a /etc/fstab
         """)
-    run("rm -rf ~/.ssh/known_hosts")
-    run("scp -o StrictHostKeyChecking=no make_partition.sh {name}:/home/jenkins".format(name=name))
+    run("rm -rf ~/.ssh/known_hosts", silent=silent)
+    run("scp -o StrictHostKeyChecking=no make_partition.sh {name}:/home/jenkins".format(name=name), silent=silent)
     run_on_vm(name, "sh make_partition.sh", silent=silent)
 
     return ret
@@ -179,7 +180,7 @@ def get_free_slave(silent=False):
 
 
 def setup_docker_dir(name, storage_driver):
-    run('rm -rf /home/jenkins/.ssh/known_hosts', silent=True)
+    os.remove('/home/jenkins/.ssh/known_hosts')
     run_on_vm(name, 'sudo nvidia-smi -pm 1', silent=True)
     run_on_vm(name, "sudo service docker stop", silent=True)
     run_on_vm(name, "sudo rm -rf /var/lib/docker", silent=True)

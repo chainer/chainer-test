@@ -46,6 +46,7 @@ def main():
         cache_dir_on_slave=CACHE_DIR_ON_SLAVE,
         coveralls_token=args.coveralls_token
     )
+    print(cmd)
     run_on_vm(args.vm_name, cmd)
 
 
