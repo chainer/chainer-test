@@ -21,11 +21,11 @@ def run(cmd, silent=False):
     return ret
 
 
-def run_on_vm(name, cmd, silent=False):
+def run_on_vm(ip, cmd, silent=False):
     cmd = """ \
     ssh -o StrictHostKeyChecking=no \
-    jenkins@{name} \"{cmd}\"
-    """.format(name=name, cmd=cmd)
+    jenkins@{ip} \"{cmd}\"
+    """.format(ip=ip, cmd=cmd)
     ret = subprocess.check_output(cmd, shell=True)
     ret = ret.decode('utf-8')
     if not silent:
@@ -92,7 +92,8 @@ def create_vm(name, silent=False):
         echo "/dev/sdc  /cache  ext4    defaults,nofail 0   0" | sudo tee -a /etc/fstab
         """)
     run("rm -rf ~/.ssh/known_hosts", silent=silent)
-    run("scp -o StrictHostKeyChecking=no make_partition.sh {name}:/home/jenkins".format(name=name), silent=silent)
+    ip = get_vm_ip(name)
+    run("scp -o StrictHostKeyChecking=no make_partition.sh {ip}:/home/jenkins".format(ip=ip), silent=silent)
     run_on_vm(name, "sh make_partition.sh", silent=silent)
 
     return ret
@@ -144,7 +145,16 @@ def start_vm(name, silent=False):
         resource_group=RESOURCE_GROUP,
         name=name
     )
-    return json.loads(run(cmd, silent=silent))
+    ret = json.loads(run(cmd, silent=silent))
+
+    cmd = """ \
+    az vm wait -g {resource_group} -n {name} --created
+    """.format(
+        resource_group=RESOURCE_GROUP,
+        name=name
+    )
+    run(cmd, silent=silent)
+    return ret
 
 
 def get_vm_ip(name, silent=False, resource_group=None):
@@ -181,18 +191,19 @@ def get_free_slave(silent=False):
 
 def setup_docker_dir(name, storage_driver):
     os.remove('/home/jenkins/.ssh/known_hosts')
-    run_on_vm(name, 'sudo nvidia-smi -pm 1', silent=True)
-    run_on_vm(name, "sudo service docker stop", silent=True)
-    run_on_vm(name, "sudo rm -rf /var/lib/docker", silent=True)
-    run_on_vm(name, "if [ ! -d /cache/docker ]; then sudo mkdir -p /cache/docker; fi", silent=True)
-    run_on_vm(name, "sudo ln -s /cache/docker /var/lib/docker", silent=True)
-    run_on_vm(name, "sudo sed -i -E 's/ --storage-driver=\w+//g' /lib/systemd/system/docker.service", silent=True)
+    ip = get_vm_ip(name)
+    run_on_vm(ip, 'sudo nvidia-smi -pm 1', silent=True)
+    run_on_vm(ip, "sudo service docker stop", silent=True)
+    run_on_vm(ip, "sudo rm -rf /var/lib/docker", silent=True)
+    run_on_vm(ip, "if [ ! -d /cache/docker ]; then sudo mkdir -p /cache/docker; fi", silent=True)
+    run_on_vm(ip, "sudo ln -s /cache/docker /var/lib/docker", silent=True)
+    run_on_vm(ip, "sudo sed -i -E 's/ --storage-driver=\w+//g' /lib/systemd/system/docker.service", silent=True)
     run_on_vm(
-        name, "sudo sed -i -E 's/dockerd/dockerd --storage-driver={sd}/g' /lib/systemd/system/docker.service".format(
+        ip, "sudo sed -i -E 's/dockerd/dockerd --storage-driver={sd}/g' /lib/systemd/system/docker.service".format(
             sd=storage_driver), silent=True)
-    run_on_vm(name, "sudo systemctl daemon-reload", silent=True)
-    run_on_vm(name, "sudo service docker start", silent=True)
-    run_on_vm(name, "sudo docker images")
+    run_on_vm(ip, "sudo systemctl daemon-reload", silent=True)
+    run_on_vm(ip, "sudo service docker start", silent=True)
+    run_on_vm(ip, "sudo docker images")
 
 
 if __name__ == '__main__':
@@ -242,4 +253,5 @@ if __name__ == '__main__':
     elif args.cmd == 'delete-vm':
         delete_vm(args.vm_name)
     elif args.cmd == 'get-vm-ip':
-        get_vm_ip(args.vm_name)
+        ip = get_vm_ip(args.vm_name, silent=True)
+        print(ip)

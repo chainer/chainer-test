@@ -2,9 +2,23 @@ import groovy.transform.Field
 
 @Field def vm_name = ''
 
-def start_test (test) {
-    withCredentials([string(credentialsId: 'CHAINER_TEST_COVERALLS_CHAINER_TOKEN', variable: 'coveralls_token')]) {
-        sh "python jobs/chainer_master.py --coveralls_token ${coveralls_token} --build_id ${BUILD_NUMBER} --test ${test} --vm_name ${vm_name}"
+def start_test (test, gpu_id=0) {
+    ansiColor('xterm') {
+        withCredentials([string(credentialsId: 'CHAINER_TEST_COVERALLS_CHAINER_TOKEN', variable: 'coveralls_token')]) {
+            sh "python jobs/chainer_master.py --coveralls_token ${coveralls_token} --gpu-id ${gpu_id} --build_id ${BUILD_NUMBER} --test ${test} --vm_name ${vm_name}"
+        }
+    }
+}
+
+def try_ssh (name) {
+    def ip = sh (script: "python jobs/az_utils.py get-vm-ip ${name}", returnStdout: true)
+    ip = ip.trim()
+    for (int i = 0; i < 3; i++) {
+        catchError {
+            sh "echo ${i}"
+            sh "ssh -o StrictHostKeyChecking=no jenkins@${ip} ls"
+        }
+        sleep 5
     }
 }
 
@@ -25,14 +39,13 @@ pipeline {
                         script: "python jobs/az_utils.py get-free-slave",
                         returnStdout: true
                     )
-                    sleep 90
+                    try_ssh(vm_name)
                 }
             }
         }
-        stage ('Mount NFS for Docker dir') {
+        stage ('Setup Docker dir') {
             steps {
                 script {
-                    sh "echo ${vm_name}"
                     sh "python jobs/az_utils.py setup-docker-dir ${vm_name}"
                 }
             }
@@ -50,10 +63,10 @@ pipeline {
                         start_test('chainer-py35')
                     },
                     'chainer-example': {
-                        start_test('chainer-example')
+                        start_test('chainer-example', 0)
                     },
                     'chainer-prev_example': {
-                        start_test('chainer-prev_example')
+                        start_test('chainer-prev_example', 1)
                     },
                     'chainer-doc': {
                         start_test('chainer-doc')

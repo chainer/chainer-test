@@ -2,26 +2,21 @@ import groovy.transform.Field
 
 @Field def vm_name = ''
 
-def get_free_slave () {
-    def ret = sh (
-        script: "python jobs/az_utils.py get-free-slave",
-        returnStdout: true
-    )
-    return ret
-}
-
-def setup_docker_dir () {
-    sh "python jobs/az_utils.py setup-docker-dir ${vm_name}"
-}
-
-def start_test (test, coveralls_token) {
-    withCredentials([string(credentialsId: 'Coveralls Token (chainer/chainer)', variable: 'CHAINER_TEST_COVERALLS_CHAINER_TOKEN')]) {
-        sh "python jobs/chainer_pr.py --test ${test} --vm_name ${vm_name} --coveralls_token ${CHAINER_TEST_COVERALLS_CHAINER_TOKEN}"
+def start_test (test) {
+    withCredentials([string(credentialsId: 'CHAINER_TEST_COVERALLS_CHAINER_TOKEN', variable: 'coveralls_token')]) {
+        sh "python jobs/chainer_master.py --coveralls_token ${coveralls_token} --build_id ${BUILD_NUMBER} --test ${test} --vm_name ${vm_name}"
     }
 }
 
-def deallocate_vm () {
-    sh "python jobs/az_utils.py deallocate-vm ${vm_name}"
+def try_ssh (name) {
+    for (int i = 0; i < 10; i++) {
+        try {
+            sh "ssh -o StrictHostKeyChecking=no ${name} ls -la"
+            break
+        } catch (e) {
+            echo e
+        }
+    }
 }
 
 pipeline {
@@ -35,16 +30,18 @@ pipeline {
             }
         }
         stage ('Allocate VM') {
-            steps {
-                script {
-                    vm_name = get_free_slave()
-                }
+            script {
+                vm_name = sh (
+                    script: "python jobs/az_utils.py get-free-slave",
+                    returnStdout: true
+                )
+                try_ssh(vm_name)
             }
         }
         stage ('Mount azure file share') {
             steps {
                 script {
-                    setup_docker_dir()
+                    sh "python jobs/az_utils.py setup-docker-dir ${vm_name}"
                 }
             }
         }
@@ -75,7 +72,7 @@ pipeline {
     }
     post {
         always {
-            deallocate_vm()
+            sh "python jobs/az_utils.py deallocate-vm ${vm_name}"
         }
         success {
             echo 'Success'

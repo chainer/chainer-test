@@ -20,6 +20,7 @@ def main():
     parser.add_argument('--test', type=str)
     parser.add_argument('--vm_name', type=str)
     parser.add_argument('--coveralls_token', type=str)
+    parser.add_argument('--gpu-id', type=str)
     args = parser.parse_args()
 
     cmd = """ \
@@ -35,7 +36,8 @@ def main():
     --coveralls-repo=chainer \
     --coveralls-branch=master \
     --coveralls-chainer-token {coveralls_token} \
-    --clone-cupy
+    --clone-cupy \
+    --gpu-id {gpu_id}
     """.format(
         build_id=args.build_id,
         test=args.test,
@@ -44,10 +46,11 @@ def main():
         chainer_branch=CHAINER_BRANCH,
         chainer_repo=CHAINRE_REPO,
         cache_dir_on_slave=CACHE_DIR_ON_SLAVE,
-        coveralls_token=args.coveralls_token
+        coveralls_token=args.coveralls_token,
+        gpu_id=args.gpu_id
     )
-    print(cmd)
-    run_on_vm(args.vm_name, cmd)
+    ip = get_vm_ip(args.vm_name, resource_group=RESOURCE_GROUP).strip()
+    run_on_vm(ip, cmd)
 
 
 if __name__ == '__main__':
