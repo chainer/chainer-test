@@ -401,14 +401,14 @@ codes['cudnn6-cuda8'] = cudnn_base.format(
 
 codes['cudnn7-cuda8'] = cudnn_base.format(
     cudnn='cudnn-8.0-linux-x64-v7',
-    cudnn_ver='v7.0.3',
-    sha256sum='e44dd20750ea1fa287ed0576c71d7ba30383aabdaacd18df173947cf7a53fc3f',
+    cudnn_ver='v7.0.5',
+    sha256sum='9e0b31735918fe33a79c4b3e612143d33f48f61c095a3b993023cdab46f6d66e',
 )
 
 codes['cudnn7-cuda9'] = cudnn_base.format(
     cudnn='cudnn-9.0-linux-x64-v7',
-    cudnn_ver='v7.0.3',
-    sha256sum='09583e93110cee2bf76ea355e1d9c7c366a50ad858362064f7c927cc46209ef9',
+    cudnn_ver='v7.0.5',
+    sha256sum='1a3e076447d5b9860c73d9bebe7087ffcb7b0c8814fd1e506096435a2ad9ab0e',
 )
 
 codes['cudnn7-cuda91'] = cudnn_base.format(
