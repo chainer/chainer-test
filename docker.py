@@ -21,11 +21,14 @@ _base_choices = [
     ('centos7_py34-pyenv', '3.4.7')]
 
 base_choices = [a[0] for a in _base_choices]
-cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90']
+cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90', 'cuda91']
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
-    'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9']
-nccl_choices = ['none', 'nccl1.3.4', 'nccl2.0-cuda8', 'nccl2.0-cuda9']
+    'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9',
+    'cudnn7-cuda91']
+nccl_choices = [
+    'none', 'nccl1.3', 'nccl2.0-cuda8', 'nccl2.0-cuda9',
+    'nccl2.1-cuda91']
 
 cuda_cudnns = {
     'cuda70': ['cudnn4'],
@@ -33,12 +36,15 @@ cuda_cudnns = {
     'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
                'cudnn7-cuda8'],
     'cuda90': ['cudnn7-cuda9'],
+    'cuda91': ['cudnn7-cuda91'],
 }
 cuda_nccls = {
-    'cuda70': ['nccl1.3.4'],
-    'cuda75': ['nccl1.3.4'],
-    'cuda80': ['nccl1.3.4', 'nccl2.0-cuda8'],
-    'cuda90': ['nccl2.0-cuda9'],  # CUDA 9 does not support nccl 1.3
+    'cuda70': ['nccl1.3'],
+    'cuda75': ['nccl1.3'],
+    'cuda80': ['nccl1.3', 'nccl2.0-cuda8'],
+    # CUDA 9 does not support nccl 1.3
+    'cuda90': ['nccl2.0-cuda9'],
+    'cuda91': ['nccl2.1-cuda91'],
 }
 
 
@@ -268,6 +274,12 @@ cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installer
 cuda90_driver = 'NVIDIA-Linux-x86_64-384.81.run'
 cuda90_installer = 'cuda-linux.9.0.176-22781540.run'
 
+cuda91_run = 'cuda_9.1.85_387.26_linux'
+cuda91_url = 'https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers'
+cuda91_driver = 'NVIDIA-Linux-x86_64-387.26.run'
+cuda91_installer = 'cuda-linux.9.1.85-23083092.run'
+
+
 cuda_base = '''
 WORKDIR /opt/nvidia
 RUN mkdir installers && \\
@@ -323,6 +335,14 @@ codes['cuda90'] = cuda_base.format(
     cuda_url=cuda90_url,
     installer=cuda90_installer,
     sha256sum='96863423feaa50b5c1c5e1b9ec537ef7ba77576a3986652351ae43e66bcd080c',
+)
+
+codes['cuda91'] = cuda_base.format(
+    cuda_ver='9.1',
+    cuda_run=cuda91_run,
+    cuda_url=cuda91_url,
+    installer=cuda91_installer,
+    sha256sum='8496c72b16fee61889f9281449b5d633d0b358b46579175c275d85c9205fe953',
 )
 
 # cudnn
@@ -391,6 +411,12 @@ codes['cudnn7-cuda9'] = cudnn_base.format(
     sha256sum='09583e93110cee2bf76ea355e1d9c7c366a50ad858362064f7c927cc46209ef9',
 )
 
+codes['cudnn7-cuda91'] = cudnn_base.format(
+    cudnn='cudnn-9.1-linux-x64-v7',
+    cudnn_ver='v7.0.5',
+    sha256sum='1ead5da7324db35dcdb3721a8d4fc020b217c68cdb3b3daa1be81eb2456bd5e5',
+)
+
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
 # installed.
 codes['cudnn-latest-with-dummy'] = '''
@@ -413,7 +439,7 @@ ENV LD_LIBRARY_PATH=/opt/cudnn/cuda/lib64:$LD_LIBRARY_PATH
 
 # NCCL
 
-codes['nccl1.3.4'] = '''
+codes['nccl1.3'] = '''
 WORKDIR /opt/nccl
 RUN curl -sL -o nccl1.3.4.tar.gz https://github.com/NVIDIA/nccl/archive/v1.3.4-1.tar.gz && \\
     tar zxf nccl1.3.4.tar.gz && \\
@@ -430,19 +456,30 @@ RUN mkdir nccl && cd nccl && \\
     tar xvf data.tar.xz && \\
     ar vx {libnccl_dev}.deb && \\
     tar xvf data.tar.xz && \\
-    cp ./usr/include/* /usr/local/cuda/include && \\
-    cp ./usr/lib/x86_64-linux-gnu/* /usr/local/cuda/lib64 && \\
+    cp .{include_dir}/* /usr/local/cuda/include && \\
+    cp .{lib_dir}/* /usr/local/cuda/lib64 && \\
     cd .. && rm -rf nccl
 '''
 
 codes['nccl2.0-cuda8'] = nccl_base.format(
     libnccl2='libnccl2_2.0.5-2+cuda8.0_amd64',
     libnccl_dev='libnccl-dev_2.0.5-2+cuda8.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
 codes['nccl2.0-cuda9'] = nccl_base.format(
     libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.1-cuda91'] = nccl_base.format(
+    libnccl2='libnccl2_2.1.4-1+cuda9.1_amd64',
+    libnccl_dev='libnccl-dev_2.1.4-1+cuda9.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib',
 )
 
 protobuf_cpp_base = '''
