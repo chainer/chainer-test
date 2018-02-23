@@ -114,11 +114,12 @@ def setup_coverage(args, env):
                 'given'.format(repo=repo, arg_key=arg_key, env_key=env_key))
         return repo_token
 
-    token = _get_token(args.coverage_repo, 'coveralls')
-    if token is not None:
-        env['COVERALLS_REPO_TOKEN'] = token
+    # Set token for Coveralls and Codecov.
+    if args.coverage_repo:
+        token = _get_token(args.coverage_repo, 'coveralls')
+        if token is not None:
+            env['COVERALLS_REPO_TOKEN'] = token
 
-    # Set environment variables for Codecov.
-    token = _get_token(args.coverage_repo, 'codecov')
-    if token is not None:
-        env['CODECOV_TOKEN'] = token
+        token = _get_token(args.coverage_repo, 'codecov')
+        if token is not None:
+            env['CODECOV_TOKEN'] = token
