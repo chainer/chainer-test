@@ -229,13 +229,15 @@ if __name__ == '__main__':
         'pytest-cov',  # For coverage report
         'nose',
         'mock',
-        'coveralls']
+        'coveralls',
+        'codecov',
+    ]
 
     argconfig.parse_args(args, env, conf, volume)
 
     # coverage result is reported when the same type of a test is executed
-    if args.coveralls_repo and args.coveralls_repo in args.test:
-        argconfig.set_coveralls(args, env)
+    if args.coverage_repo and args.coverage_repo in args.test:
+        argconfig.setup_coverage(args, env)
 
     if args.interactive:
         docker.run_interactive(
