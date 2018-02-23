@@ -50,6 +50,7 @@ if __name__ == '__main__':
         'nose',
         'mock',
         'coveralls',
+        'codecov',
     ]
 
     use_ideep = any(['ideep4py' in req for req in conf['requires']])
