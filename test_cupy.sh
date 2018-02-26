@@ -24,5 +24,6 @@ python -m pytest "${pytest_opts[@]}" tests
 python ../push_coveralls.py
 
 # Submit coverage to Codecov
-rm -f coverage.xml
+# Codecov uses `coverage.xml` generated from `.coverage`
+coverage xml
 codecov
