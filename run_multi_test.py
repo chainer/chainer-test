@@ -25,7 +25,7 @@ if __name__ == '__main__':
     parser.add_argument('--http-proxy')
     parser.add_argument('--https-proxy')
     parser.add_argument('--no-cache', action='store_true')
-    parser.add_argument('--timeout', default='1h')
+    parser.add_argument('--timeout', default='2h')
     parser.add_argument(
         '--gpu-id', type=int,
         help='GPU ID you want to use mainly in the script.')
