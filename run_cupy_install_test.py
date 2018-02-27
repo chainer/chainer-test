@@ -23,7 +23,7 @@ if __name__ == '__main__':
     parser.add_argument('--id', type=int, required=True)
 
     parser.add_argument('--no-cache', action='store_true')
-    parser.add_argument('--timeout', default='1h')
+    parser.add_argument('--timeout', default='2h')
     parser.add_argument('-i', '--interactive', action='store_true')
 
     argconfig.setup_argument_parser(parser)

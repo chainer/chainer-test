@@ -18,7 +18,7 @@ if __name__ == '__main__':
         'cupy-example', 'cupy-doc',
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
-    parser.add_argument('--timeout', default='1h')
+    parser.add_argument('--timeout', default='2h')
     parser.add_argument('-i', '--interactive', action='store_true')
     parser.add_argument(
         '--clone-cupy', action='store_true',
