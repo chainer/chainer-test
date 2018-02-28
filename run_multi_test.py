@@ -95,6 +95,7 @@ if __name__ == '__main__':
         'mock',
         'coverage',
         'coveralls',
+        'codecov',
     ]
 
     if args.cache:

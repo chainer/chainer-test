@@ -48,13 +48,14 @@ if __name__ == '__main__':
         'mock',
         'coverage',
         'coveralls',
+        'codecov',
     ]
 
     volume = []
     env = {'CUDNN': conf['cudnn']}
 
     argconfig.parse_args(args, env, conf, volume)
-    argconfig.set_coveralls(args, env)
+    argconfig.setup_coverage(args, env)
 
     if args.interactive:
         docker.run_interactive(

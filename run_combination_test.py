@@ -50,6 +50,7 @@ if __name__ == '__main__':
         'nose',
         'mock',
         'coveralls',
+        'codecov',
     ]
 
     use_ideep = any(['ideep4py' in req for req in conf['requires']])
@@ -61,7 +62,7 @@ if __name__ == '__main__':
     }
 
     argconfig.parse_args(args, env, conf, volume)
-    argconfig.set_coveralls(args, env)
+    argconfig.setup_coverage(args, env)
 
     if args.interactive:
         docker.run_interactive(
