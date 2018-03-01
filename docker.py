@@ -12,13 +12,13 @@ import version
 _base_choices = [
     ('ubuntu14_py27', '2.7.6'),
     ('ubuntu14_py34', '3.4.0'),
-    ('ubuntu14_py35-pyenv', '3.5.4'),
-    ('ubuntu14_py36-pyenv', '3.6.3'),
+    ('ubuntu14_py35-pyenv', '3.5.5'),
+    ('ubuntu14_py36-pyenv', '3.6.4'),
     ('ubuntu16_py27', '2.7.12'),
     ('ubuntu16_py35', '3.5.2'),
     ('centos6_py27-pyenv', '2.7.14'),
     ('centos7_py27', '2.7.5'),
-    ('centos7_py34-pyenv', '3.4.7')]
+    ('centos7_py34-pyenv', '3.4.8')]
 
 base_choices = [a[0] for a in _base_choices]
 cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90', 'cuda91']
@@ -125,8 +125,8 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" pyenv install 3.4.7
-RUN pyenv global 3.4.7
+RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" pyenv install 3.4.8
+RUN pyenv global 3.4.8
 RUN pyenv rehash
 '''
 
