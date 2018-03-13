@@ -13,6 +13,8 @@ python -m pip install coverage matplotlib --user
 
 run="coverage run -a --branch"
 
+export MPLBACKEND=Agg
+
 # K-means
 
 $run examples/kmeans/kmeans.py -m 1
