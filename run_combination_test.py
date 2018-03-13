@@ -17,7 +17,7 @@ params = {
     'h5py': [None, '2.5', '2.6', '2.7'],
     'pillow': [None, '3.4', '4.0', '4.1'],
     'theano': [None, '0.8', '0.9'],
-    'ideep': [None, '1.0.2'],
+    'ideep': [None, '1.0.3'],
 }
 
 

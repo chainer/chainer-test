@@ -563,16 +563,6 @@ RUN apt-get remove -y \\
             elif 'centos' in conf['base']:
                 dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
 
-        if any(['ideep4py' in req for req in requires]):
-            if 'ubuntu16' in conf['base']:
-                dockerfile += 'RUN apt-get update && apt-get -y install libgoogle-glog0v5 && apt-get clean\n'
-            elif 'ubuntu14' in conf['base']:
-                dockerfile += 'RUN apt-get update && apt-get -y install libgoogle-glog0 && apt-get clean\n'
-            else:
-                # TODO(kmaehashi) support CentOS 7
-                raise RuntimeError(
-                    'ideep4py test not supported on this system so far')
-
         pillow, requires = partition_requirements('pillow', requires)
         scipy, requires = partition_requirements('scipy', requires)
 
