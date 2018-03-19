@@ -68,7 +68,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda91',
-            'cudnn': 'cudnn7-cuda91',
+            'cudnn': 'cudnn71-cuda91',
             'nccl': 'nccl2.1-cuda91',
             'requires': [
                 'setuptools', 'cython==0.26.1', 'numpy<1.14',
