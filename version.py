@@ -104,6 +104,9 @@ def clone_chainer():
         chainer_branch = 'master'
     else:
         cupy_major, _, _, _ = get_cupy_version()
-        # chainer v(n+1) for cupy v(n)
-        chainer_branch = 'v%d' % (cupy_major + 1)
+        if 4 <= cupy_major:
+            chainer_branch = 'v%d' % cupy_major
+        else:
+            # chainer v(n+1) for cupy v(n)
+            chainer_branch = 'v%d' % (cupy_major + 1)
     git_clone('chainer', 'chainer', chainer_branch)
