@@ -476,10 +476,10 @@ codes['nccl2.0-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.1-cuda91'] = nccl_base.format(
-    libnccl2='libnccl2_2.1.4-1+cuda9.1_amd64',
-    libnccl_dev='libnccl-dev_2.1.4-1+cuda9.1_amd64',
+    libnccl2='libnccl2_2.1.15-1+cuda9.1_amd64',
+    libnccl_dev='libnccl-dev_2.1.15-1+cuda9.1_amd64',
     include_dir='/usr/include',
-    lib_dir='/usr/lib',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
 protobuf_cpp_base = '''
