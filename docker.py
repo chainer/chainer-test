@@ -417,19 +417,19 @@ codes['cudnn7-cuda91'] = cudnn_base.format(
     sha256sum='1ead5da7324db35dcdb3721a8d4fc020b217c68cdb3b3daa1be81eb2456bd5e5',
 )
 
-codes['v7.1.1-cuda8'] = cudnn_base.format(
+codes['cudnn71-cuda8'] = cudnn_base.format(
     cudnn='cudnn-8.0-linux-x64-v7.1',
     cudnn_ver='v7.1.1',
     sha256sum='4a9d59ecee53e830f24e90d689dbab1aa9f69efced823f33046040901c4151e1',
 )
 
-codes['v7.1.1-cuda9'] = cudnn_base.format(
+codes['cudnn71-cuda9'] = cudnn_base.format(
     cudnn='cudnn-9.0-linux-x64-v7.1',
     cudnn_ver='v7.1.1',
     sha256sum='d2038dca6e6070aa6879d827fa6c032c942514a6b9bddf5ade275670ca474b9c',
 )
 
-codes['v7.1.1-cuda91'] = cudnn_base.format(
+codes['cudnn71-cuda91'] = cudnn_base.format(
     cudnn='cudnn-9.1-linux-x64-v7.1',
     cudnn_ver='v7.1.1',
     sha256sum='ae3cf4f6d0d5b39c74742dadb44c91e51531b79e3d01a7aab3459ab9bed2f475',
