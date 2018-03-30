@@ -13,7 +13,7 @@ _base_choices = [
     ('ubuntu14_py27', '2.7.6'),
     ('ubuntu14_py34', '3.4.0'),
     ('ubuntu14_py35-pyenv', '3.5.5'),
-    ('ubuntu14_py36-pyenv', '3.6.4'),
+    ('ubuntu14_py36-pyenv', '3.6.5'),
     ('ubuntu16_py27', '2.7.12'),
     ('ubuntu16_py35', '3.5.2'),
     ('centos6_py27-pyenv', '2.7.14'),
