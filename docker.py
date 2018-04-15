@@ -570,7 +570,8 @@ RUN apt-get remove -y \\
         python3-pip python-pip python-pip-whl \\
         python3-six python-six python-six-whl \\
         python3-setuptools python-setuptools python-setuptools-whl \\
-        python-pkg-resources python3-pkg-resources
+        python-pkg-resources python3-pkg-resources \\
+        python3-chardet python-chardet python-chardet-whl
 '''
 
     if 'requires' in conf:
