@@ -570,7 +570,8 @@ RUN apt-get remove -y \\
         python3-pip python-pip python-pip-whl \\
         python3-six python-six python-six-whl \\
         python3-setuptools python-setuptools python-setuptools-whl \\
-        python-pkg-resources python3-pkg-resources
+        python-pkg-resources python3-pkg-resources \\
+        python3-chardet python-chardet python-chardet-whl
 '''
 
     if 'requires' in conf:
@@ -589,9 +590,10 @@ RUN apt-get remove -y \\
                            'pip install --global-option="build_ext" '
                            '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
 
-        dockerfile += (
-            'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
-            ' '.join(['"%s"' % req for req in requires]))
+        if 0 < len(requires):
+            dockerfile += (
+                'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
+                ' '.join(['"%s"' % req for req in requires]))
 
         if scipy is not None:
             # SciPy depends on C-API interface of NumPy.
