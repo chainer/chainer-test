@@ -590,9 +590,10 @@ RUN apt-get remove -y \\
                            'pip install --global-option="build_ext" '
                            '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
 
-        dockerfile += (
-            'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
-            ' '.join(['"%s"' % req for req in requires]))
+        if 0 < len(requires):
+            dockerfile += (
+                'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
+                ' '.join(['"%s"' % req for req in requires]))
 
         if scipy is not None:
             # SciPy depends on C-API interface of NumPy.
