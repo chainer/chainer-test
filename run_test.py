@@ -73,7 +73,7 @@ if __name__ == '__main__':
             'requires': [
                 'setuptools', 'cython==0.28.1', 'numpy<1.14',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
-                'ideep4py==1.0.3',
+                'ideep4py<1.1',
             ],
         }
         script = './test.sh'
@@ -88,7 +88,7 @@ if __name__ == '__main__':
                 'setuptools', 'cython==0.26.1', 'numpy<1.14',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
-                'ideep4py==1.0.3',
+                'ideep4py<1.1',
             ],
         }
         script = './test_slow.sh'
@@ -128,7 +128,7 @@ if __name__ == '__main__':
                 'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'matplotlib',
                 'numpy>=1.14', 'scipy<0.19', 'theano', 'sphinx==1.5.3',
                 'sphinx_rtd_theme',
-                'ideep4py==1.0.3',
+                'ideep4py<1.1',
             ]
         }
         script = './test_doc.sh'
