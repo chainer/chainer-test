@@ -552,6 +552,11 @@ def make_dockerfile(conf):
     if 'protobuf-cpp' in conf:
         dockerfile += codes[conf['protobuf-cpp']]
 
+    # Update old packages provided by OS.
+    dockerfile += '''
+RUN pip install -U pip six setuptools && rm -rf ~/.cache/pip
+'''
+
     if 'ubuntu' in conf['base']:
         # The system's six is too old so that we have to use a newer one.
         # However, just running `pip install -U six` does not resolve the
@@ -565,7 +570,6 @@ def make_dockerfile(conf):
         # install a pip to /usr/local/lib using `pip install -U pip` before
         # removing it (via removing the system's six).
         dockerfile += '''\
-RUN pip install -U pip six setuptools && rm -rf ~/.cache/pip
 RUN apt-get remove -y \\
         python3-pip python-pip python-pip-whl \\
         python3-six python-six python-six-whl \\
