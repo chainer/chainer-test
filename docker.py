@@ -90,9 +90,13 @@ def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
 def get_numpy_choices():
     choices = ['1.9', '1.10', '1.11', '1.12']
     cupy_version = version.get_cupy_version()
-    if cupy_version is not None and cupy_version[0] >= 2:
-        # cupy v2
-        choices.append('1.13')
+    if cupy_version is not None:
+        if cupy_version[0] >= 2:
+            # cupy v2 or later
+            choices.append('1.13')
+        if cupy_version[0:2] >= (4, 1):
+            # cupy v4 or later
+            choices.append('1.14')
     return choices
 
 
