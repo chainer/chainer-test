@@ -9,7 +9,7 @@ python:
 
 install:
   - pip install -U pip wheel
-  - pip install hacking autopep8
+  - pip install 'hacking==1.0.0' autopep8
 
 script:
   - flake8
