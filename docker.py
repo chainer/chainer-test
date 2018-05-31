@@ -95,7 +95,7 @@ def get_numpy_choices():
             # cupy v2 or later
             choices.append('1.13')
         if cupy_version[0:2] >= (4, 1):
-            # cupy v4 or later
+            # cupy v4.1 or later
             choices.append('1.14')
     return choices
 
