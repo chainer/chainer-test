@@ -25,7 +25,8 @@ cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90', 'cuda91', 'cuda9
 cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9',
-    'cudnn7-cuda91', 'cudnn71-cuda8', 'cudnn71-cuda9', 'cudnn71-cuda91']
+    'cudnn7-cuda91', 'cudnn71-cuda8', 'cudnn71-cuda9', 'cudnn71-cuda91',
+    'cudnn71-cuda92']
 nccl_choices = [
     'none', 'nccl1.3', 'nccl2.0-cuda8', 'nccl2.0-cuda9',
     'nccl2.1-cuda91']
@@ -37,7 +38,7 @@ cuda_cudnns = {
                'cudnn7-cuda8', 'cudnn71-cuda8'],
     'cuda90': ['cudnn7-cuda9', 'cudnn71-cuda9'],
     'cuda91': ['cudnn7-cuda91', 'cudnn71-cuda91'],
-    'cuda92': [],
+    'cuda92': ['cudnn71-cuda92'],
 }
 cuda_nccls = {
     'cuda70': ['nccl1.3'],
@@ -434,20 +435,26 @@ codes['cudnn7-cuda91'] = cudnn_base.format(
 
 codes['cudnn71-cuda8'] = cudnn_base.format(
     cudnn='cudnn-8.0-linux-x64-v7.1',
-    cudnn_ver='v7.1.1',
-    sha256sum='4a9d59ecee53e830f24e90d689dbab1aa9f69efced823f33046040901c4151e1',
+    cudnn_ver='v7.1.3',
+    sha256sum='31ed3c3bfb9c515c228c1dcbb306277ce08836e84e3facedef6182d872f8cd3d',
 )
 
 codes['cudnn71-cuda9'] = cudnn_base.format(
     cudnn='cudnn-9.0-linux-x64-v7.1',
-    cudnn_ver='v7.1.1',
-    sha256sum='d2038dca6e6070aa6879d827fa6c032c942514a6b9bddf5ade275670ca474b9c',
+    cudnn_ver='v7.1.4',
+    sha256sum='60b581d0f05324c33323024a264aa3fb185c533e2f67dae7fda847b926bb7e57',
 )
 
 codes['cudnn71-cuda91'] = cudnn_base.format(
     cudnn='cudnn-9.1-linux-x64-v7.1',
-    cudnn_ver='v7.1.1',
-    sha256sum='ae3cf4f6d0d5b39c74742dadb44c91e51531b79e3d01a7aab3459ab9bed2f475',
+    cudnn_ver='v7.1.3',
+    sha256sum='dd616d3794167ceb923d706bf73e8d6acdda770751492b921ee6827cdf190228',
+)
+
+codes['cudnn71-cuda92'] = cudnn_base.format(
+    cudnn='cudnn-9.2-linux-x64-v7.1',
+    cudnn_ver='v7.1.4',
+    sha256sum='f875340f812b942408098e4c9807cb4f8bdaea0db7c48613acece10c7c827101',
 )
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
