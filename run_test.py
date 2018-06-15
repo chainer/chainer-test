@@ -67,9 +67,9 @@ if __name__ == '__main__':
     elif args.test == 'chainer-py35':
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda91',
-            'cudnn': 'cudnn71-cuda91',
-            'nccl': 'nccl2.1-cuda91',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn71-cuda92',
+            'nccl': 'nccl2.2-cuda92',
             'requires': [
                 'setuptools', 'cython==0.28.1', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
