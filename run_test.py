@@ -71,7 +71,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn71-cuda91',
             'nccl': 'nccl2.1-cuda91',
             'requires': [
-                'setuptools', 'cython==0.28.1', 'numpy<1.14',
+                'setuptools', 'cython==0.28.1', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py<1.1',
             ],
@@ -85,7 +85,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.26.1', 'numpy<1.14',
+                'setuptools', 'cython==0.26.1', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
                 'ideep4py<1.1',
@@ -140,7 +140,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn4',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.14',
+                'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.15',
                 'scipy<0.19',
             ]
         }
