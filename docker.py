@@ -28,8 +28,9 @@ cudnn_choices = [
     'cudnn7-cuda91', 'cudnn71-cuda8', 'cudnn71-cuda9', 'cudnn71-cuda91',
     'cudnn71-cuda92']
 nccl_choices = [
-    'none', 'nccl1.3', 'nccl2.0-cuda8', 'nccl2.0-cuda9',
-    'nccl2.1-cuda91']
+    'none', 'nccl1.3', 'nccl2.0-cuda8', 'nccl2.0-cuda9', 'nccl2.2-cuda9'
+    'nccl2.1-cuda91', 'nccl2.2-cuda92',
+]
 
 cuda_cudnns = {
     'cuda70': ['cudnn4'],
@@ -45,9 +46,9 @@ cuda_nccls = {
     'cuda75': ['nccl1.3'],
     'cuda80': ['nccl1.3', 'nccl2.0-cuda8'],
     # CUDA 9 does not support nccl 1.3
-    'cuda90': ['nccl2.0-cuda9'],
+    'cuda90': ['nccl2.0-cuda9', 'nccl2.2-cuda9'],
     'cuda91': ['nccl2.1-cuda91'],
-    'cuda92': [],
+    'cuda92': ['nccl2.2-cuda92'],
 }
 
 
@@ -519,12 +520,27 @@ codes['nccl2.0-cuda9'] = nccl_base.format(
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
+codes['nccl2.2-cuda9'] = nccl_base.format(
+    libnccl2='libnccl2_2.2.12-1+cuda9.0_amd64',
+    libnccl_dev='libnccl-dev_2.2.12-1+cuda9.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
 codes['nccl2.1-cuda91'] = nccl_base.format(
     libnccl2='libnccl2_2.1.15-1+cuda9.1_amd64',
     libnccl_dev='libnccl-dev_2.1.15-1+cuda9.1_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
+
+codes['nccl2.2-cuda92'] = nccl_base.format(
+    libnccl2='libnccl2_2.2.12-1+cuda9.2_amd64',
+    libnccl_dev='libnccl-dev_2.2.12-1+cuda9.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
