@@ -137,6 +137,9 @@ def make_conf(params):
 
     append_require(params, conf, 'pillow')
 
+    if params.get('wheel') is True:
+        conf['requires'].append('wheel')
+
     return conf
 
 
