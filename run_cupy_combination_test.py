@@ -39,7 +39,7 @@ if __name__ == '__main__':
     conf['requires'] = [
         'setuptools',
         'pip',
-        'cython==0.26.1'
+        'cython==0.28.3'
     ] + conf['requires'] + [
         'pytest',
         'pytest-timeout',  # For timeout
