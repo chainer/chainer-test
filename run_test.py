@@ -43,7 +43,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn4',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.10',
+                'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.10',
                 'scipy<0.19', 'h5py', 'theano', 'pillow',
                 'protobuf',  # ignore broken protobuf 3.2.0rc1
             ]
@@ -58,7 +58,7 @@ if __name__ == '__main__':
             'nccl': 'nccl1.3',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
-                'setuptools', 'pip', 'cython==0.27.3', 'numpy<1.12',
+                'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.12',
                 'pillow',
             ],
         }
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
-                'setuptools', 'cython==0.28.1', 'numpy<1.15',
+                'setuptools', 'cython==0.28.3', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py<1.1',
             ],
@@ -85,7 +85,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.26.1', 'numpy<1.15',
+                'setuptools', 'cython==0.28.3', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
                 'ideep4py<1.1',
@@ -99,7 +99,7 @@ if __name__ == '__main__':
             'cuda': 'cuda75',
             'cudnn': 'cudnn6',
             'nccl': 'nccl1.3',
-            'requires': ['setuptools', 'cython==0.26.1', 'numpy<1.13'],
+            'requires': ['setuptools', 'cython==0.28.3', 'numpy<1.13'],
         }
         script = './test_example.sh'
 
@@ -109,7 +109,7 @@ if __name__ == '__main__':
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'none',
-            'requires': ['setuptools', 'pip', 'cython==0.26.1', 'numpy<1.12'],
+            'requires': ['setuptools', 'pip', 'cython==0.28.3', 'numpy<1.12'],
         }
         script = './test_prev_example.sh'
 
@@ -125,7 +125,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'requires': [
-                'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'matplotlib',
+                'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'matplotlib',
                 'numpy>=1.14', 'scipy<0.19', 'theano', 'sphinx==1.5.3',
                 'sphinx_rtd_theme',
                 'ideep4py<1.1',
@@ -140,7 +140,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn4',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.26.1', 'numpy<1.15',
+                'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.15',
                 'scipy<0.19',
             ]
         }
@@ -154,7 +154,7 @@ if __name__ == '__main__':
             'nccl': 'nccl1.3',
             'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
-                'setuptools', 'pip', 'cython==0.27.3', 'numpy<1.12',
+                'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.12',
             ],
         }
         script = './test_cupy.sh'
@@ -166,7 +166,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn7-cuda91',
             'nccl': 'nccl2.1-cuda91',
             'requires': [
-                'setuptools', 'cython==0.28.1', 'numpy<1.10', 'scipy<0.19',
+                'setuptools', 'cython==0.28.3', 'numpy<1.10', 'scipy<0.19',
             ],
         }
         script = './test_cupy.sh'
@@ -178,7 +178,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'cython==0.26.1', 'numpy<1.11', 'scipy<0.19',
+                'setuptools', 'cython==0.28.3', 'numpy<1.11', 'scipy<0.19',
             ],
         }
         script = './test_cupy_slow.sh'
@@ -190,7 +190,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn5',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.26.1', 'numpy<1.13', 'scipy<0.19',
+                'setuptools', 'cython==0.28.3', 'numpy<1.13', 'scipy<0.19',
             ],
         }
         script = './test_cupy_example.sh'
@@ -207,7 +207,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'pip==9.0.1', 'setuptools', 'cython==0.26.1', 'numpy>=1.14',
+                'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'numpy>=1.14',
                 'scipy<0.19', 'sphinx==1.5.3', 'sphinx_rtd_theme',
             ]
         }

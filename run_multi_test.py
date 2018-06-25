@@ -51,7 +51,7 @@ if __name__ == '__main__':
         'cuda': args.cuda,
         'cudnn': args.cudnn,
         'nccl': args.nccl,
-        'requires': ['setuptools', 'pip', 'cython==0.26.1'],
+        'requires': ['setuptools', 'pip', 'cython==0.28.3'],
     }
 
     if args.h5py == '2.5':
