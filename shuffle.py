@@ -18,7 +18,7 @@ def iter_shuffle(lst):
 def _is_ideep_supported(python_version):
     pyver = python_version
     if pyver[0] == 2:
-        return pyver >= (2, 7, 5)
+        return pyver >= (2, 7, 6)
     assert pyver[0] == 3
     if pyver[:2] < (3, 5):
         return False
