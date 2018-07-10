@@ -97,7 +97,7 @@ if __name__ == '__main__':
     if args.ideep == '1.0':
         conf['requires'].append('ideep4py<1.1')
     elif args.ideep == '2.0':
-        conf['requires'].append('ideep4py-avx2==2.0.0b1.post1')
+        conf['requires'].append('ideep4py<2.1')
 
     use_ideep = any(['ideep4py' in req for req in conf['requires']])
 
