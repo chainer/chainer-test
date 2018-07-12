@@ -10,11 +10,12 @@ import version
 
 # See sphinx version RTD uses:
 # https://github.com/rtfd/readthedocs.org/blob/master/readthedocs/doc_builder/python_environments.py
+# Some packages are omitted as we have our own requirements.
 SPHINX_REQUIREMENTS = [
     'Pygments==2.2.0',
     'docutils==0.13.1',
-    'mock==1.0.1',
-    'pillow==2.6.1',
+    #'mock==1.0.1',
+    #'pillow==2.6.1',
     'alabaster>=0.7,<0.8,!=0.7.5',
     'commonmark==0.5.4',
     'recommonmark==0.4.0',
