@@ -8,7 +8,7 @@ import docker
 import version
 
 
-# See sphinx version RTD uses:
+# Simulate the build environment of ReadTheDocs.
 # https://github.com/rtfd/readthedocs.org/blob/master/readthedocs/doc_builder/python_environments.py
 # Some packages are omitted as we have our own requirements.
 SPHINX_REQUIREMENTS = [
