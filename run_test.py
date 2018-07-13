@@ -8,6 +8,22 @@ import docker
 import version
 
 
+# Simulate the build environment of ReadTheDocs.
+# https://github.com/rtfd/readthedocs.org/blob/master/readthedocs/doc_builder/python_environments.py
+# Some packages are omitted as we have our own requirements.
+SPHINX_REQUIREMENTS = [
+    'Pygments==2.2.0',
+    'docutils==0.13.1',
+    # 'mock==1.0.1',
+    # 'pillow==2.6.1',
+    'alabaster>=0.7,<0.8,!=0.7.5',
+    'commonmark==0.5.4',
+    'recommonmark==0.4.0',
+    'sphinx<1.8',
+    'sphinx-rtd-theme<0.5',
+]
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
@@ -114,9 +130,7 @@ if __name__ == '__main__':
         script = './test_prev_example.sh'
 
     elif args.test == 'chainer-doc':
-        # See sphinx version RTD uses:
-        # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
-        # Also note that NumPy 1.14 or later is required to run doctest, as
+        # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
@@ -126,10 +140,9 @@ if __name__ == '__main__':
             'nccl': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'matplotlib',
-                'numpy>=1.14', 'scipy<0.19', 'theano', 'sphinx==1.5.3',
-                'sphinx_rtd_theme',
+                'numpy>=1.14', 'scipy<0.19', 'theano',
                 'ideep4py<1.1',
-            ]
+            ] + SPHINX_REQUIREMENTS
         }
         script = './test_doc.sh'
 
@@ -196,9 +209,7 @@ if __name__ == '__main__':
         script = './test_cupy_example.sh'
 
     elif args.test == 'cupy-doc':
-        # See sphinx version RTD uses:
-        # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
-        # Also note that NumPy 1.14 or later is required to run doctest, as
+        # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
@@ -208,8 +219,8 @@ if __name__ == '__main__':
             'nccl': 'nccl1.3',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'numpy>=1.14',
-                'scipy<0.19', 'sphinx==1.5.3', 'sphinx_rtd_theme',
-            ]
+                'scipy<0.19',
+            ] + SPHINX_REQUIREMENTS
         }
         script = './test_cupy_doc.sh'
 
