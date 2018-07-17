@@ -30,6 +30,7 @@ if __name__ == '__main__':
     parser.add_argument('--test', choices=[
         'chainer-py2', 'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
+        'chainer-head',
         'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-slow',
         'cupy-example', 'cupy-doc',
     ], required=True)
@@ -90,6 +91,23 @@ if __name__ == '__main__':
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py<1.1',
+            ],
+        }
+        script = './test.sh'
+
+    elif args.test == 'chainer-head':
+        conf = {
+            'base': 'ubuntu16_py36-pyenv',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn71-cuda92',
+            'nccl': 'nccl2.2-cuda92',
+            'requires': [
+                # Use '>=0a0' to install the latest pre-release version
+                # available on PyPI.
+                # TODO(kmaehashi) rewrite iDeep constraints after v2.0 support
+                'setuptools>=0a0', 'cython>=0a0', 'numpy>=0a0',
+                'scipy<0.19', 'h5py>=0a0', 'theano>=0a0', 'protobuf>=0a0',
+                'ideep4py>=0a0, <1.1',
             ],
         }
         script = './test.sh'
