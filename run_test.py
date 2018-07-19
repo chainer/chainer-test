@@ -33,6 +33,7 @@ if __name__ == '__main__':
         'chainer-head',
         'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-slow',
         'cupy-example', 'cupy-doc',
+        'cupy-head',
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='2h')
@@ -95,7 +96,7 @@ if __name__ == '__main__':
         }
         script = './test.sh'
 
-    elif args.test == 'chainer-head':
+    elif args.test == 'chainer-head' or args.test == 'cupy-head':
         conf = {
             'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda92',
@@ -110,7 +111,12 @@ if __name__ == '__main__':
                 'ideep4py>=0a0, <1.1',
             ],
         }
-        script = './test.sh'
+        if args.test == 'chainer-head':
+            script = './test.sh'
+        elif args.test == 'cupy-head':
+            script = './test_cupy.sh'
+        else:
+            assert False  # should not reach
 
     elif args.test == 'chainer-slow':
         conf = {
