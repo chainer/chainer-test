@@ -250,7 +250,7 @@ RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.4.2.
     ./autogen.sh && ./configure && make && \\
     cp ccache /usr/bin/ccache && \\
     cd / && rm -rf /opt/ccache && \\
-    cd /usr/lib64 || cd /usr/lib && \\
+    { cd /usr/lib64 || cd /usr/lib ; } && \\
     mkdir ccache && cd ccache && \\
     ln -s /usr/bin/ccache gcc && \\
     ln -s /usr/bin/ccache g++ && \\
