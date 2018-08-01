@@ -78,7 +78,7 @@ if __name__ == '__main__':
 
     elif args.test == 'chainer-py3':
         conf = {
-            'base': 'ubuntu14_py34',
+            'base': 'ubuntu16_py37-pyenv',
             'cuda': 'cuda80',
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'nccl1.3',
@@ -194,7 +194,7 @@ if __name__ == '__main__':
 
     elif args.test == 'cupy-py3':
         conf = {
-            'base': 'ubuntu14_py34',
+            'base': 'ubuntu16_py37-pyenv',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
