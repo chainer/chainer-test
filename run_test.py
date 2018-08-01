@@ -141,7 +141,6 @@ if __name__ == '__main__':
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'matplotlib',
                 'numpy>=1.14', 'scipy<0.19', 'theano',
-                'ideep4py<1.1',
             ] + SPHINX_REQUIREMENTS
         }
         script = './test_doc.sh'
