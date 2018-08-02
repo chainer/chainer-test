@@ -103,12 +103,14 @@ if __name__ == '__main__':
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
-                # Use '>=0a0' to install the latest pre-release version
+                # Use '>=0.0.dev0' to install the latest pre-release version
                 # available on PyPI.
+                # https://pip.pypa.io/en/stable/reference/pip_install/#pre-release-versions
                 # TODO(kmaehashi) rewrite iDeep constraints after v2.0 support
-                'setuptools>=0a0', 'cython>=0a0', 'numpy>=0a0',
-                'scipy<0.19', 'h5py>=0a0', 'theano>=0a0', 'protobuf>=0a0',
-                'ideep4py>=0a0, <1.1',
+                'setuptools>=0.0.dev0', 'cython>=0.0.dev0', 'numpy>=0.0.dev0',
+                'scipy<0.19', 'h5py>=0.0.dev0', 'theano>=0.0.dev0',
+                'protobuf>=0.0.dev0',
+                'ideep4py>=0.0.dev0, <1.1',
             ],
         }
         if args.test == 'chainer-head':
