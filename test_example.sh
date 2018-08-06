@@ -21,6 +21,8 @@ run="coverage run -a --branch"
 
 export MPLBACKEND=Agg
 
+export OMP_NUM_THREADS=1
+
 # mnist
 echo "Running mnist example"
 
