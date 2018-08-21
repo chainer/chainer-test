@@ -521,8 +521,8 @@ codes['nccl2.0-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.2-cuda9'] = nccl_base.format(
-    libnccl2='libnccl2_2.2.12-1+cuda9.0_amd64',
-    libnccl_dev='libnccl-dev_2.2.12-1+cuda9.0_amd64',
+    libnccl2='libnccl2_2.2.13-1+cuda9.0_amd64',
+    libnccl_dev='libnccl-dev_2.2.13-1+cuda9.0_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
@@ -535,8 +535,8 @@ codes['nccl2.1-cuda91'] = nccl_base.format(
 )
 
 codes['nccl2.2-cuda92'] = nccl_base.format(
-    libnccl2='libnccl2_2.2.12-1+cuda9.2_amd64',
-    libnccl_dev='libnccl-dev_2.2.12-1+cuda9.2_amd64',
+    libnccl2='libnccl2_2.2.13-1+cuda9.2_amd64',
+    libnccl_dev='libnccl-dev_2.2.13-1+cuda9.2_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
