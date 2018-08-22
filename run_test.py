@@ -88,7 +88,7 @@ if __name__ == '__main__':
             'nccl': 'nccl2.2-cuda92',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
-                'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
+                'scipy<0.20', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py<1.1',
             ],
         }
@@ -102,7 +102,7 @@ if __name__ == '__main__':
             'nccl': 'nccl1.3',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
-                'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
+                'scipy<0.20', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
                 'ideep4py<1.1',
             ],
@@ -140,7 +140,7 @@ if __name__ == '__main__':
             'nccl': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'matplotlib',
-                'numpy>=1.14', 'scipy<0.19', 'theano',
+                'numpy>=1.14', 'scipy<0.20', 'theano',
             ] + SPHINX_REQUIREMENTS
         }
         script = './test_doc.sh'
@@ -178,7 +178,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn7-cuda91',
             'nccl': 'nccl2.1-cuda91',
             'requires': [
-                'setuptools', 'cython==0.28.3', 'numpy<1.10', 'scipy<0.19',
+                'setuptools', 'cython==0.28.3', 'numpy<1.10', 'scipy<0.20',
             ],
         }
         script = './test_cupy.sh'
@@ -190,7 +190,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'cython==0.28.3', 'numpy<1.11', 'scipy<0.19',
+                'setuptools', 'cython==0.28.3', 'numpy<1.11', 'scipy<0.20',
             ],
         }
         script = './test_cupy_slow.sh'
@@ -218,7 +218,7 @@ if __name__ == '__main__':
             'nccl': 'nccl1.3',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'numpy>=1.14',
-                'scipy<0.19',
+                'scipy<0.20',
             ] + SPHINX_REQUIREMENTS
         }
         script = './test_cupy_doc.sh'
