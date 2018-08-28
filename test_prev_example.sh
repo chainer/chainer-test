@@ -24,6 +24,8 @@ run="coverage run -a --branch"
 
 export MPLBACKEND=Agg
 
+export OMP_NUM_THREADS=1
+
 cd ..
 curl -L -o v${PREV_VER}.tar.gz https://github.com/pfnet/chainer/archive/v${PREV_VER}.tar.gz
 tar xzf v${PREV_VER}.tar.gz
