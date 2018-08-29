@@ -16,6 +16,7 @@ _base_choices = [
     ('ubuntu14_py36-pyenv', '3.6.5'),
     ('ubuntu16_py27', '2.7.12'),
     ('ubuntu16_py35', '3.5.2'),
+    ('ubuntu16_py36-pyenv', '3.6.6'),
     ('centos6_py27-pyenv', '2.7.14'),
     ('centos7_py27', '2.7.5'),
     ('centos7_py34-pyenv', '3.4.8')]
@@ -185,14 +186,14 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 '''
 
-ubuntu14_pyenv_base = '''FROM ubuntu:14.04
+ubuntu_pyenv_base = '''FROM ubuntu:{ubuntu_ver}
 
 ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
     apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
-    apt-get -y install libbz2-dev libreadline-dev libssl-dev make && \\
+    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make && \\
     apt-get clean
 
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
@@ -206,10 +207,21 @@ RUN pyenv global {python_ver}
 RUN pyenv rehash
 '''
 
-codes['ubuntu14_py35-pyenv'] = ubuntu14_pyenv_base.format(python_ver='.'.join(
-    [str(x) for x in get_python_version('ubuntu14_py35-pyenv')]))
-codes['ubuntu14_py36-pyenv'] = ubuntu14_pyenv_base.format(python_ver='.'.join(
-    [str(x) for x in get_python_version('ubuntu14_py36-pyenv')]))
+codes['ubuntu14_py35-pyenv'] = ubuntu_pyenv_base.format(
+    ubuntu_ver='14.04',
+    python_ver='.'.join(
+        [str(x) for x in get_python_version('ubuntu14_py35-pyenv')]),
+)
+codes['ubuntu14_py36-pyenv'] = ubuntu_pyenv_base.format(
+    ubuntu_ver='14.04',
+    python_ver='.'.join(
+        [str(x) for x in get_python_version('ubuntu14_py36-pyenv')]),
+)
+codes['ubuntu16_py36-pyenv'] = ubuntu_pyenv_base.format(
+    ubuntu_ver='16.04',
+    python_ver='.'.join(
+        [str(x) for x in get_python_version('ubuntu16_py36-pyenv')]),
+)
 
 codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
 

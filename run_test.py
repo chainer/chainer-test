@@ -30,8 +30,10 @@ if __name__ == '__main__':
     parser.add_argument('--test', choices=[
         'chainer-py2', 'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
+        'chainer-head',
         'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-slow',
         'cupy-example', 'cupy-doc',
+        'cupy-head',
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='2h')
@@ -93,6 +95,30 @@ if __name__ == '__main__':
             ],
         }
         script = './test.sh'
+
+    elif args.test == 'chainer-head' or args.test == 'cupy-head':
+        conf = {
+            'base': 'ubuntu16_py36-pyenv',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn71-cuda92',
+            'nccl': 'nccl2.2-cuda92',
+            'requires': [
+                # Use '>=0.0.dev0' to install the latest pre-release version
+                # available on PyPI.
+                # https://pip.pypa.io/en/stable/reference/pip_install/#pre-release-versions
+                # TODO(kmaehashi) rewrite iDeep constraints after v2.0 support
+                'setuptools>=0.0.dev0', 'cython>=0.0.dev0', 'numpy>=0.0.dev0',
+                'scipy<0.19', 'h5py>=0.0.dev0', 'theano>=0.0.dev0',
+                'protobuf>=0.0.dev0',
+                'ideep4py>=0.0.dev0, <1.1',
+            ],
+        }
+        if args.test == 'chainer-head':
+            script = './test.sh'
+        elif args.test == 'cupy-head':
+            script = './test_cupy.sh'
+        else:
+            assert False  # should not reach
 
     elif args.test == 'chainer-slow':
         conf = {
