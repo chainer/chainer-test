@@ -35,7 +35,7 @@ fi
 
 pytest_opts+=(-m "${pytest_marks[*]}")
 
-python -m pytest "${pytest_opts[@]}" tests
+python -m pytest "${pytest_opts[@]}" tests/chainer_tests
 
 # Submit coverage to Coveralls
 python ../push_coveralls.py
