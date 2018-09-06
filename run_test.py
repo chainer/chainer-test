@@ -8,14 +8,32 @@ import docker
 import version
 
 
+# Simulate the build environment of ReadTheDocs.
+# https://github.com/rtfd/readthedocs.org/blob/master/readthedocs/doc_builder/python_environments.py
+# Some packages are omitted as we have our own requirements.
+SPHINX_REQUIREMENTS = [
+    'Pygments==2.2.0',
+    'docutils==0.13.1',
+    # 'mock==1.0.1',
+    # 'pillow==2.6.1',
+    'alabaster>=0.7,<0.8,!=0.7.5',
+    'commonmark==0.5.4',
+    'recommonmark==0.4.0',
+    'sphinx<1.8',
+    'sphinx-rtd-theme<0.5',
+]
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--test', choices=[
         'chainer-py2', 'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
+        'chainer-head',
         'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-slow',
         'cupy-example', 'cupy-doc',
+        'cupy-head',
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
     parser.add_argument('--timeout', default='2h')
@@ -68,7 +86,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda92',
-            'cudnn': 'cudnn71-cuda92',
+            'cudnn': 'cudnn72-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
@@ -77,6 +95,30 @@ if __name__ == '__main__':
             ],
         }
         script = './test.sh'
+
+    elif args.test == 'chainer-head' or args.test == 'cupy-head':
+        conf = {
+            'base': 'ubuntu16_py36-pyenv',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn71-cuda92',
+            'nccl': 'nccl2.2-cuda92',
+            'requires': [
+                # Use '>=0.0.dev0' to install the latest pre-release version
+                # available on PyPI.
+                # https://pip.pypa.io/en/stable/reference/pip_install/#pre-release-versions
+                # TODO(kmaehashi) rewrite iDeep constraints after v2.0 support
+                'setuptools>=0.0.dev0', 'cython>=0.0.dev0', 'numpy>=0.0.dev0',
+                'scipy<0.19', 'h5py>=0.0.dev0', 'theano>=0.0.dev0',
+                'protobuf>=0.0.dev0',
+                'ideep4py>=0.0.dev0, <1.1',
+            ],
+        }
+        if args.test == 'chainer-head':
+            script = './test.sh'
+        elif args.test == 'cupy-head':
+            script = './test_cupy.sh'
+        else:
+            assert False  # should not reach
 
     elif args.test == 'chainer-slow':
         conf = {
@@ -97,7 +139,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'centos7_py27',
             'cuda': 'cuda75',
-            'cudnn': 'cudnn6',
+            'cudnn': 'cudnn71-cuda9',
             'nccl': 'nccl1.3',
             'requires': ['setuptools', 'cython==0.28.3', 'numpy<1.13'],
         }
@@ -114,9 +156,7 @@ if __name__ == '__main__':
         script = './test_prev_example.sh'
 
     elif args.test == 'chainer-doc':
-        # See sphinx version RTD uses:
-        # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
-        # Also note that NumPy 1.14 or later is required to run doctest, as
+        # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
@@ -126,10 +166,8 @@ if __name__ == '__main__':
             'nccl': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'matplotlib',
-                'numpy>=1.14', 'scipy<0.19', 'theano', 'sphinx==1.5.3',
-                'sphinx_rtd_theme',
-                'ideep4py<2.1',
-            ]
+                'numpy>=1.14', 'scipy<0.19', 'theano',
+            ] + SPHINX_REQUIREMENTS
         }
         script = './test_doc.sh'
 
@@ -163,7 +201,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda91',
-            'cudnn': 'cudnn7-cuda91',
+            'cudnn': 'cudnn72-cuda9',
             'nccl': 'nccl2.1-cuda91',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.10', 'scipy<0.19',
@@ -196,9 +234,7 @@ if __name__ == '__main__':
         script = './test_cupy_example.sh'
 
     elif args.test == 'cupy-doc':
-        # See sphinx version RTD uses:
-        # https://github.com/rtfd/readthedocs.org/blob/master/requirements/pip.txt
-        # Also note that NumPy 1.14 or later is required to run doctest, as
+        # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
@@ -208,8 +244,8 @@ if __name__ == '__main__':
             'nccl': 'nccl1.3',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'numpy>=1.14',
-                'scipy<0.19', 'sphinx==1.5.3', 'sphinx_rtd_theme',
-            ]
+                'scipy<0.19',
+            ] + SPHINX_REQUIREMENTS
         }
         script = './test_cupy_doc.sh'
 
