@@ -91,7 +91,7 @@ if __name__ == '__main__':
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
-                'ideep4py<2.1',
+                'ideep4py<1.1',
             ],
         }
         script = './test.sh'
@@ -130,7 +130,7 @@ if __name__ == '__main__':
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
-                'ideep4py<2.1',
+                'ideep4py<1.1',
             ],
         }
         script = './test_slow.sh'
