@@ -18,7 +18,7 @@ def iter_shuffle(lst):
 def _is_ideep_supported(python_version):
     pyver = python_version
     if pyver[0] == 2:
-        return pyver >= (2, 7, 6)
+        return pyver >= (2, 7, 5)
     assert pyver[0] == 3
     if pyver[:2] < (3, 5):
         return False
@@ -133,7 +133,7 @@ def make_conf(params):
     ideep = params.get('ideep')
     if ideep is not None:
         overwrite_requires_version(
-            conf, 'ideep4py', 'ideep4py<2.1')
+            conf, 'ideep4py', make_require('ideep4py', ideep))
 
     append_require(params, conf, 'pillow')
 
