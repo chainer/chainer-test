@@ -8,6 +8,16 @@ import docker
 import version
 
 
+def dbg(*args, **kwargs):
+    import sys
+    print('!'*40)
+    print('!'*40, file=sys.stderr)
+    print(*args, **kwargs)
+    print(*args, **kwargs, file=sys.stderr)
+    print('!'*40)
+    print('!'*40, file=sys.stderr)
+
+
 # Simulate the build environment of ReadTheDocs.
 # https://github.com/rtfd/readthedocs.org/blob/master/readthedocs/doc_builder/python_environments.py
 # Some packages are omitted as we have our own requirements.
@@ -260,8 +270,8 @@ if __name__ == '__main__':
     else:
         raise
 
-    print(conf)
-    print(ideep_req)
+    dbg(conf)
+    dbg(ideep_req)
 
     use_ideep = any(['ideep4py' in req for req in conf['requires']])
 
