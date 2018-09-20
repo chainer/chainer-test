@@ -59,6 +59,8 @@ if __name__ == '__main__':
         ideep_req = '<1.1'
     elif ideep_min_version.startswith('2.'):
         ideep_req = '<2.1'
+    else:
+        raise RuntimeError('bad ideep version: {}'.format(ideep_min_version))
 
     if args.test == 'chainer-py2':
         conf = {
@@ -257,6 +259,9 @@ if __name__ == '__main__':
 
     else:
         raise
+
+    print(conf)
+    print(ideep_req)
 
     use_ideep = any(['ideep4py' in req for req in conf['requires']])
 
