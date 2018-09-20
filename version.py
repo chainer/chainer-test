@@ -74,7 +74,7 @@ def get_ideep_version_from_chainer_docs():
         os.path.dirname(__file__), 'chainer/docs/source/install.rst')
     with open(chainer_docs_install_path) as f:
         doc = f.read()
-    return re.search(r'iDeep.* ([0-9.]*)', doc).group(1)
+    return re.search(r'iDeep.* ({})'.format(version_pattern), doc).group(1)
 
 
 def is_master_branch(directory):
