@@ -1,5 +1,4 @@
 #!/usr/bin/env python2
-from __future__ import print_function
 
 import argparse
 import os
@@ -7,16 +6,6 @@ import os
 import argconfig
 import docker
 import version
-
-
-def dbg(*args):
-    import sys
-    print('!'*40)
-    print('!'*40, file=sys.stderr)
-    print(*args)
-    print(*args, file=sys.stderr)
-    print('!'*40)
-    print('!'*40, file=sys.stderr)
 
 
 # Simulate the build environment of ReadTheDocs.
@@ -271,9 +260,6 @@ if __name__ == '__main__':
     else:
         raise
 
-    dbg(conf)
-    dbg(ideep_req)
-
     use_ideep = any(['ideep4py' in req for req in conf['requires']])
 
     volume = []
@@ -296,9 +282,6 @@ if __name__ == '__main__':
     # coverage result is reported when the same type of a test is executed
     if args.coverage_repo and args.coverage_repo in args.test:
         argconfig.setup_coverage(args, env)
-
-    dbg(args)
-    dbg(conf)
 
     if args.interactive:
         docker.run_interactive(
