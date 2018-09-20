@@ -54,6 +54,14 @@ if __name__ == '__main__':
     if args.clone_chainer:
         version.clone_chainer()
 
+    ideep_min_version = version.get_ideep_version_from_chainer_docs()
+    if ideep_min_version.startswith('1.'):
+        ideep_req = '<1.1'
+    elif ideep_min_version.startswith('2.'):
+        ideep_req = '<2.1'
+    else:
+        raise RuntimeError('bad ideep version: {}'.format(ideep_min_version))
+
     if args.test == 'chainer-py2':
         conf = {
             'base': 'ubuntu14_py27',
@@ -91,7 +99,7 @@ if __name__ == '__main__':
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
-                'ideep4py<1.1',
+                'ideep4py{}'.format(ideep_req),
             ],
         }
         script = './test.sh'
@@ -110,7 +118,7 @@ if __name__ == '__main__':
                 'setuptools>=0.0.dev0', 'cython>=0.0.dev0', 'numpy>=0.0.dev0',
                 'scipy<0.19', 'h5py>=0.0.dev0', 'theano>=0.0.dev0',
                 'protobuf>=0.0.dev0',
-                'ideep4py>=0.0.dev0, <1.1',
+                'ideep4py>=0.0.dev0, {}'.format(ideep_req),
             ],
         }
         if args.test == 'chainer-head':
@@ -130,7 +138,7 @@ if __name__ == '__main__':
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
                 'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
-                'ideep4py<1.1',
+                'ideep4py{}'.format(ideep_req),
             ],
         }
         script = './test_slow.sh'
