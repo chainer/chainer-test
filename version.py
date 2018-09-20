@@ -69,6 +69,14 @@ def get_cupy_version():
     return get_version(cupy_path, 'cupy')
 
 
+def get_ideep_version_from_chainer_docs():
+    chainer_docs_install_path = os.path.join(
+        os.path.dirname(__file__), 'chainer/docs/source/install.rst')
+    with open(chainer_docs_install_path) as f:
+        doc = f.read()
+    return re.search(r'iDeep.* ([0-9.]*)', doc).group(1)
+
+
 def is_master_branch(directory):
     # A master branch does not have "[backport]" in their logs.
     return_code = subprocess.call(

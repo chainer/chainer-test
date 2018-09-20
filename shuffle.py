@@ -133,7 +133,7 @@ def make_conf(params):
     ideep = params.get('ideep')
     if ideep is not None:
         overwrite_requires_version(
-            conf, 'ideep4py', 'ideep4py<2.1')
+            conf, 'ideep4py', make_require('ideep4py', ideep))
 
     append_require(params, conf, 'pillow')
 
