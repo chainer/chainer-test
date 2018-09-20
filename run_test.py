@@ -297,6 +297,9 @@ if __name__ == '__main__':
     if args.coverage_repo and args.coverage_repo in args.test:
         argconfig.setup_coverage(args, env)
 
+    dbg(args)
+    dbg(conf)
+
     if args.interactive:
         docker.run_interactive(
             conf, no_cache=args.no_cache, volume=volume, env=env,
