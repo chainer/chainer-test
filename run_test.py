@@ -9,12 +9,12 @@ import docker
 import version
 
 
-def dbg(*args, **kwargs):
+def dbg(*args):
     import sys
     print('!'*40)
     print('!'*40, file=sys.stderr)
-    print(*args, **kwargs)
-    print(*args, **kwargs, file=sys.stderr)
+    print(*args)
+    print(*args, file=sys.stderr)
     print('!'*40)
     print('!'*40, file=sys.stderr)
 
