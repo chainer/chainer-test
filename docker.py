@@ -27,7 +27,8 @@ cudnn_choices = [
     'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
     'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9',
     'cudnn7-cuda91', 'cudnn71-cuda8', 'cudnn71-cuda9', 'cudnn71-cuda91',
-    'cudnn71-cuda92', 'cudnn72-cuda8', 'cudnn72-cuda9', 'cudnn72-cuda92']
+    'cudnn71-cuda92', 'cudnn72-cuda8', 'cudnn72-cuda9', 'cudnn72-cuda92',
+    'cudnn73-cuda9']
 nccl_choices = [
     'none', 'nccl1.3', 'nccl2.0-cuda8', 'nccl2.0-cuda9', 'nccl2.2-cuda9'
     'nccl2.1-cuda91', 'nccl2.2-cuda92',
@@ -38,9 +39,10 @@ cuda_cudnns = {
     'cuda75': ['cudnn4', 'cudnn5', 'cudnn51', 'cudnn6'],
     'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
                'cudnn7-cuda8', 'cudnn71-cuda8', 'cudnn72-cuda8'],
-    'cuda90': ['cudnn7-cuda9', 'cudnn71-cuda9', 'cudnn72-cuda9'],
-    'cuda91': ['cudnn7-cuda91', 'cudnn71-cuda91'],
-    'cuda92': ['cudnn71-cuda92', 'cudnn72-cuda92'],
+    'cuda90': ['cudnn7-cuda9', 'cudnn71-cuda9', 'cudnn72-cuda9',
+               'cudnn73-cuda9'],
+    'cuda91': ['cudnn7-cuda91', 'cudnn71-cuda91', 'cudnn73-cuda9'],
+    'cuda92': ['cudnn71-cuda92', 'cudnn72-cuda92', 'cudnn73-cuda9'],
 }
 cuda_nccls = {
     'cuda70': ['nccl1.3'],
@@ -490,6 +492,12 @@ codes['cudnn72-cuda92'] = cudnn_base.format(
     cudnn='cudnn-9.2-linux-x64-v7.2.1.38',
     cudnn_ver='v7.2.1',
     sha256sum='3e78f5f0edbe614b56f00ff2d859c5409d150c87ae6ba3df09f97d537909c2e9',
+)
+
+codes['cudnn73-cuda9'] = cudnn_base.format(
+    cudnn='cudnn-9.0-linux-x64-v7.3.0.29',
+    cudnn_ver='v7.3.0',
+    sha256sum='403f9043ff2c7b2c5967454872275d07bca11fd41dfc7b21995eadcad6dbe49b',
 )
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
