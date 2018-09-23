@@ -94,7 +94,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda92',
-            'cudnn': 'cudnn72-cuda92',
+            'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
@@ -132,7 +132,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
+            'cudnn': 'cudnn73-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.15',
@@ -147,7 +147,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'centos7_py27',
             'cuda': 'cuda75',
-            'cudnn': 'cudnn71-cuda9',
+            'cudnn': 'cudnn72-cuda9',
             'nccl': 'nccl1.3',
             'requires': ['setuptools', 'cython==0.28.3', 'numpy<1.13'],
         }
@@ -209,7 +209,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda91',
-            'cudnn': 'cudnn72-cuda9',
+            'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.1-cuda91',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.10', 'scipy<0.19',
@@ -221,7 +221,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
+            'cudnn': 'cudnn72-cuda8',
             'nccl': 'none',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.11', 'scipy<0.19',
