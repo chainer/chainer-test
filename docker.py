@@ -192,9 +192,12 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
+    apt-get -y install curl g++ g++-4.8 gfortran git libhdf5-dev autoconf xz-utils && \\
     apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make && \\
     apt-get clean
+
+RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
+RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
