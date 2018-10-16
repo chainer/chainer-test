@@ -97,7 +97,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn72-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
-                'setuptools', 'cython==0.28.3', 'numpy<1.15',
+                'setuptools', 'cython==0.28.3', 'numpy<1.16',
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -135,7 +135,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.28.3', 'numpy<1.15',
+                'setuptools', 'cython==0.28.3', 'numpy<1.16',
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
                 'ideep4py{}'.format(ideep_req),
@@ -174,7 +174,7 @@ if __name__ == '__main__':
             'nccl': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'matplotlib',
-                'numpy>=1.14', 'scipy>=1.0', 'theano',
+                'numpy>=1.15', 'scipy>=1.0', 'theano',
             ] + SPHINX_REQUIREMENTS
         }
         script = './test_doc.sh'
@@ -186,7 +186,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn4',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.15',
+                'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.16',
                 'scipy<1.1',
             ]
         }
@@ -251,7 +251,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'numpy>=1.14',
+                'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'numpy>=1.15',
                 'scipy>=1.0',
             ] + SPHINX_REQUIREMENTS
         }
