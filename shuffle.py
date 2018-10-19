@@ -9,9 +9,9 @@ import docker
 
 def iter_shuffle(lst):
     while True:
-        l = list(lst)
-        random.shuffle(l)
-        for x in l:
+        ls = list(lst)
+        random.shuffle(ls)
+        for x in ls:
             yield x
 
 
