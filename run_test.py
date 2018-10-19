@@ -98,7 +98,7 @@ if __name__ == '__main__':
             'nccl': 'nccl2.2-cuda92',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.16',
-                'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
+                'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
             ],
         }
@@ -116,7 +116,7 @@ if __name__ == '__main__':
                 # https://pip.pypa.io/en/stable/reference/pip_install/#pre-release-versions
                 # TODO(kmaehashi) rewrite iDeep constraints after v2.0 support
                 'setuptools>=0.0.dev0', 'cython>=0.0.dev0', 'numpy>=0.0.dev0',
-                'scipy<0.19', 'h5py>=0.0.dev0', 'theano>=0.0.dev0',
+                'scipy>=0.0.dev0', 'h5py>=0.0.dev0', 'theano>=0.0.dev0',
                 'protobuf>=0.0.dev0',
                 'ideep4py>=0.0.dev0, {}'.format(ideep_req),
             ],
@@ -136,7 +136,7 @@ if __name__ == '__main__':
             'nccl': 'nccl1.3',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.16',
-                'scipy<0.19', 'h5py', 'theano', 'protobuf<3',
+                'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -174,7 +174,7 @@ if __name__ == '__main__':
             'nccl': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'matplotlib',
-                'numpy>=1.15', 'scipy<0.19', 'theano',
+                'numpy>=1.15', 'scipy>=1.0', 'theano',
             ] + SPHINX_REQUIREMENTS
         }
         script = './test_doc.sh'
@@ -187,7 +187,7 @@ if __name__ == '__main__':
             'nccl': 'none',
             'requires': [
                 'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.16',
-                'scipy<0.19',
+                'scipy<1.1',
             ]
         }
         script = './test_cupy.sh'
@@ -252,7 +252,7 @@ if __name__ == '__main__':
             'nccl': 'nccl1.3',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'numpy>=1.15',
-                'scipy<0.19',
+                'scipy>=1.0',
             ] + SPHINX_REQUIREMENTS
         }
         script = './test_cupy_doc.sh'
