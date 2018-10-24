@@ -82,7 +82,6 @@ if __name__ == '__main__':
             'cuda': 'cuda80',
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'nccl1.3',
-            'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
                 'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.12',
                 'pillow',
@@ -198,7 +197,6 @@ if __name__ == '__main__':
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
-            'protobuf-cpp': 'protobuf-cpp-3',
             'requires': [
                 'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.12',
             ],
