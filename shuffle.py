@@ -49,9 +49,16 @@ def get_shuffle_params(params, index):
         # Python 3.6 is first supported in NumPy 1.12.
         if ret['numpy'] in ['1.9', '1.10', '1.11']:
             ret['numpy'] = '1.12'
-        # Python 3.6 is first supported in SciPy 1.19.
+        # Python 3.6 is first supported in SciPy 0.19.
         if ret.get('scipy', None) in ['0.18']:
             ret['scipy'] = '0.19'
+    elif py_ver[:2] == (3, 7):
+        # Python 3.7 is first supported in NumPy 1.14.4.
+        if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12', '1.13']:
+            ret['numpy'] = '1.14'
+        # Python 3.7 is first supported in SciPy 1.0.
+        if ret.get('scipy', None) in ['0.18', '0.19']:
+            ret['scipy'] = '1.0'
 
     # Avoid iDeep in unsupported Python versions
     if not _is_ideep_supported(py_ver):
