@@ -9,7 +9,8 @@ python:
 
 install:
   - pip install -U pip wheel
-  - pip install flake8 autopep8
+  # TODO(kmaehashi) fix to use the latest falke8
+  - pip install 'flake8<3.6.0' autopep8
 
 script:
   - flake8
