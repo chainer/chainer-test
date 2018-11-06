@@ -65,9 +65,9 @@ if __name__ == '__main__':
     if args.test == 'chainer-py2':
         conf = {
             'base': 'ubuntu14_py27',
-            'cuda': 'cuda70',
-            'cudnn': 'cudnn4',
-            'nccl': 'none',
+            'cuda': 'cuda80',
+            'cudnn': 'cudnn5-cuda8',
+            'nccl': 'nccl1.3',
             'requires': [
                 'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.10',
                 'scipy<0.19', 'h5py', 'theano', 'pillow',
@@ -79,9 +79,9 @@ if __name__ == '__main__':
     elif args.test == 'chainer-py3':
         conf = {
             'base': 'ubuntu16_py37-pyenv',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn51-cuda8',
-            'nccl': 'nccl1.3',
+            'cuda': 'cuda90',
+            'cudnn': 'cudnn72-cuda9',
+            'nccl': 'nccl2.0-cuda9',
             'requires': [
                 'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.16',
                 'pillow',
@@ -93,7 +93,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda92',
-            'cudnn': 'cudnn72-cuda92',
+            'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.14',
@@ -107,7 +107,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda92',
-            'cudnn': 'cudnn71-cuda92',
+            'cudnn': 'cudnn72-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
                 # Use '>=0.0.dev0' to install the latest pre-release version
@@ -145,9 +145,9 @@ if __name__ == '__main__':
     elif args.test == 'chainer-example':
         conf = {
             'base': 'centos7_py27',
-            'cuda': 'cuda75',
+            'cuda': 'cuda90',
             'cudnn': 'cudnn71-cuda9',
-            'nccl': 'nccl1.3',
+            'nccl': 'nccl2.2-cuda9',
             'requires': ['setuptools', 'cython==0.28.3', 'numpy<1.13'],
         }
         script = './test_example.sh'
@@ -155,8 +155,8 @@ if __name__ == '__main__':
     elif args.test == 'chainer-prev_example':
         conf = {
             'base': 'ubuntu14_py27',
-            'cuda': 'cuda90',
-            'cudnn': 'cudnn7-cuda9',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn72-cuda92',
             'nccl': 'none',
             'requires': ['setuptools', 'pip', 'cython==0.28.3', 'numpy<1.12'],
         }
@@ -181,8 +181,8 @@ if __name__ == '__main__':
     elif args.test == 'cupy-py2':
         conf = {
             'base': 'ubuntu14_py27',
-            'cuda': 'cuda70',
-            'cudnn': 'cudnn4',
+            'cuda': 'cuda80',
+            'cudnn': 'cudnn51-cuda8',
             'nccl': 'none',
             'requires': [
                 'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.16',
@@ -194,9 +194,9 @@ if __name__ == '__main__':
     elif args.test == 'cupy-py3':
         conf = {
             'base': 'ubuntu16_py37-pyenv',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
-            'nccl': 'nccl1.3',
+            'cuda': 'cuda90',
+            'cudnn': 'cudnn7-cuda9',
+            'nccl': 'nccl2.0-cuda9',
             'requires': [
                 'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.16',
             ],
@@ -230,8 +230,8 @@ if __name__ == '__main__':
     elif args.test == 'cupy-example':
         conf = {
             'base': 'centos7_py27',
-            'cuda': 'cuda75',
-            'cudnn': 'cudnn5',
+            'cuda': 'cuda80',
+            'cudnn': 'cudnn5-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.13', 'scipy<0.19',
