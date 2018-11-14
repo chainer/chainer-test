@@ -105,8 +105,8 @@ fi
 # text classification
 echo "Text classification example"
 
-$run examples/text_classification/train_text_classifier.py --dataset dbpedia
-$run examples/text_classification/train_text_classifier.py --dataset dbpedia --gpu=0
+$run examples/text_classification/train_text_classifier.py --dataset dbpedia -e 1 -b 1 --test
+$run examples/text_classification/train_text_classifier.py --dataset dbpedia --gpu=0 -e 1 -b 1 --test
 
 # show coverage
 coverage report -m --include="examples/*"
