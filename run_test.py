@@ -46,6 +46,9 @@ if __name__ == '__main__':
         '--clone-chainer', action='store_true',
         help='clone chainer repository based on cupy version. '
         'this option is used for testing cupy.')
+    parser.add_argument(
+        '--env', action='append',
+        help='inherit environment variable (like `docker run --env`)')
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
@@ -276,6 +279,10 @@ if __name__ == '__main__':
     ]
 
     argconfig.parse_args(args, env, conf, volume)
+
+    # inherit specified environment variable
+    for key in args.env:
+        env[key] = os.environ[key]
 
     # coverage result is reported when the same type of a test is executed
     if args.coverage_repo and args.coverage_repo in args.test:
