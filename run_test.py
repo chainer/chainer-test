@@ -47,7 +47,7 @@ if __name__ == '__main__':
         help='clone chainer repository based on cupy version. '
         'this option is used for testing cupy.')
     parser.add_argument(
-        '--env', action='append',
+        '--env', action='append', default=[],
         help='inherit environment variable (like `docker run --env`)')
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
