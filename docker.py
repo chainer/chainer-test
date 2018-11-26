@@ -196,7 +196,7 @@ ENV PATH /usr/lib/ccache:$PATH
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
     apt-get -y install curl g++ g++-4.8 gfortran git libhdf5-dev autoconf xz-utils pkg-config && \\
-    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make && \\
+    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make cmake && \\
     apt-get clean
 
 RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
@@ -254,7 +254,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
+    apt-get -y install curl g++ g++-4.8 cmake gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
