@@ -65,6 +65,7 @@ if __name__ == '__main__':
     else:
         raise RuntimeError('bad ideep version: {}'.format(ideep_min_version))
 
+    build_chainerx = False
     if args.test == 'chainer-py2':
         conf = {
             'base': 'ubuntu14_py27',
@@ -180,6 +181,7 @@ if __name__ == '__main__':
             ] + SPHINX_REQUIREMENTS
         }
         script = './test_doc.sh'
+        build_chainerx = True
 
     elif args.test == 'cupy-py2':
         conf = {
@@ -267,6 +269,7 @@ if __name__ == '__main__':
     env = {
         'CUDNN': conf['cudnn'],
         'IDEEP': 'ideep4py' if use_ideep else 'none',
+        'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
     }
     conf['requires'] += [
         'pytest',
