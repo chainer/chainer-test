@@ -150,7 +150,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'centos7_py27',
             'cuda': 'cuda90',
-            'cudnn': 'cudnn71-cuda9',
+            'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.2-cuda9',
             'requires': ['setuptools', 'cython==0.28.3', 'numpy<1.13'],
         }
@@ -212,7 +212,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda91',
-            'cudnn': 'cudnn72-cuda9',
+            'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.1-cuda91',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.10', 'scipy<0.19',
