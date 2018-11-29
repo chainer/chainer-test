@@ -135,7 +135,7 @@ if __name__ == '__main__':
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
-            'cudnn': 'cudnn73-cuda8',
+            'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.16',
