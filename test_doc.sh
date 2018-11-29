@@ -5,7 +5,7 @@ python setup.py -q build -j 4 develop install --user || python setup.py -q devel
 cd ..
 
 cd chainer
-python setup.py -q build -j 4 develop install --user || python setup.py -q develop install --user
+pip install --user -e .[docs]
 
 python -m pip install matplotlib --user
 

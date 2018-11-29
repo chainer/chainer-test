@@ -17,26 +17,28 @@ _base_choices = [
     ('ubuntu16_py27', '2.7.12'),
     ('ubuntu16_py35', '3.5.2'),
     ('ubuntu16_py36-pyenv', '3.6.6'),
+    ('ubuntu16_py37-pyenv', '3.7.0'),
     ('centos6_py27-pyenv', '2.7.14'),
     ('centos7_py27', '2.7.5'),
     ('centos7_py34-pyenv', '3.4.8')]
 
 base_choices = [a[0] for a in _base_choices]
-cuda_choices = ['none', 'cuda70', 'cuda75', 'cuda80', 'cuda90', 'cuda91', 'cuda92']
+cuda_choices = ['none', 'cuda80', 'cuda90', 'cuda91', 'cuda92']
 cudnn_choices = [
-    'none', 'cudnn4', 'cudnn5', 'cudnn5-cuda8', 'cudnn51',
-    'cudnn51-cuda8', 'cudnn6', 'cudnn6-cuda8', 'cudnn7-cuda8', 'cudnn7-cuda9',
-    'cudnn7-cuda91', 'cudnn71-cuda8', 'cudnn71-cuda9', 'cudnn71-cuda91',
-    'cudnn71-cuda92', 'cudnn72-cuda8', 'cudnn72-cuda9', 'cudnn72-cuda92',
-    'cudnn73-cuda9']
+    'none',
+    'cudnn5-cuda8', 'cudnn51-cuda8',
+    'cudnn6-cuda8',
+    'cudnn7-cuda8', 'cudnn7-cuda9', 'cudnn7-cuda91',
+    'cudnn71-cuda8', 'cudnn71-cuda9', 'cudnn71-cuda91', 'cudnn71-cuda92',
+    'cudnn72-cuda8', 'cudnn72-cuda9', 'cudnn72-cuda92',
+    'cudnn73-cuda9',
+]
 nccl_choices = [
     'none', 'nccl1.3', 'nccl2.0-cuda8', 'nccl2.0-cuda9', 'nccl2.2-cuda9'
     'nccl2.1-cuda91', 'nccl2.2-cuda92',
 ]
 
 cuda_cudnns = {
-    'cuda70': ['cudnn4'],
-    'cuda75': ['cudnn4', 'cudnn5', 'cudnn51', 'cudnn6'],
     'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
                'cudnn7-cuda8', 'cudnn71-cuda8', 'cudnn72-cuda8'],
     'cuda90': ['cudnn7-cuda9', 'cudnn71-cuda9', 'cudnn72-cuda9',
@@ -45,8 +47,6 @@ cuda_cudnns = {
     'cuda92': ['cudnn71-cuda92', 'cudnn72-cuda92', 'cudnn73-cuda9'],
 }
 cuda_nccls = {
-    'cuda70': ['nccl1.3'],
-    'cuda75': ['nccl1.3'],
     'cuda80': ['nccl1.3', 'nccl2.0-cuda8'],
     # CUDA 9 does not support nccl 1.3
     'cuda90': ['nccl2.0-cuda9', 'nccl2.2-cuda9'],
@@ -102,6 +102,9 @@ def get_numpy_choices():
         if cupy_version[0:2] >= (4, 1):
             # cupy v4.1 or later
             choices.append('1.14')
+        if cupy_version[0] >= 5:
+            # cupy v5 or later
+            choices.append('1.15')
     return choices
 
 
@@ -136,7 +139,7 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" pyenv install 3.4.8
+RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.4.8
 RUN pyenv global 3.4.8
 RUN pyenv rehash
 '''
@@ -157,7 +160,7 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" pyenv install 2.7.14
+RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 2.7.14
 RUN pyenv global 2.7.14
 RUN pyenv rehash
 '''
@@ -194,9 +197,12 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
-    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make && \\
+    apt-get -y install curl g++ g++-4.8 gfortran git libhdf5-dev autoconf xz-utils pkg-config && \\
+    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make cmake && \\
     apt-get clean
+
+RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
+RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
@@ -204,7 +210,7 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" pyenv install {python_ver}
+RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install {python_ver}
 RUN pyenv global {python_ver}
 RUN pyenv rehash
 '''
@@ -223,6 +229,11 @@ codes['ubuntu16_py36-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='16.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py36-pyenv')]),
+)
+codes['ubuntu16_py37-pyenv'] = ubuntu_pyenv_base.format(
+    ubuntu_ver='16.04',
+    python_ver='.'.join(
+        [str(x) for x in get_python_version('ubuntu16_py37-pyenv')]),
 )
 
 codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
@@ -245,7 +256,7 @@ ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
-    apt-get -y install curl g++ g++-4.8 gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
+    apt-get -y install curl g++ g++-4.8 cmake gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
@@ -276,15 +287,6 @@ ENV NVCC="ccache nvcc"
 '''
 
 # cuda
-
-cuda70_run = 'cuda_7.0.28_linux.run'
-cuda70_url = 'http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers'
-cuda70_installer = 'cuda-linux64-rel-7.0.28-19326674.run'
-
-cuda75_run = 'cuda_7.5.18_linux.run'
-cuda75_url = 'http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers'
-cuda75_driver = 'NVIDIA-Linux-x86_64-352.39.run'
-cuda75_installer = 'cuda-linux64-rel-7.5.18-19867135.run'
 
 cuda80_run = 'cuda_8.0.44_linux-run'
 cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
@@ -332,22 +334,6 @@ LABEL com.nvidia.volumes.needed="nvidia_driver"
 LABEL com.nvidia.cuda.version="{cuda_ver}"
 '''
 
-codes['cuda70'] = cuda_base.format(
-    cuda_ver='7.0',
-    cuda_run=cuda70_run,
-    cuda_url=cuda70_url,
-    installer=cuda70_installer,
-    sha256sum='d1292e9c2bbaddad24c46e0b0d15a7130831bfac0382f7159321f41ae385a5ce',
-)
-
-codes['cuda75'] = cuda_base.format(
-    cuda_ver='7.5',
-    cuda_run=cuda75_run,
-    cuda_url=cuda75_url,
-    installer=cuda75_installer,
-    sha256sum='08411d536741075131a1858a68615b8b73c51988e616e83b835e4632eea75eec',
-)
-
 codes['cuda80'] = cuda_base.format(
     cuda_ver='8.0',
     cuda_run=cuda80_run,
@@ -392,40 +378,16 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
 ENV CUDNN_VER {cudnn_ver}
 '''
 
-codes['cudnn4'] = cudnn_base.format(
-    cudnn='cudnn-7.0-linux-x64-v4.0-prod',
-    cudnn_ver='v4',
-    sha256sum='cd091763d5889f0efff1fbda83bade191f530743a212c6b0ecc2a64d64d94405',
-)
-
-codes['cudnn5'] = cudnn_base.format(
-    cudnn='cudnn-7.5-linux-x64-v5.0-ga',
-    cudnn_ver='v5',
-    sha256sum='c4739a00608c3b66a004a74fc8e721848f9112c5cb15f730c1be4964b3a23b3a',
-)
-
 codes['cudnn5-cuda8'] = cudnn_base.format(
     cudnn='cudnn-8.0-linux-x64-v5.0-ga',
     cudnn_ver='v5',
     sha256sum='af80eb1ce0cb51e6a734b2bdc599e6d50b676eab3921e5bddfe5443485df86b6',
 )
 
-codes['cudnn51'] = cudnn_base.format(
-    cudnn='cudnn-7.5-linux-x64-v5.1',
-    cudnn_ver='v5.1',
-    sha256sum='69ca71f7728b54b6e003393083f419b24774fecd3b08bbf41bceac9a9fe16345',
-)
-
 codes['cudnn51-cuda8'] = cudnn_base.format(
     cudnn='cudnn-8.0-linux-x64-v5.1',
     cudnn_ver='v5.1',
     sha256sum='c10719b36f2dd6e9ddc63e3189affaa1a94d7d027e63b71c3f64d449ab0645ce',
-)
-
-codes['cudnn6'] = cudnn_base.format(
-    cudnn='cudnn-7.5-linux-x64-v6.0',
-    cudnn_ver='v6.0',
-    sha256sum='568d4b070c5f91ab8a15b287b73dd072b99c7267a43edad13f70337cd186c82c',
 )
 
 codes['cudnn6-cuda8'] = cudnn_base.format(
