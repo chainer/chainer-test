@@ -102,6 +102,12 @@ if [ -f examples/seq2seq/seq2seq.py ]; then
   $run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt ${VALIDATION_OPTS} --gpu=0
 fi
 
+# text classification
+echo "Text classification example"
+
+$run examples/text_classification/train_text_classifier.py --dataset dbpedia -e 1 -b 1 --test
+$run examples/text_classification/train_text_classifier.py --dataset dbpedia --gpu=0 -e 1 -b 1 --test
+
 # show coverage
 coverage report -m --include="examples/*"
 coverage xml --include="examples/*"
