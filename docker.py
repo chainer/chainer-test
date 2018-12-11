@@ -23,7 +23,7 @@ _base_choices = [
     ('centos7_py34-pyenv', '3.4.8')]
 
 base_choices = [a[0] for a in _base_choices]
-cuda_choices = ['none', 'cuda80', 'cuda90', 'cuda91', 'cuda92']
+cuda_choices = ['none', 'cuda80', 'cuda90', 'cuda91', 'cuda92', 'cuda100']
 cudnn_choices = [
     'none',
     'cudnn5-cuda8', 'cudnn51-cuda8',
@@ -31,27 +31,35 @@ cudnn_choices = [
     'cudnn7-cuda8', 'cudnn7-cuda9', 'cudnn7-cuda91',
     'cudnn71-cuda8', 'cudnn71-cuda9', 'cudnn71-cuda91', 'cudnn71-cuda92',
     'cudnn72-cuda8', 'cudnn72-cuda9', 'cudnn72-cuda92',
-    'cudnn73-cuda9',
+    'cudnn73-cuda9', 'cudnn73-cuda92', 'cudnn73-cuda100',
+    'cudnn74-cuda9', 'cudnn74-cuda92', 'cudnn74-cuda100',
 ]
 nccl_choices = [
-    'none', 'nccl1.3', 'nccl2.0-cuda8', 'nccl2.0-cuda9', 'nccl2.2-cuda9'
-    'nccl2.1-cuda91', 'nccl2.2-cuda92',
+    'none',
+    'nccl1.3',
+    'nccl2.0-cuda8', 'nccl2.0-cuda9',
+    'nccl2.1-cuda91',
+    'nccl2.2-cuda9', 'nccl2.2-cuda92',
+    'nccl2.3-cuda9', 'nccl2.3-cuda92', 'nccl2.3-cuda100',
 ]
 
 cuda_cudnns = {
     'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
                'cudnn7-cuda8', 'cudnn71-cuda8', 'cudnn72-cuda8'],
     'cuda90': ['cudnn7-cuda9', 'cudnn71-cuda9', 'cudnn72-cuda9',
-               'cudnn73-cuda9'],
+               'cudnn73-cuda9', 'cudnn74-cuda9'],
     'cuda91': ['cudnn7-cuda91', 'cudnn71-cuda91', 'cudnn73-cuda9'],
-    'cuda92': ['cudnn71-cuda92', 'cudnn72-cuda92', 'cudnn73-cuda9'],
+    'cuda92': ['cudnn71-cuda92', 'cudnn72-cuda92', 'cudnn73-cuda92',
+               'cudnn74-cuda92'],
+    'cuda100': ['cudnn73-cuda100', 'cudnn74-cuda100'],
 }
 cuda_nccls = {
     'cuda80': ['nccl1.3', 'nccl2.0-cuda8'],
     # CUDA 9 does not support nccl 1.3
-    'cuda90': ['nccl2.0-cuda9', 'nccl2.2-cuda9'],
+    'cuda90': ['nccl2.0-cuda9', 'nccl2.2-cuda9', 'nccl2.3-cuda9'],
     'cuda91': ['nccl2.1-cuda91'],
-    'cuda92': ['nccl2.2-cuda92'],
+    'cuda92': ['nccl2.2-cuda92', 'nccl2.3-cuda9'],
+    'cuda100': ['nccl2.3-cuda100'],
 }
 
 
@@ -308,6 +316,11 @@ cuda92_url = 'https://developer.nvidia.com/compute/cuda/9.2/Prod/local_installer
 cuda92_driver = 'NVIDIA-Linux-x86_64-396.26.run'
 cuda92_installer = 'cuda-linux.9.2.88-23920284.run'
 
+cuda100_run = 'cuda_10.0.130_410.48_linux'
+cuda100_url = 'https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers'
+cuda100_driver = 'NVIDIA-Linux-x86_64-410.72.run'
+cuda100_installer = 'cuda-linux.10.0.130-24817639.run'
+
 
 cuda_base = '''
 WORKDIR /opt/nvidia
@@ -364,6 +377,14 @@ codes['cuda92'] = cuda_base.format(
     cuda_url=cuda92_url,
     installer=cuda92_installer,
     sha256sum='8d02cc2a82f35b456d447df463148ac4cc823891be8820948109ad6186f2667c',
+)
+
+codes['cuda100'] = cuda_base.format(
+    cuda_ver='10.0',
+    cuda_run=cuda100_run,
+    cuda_url=cuda100_url,
+    installer=cuda100_installer,
+    sha256sum='92351f0e4346694d0fcb4ea1539856c9eb82060c25654463bfd8574ec35ee39a',
 )
 
 # cudnn
@@ -457,9 +478,39 @@ codes['cudnn72-cuda92'] = cudnn_base.format(
 )
 
 codes['cudnn73-cuda9'] = cudnn_base.format(
-    cudnn='cudnn-9.0-linux-x64-v7.3.0.29',
-    cudnn_ver='v7.3.0',
-    sha256sum='403f9043ff2c7b2c5967454872275d07bca11fd41dfc7b21995eadcad6dbe49b',
+    cudnn='cudnn-9.0-linux-x64-v7.3.1.20',
+    cudnn_ver='v7.3.1',
+    sha256sum='fc7980cd3663a7e6e8f043b9a07a2631940fbd030e1faf9027404474bdc5b196',
+)
+
+codes['cudnn73-cuda92'] = cudnn_base.format(
+    cudnn='cudnn-9.2-linux-x64-v7.3.1.20',
+    cudnn_ver='v7.3.1',
+    sha256sum='aa652e95e66deb2970247fdeb5c5f6ae8b30ab6a35050df1354613acb1da6d05',
+)
+
+codes['cudnn73-cuda100'] = cudnn_base.format(
+    cudnn='cudnn-10.0-linux-x64-v7.3.1.20',
+    cudnn_ver='v7.3.1',
+    sha256sum='4e15a323f2edffa928b4574f696fc0e449a32e6bc35c9ccb03a47af26c2de3fa',
+)
+
+codes['cudnn74-cuda9'] = cudnn_base.format(
+    cudnn='cudnn-9.0-linux-x64-v7.4.1.5',
+    cudnn_ver='v7.4.1',
+    sha256sum='bec38fc281fec0226766cce050473043765345cb8a5ed699da4d663ecfa4f24d',
+)
+
+codes['cudnn74-cuda92'] = cudnn_base.format(
+    cudnn='cudnn-9.2-linux-x64-v7.4.1.5',
+    cudnn_ver='v7.4.1',
+    sha256sum='a850d62f32c6a18271932d9a96072ac757c2c516bd1200ae8b79e4bdd3800b5b',
+)
+
+codes['cudnn74-cuda100'] = cudnn_base.format(
+    cudnn='cudnn-10.0-linux-x64-v7.4.1.5',
+    cudnn_ver='v7.4.1',
+    sha256sum='b320606f1840eec0cdd4453cb333554a3fe496dd4785f10d8e87fe1a4f52bd5c',
 )
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
@@ -537,6 +588,27 @@ codes['nccl2.1-cuda91'] = nccl_base.format(
 codes['nccl2.2-cuda92'] = nccl_base.format(
     libnccl2='libnccl2_2.2.13-1+cuda9.2_amd64',
     libnccl_dev='libnccl-dev_2.2.13-1+cuda9.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.3-cuda90'] = nccl_base.format(
+    libnccl2='libnccl2_2.3.7-1+cuda9.0_amd64',
+    libnccl_dev='libnccl-dev_2.3.7-1+cuda9.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.3-cuda92'] = nccl_base.format(
+    libnccl2='libnccl2_2.3.7-1+cuda9.2_amd64',
+    libnccl_dev='libnccl-dev_2.3.7-1+cuda9.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.3-cuda100'] = nccl_base.format(
+    libnccl2='libnccl2_2.3.7-1+cuda10.0_amd64',
+    libnccl_dev='libnccl-dev_2.3.7-1+cuda10.0_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
