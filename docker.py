@@ -592,7 +592,7 @@ codes['nccl2.2-cuda92'] = nccl_base.format(
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
-codes['nccl2.3-cuda90'] = nccl_base.format(
+codes['nccl2.3-cuda9'] = nccl_base.format(
     libnccl2='libnccl2_2.3.7-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.3.7-1+cuda9.0_amd64',
     include_dir='/usr/include',
