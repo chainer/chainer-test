@@ -29,7 +29,7 @@ def _is_ideep_supported(python_version):
 
 def get_shuffle_params(params, index):
     random.seed(0)
-    keys = params.keys()
+    keys = sorted(params.keys())
     iters = [iter_shuffle(params[key]) for key in keys]
     vals = next(itertools.islice(six.moves.zip(*iters), index, None))
     ret = dict(zip(keys, vals))
