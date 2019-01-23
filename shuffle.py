@@ -16,15 +16,16 @@ def iter_shuffle(lst):
 
 
 def _is_ideep_supported(python_version):
+    # https://github.com/intel/ideep#requirements
     pyver = python_version
     if pyver[0] == 2:
         return pyver >= (2, 7, 6)
     assert pyver[0] == 3
-    if pyver[:2] < (3, 5):
-        return False
     if pyver[:2] == (3, 5):
         return pyver >= (3, 5, 2)
-    return True
+    if pyver[:2] == (3, 6):
+        return True
+    return False
 
 
 def get_shuffle_params(params, index):
