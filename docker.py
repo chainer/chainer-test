@@ -113,6 +113,7 @@ def get_numpy_choices():
         if cupy_version[0] >= 5:
             # cupy v5 or later
             choices.append('1.15')
+            choices.append('1.16')
     return choices
 
 
