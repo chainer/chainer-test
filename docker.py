@@ -623,7 +623,7 @@ RUN tmpdir=`mktemp -d` && \\
     curl -sL -o protobuf-python-{protobuf}.tar.gz https://github.com/google/protobuf/releases/download/v{protobuf}/protobuf-python-{protobuf}.tar.gz && \\
     tar -xzf protobuf-python-{protobuf}.tar.gz && \\
     cd protobuf-{protobuf} && CC=/usr/bin/gcc CXX=/usr/bin/g++ ./configure && make -j4 install && ldconfig && \\
-    cd python && python setup.py install --cpp_implementation && \\
+    cd python && CC=/usr/bin/gcc CXX=/usr/bin/g++ python setup.py install --cpp_implementation && \\
     cd /tmp && rm -rf $tmpdir
 WORKDIR /tmp
 '''
