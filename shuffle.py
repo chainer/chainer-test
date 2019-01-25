@@ -25,6 +25,8 @@ def _is_ideep_supported(python_version):
         return pyver >= (3, 5, 2)
     if pyver[:2] == (3, 6):
         return True
+    if pyver[:2] == (3, 7):
+        return True
     return False
 
 
