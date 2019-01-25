@@ -83,6 +83,8 @@ if __name__ == '__main__':
         conf['requires'].append('numpy<1.15')
     elif args.numpy == '1.15':
         conf['requires'].append('numpy<1.16')
+    elif args.numpy == '1.16':
+        conf['requires'].append('numpy<1.17')
 
     if args.scipy == '0.18':
         conf['requires'].append('scipy<0.19')
