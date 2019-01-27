@@ -87,7 +87,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn74-cuda100',
             'nccl': 'nccl2.3-cuda100',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.16',
+                'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.17',
                 'pillow',
             ],
         }
@@ -203,7 +203,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.16',
+                'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.17',
             ],
         }
         script = './test_cupy.sh'
