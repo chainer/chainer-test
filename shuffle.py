@@ -67,14 +67,14 @@ def get_shuffle_params(params, index):
     if not _is_ideep_supported(py_ver):
         ret['ideep'] = None
 
-    # TODO(kmaehashi) Currently iDeep can only be tested on Ubuntu.
-    if 'ubuntu' not in ret['base']:
-        ret['ideep'] = None
-
-    # iDeep requires NumPy 1.13.0 or later.
+    # iDeep requires NumPy 1.13.0 or later, 1.16.0 or later for Python 3.7+.
     if ret.get('ideep'):
-        if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12']:
-            ret['numpy'] = '1.13'
+        if py_ver[:2] >= (3, 7):
+            if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15']:
+                ret['numpy'] = '1.16'
+        else:
+            if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12']:
+                ret['numpy'] = '1.13'
 
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
     if ('centos6' in ret['base'] or
