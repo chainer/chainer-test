@@ -41,6 +41,7 @@ nccl_choices = [
     'nccl2.1-cuda91',
     'nccl2.2-cuda9', 'nccl2.2-cuda92',
     'nccl2.3-cuda9', 'nccl2.3-cuda92', 'nccl2.3-cuda100',
+    'nccl2.4-cuda9', 'nccl2.4-cuda92', 'nccl2.4-cuda100',
 ]
 
 cuda_cudnns = {
@@ -614,6 +615,26 @@ codes['nccl2.3-cuda100'] = nccl_base.format(
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
+codes['nccl2.4-cuda9'] = nccl_base.format(
+    libnccl2='libnccl2_2.4.2-1+cuda9.0_amd64',
+    libnccl_dev='libnccl-dev_2.4.2-1+cuda9.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.4-cuda92'] = nccl_base.format(
+    libnccl2='libnccl2_2.4.2-1+cuda9.2_amd64',
+    libnccl_dev='libnccl-dev_2.4.2-1+cuda9.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.4-cuda100'] = nccl_base.format(
+    libnccl2='libnccl2_2.4.2-1+cuda10.0_amd64',
+    libnccl_dev='libnccl-dev_2.4.2-1+cuda10.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf

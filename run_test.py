@@ -85,7 +85,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py37-pyenv',
             'cuda': 'cuda100',
             'cudnn': 'cudnn74-cuda100',
-            'nccl': 'nccl2.3-cuda100',
+            'nccl': 'nccl2.4-cuda100',
             'requires': [
                 'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.17',
                 'pillow',
@@ -112,7 +112,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda100',
             'cudnn': 'cudnn74-cuda100',
-            'nccl': 'nccl2.3-cuda100',
+            'nccl': 'nccl2.4-cuda100',
             'requires': [
                 # Use '>=0.0.dev0' to install the latest pre-release version
                 # available on PyPI.
@@ -213,7 +213,7 @@ if __name__ == '__main__':
             'base': 'ubuntu16_py35',
             'cuda': 'cuda100',
             'cudnn': 'cudnn73-cuda100',
-            'nccl': 'nccl2.3-cuda100',
+            'nccl': 'nccl2.4-cuda100',
             'requires': [
                 'setuptools', 'cython==0.28.3', 'numpy<1.10', 'scipy<0.19',
             ],
