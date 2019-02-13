@@ -16,7 +16,7 @@ params = {
     'protobuf': ['2', '3', 'cpp-3'],
     'h5py': [None, '2.5', '2.6', '2.7'],
     'pillow': [None, '3.4', '4.0', '4.1'],
-    'theano': [None, '0.8', '0.9'],
+    'theano': [None, '0.8', '0.9', '1.0'],
     'ideep': [
         None,
         version.get_ideep_version_from_chainer_docs()[:3],  # 'major.minor'
