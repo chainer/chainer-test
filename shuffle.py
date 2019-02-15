@@ -41,6 +41,11 @@ def get_shuffle_params(params, index):
     if ret['numpy'] == '1.9' and ret.get('h5py'):
         ret['numpy'] = '1.10'
 
+    # Theano 1.0.3 or earlier does not support NumPy 1.16
+    theano = ret.get('theano')
+    if ret['numpy'] == '1.16' and theano in ['0.8', '0.9']:
+        ret['numpy'] = '1.15'
+
     py_ver = docker.get_python_version(ret['base'])
 
     # Avoid unsupported NumPy/SciPy version for the Python version.
