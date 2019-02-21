@@ -69,10 +69,8 @@ def get_shuffle_params(params, index):
     # - NumPy 1.16.0+ with Python 3.7+
     if ret.get('ideep'):
         base = ret['base']
-        if ('centos6' in base or 'ubuntu14' in base):
-            ret['ideep'] = None
-
-        if not _is_ideep_supported(py_ver):
+        if (('centos6' in base or 'ubuntu14' in base) or
+                not _is_ideep_supported(py_ver)):
             ret['ideep'] = None
         elif py_ver[:2] >= (3, 7):
             if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15']:
