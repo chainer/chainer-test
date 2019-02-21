@@ -63,13 +63,18 @@ def get_shuffle_params(params, index):
         if ret.get('scipy', None) in ['0.18', '0.19']:
             ret['scipy'] = '1.0'
 
-    # Avoid iDeep in unsupported Python versions
-    if not _is_ideep_supported(py_ver):
-        ret['ideep'] = None
-
-    # iDeep requires NumPy 1.13.0 or later, 1.16.0 or later for Python 3.7+.
+    # iDeep requirements:
+    # - Ubuntu 16.04 or CentOS 7.4 or OS X
+    # - NumPy 1.13.0+ with Python 2.7/3.5/3.6
+    # - NumPy 1.16.0+ with Python 3.7+
     if ret.get('ideep'):
-        if py_ver[:2] >= (3, 7):
+        base = ret['base']
+        if ('centos6' in base or 'ubuntu14' in base):
+            ret['ideep'] = None
+
+        if not _is_ideep_supported(py_ver):
+            ret['ideep'] = None
+        elif py_ver[:2] >= (3, 7):
             if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15']:
                 ret['numpy'] = '1.16'
         else:
