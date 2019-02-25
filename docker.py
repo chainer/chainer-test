@@ -280,8 +280,8 @@ RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 # ccache
 
 ccache = '''WORKDIR /opt/ccache
-RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.6.0.tar.gz && \\
-    tar -xzf ccache.tar.gz && cd ccache-3.6.0 && \\
+RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.5.1.tar.gz && \\
+    tar -xzf ccache.tar.gz && cd ccache-3.5.1 && \\
     ./autogen.sh && ./configure && make && \\
     cp ccache /usr/bin/ccache && \\
     cd / && rm -rf /opt/ccache && \\
