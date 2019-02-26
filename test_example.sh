@@ -16,6 +16,7 @@ cd ..
 python -m pip install coverage matplotlib nltk progressbar2 --user
 python -m pip install olefile --user
 python -m pip install --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
+python -m pip install --extra-index-url https://developer.download.nvidia.com/compute/redist nvidia-dali --user
 
 run="coverage run -a --branch"
 
@@ -58,6 +59,8 @@ $run examples/imagenet/train_imagenet.py --test -a nin -R ../data/imagenet -B 1 
 $run examples/imagenet/train_imagenet.py --test -a alex -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 $run examples/imagenet/train_imagenet.py --test -a googlenet -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 $run examples/imagenet/train_imagenet.py --test -a googlenetbn -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
+
+$run examples/imagenet/train_imagenet.py --dali --test -a nin -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 
 # word2vec
 echo "Running word2vec example"
