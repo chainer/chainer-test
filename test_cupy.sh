@@ -9,6 +9,8 @@ pytest_opts=(
     --timeout=300
     --junit-xml=result.xml
     --cov
+    --cov-report=
+    --cov-append
     --showlocals  # Show local variables on error
 )
 
@@ -18,7 +20,7 @@ else
   pytest_opts+=(-m 'not slow')
 fi
 
-python -m pytest "${pytest_opts[@]}" tests
+find tests -name "test_*.py" -type f|xargs -L 10 python -m pytest "${pytest_opts[@]}"
 
 # Submit coverage to Coveralls
 python ../push_coveralls.py

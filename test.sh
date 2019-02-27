@@ -18,6 +18,8 @@ pytest_opts=(
     --timeout=300
     --junit-xml=result.xml
     --cov
+    --cov-report=
+    --cov-append
     --showlocals  # Show local variables on error
 )
 
@@ -35,7 +37,7 @@ fi
 
 pytest_opts+=(-m "${pytest_marks[*]}")
 
-python -m pytest "${pytest_opts[@]}" tests/chainer_tests
+find tests/chainer_tests -name "test_*.py" -type f|xargs -L 10 python -m pytest "${pytest_opts[@]}"
 
 # Submit coverage to Coveralls
 python ../push_coveralls.py
