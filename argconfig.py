@@ -70,6 +70,7 @@ def parse_args(args, env, conf, volume):
         env['CUDA_CACHE_PATH'] = os.path.join(cache, '.nv')
         env['CUPY_CACHE_DIR'] = os.path.join(cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(cache, '.ccache')
+        env['CHAINER_DATASET_ROOT'] = os.path.join(cache, '.chainer-dataset')
 
     http_proxy = get_arg_value(args, 'http-proxy')
     if http_proxy is not None:
