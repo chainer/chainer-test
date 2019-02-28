@@ -123,7 +123,7 @@ if __name__ == '__main__':
     }
 
     conf['requires'] += [
-        'pytest',
+        'pytest<4.2',
         'pytest-timeout',  # For timeout
         'pytest-cov',  # For coverage report
         'nose',
