@@ -10,6 +10,7 @@ pip install --user -e .[docs]
 python -m pip install matplotlib --user
 
 cd docs
+export SPHINXOPTS=-W
 
 # Generate HTML and preserve it for preview.
 make html
