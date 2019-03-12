@@ -2,8 +2,6 @@ import itertools
 import random
 import sys
 
-import six
-
 import docker
 
 
@@ -34,7 +32,7 @@ def get_shuffle_params(params, index):
     random.seed(0)
     keys = sorted(params.keys())
     iters = [iter_shuffle(params[key]) for key in keys]
-    vals = next(itertools.islice(six.moves.zip(*iters), index, None))
+    vals = next(itertools.islice(zip(*iters), index, None))
     ret = dict(zip(keys, vals))
 
     # avoid SEGV
