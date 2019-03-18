@@ -32,7 +32,7 @@ def get_shuffle_params(params, index):
     random.seed(0)
     keys = sorted(params.keys())
     iters = [iter_shuffle(params[key]) for key in keys]
-    vals = next(itertools.islice(zip(*iters), index, None))
+    vals = tuple(iter[index] for iter in iters)
     ret = dict(zip(keys, vals))
 
     # avoid SEGV
