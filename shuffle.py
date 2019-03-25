@@ -77,6 +77,11 @@ def get_shuffle_params(params, index):
             if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12']:
                 ret['numpy'] = '1.13'
 
+    # SciPy 0.19 installation from source (--no-binary) fails with new NumPy
+    if ret['numpy'] in ['1.16']:
+        if ret.get('scipy', None) in ['0.18', '0.19']:
+            ret['scipy'] = '1.0'
+
     # Theano 1.0.3 or earlier does not support NumPy 1.16
     if ret.get('theano') in ['0.8', '0.9']:
         if ret['numpy'] == '1.16':
