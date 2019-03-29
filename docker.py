@@ -137,7 +137,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf xz && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
     yum -y install python-devel python-pip && \\
     yum clean all
 '''
@@ -148,7 +148,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel perl make autoconf xz && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -169,7 +169,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 
 RUN yum -y update && \\
     yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel patch perl make autoconf && \\
+    yum -y install gcc gcc-c++ git kmod hdf5-devel patch which perl make autoconf && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
