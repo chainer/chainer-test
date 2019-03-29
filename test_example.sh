@@ -62,6 +62,8 @@ $run examples/imagenet/train_imagenet.py --test -a googlenetbn -R ../data/imagen
 
 $run examples/imagenet/train_imagenet.py --dali --gpu=0 --test -a nin -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 
+$run examples/imagenet/train_imagenet.py --dali --gpu=0 --dtype=float16 --test -a nin -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
+
 # word2vec
 echo "Running word2vec example"
 
