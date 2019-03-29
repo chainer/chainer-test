@@ -310,42 +310,34 @@ ENV NVCC="ccache nvcc"
 cuda80_run = 'cuda_8.0.44_linux-run'
 cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
 cuda80_driver = 'NVIDIA-Linux-x86_64-367.48.run'
-cuda80_installer = 'cuda-linux64-rel-8.0.44-21122537.run'
 
 cuda90_run = 'cuda_9.0.176_384.81_linux-run'
 cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers'
 cuda90_driver = 'NVIDIA-Linux-x86_64-384.81.run'
-cuda90_installer = 'cuda-linux.9.0.176-22781540.run'
 
 cuda91_run = 'cuda_9.1.85_387.26_linux'
 cuda91_url = 'https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers'
 cuda91_driver = 'NVIDIA-Linux-x86_64-387.26.run'
-cuda91_installer = 'cuda-linux.9.1.85-23083092.run'
 
 cuda92_run = 'cuda_9.2.88_396.26_linux'
 cuda92_url = 'https://developer.nvidia.com/compute/cuda/9.2/Prod/local_installers'
 cuda92_driver = 'NVIDIA-Linux-x86_64-396.26.run'
-cuda92_installer = 'cuda-linux.9.2.88-23920284.run'
 
 cuda100_run = 'cuda_10.0.130_410.48_linux'
 cuda100_url = 'https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers'
 cuda100_driver = 'NVIDIA-Linux-x86_64-410.72.run'
-cuda100_installer = 'cuda-linux.10.0.130-24817639.run'
 
 cuda101_run = 'cuda_10.1.105_418.39_linux'
 cuda101_url = 'https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers'
 cuda101_driver = 'NVIDIA-Linux-x86_64-418.39.run'
-cuda101_installer = 'cuda-linux.10.1.105-TODO.run'
 
 
 cuda_base = '''
 WORKDIR /opt/nvidia
-RUN mkdir installers && \\
-    curl -sL -o {cuda_run} {cuda_url}/{cuda_run} && \\
+RUN curl -sL -o {cuda_run} {cuda_url}/{cuda_run} && \\
     echo "{sha256sum}  {cuda_run}" | sha256sum -cw --quiet - && \\
     chmod +x {cuda_run} && sync && \\
-    ./{cuda_run} -extract=`pwd`/installers && \\
-    ./installers/{installer} -noprompt && \\
+    ./{cuda_run} --silent --toolkit && \\
     cd / && \\
     rm -rf /opt/nvidia
 
@@ -367,7 +359,6 @@ codes['cuda80'] = cuda_base.format(
     cuda_ver='8.0',
     cuda_run=cuda80_run,
     cuda_url=cuda80_url,
-    installer=cuda80_installer,
     sha256sum='64dc4ab867261a0d690735c46d7cc9fc60d989da0d69dc04d1714e409cacbdf0',
 )
 
@@ -375,7 +366,6 @@ codes['cuda90'] = cuda_base.format(
     cuda_ver='9.0',
     cuda_run=cuda90_run,
     cuda_url=cuda90_url,
-    installer=cuda90_installer,
     sha256sum='96863423feaa50b5c1c5e1b9ec537ef7ba77576a3986652351ae43e66bcd080c',
 )
 
@@ -383,7 +373,6 @@ codes['cuda91'] = cuda_base.format(
     cuda_ver='9.1',
     cuda_run=cuda91_run,
     cuda_url=cuda91_url,
-    installer=cuda91_installer,
     sha256sum='8496c72b16fee61889f9281449b5d633d0b358b46579175c275d85c9205fe953',
 )
 
@@ -391,7 +380,6 @@ codes['cuda92'] = cuda_base.format(
     cuda_ver='9.2',
     cuda_run=cuda92_run,
     cuda_url=cuda92_url,
-    installer=cuda92_installer,
     sha256sum='8d02cc2a82f35b456d447df463148ac4cc823891be8820948109ad6186f2667c',
 )
 
@@ -399,7 +387,6 @@ codes['cuda100'] = cuda_base.format(
     cuda_ver='10.0',
     cuda_run=cuda100_run,
     cuda_url=cuda100_url,
-    installer=cuda100_installer,
     sha256sum='92351f0e4346694d0fcb4ea1539856c9eb82060c25654463bfd8574ec35ee39a',
 )
 
@@ -407,7 +394,6 @@ codes['cuda101'] = cuda_base.format(
     cuda_ver='10.1',
     cuda_run=cuda101_run,
     cuda_url=cuda101_url,
-    installer=cuda101_installer,
     sha256sum='33ac60685a3e29538db5094259ea85c15906cbd0f74368733f4111eab6187c8f',
 )
 
