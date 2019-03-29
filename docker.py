@@ -327,7 +327,7 @@ cuda100_run = 'cuda_10.0.130_410.48_linux'
 cuda100_url = 'https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers'
 cuda100_driver = 'NVIDIA-Linux-x86_64-410.72.run'
 
-cuda101_run = 'cuda_10.1.105_418.39_linux'
+cuda101_run = 'cuda_10.1.105_418.39_linux.run'
 cuda101_url = 'https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers'
 cuda101_driver = 'NVIDIA-Linux-x86_64-418.39.run'
 
