@@ -14,7 +14,7 @@ params = {
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     # Chainer does not require Cython, so it should be able to be installed
     # with any Cython version.
-    'cython': [None, '0.26.1', '0.28.3'],
+    'cython': [None, '0.26.1', '0.29.6'],
     'pip': [None, '7', '8', '9'],
 }
 

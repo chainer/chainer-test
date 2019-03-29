@@ -100,7 +100,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
-                'setuptools', 'cython==0.28.3', 'numpy<1.14',
+                'setuptools', 'cython==0.29.6', 'numpy<1.14',
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -190,7 +190,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.16',
+                'setuptools', 'pip', 'cython==0.29.6', 'numpy<1.16',
                 'scipy<1.1',
             ]
         }
