@@ -8,19 +8,30 @@ import docker
 import version
 
 
-# Simulate the build environment of ReadTheDocs.
-# https://github.com/rtfd/readthedocs.org/blob/master/readthedocs/doc_builder/python_environments.py
+# Simulate the build environment of ReadTheDocs (conda).
 # Some packages are omitted as we have our own requirements.
-SPHINX_REQUIREMENTS = [
-    'Pygments==2.2.0',
-    'docutils==0.13.1',
+# https://github.com/rtfd/readthedocs.org/blob/a992ad1a2695d6d6f2396f67af2163abac2a22d0/readthedocs/doc_builder/python_environments.py#L418
+SPHINX_REQUIREMENTS_CONDA = [
+    # 'mock',
+    # 'pillow',
+    'recommonmark',
+    'sphinx',
+    'sphinx-rtd-theme',
+]
+
+# Simulate the build environment of ReadTheDocs (pip).
+# Some packages are omitted as we have our own requirements.
+# https://github.com/rtfd/readthedocs.org/blob/a992ad1a2695d6d6f2396f67af2163abac2a22d0/readthedocs/doc_builder/python_environments.py#L257
+SPHINX_REQUIREMENTS_PIP = [
+    'Pygments==2.3.1',
+    'docutils==0.14',
     # 'mock==1.0.1',
-    # 'pillow==2.6.1',
+    # 'pillow==5.4.1',
     'alabaster>=0.7,<0.8,!=0.7.5',
-    'commonmark==0.5.4',
-    'recommonmark==0.4.0',
-    'sphinx<1.8',
-    'sphinx-rtd-theme<0.5',
+    'commonmark==0.8.1',
+    'recommonmark==0.5.0',
+    'sphinx<2',
+    'sphinx-rtd-theme<2',
 ]
 
 
@@ -178,7 +189,7 @@ if __name__ == '__main__':
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'matplotlib',
                 'numpy>=1.15', 'scipy>=1.0', 'theano',
-            ] + SPHINX_REQUIREMENTS
+            ] + SPHINX_REQUIREMENTS_CONDA
         }
         script = './test_doc.sh'
         build_chainerx = True
@@ -256,7 +267,7 @@ if __name__ == '__main__':
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'numpy>=1.15',
                 'scipy>=1.0',
-            ] + SPHINX_REQUIREMENTS
+            ] + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
 
