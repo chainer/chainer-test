@@ -2,13 +2,9 @@
 
 # Chainer setup script installs specific version of CuPy.
 # We need to install Chainer first for test.
-cd chainer
-python setup.py install --user
-cd ..
+pip install --user chainer/
 
-cd cupy
-python setup.py build -j 4 develop install --user || python setup.py develop install --user
-cd ..
+pip install --user -e cupy/
 
 cd chainer
 

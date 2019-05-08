@@ -1,8 +1,9 @@
 #!/bin/bash -e
 
 
+pip install --user -e chainer/
+
 cd chainer
-python setup.py develop install --user
 
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
