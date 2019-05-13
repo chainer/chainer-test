@@ -68,7 +68,7 @@ if __name__ == '__main__':
     build_chainerx = False
     if args.test == 'chainer-py2':
         conf = {
-            'base': 'ubuntu14_py27',
+            'base': 'ubuntu16_py27',
             'cuda': 'cuda80',
             'cudnn': 'cudnn5-cuda8',
             'nccl': 'nccl1.3',
@@ -82,7 +82,7 @@ if __name__ == '__main__':
 
     elif args.test == 'chainer-py3':
         conf = {
-            'base': 'ubuntu16_py37-pyenv',
+            'base': 'ubuntu18_py37-pyenv',
             'cuda': 'cuda101',
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
@@ -158,7 +158,7 @@ if __name__ == '__main__':
 
     elif args.test == 'chainer-prev_example':
         conf = {
-            'base': 'ubuntu14_py27',
+            'base': 'ubuntu16_py27',
             'cuda': 'cuda92',
             'cudnn': 'cudnn72-cuda92',
             'nccl': 'none',
@@ -185,7 +185,7 @@ if __name__ == '__main__':
 
     elif args.test == 'cupy-py2':
         conf = {
-            'base': 'ubuntu14_py27',
+            'base': 'ubuntu16_py27',
             'cuda': 'cuda80',
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'none',
@@ -198,7 +198,7 @@ if __name__ == '__main__':
 
     elif args.test == 'cupy-py3':
         conf = {
-            'base': 'ubuntu16_py37-pyenv',
+            'base': 'ubuntu18_py37-pyenv',
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',
