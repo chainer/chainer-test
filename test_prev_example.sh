@@ -5,9 +5,7 @@ CHAINER_DIR=chainer-${PREV_VER}
 
 pip install -U pip --user
 
-cd cupy
-python setup.py build -j 4 develop install --user || python setup.py develop install --user
-cd ..
+pip install --user -e cupy/
 
 cd chainer
 rm -rf dist

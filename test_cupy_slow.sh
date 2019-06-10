@@ -1,7 +1,8 @@
 #!/bin/bash -ex
 
+pip install --user -e cupy/
+
 cd cupy
-python setup.py build -j 4 develop install --user || python setup.py develop install --user
 
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
