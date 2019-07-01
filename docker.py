@@ -259,7 +259,7 @@ codes['ubuntu16_py37-pyenv'] = ubuntu_pyenv_base.format(
 codes['ubuntu18_py37-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='18.04',
     python_ver='.'.join(
-        [str(x) for x in get_python_version('ubuntu16_py37-pyenv')]),
+        [str(x) for x in get_python_version('ubuntu18_py37-pyenv')]),
 )
 
 codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
