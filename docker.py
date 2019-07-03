@@ -18,6 +18,8 @@ _base_choices = [
     ('ubuntu16_py35', '3.5.2'),
     ('ubuntu16_py36-pyenv', '3.6.6'),
     ('ubuntu16_py37-pyenv', '3.7.0'),
+    ('ubuntu18_py36', '3.6.7'),
+    ('ubuntu18_py37-pyenv', '3.7.1'),
     ('centos6_py27-pyenv', '2.7.14'),
     ('centos7_py27', '2.7.5'),
     ('centos7_py34-pyenv', '3.4.8')]
@@ -254,6 +256,11 @@ codes['ubuntu16_py37-pyenv'] = ubuntu_pyenv_base.format(
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py37-pyenv')]),
 )
+codes['ubuntu18_py37-pyenv'] = ubuntu_pyenv_base.format(
+    ubuntu_ver='18.04',
+    python_ver='.'.join(
+        [str(x) for x in get_python_version('ubuntu18_py37-pyenv')]),
+)
 
 codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
 
@@ -270,6 +277,23 @@ RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
 '''
 
 codes['ubuntu16_py35'] = '''FROM ubuntu:16.04
+
+ENV PATH /usr/lib/ccache:$PATH
+
+RUN apt-get -y update && \\
+    apt-get -y upgrade && \\
+    apt-get -y install curl g++ g++-4.8 cmake gfortran git libhdf5-dev libhdf5-serial-dev pkg-config autoconf && \\
+    apt-get -y install python3-pip python3-dev && \\
+    apt-get clean
+
+RUN ln -s /usr/bin/gcc-4.8 /usr/local/bin/gcc
+RUN ln -s /usr/bin/g++-4.8 /usr/local/bin/g++
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+'''
+
+codes['ubuntu18_py36'] = '''FROM ubuntu:18.04
 
 ENV PATH /usr/lib/ccache:$PATH
 
