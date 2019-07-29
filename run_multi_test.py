@@ -16,7 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('--nccl', choices=docker.nccl_choices, required=True)
     parser.add_argument('--ideep', choices=['none', '1.0', '2.0'], required=True)
     parser.add_argument('--numpy',
-                        choices=['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16'],
+                        choices=['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16', '1.17'],
                         required=True)
     parser.add_argument('--scipy', choices=['none', '0.18', '0.19', '1.0'])
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
@@ -87,6 +87,8 @@ if __name__ == '__main__':
         conf['requires'].append('numpy<1.16')
     elif args.numpy == '1.16':
         conf['requires'].append('numpy<1.17')
+    elif args.numpy == '1.17':
+        conf['requires'].append('numpy<1.18')
 
     if args.scipy == '0.18':
         conf['requires'].append('scipy<0.19')
