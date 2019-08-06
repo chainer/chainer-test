@@ -126,6 +126,7 @@ def get_numpy_choices():
             # cupy v5 or later
             choices.append('1.15')
             choices.append('1.16')
+            choices.append('1.17')
     return choices
 
 
