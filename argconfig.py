@@ -1,4 +1,3 @@
-import argparse
 import logging
 import os
 
@@ -13,6 +12,10 @@ def setup_argument_parser(parser):
         help='cache directory to store cupy cache and ccache. '
         'use CHAINER_TEST_CACHE environment variable by default.')
     parser.add_argument(
+        '--root', action='store_true',
+        help='run the Docker container with a root user.')
+
+    parser.add_argument(
         '--http-proxy',
         help='http proxy server (http://hostname:PORT). '
         'use CHAINER_TEST_HTTP_PROXY environment variable by default.')
@@ -22,26 +25,25 @@ def setup_argument_parser(parser):
         'use CHAINER_TEST_HTTPS_PROXY environment variable by default.')
 
     parser.add_argument(
-        '--coveralls-repo', choices=['chainer', 'cupy'],
-        help='reporsitoy to report coverage information to Coveralls. '
+        '--coverage-repo', choices=['chainer', 'cupy'],
+        help='repository to report coverage information. '
         '[chainer, cupy]')
-    parser.add_argument(
-        '--coveralls-chainer-token',
-        help='repo token of Chainer for Coveralls. '
-        'it is used when `--coveralls-repo=chainer` is selected. '
-        'use CHAINER_TEST_COVERALLS_CHAINER_TOKEN environment '
-        'variable by default.')
-    parser.add_argument(
-        '--coveralls-cupy-token',
-        help='repo token of CuPy for Coveralls. '
-        'it is used when `--coveralls-repo=cupy` is selected. '
-        'use CHAINER_TEST_COVERALLS_CUPY_TOKEN environment '
-        'variable by default.')
     parser.add_argument(
         '--coveralls-branch',
         help='branch name to report Coveralls. '
-        'use ghprbSourceBranch environment varialbe by default. '
-        'if both are not specified it is ignored.')
+        'use ghprbSourceBranch environment varialbe by default. ')
+    parser.add_argument(
+        '--coveralls-token',
+        help='repo token for Coveralls. '
+        'use CHAINER_TEST_COVERALLS_XXX_TOKEN environment '
+        'variable (where XXX is a uppercased value of --coverage-repo) by '
+        'default.')
+    parser.add_argument(
+        '--codecov-token',
+        help='repo token for Codecov. '
+        'use CHAINER_TEST_CODECOV_XXX_TOKEN environment '
+        'variable (where XXX is a uppercased value of --coverage-repo) by '
+        'default.')
 
 
 def get_arg_value(args, arg_key, env_key=None):
@@ -65,8 +67,10 @@ def parse_args(args, env, conf, volume):
     cache = get_arg_value(args, 'cache')
     if cache is not None:
         volume.append(cache)
+        env['CUDA_CACHE_PATH'] = os.path.join(cache, '.nv')
         env['CUPY_CACHE_DIR'] = os.path.join(cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(cache, '.ccache')
+        env['CHAINER_DATASET_ROOT'] = os.path.join(cache, '.chainer-dataset')
 
     http_proxy = get_arg_value(args, 'http-proxy')
     if http_proxy is not None:
@@ -77,7 +81,8 @@ def parse_args(args, env, conf, volume):
         conf['https_proxy'] = https_proxy
 
 
-def set_coveralls(args, env):
+def setup_coverage(args, env):
+    # Set environment variables for Coveralls.
     if 'BUILD_NUMBER' in os.environ and 'JOB_NAME' in os.environ:
         job = os.getenv('JOB_NAME').split('/')[0]
         build_num = os.getenv('BUILD_NUMBER')
@@ -95,19 +100,27 @@ def set_coveralls(args, env):
         branch = os.getenv('ghprbSourceBranch')
         env['COVERALLS_BRANCH'] = branch
 
-    if args.coveralls_repo == 'chainer':
-        repo_token = get_arg_value(args, 'coveralls-chainer-token')
+    def _get_token(repo, service):
+        assert repo in ['chainer', 'cupy']
+        assert service in ['coveralls', 'codecov']
+
+        arg_key = '{}-token'.format(service)
+        env_key = 'CHAINER_TEST_{}_{}_TOKEN'.format(
+            service.upper(), repo.upper())
+        repo_token = get_arg_value(args, arg_key, env_key)
         if repo_token is None:
             logging.warning(
-                '--coveralls-repo=chainer is specified but '
-                '--coveralls-chainer-token is not given')
-        else:
-            env['COVERALLS_REPO_TOKEN'] = repo_token
-    if args.coveralls_repo == 'cupy':
-        repo_token = get_arg_value(args, 'coveralls-cupy-token')
-        if repo_token is None:
-            logging.warning(
-                '--coveralls-repo=cupy is specified but '
-                '--coveralls-cupy-token is not given')
-        else:
-            env['COVERALLS_REPO_TOKEN'] = repo_token
+                '--coverage-repo={repo} is specified but '
+                '--{arg_key} or {env_key} environment variable is not '
+                'given'.format(repo=repo, arg_key=arg_key, env_key=env_key))
+        return repo_token
+
+    # Set token for Coveralls and Codecov.
+    if args.coverage_repo:
+        token = _get_token(args.coverage_repo, 'coveralls')
+        if token is not None:
+            env['COVERALLS_REPO_TOKEN'] = token
+
+        token = _get_token(args.coverage_repo, 'codecov')
+        if token is not None:
+            env['CODECOV_TOKEN'] = token

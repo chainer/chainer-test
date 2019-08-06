@@ -2,9 +2,7 @@
 
 pip install -U pip --user
 
-cd cupy
-python setup.py build -j 4 develop install --user || python setup.py develop install --user
-cd ..
+pip install --user -e cupy/
 
 cd chainer
 rm -rf dist
@@ -13,11 +11,16 @@ cd dist
 pip install *.tar.gz --user
 cd ..
 
-python -m pip install coverage matplotlib --user
+python -m pip install coverage matplotlib nltk progressbar2 --user
 python -m pip install olefile --user
 python -m pip install --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
+python -m pip install --extra-index-url https://developer.download.nvidia.com/compute/redist nvidia-dali --user
 
 run="coverage run -a --branch"
+
+export MPLBACKEND=Agg
+
+export OMP_NUM_THREADS=1
 
 # mnist
 echo "Running mnist example"
@@ -55,6 +58,10 @@ $run examples/imagenet/train_imagenet.py --test -a alex -R ../data/imagenet -B 1
 $run examples/imagenet/train_imagenet.py --test -a googlenet -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 $run examples/imagenet/train_imagenet.py --test -a googlenetbn -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
 
+$run examples/imagenet/train_imagenet.py --dali --gpu=0 --test -a nin -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
+
+$run examples/imagenet/train_imagenet.py --dali --gpu=0 --dtype=float16 --test -a nin -R ../data/imagenet -B 1 -b 1 -E 1 $imagenet_data $imagenet_data
+
 # word2vec
 echo "Running word2vec example"
 
@@ -76,14 +83,24 @@ echo "it" | $run examples/word2vec/search.py
 # vae
 echo "Runnig VAE example"
 
-MPLBACKEND=Agg $run examples/vae/train_vae.py -e 1
-MPLBACKEND=Agg $run examples/vae/train_vae.py -e 1 --gpu=0
+$run examples/vae/train_vae.py -e 1 --test
+$run examples/vae/train_vae.py -e 1 --gpu=0 --test
 
 # dcgan
 echo "Runnig DCGAN example"
 
 $run examples/dcgan/train_dcgan.py -b 1 -e 1 -i ../data/dcgan --n_hidden=10 --snapshot_interval 1 --display_interval 1
 $run examples/dcgan/train_dcgan.py -b 1 -e 1 --gpu=0 -i ../data/dcgan --n_hidden=10 --snapshot_interval 1 --display_interval 1
+
+# seq2seq
+$run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt --validation-interval 1
+$run examples/seq2seq/seq2seq.py ../data/seq2seq/source.txt ../data/seq2seq/target.txt ../data/seq2seq/source.vocab.txt ../data/seq2seq/target.vocab.txt --unit 8  --validation-source ../data/seq2seq/source.txt --validation-target ../data/seq2seq/target.txt --validation-interval 1 --gpu=0
+
+# text classification
+echo "Text classification example"
+
+$run examples/text_classification/train_text_classifier.py --dataset dbpedia -e 1 -b 1 --test
+$run examples/text_classification/train_text_classifier.py --dataset dbpedia --gpu=0 -e 1 -b 1 --test
 
 # show coverage
 coverage report -m --include="examples/*"

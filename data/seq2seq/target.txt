@@ -1,0 +1,4 @@
+z y w
+y w z
+w z y
+z y w

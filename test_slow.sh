@@ -1,13 +1,14 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
-
+# Chainer setup script installs specific version of CuPy.
+# We need to install Chainer first for test.
 pip install --user -e chainer/
+
+pip install --user -e cupy/
 
 cd chainer
 
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
-
-export CHAINER_TEST_GPU_LIMIT=0
 
 export OMP_NUM_THREADS=1
 
@@ -20,8 +21,12 @@ pytest_opts=(
 )
 
 pytest_marks=(
-    not cudnn and not slow
+    slow
 )
+
+if [ $CUDNN = none ]; then
+  pytest_marks+=(and not cudnn)
+fi
 
 if [ $IDEEP = none ]; then
   pytest_marks+=(and not ideep)

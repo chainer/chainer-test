@@ -5,9 +5,7 @@ CHAINER_DIR=chainer-${PREV_VER}
 
 pip install -U pip --user
 
-cd cupy
-python setup.py build -j 4 develop install --user || python setup.py develop install --user
-cd ..
+pip install --user -e cupy/
 
 cd chainer
 rm -rf dist
@@ -21,6 +19,10 @@ python -m pip install olefile --user
 python -m pip install --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
 
 run="coverage run -a --branch"
+
+export MPLBACKEND=Agg
+
+export OMP_NUM_THREADS=1
 
 cd ..
 curl -L -o v${PREV_VER}.tar.gz https://github.com/pfnet/chainer/archive/v${PREV_VER}.tar.gz
@@ -80,8 +82,8 @@ echo "it" | $run examples/word2vec/search.py
 # vae
 echo "Runnig VAE example"
 
-$run examples/vae/train_vae.py -e 1
-$run examples/vae/train_vae.py -e 1 --gpu=0
+$run examples/vae/train_vae.py -e 1 --test
+$run examples/vae/train_vae.py -e 1 --gpu=0 --test
 
 # dcgan
 echo "Runnig DCGAN example"

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import argparse
 import os
@@ -8,18 +8,13 @@ import docker
 import shuffle
 
 
-cuda_choices = list(docker.cuda_choices)
-cuda_choices.remove('none')
-
 params = {
     'base': docker.base_choices,
-    'cuda': cuda_choices,
-    'cudnn': docker.cudnn_choices + ['cudnn-latest-with-dummy'],
-    'nccl': docker.nccl_choices,
-    'numpy': ['1.9', '1.10', '1.11', '1.12', '1.13'],
-    'cython': [None, '0.21', '0.24', '0.25'],
-    'setuptools': [None, '3.3', '18.2', '18.3.2'],
-    'pip': [None, '7', '8', '9'],
+    'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('cupy', with_dummy=True),
+    'numpy': ['1.9', '1.10', '1.11', '1.12'],
+    'cython': [None, '0.28.0', '0.29.6'],
+    'pip': [None, '7', '8', '9', '10'],
+    'wheel': [False, True],
 }
 
 
@@ -29,18 +24,20 @@ if __name__ == '__main__':
     parser.add_argument('--id', type=int, required=True)
 
     parser.add_argument('--no-cache', action='store_true')
-    parser.add_argument('--timeout', default='1h')
+    parser.add_argument('--timeout', default='2h')
+    parser.add_argument('-i', '--interactive', action='store_true')
+
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
     # make sdist
     # cuda, cudnn and numpy is required to make a sdist file.
     build_conf = {
-        'base': 'ubuntu14_py2',
-        'cuda': 'cuda70',
-        'cudnn': 'cudnn4',
+        'base': 'ubuntu14_py27',
+        'cuda': 'cuda80',
+        'cudnn': 'cudnn5-cuda8',
         'nccl': 'none',
-        'requires': ['cython==0.24', 'numpy==1.9.3'],
+        'requires': ['cython==0.29.6', 'numpy==1.9.3'],
     }
     volume = []
     env = {}
@@ -52,5 +49,11 @@ if __name__ == '__main__':
     volume = []
     env = {}
     argconfig.parse_args(args, env, conf, volume)
-    docker.run_with(conf, './test_cupy_install.sh', no_cache=args.no_cache,
-                    volume=volume, env=env, timeout=args.timeout)
+    if args.interactive:
+        docker.run_interactive(
+            conf, no_cache=args.no_cache, volume=volume, env=env,
+            use_root=args.root)
+    else:
+        docker.run_with(
+            conf, './test_cupy_install.sh', no_cache=args.no_cache,
+            volume=volume, env=env, timeout=args.timeout, use_root=args.root)

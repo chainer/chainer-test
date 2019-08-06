@@ -1,9 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import argparse
 import os
 
 import docker
+import version
 
 
 if __name__ == '__main__':
@@ -13,34 +14,47 @@ if __name__ == '__main__':
     parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
     parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
     parser.add_argument('--nccl', choices=docker.nccl_choices, required=True)
-    parser.add_argument('--numpy', choices=['1.9', '1.10', '1.11', '1.12',
-                                            '1.13'],
+    parser.add_argument('--ideep', choices=['none', '1.0', '2.0'], required=True)
+    parser.add_argument('--numpy',
+                        choices=['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16', '1.17'],
                         required=True)
+    parser.add_argument('--scipy', choices=['none', '0.18', '0.19', '1.0'])
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
     parser.add_argument('--h5py', choices=['none', '2.5', '2.6', '2.7'])
     parser.add_argument('--pillow', choices=['none', '3.4', '4.0', '4.1'])
-    parser.add_argument('--theano', choices=['none', '0.8', '0.9'])
+    parser.add_argument('--theano', choices=['none', '0.8', '0.9', '1.0'])
     parser.add_argument('--type', choices=['cpu', 'gpu'], required=True)
     parser.add_argument('--cache')
     parser.add_argument('--http-proxy')
     parser.add_argument('--https-proxy')
     parser.add_argument('--no-cache', action='store_true')
-    parser.add_argument('--timeout', default='1h')
+    parser.add_argument('--timeout', default='2h')
     parser.add_argument(
         '--gpu-id', type=int,
         help='GPU ID you want to use mainly in the script.')
     parser.add_argument('--interactive', action='store_true')
+    parser.add_argument(
+        '--clone-cupy', action='store_true',
+        help='clone cupy repository based on chainer version. '
+        'this option is used for testing chainer.')
+    parser.add_argument(
+        '--clone-chainer', action='store_true',
+        help='clone chainer repository based on cupy version. '
+        'this option is used for testing cupy.')
     args = parser.parse_args()
+
+    if args.clone_cupy:
+        version.clone_cupy()
+    if args.clone_chainer:
+        version.clone_chainer()
 
     conf = {
         'base': args.base,
         'cuda': args.cuda,
         'cudnn': args.cudnn,
         'nccl': args.nccl,
-        'requires': ['setuptools', 'pip', 'cython==0.24'],
+        'requires': ['setuptools', 'pip', 'cython==0.29.6'],
     }
-    volume = []
-    env = {'CUDNN': conf['cudnn']}
 
     if args.h5py == '2.5':
         conf['requires'].append('numpy<1.10')
@@ -54,6 +68,8 @@ if __name__ == '__main__':
         conf['requires'].append('theano<0.9')
     elif args.theano == '0.9':
         conf['requires'].append('theano<0.10')
+    elif args.theano == '1.0':
+        conf['requires'].append('theano<1.1')
 
     if args.numpy == '1.9':
         conf['requires'].append('numpy<1.10')
@@ -65,6 +81,21 @@ if __name__ == '__main__':
         conf['requires'].append('numpy<1.13')
     elif args.numpy == '1.13':
         conf['requires'].append('numpy<1.14')
+    elif args.numpy == '1.14':
+        conf['requires'].append('numpy<1.15')
+    elif args.numpy == '1.15':
+        conf['requires'].append('numpy<1.16')
+    elif args.numpy == '1.16':
+        conf['requires'].append('numpy<1.17')
+    elif args.numpy == '1.17':
+        conf['requires'].append('numpy<1.18')
+
+    if args.scipy == '0.18':
+        conf['requires'].append('scipy<0.19')
+    elif args.scipy == '0.19':
+        conf['requires'].append('scipy<0.20')
+    elif args.scipy == '1.0':
+        conf['requires'].append('scipy<1.1')
 
     if args.protobuf == '3':
         conf['requires'].append('protobuf<4')
@@ -80,15 +111,33 @@ if __name__ == '__main__':
     elif args.pillow == '4.1':
         conf['requires'].append('pillow<4.2')
 
+    if args.ideep == '1.0':
+        conf['requires'].append('ideep4py<1.1')
+    elif args.ideep == '2.0':
+        conf['requires'].append('ideep4py<2.1')
+
+    use_ideep = any(['ideep4py' in req for req in conf['requires']])
+
+    volume = []
+    env = {
+        'CUDNN': conf['cudnn'],
+        'IDEEP': 'ideep4py' if use_ideep else 'none',
+    }
+
     conf['requires'] += [
+        'pytest<4.2',
+        'pytest-timeout',  # For timeout
+        'pytest-cov',  # For coverage report
         'nose',
         'mock',
         'coverage',
         'coveralls',
+        'codecov',
     ]
 
     if args.cache:
         volume.append(args.cache)
+        env['CUDA_CACHE_PATH'] = os.path.join(args.cache, '.nv')
         env['CUPY_CACHE_DIR'] = os.path.join(args.cache, '.cupy')
         env['CCACHE_DIR'] = os.path.join(args.cache, '.ccache')
 
