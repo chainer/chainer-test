@@ -11,6 +11,7 @@ pytest_opts=(
     --timeout=300
     --junit-xml=result.xml
     --cov
+    --no-cov-on-fail
     --showlocals  # Show local variables on error
 )
 
