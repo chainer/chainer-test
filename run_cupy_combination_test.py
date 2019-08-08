@@ -36,9 +36,14 @@ if __name__ == '__main__':
         version.clone_chainer()
 
     conf = shuffle.make_shuffle_conf(params, args.id)
+
+    # pip has dropped Python 3.4 support since 19.2.
+    # TODO(niboshi): More generic and elegant approach to handle special requirements.
+    pip_require = 'pip<19.2' if docker.get_python_version(conf['base'])[:2] == (3, 4) else 'pip'
+
     conf['requires'] = [
         'setuptools',
-        'pip',
+        pip_require,
         'cython==0.29.6'
     ] + conf['requires'] + [
         'pytest<4.2',
