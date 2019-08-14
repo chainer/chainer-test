@@ -791,20 +791,20 @@ RUN apt-get remove -y \\
         scipy, requires = partition_requirements('scipy', requires)
 
         if pillow is not None:
-            dockerfile += ('RUN pip install -U olefile && '
-                           'pip install --global-option="build_ext" '
+            dockerfile += ('RUN python -m pip install -U olefile && '
+                           'python -m pip install --global-option="build_ext" '
                            '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
 
         if 0 < len(requires):
             dockerfile += (
-                'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
+                'RUN python -m pip install -U %s && rm -rf ~/.cache/pip\n' %
                 ' '.join(['"%s"' % req for req in requires]))
 
         if scipy is not None:
             # SciPy depends on C-API interface of NumPy.
             # When you install different version of NumPy, it breaks compatibility and causes an error.
             # So you need to install SciPy from its source to link NumPy you use.
-            dockerfile += 'RUN pip install --no-binary scipy -U "%s" && rm -rf ~/.cache/pip\n' % scipy
+            dockerfile += 'RUN python -m pip install --no-binary scipy -U "%s" && rm -rf ~/.cache/pip\n' % scipy
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
