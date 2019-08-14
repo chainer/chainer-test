@@ -141,8 +141,11 @@ ENV PATH /usr/lib64/ccache:$PATH
 RUN yum -y update && \\
     yum -y install epel-release && \\
     yum -y install gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
-    yum -y install python-devel python-pip && \\
+    yum -y install python-devel && \\
     yum clean all
+RUN curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && \\
+    python /tmp/get-pip.py && \\
+    rm /tmp/get-pip.py
 '''
 
 codes['centos7_py34-pyenv'] = '''FROM centos:7
