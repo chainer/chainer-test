@@ -9,7 +9,7 @@ import shuffle
 
 
 params = {
-    'base': docker.base_choices,
+    'base': None,
     'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('cupy', with_dummy=True),
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     'cython': [None, '0.28.0', '0.29.6'],
@@ -29,6 +29,11 @@ if __name__ == '__main__':
 
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
+
+    if version.is_master_branch('cupy'):
+        params['base'] = docker.base_choices_master
+    else:
+        params['base'] = docker.base_choices_stable_cupy
 
     # make sdist
     # cuda, cudnn and numpy is required to make a sdist file.

@@ -35,7 +35,7 @@ SPHINX_REQUIREMENTS_PIP = [
 ]
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--test', choices=[
@@ -68,6 +68,9 @@ if __name__ == '__main__':
     if args.clone_chainer:
         version.clone_chainer()
 
+    support_py2 = not (version.is_master_branch('chainer') or
+                       version.is_master_branch('cupy'))
+
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
     if ideep_min_version.startswith('1.'):
         ideep_req = '<1.1'
@@ -78,6 +81,10 @@ if __name__ == '__main__':
 
     build_chainerx = False
     if args.test == 'chainer-py2':
+        if not support_py2:
+            print('Skipping Py2 test for master branch')
+            return
+
         conf = {
             'base': 'ubuntu16_py27',
             'cuda': 'cuda80',
@@ -158,8 +165,9 @@ if __name__ == '__main__':
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
+        base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
         conf = {
-            'base': 'centos7_py27',
+            'base': base,
             'cuda': 'cuda90',
             'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.2-cuda9',
@@ -168,8 +176,9 @@ if __name__ == '__main__':
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
+        base = 'ubuntu16_py27' if support_py2 else 'ubuntu16_py35'
         conf = {
-            'base': 'ubuntu16_py27',
+            'base': base,
             'cuda': 'cuda92',
             'cudnn': 'cudnn72-cuda92',
             'nccl': 'none',
@@ -195,6 +204,10 @@ if __name__ == '__main__':
         build_chainerx = True
 
     elif args.test == 'cupy-py2':
+        if not support_py2:
+            print('Skipping Py2 test for master branch')
+            return
+
         conf = {
             'base': 'ubuntu16_py27',
             'cuda': 'cuda80',
@@ -244,8 +257,9 @@ if __name__ == '__main__':
         script = './test_cupy_slow.sh'
 
     elif args.test == 'cupy-example':
+        base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
         conf = {
-            'base': 'centos7_py27',
+            'base': base,
             'cuda': 'cuda80',
             'cudnn': 'cudnn5-cuda8',
             'nccl': 'nccl1.3',
@@ -310,3 +324,7 @@ if __name__ == '__main__':
         docker.run_with(
             conf, script, no_cache=args.no_cache, volume=volume, env=env,
             timeout=args.timeout, gpu_id=args.gpu_id, use_root=args.root)
+
+
+if __name__ == '__main__':
+    main()

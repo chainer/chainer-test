@@ -11,7 +11,7 @@ import version
 
 
 params = {
-    'base': docker.base_choices,
+    'base': None,
     'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('cupy'),
     'numpy': docker.get_numpy_choices(),
     'scipy': [None, '0.19', '1.0'],
@@ -31,6 +31,11 @@ if __name__ == '__main__':
 
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
+
+    if version.is_master_branch('cupy'):
+        params['base'] = docker.base_choices_master
+    else:
+        params['base'] = docker.base_choices_stable_cupy
 
     if args.clone_chainer:
         version.clone_chainer()

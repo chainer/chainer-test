@@ -9,7 +9,7 @@ import shuffle
 
 
 params = {
-    'base': docker.base_choices,
+    'base': None,
     'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('chainer', with_dummy=True),
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     # Chainer does not require Cython, so it should be able to be installed
@@ -31,8 +31,13 @@ if __name__ == '__main__':
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
+    if version.is_master_branch('chainer'):
+        params['base'] = docker.base_choices_master
+    else:
+        params['base'] = docker.base_choices_stable_chainer
+
     build_conf = {
-        'base': 'ubuntu14_py27',
+        'base': 'ubuntu16_py35',
         'cuda': 'none',
         'cudnn': 'none',
         'nccl': 'none',
