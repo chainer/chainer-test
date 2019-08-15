@@ -29,3 +29,12 @@ python ../push_coveralls.py
 # Codecov uses `coverage.xml` generated from `.coverage`
 coverage xml
 codecov
+
+# Run benchmark on Python 3
+if [ "$(python -c 'import sys; print(sys.version_info.major)')" = "3" ]; then
+  rm -rf cupy-perf
+  git clone https://github.com/niboshi/cupy-perf.git cupy-perf
+  pushd cupy-perf
+  python run.py --show-gpu
+  popd
+fi
