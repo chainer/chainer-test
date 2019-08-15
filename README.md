@@ -3,7 +3,7 @@
 It is test scripts of chainer and dockerfiles for its test environment.
 
 
-## Requiements
+## Requirements
 
 - CuPy (when GPU mode)
 - nvidia-docker
