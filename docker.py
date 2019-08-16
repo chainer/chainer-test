@@ -354,6 +354,7 @@ RUN curl -sL -o {cuda_run} {cuda_url}/{cuda_run} && \\
     echo "{sha256sum}  {cuda_run}" | sha256sum -cw --quiet - && \\
     chmod +x {cuda_run} && sync && \\
     ./{cuda_run} --silent --toolkit && \\
+    ls -al /usr/local/cuda && \\
     cd / && \\
     rm -rf /opt/nvidia
 
