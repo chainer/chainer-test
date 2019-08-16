@@ -209,7 +209,7 @@ if __name__ == '__main__':
 
     elif args.test == 'cupy-py3':
         conf = {
-            'base': 'ubuntu18_py37-pyenv',
+            'base': 'ubuntu16_py37-pyenv',
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',
