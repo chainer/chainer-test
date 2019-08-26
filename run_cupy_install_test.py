@@ -6,6 +6,7 @@ import os
 import argconfig
 import docker
 import shuffle
+import version
 
 
 params = {
