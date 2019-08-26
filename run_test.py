@@ -98,7 +98,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.3', 'numpy<1.18',
+                'setuptools', 'pip', 'cython==0.29.13', 'numpy<1.18',
                 'pillow',
             ],
         }
@@ -111,7 +111,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
-                'setuptools', 'cython==0.29.6', 'numpy<1.14',
+                'setuptools', 'cython==0.29.13', 'numpy<1.14',
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -149,7 +149,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.28.3', 'numpy<1.16',
+                'setuptools', 'cython==0.29.13', 'numpy<1.16',
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
                 'ideep4py{}'.format(ideep_req),
@@ -163,7 +163,7 @@ if __name__ == '__main__':
             'cuda': 'cuda90',
             'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.2-cuda9',
-            'requires': ['setuptools', 'cython==0.28.3', 'numpy<1.13'],
+            'requires': ['setuptools', 'cython==0.29.13', 'numpy<1.13'],
         }
         script = './test_example.sh'
 
@@ -173,7 +173,7 @@ if __name__ == '__main__':
             'cuda': 'cuda92',
             'cudnn': 'cudnn72-cuda92',
             'nccl': 'none',
-            'requires': ['setuptools', 'pip', 'cython==0.28.3', 'numpy<1.12'],
+            'requires': ['setuptools', 'pip', 'cython==0.29.13', 'numpy<1.12'],
         }
         script = './test_prev_example.sh'
 
@@ -187,7 +187,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'requires': [
-                'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'matplotlib',
+                'pip==9.0.1', 'setuptools', 'cython==0.29.13', 'matplotlib',
                 'numpy>=1.15', 'scipy>=1.0', 'theano',
             ] + SPHINX_REQUIREMENTS_CONDA
         }
@@ -201,7 +201,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.29.6', 'numpy<1.16',
+                'setuptools', 'pip', 'cython==0.29.13', 'numpy<1.16',
                 'scipy<1.1',
             ]
         }
@@ -226,7 +226,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'requires': [
-                'setuptools', 'cython==0.28.3', 'numpy<1.10', 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', 'numpy<1.10', 'scipy<0.19',
             ],
         }
         script = './test_cupy.sh'
@@ -238,7 +238,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'cython==0.28.3', 'numpy<1.11', 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', 'numpy<1.11', 'scipy<0.19',
             ],
         }
         script = './test_cupy_slow.sh'
@@ -250,7 +250,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn5-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.28.3', 'numpy<1.13', 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', 'numpy<1.13', 'scipy<0.19',
             ],
         }
         script = './test_cupy_example.sh'
@@ -265,7 +265,7 @@ if __name__ == '__main__':
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'pip==9.0.1', 'setuptools', 'cython==0.28.3', 'numpy>=1.15',
+                'pip==9.0.1', 'setuptools', 'cython==0.29.13', 'numpy>=1.15',
                 'scipy>=1.0',
             ] + SPHINX_REQUIREMENTS_PIP
         }
