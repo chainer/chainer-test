@@ -12,7 +12,7 @@ params = {
     'base': docker.base_choices,
     'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('cupy', with_dummy=True),
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
-    'cython': [None, '0.28.0', '0.29.6'],
+    'cython': [None, '0.28.0', '0.29.13'],
     'pip': [None, '7', '8', '9', '10'],
     'wheel': [False, True],
 }
@@ -37,7 +37,7 @@ if __name__ == '__main__':
         'cuda': 'cuda80',
         'cudnn': 'cudnn5-cuda8',
         'nccl': 'none',
-        'requires': ['cython==0.29.6', 'numpy==1.9.3'],
+        'requires': ['cython==0.29.13', 'numpy==1.9.3'],
     }
     volume = []
     env = {}
