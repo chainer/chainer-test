@@ -69,7 +69,9 @@ if __name__ == '__main__':
         version.clone_chainer()
 
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
-    if ideep_min_version.startswith('1.'):
+    if ideep_min_version is None:
+        ideep_req = None  # could not determine
+    elif ideep_min_version.startswith('1.'):
         ideep_req = '<1.1'
     elif ideep_min_version.startswith('2.'):
         ideep_req = '<2.1'
@@ -105,6 +107,7 @@ if __name__ == '__main__':
         script = './test.sh'
 
     elif args.test == 'chainer-py35':
+        assert ideep_req is not None
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda92',
@@ -119,6 +122,7 @@ if __name__ == '__main__':
         script = './test.sh'
 
     elif args.test == 'chainer-head' or args.test == 'cupy-head':
+        assert ideep_req is not None
         conf = {
             'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda101',
@@ -143,6 +147,7 @@ if __name__ == '__main__':
             assert False  # should not reach
 
     elif args.test == 'chainer-slow':
+        assert ideep_req is not None
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',

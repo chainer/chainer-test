@@ -8,6 +8,10 @@ import shuffle
 import version
 
 
+ideep_min_version = version.get_ideep_version_from_chainer_docs()
+assert ideep_min_version is not None
+
+
 params = {
     'base': docker.base_choices,
     'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('chainer'),
@@ -19,7 +23,7 @@ params = {
     'theano': [None, '0.8', '0.9', '1.0'],
     'ideep': [
         None,
-        version.get_ideep_version_from_chainer_docs()[:3],  # 'major.minor'
+        ideep_min_version[:3],  # 'major.minor'
     ],
 }
 

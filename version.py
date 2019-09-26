@@ -70,8 +70,12 @@ def get_cupy_version():
 
 
 def get_ideep_version_from_chainer_docs():
+    # Returns None if chainer directory does not exist.
+    chainer_repo = os.path.join(os.path.dirname(__file__), 'chainer')
+    if not os.path.isdir(chainer_repo):
+        return None
     chainer_docs_install_path = os.path.join(
-        os.path.dirname(__file__), 'chainer/docs/source/install.rst')
+        chainer_repo, 'docs/source/install.rst')
     with open(chainer_docs_install_path) as f:
         doc = f.read()
     return re.search(r'iDeep.* ({})'.format(version_pattern), doc).group(1)
