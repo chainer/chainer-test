@@ -46,6 +46,7 @@ if __name__ == '__main__':
         pip_require,
         'cython==0.29.13'
     ] + conf['requires'] + [
+        'attrs<19.2.0',
         'pytest<4.2',
         'pytest-timeout',  # For timeout
         'pytest-cov',  # For coverage report
