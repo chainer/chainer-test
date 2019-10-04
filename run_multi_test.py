@@ -124,17 +124,6 @@ if __name__ == '__main__':
         'IDEEP': 'ideep4py' if use_ideep else 'none',
     }
 
-    conf['requires'] += [
-        'pytest<4.2',
-        'pytest-timeout',  # For timeout
-        'pytest-cov',  # For coverage report
-        'nose',
-        'mock',
-        'coverage',
-        'coveralls',
-        'codecov',
-    ]
-
     if args.cache:
         volume.append(args.cache)
         env['CUDA_CACHE_PATH'] = os.path.join(args.cache, '.nv')

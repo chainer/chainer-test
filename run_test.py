@@ -287,15 +287,6 @@ if __name__ == '__main__':
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
     }
-    conf['requires'] += [
-        'pytest<4.2',
-        'pytest-timeout',  # For timeout
-        'pytest-cov',  # For coverage report
-        'nose',
-        'mock',
-        'coveralls',
-        'codecov',
-    ]
 
     argconfig.parse_args(args, env, conf, volume)
 

@@ -5,6 +5,8 @@ pip install --user -e chainer/
 
 cd chainer
 
+pip install --user -e .[jenkins]
+
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 export CHAINER_TEST_GPU_LIMIT=0

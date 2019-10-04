@@ -45,16 +45,7 @@ if __name__ == '__main__':
         'setuptools',
         pip_require,
         'cython==0.29.13'
-    ] + conf['requires'] + [
-        'pytest<4.2',
-        'pytest-timeout',  # For timeout
-        'pytest-cov',  # For coverage report
-        'nose',
-        'mock',
-        'coverage',
-        'coveralls',
-        'codecov',
-    ]
+    ] + conf['requires']
 
     volume = []
     env = {'CUDNN': conf['cudnn']}
