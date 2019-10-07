@@ -79,6 +79,11 @@ if __name__ == '__main__':
         raise RuntimeError('bad ideep version: {}'.format(ideep_min_version))
 
     build_chainerx = False
+    # A workaround for cupy tests whose base requirements are not defined in
+    # cupy's setup.py, unlike chainer.
+    # TODO(niboshi): Move requirements to cupy's setup.py.
+    add_base_requires = False
+
     if args.test == 'chainer-py2':
         conf = {
             'base': 'ubuntu16_py27',
@@ -143,6 +148,7 @@ if __name__ == '__main__':
             script = './test.sh'
         elif args.test == 'cupy-head':
             script = './test_cupy.sh'
+            add_base_requires = True
         else:
             assert False  # should not reach
 
@@ -211,6 +217,7 @@ if __name__ == '__main__':
             ]
         }
         script = './test_cupy.sh'
+        add_base_requires = True
 
     elif args.test == 'cupy-py3':
         conf = {
@@ -223,6 +230,7 @@ if __name__ == '__main__':
             ],
         }
         script = './test_cupy.sh'
+        add_base_requires = True
 
     elif args.test == 'cupy-py35':
         conf = {
@@ -235,6 +243,7 @@ if __name__ == '__main__':
             ],
         }
         script = './test_cupy.sh'
+        add_base_requires = True
 
     elif args.test == 'cupy-slow':
         conf = {
@@ -247,6 +256,7 @@ if __name__ == '__main__':
             ],
         }
         script = './test_cupy_slow.sh'
+        add_base_requires = True
 
     elif args.test == 'cupy-example':
         conf = {
@@ -259,6 +269,7 @@ if __name__ == '__main__':
             ],
         }
         script = './test_cupy_example.sh'
+        add_base_requires = True
 
     elif args.test == 'cupy-doc':
         # Note that NumPy 1.14 or later is required to run doctest, as
@@ -275,6 +286,7 @@ if __name__ == '__main__':
             ] + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
+        add_base_requires = True
 
     else:
         raise
@@ -287,6 +299,17 @@ if __name__ == '__main__':
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
     }
+
+    if add_base_requires:
+        conf['requires'] += [
+            'pytest<4.2',
+            'pytest-timeout',  # For timeout
+            'pytest-cov',  # For coverage report
+            'nose',
+            'mock',
+            'coveralls',
+            'codecov',
+        ]
 
     argconfig.parse_args(args, env, conf, volume)
 
