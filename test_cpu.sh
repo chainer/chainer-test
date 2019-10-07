@@ -1,16 +1,16 @@
 #!/bin/bash -e
 
 
-pip install --user -e chainer/
-
-cd chainer
-
-pip install --user -e .[jenkins]
+pip install --user -e chainer/[jenkins]
 # It's not possible to install only requirements.
 # Chainer is uninstalled after the installation.
 # TODO(niboshi): Use other installation tool
 # (https://github.com/chainer/chainer/issues/5862)
 pip uninstall -y chainer
+
+pip install --user -e chainer/
+
+cd chainer
 
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 

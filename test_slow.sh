@@ -1,5 +1,12 @@
 #!/bin/bash -ex
 
+pip install --user -e chainer/[jenkins]
+# It's not possible to install only requirements.
+# Chainer is uninstalled after the installation.
+# TODO(niboshi): Use other installation tool
+# (https://github.com/chainer/chainer/issues/5862)
+pip uninstall -y chainer
+
 # Chainer setup script installs specific version of CuPy.
 # We need to install Chainer first for test.
 pip install --user -e chainer/
@@ -7,13 +14,6 @@ pip install --user -e chainer/
 pip install --user -e cupy/
 
 cd chainer
-
-pip install --user -e .[jenkins]
-# It's not possible to install only requirements.
-# Chainer is uninstalled after the installation.
-# TODO(niboshi): Use other installation tool
-# (https://github.com/chainer/chainer/issues/5862)
-pip uninstall -y chainer
 
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
