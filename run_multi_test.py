@@ -125,6 +125,7 @@ if __name__ == '__main__':
     }
 
     conf['requires'] += [
+        'attrs<19.2.0',
         'pytest<4.2',
         'pytest-timeout',  # For timeout
         'pytest-cov',  # For coverage report

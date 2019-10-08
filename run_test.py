@@ -288,6 +288,7 @@ if __name__ == '__main__':
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
     }
     conf['requires'] += [
+        'attrs<19.2.0',
         'pytest<4.2',
         'pytest-timeout',  # For timeout
         'pytest-cov',  # For coverage report
