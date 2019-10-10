@@ -47,10 +47,9 @@ $run examples/ptb/train_ptb.py --gpu=0 --epoch=1 --unit=10 --test
 # sentiment
 echo "Running sentiment example"
 
-#TODO(maehashi): Tentatively skip these tests until certificates on https://nlp.stanford.edu/sentiment/ is fixed.
-#$run examples/sentiment/download.py
-#$run examples/sentiment/train_sentiment.py --epoch=1 --batchsize=1 --epocheval=1 --test
-#$run examples/sentiment/train_sentiment.py --gpu=0 --epoch=1 --batchsize=1 --epocheval=1 --test
+$run examples/sentiment/download.py
+$run examples/sentiment/train_sentiment.py --epoch=1 --batchsize=1 --epocheval=1 --test
+$run examples/sentiment/train_sentiment.py --gpu=0 --epoch=1 --batchsize=1 --epocheval=1 --test 
 
 # imagenet
 echo "Runnig imagenet example"
