@@ -24,7 +24,22 @@ _base_choices = [
     ('centos7_py27', '2.7.5'),
     ('centos7_py34-pyenv', '3.4.8')]
 
-base_choices = [a[0] for a in _base_choices]
+base_choices_all = [a[0] for a in _base_choices]
+
+# Python 3.5+
+base_choices_master = [
+    a[0] for a in _base_choices if
+    (a[1].startswith('3.') and not a[1].startswith('3.4.'))]
+
+# Python 2.7 & 3.5+
+base_choices_stable_chainer = [
+    a[0] for a in _base_choices if
+    a[1].startswith('2.') or
+    (a[1].startswith('3.') and not a[1].startswith('3.4.'))]
+
+# Python 2.7 & 3.4+
+base_choices_stable_cupy = base_choices_all
+
 cuda_choices = [
     'none',
     'cuda80',
