@@ -78,7 +78,7 @@ def _is_shuffle_params_valid(ret):
     if ret.get('ideep'):
         if (('centos6' in base or 'ubuntu14' in base) or
                 not _is_ideep_supported(py_ver)):
-            return False, 'iDeep not supported on this OS'
+            return False, 'iDeep not supported on {}'.format(base)
         elif py_ver[:2] >= (3, 7):
             if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15']:
                 return False, 'iDeep not supported on this Python/NumPy combination'
@@ -95,24 +95,24 @@ def _is_shuffle_params_valid(ret):
             return False, 'Theano version does not support this NumPy version'
 
     if 'centos6' in base and ret.get('protobuf') == 'cpp-3':
-        return False, 'protobuf cpp-3 not supported on CentOS 6'
+        return False, 'protobuf cpp-3 not supported on centos6'
 
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
     if (cuda == 'cuda80' and
             not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'centos6', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/8.0/cuda-installation-guide-linux/index.html
-        return False, 'CUDA 8.0 is not supported on this OS'
+        return False, 'CUDA 8.0 is not supported on {}'.format(base)
     elif (cuda in ['cuda90', 'cuda91', 'cuda92'] and
             not any(base.startswith(x) for x in ['ubuntu16', 'centos6', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/9.0/cuda-installation-guide-linux/index.html
         # https://docs.nvidia.com/cuda/archive/9.1/cuda-installation-guide-linux/index.html
         # https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-linux/index.html
-        return False, 'CUDA 9.x is not supported on this OS'
+        return False, 'CUDA 9.x is not supported on {}'.format(base)
     elif (cuda in ['cuda100', 'cuda91', 'cuda92'] and
             not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'ubuntu18', 'centos6', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/10.0/cuda-installation-guide-linux/index.html
         # https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.html
-        return False, 'CUDA 10.x is not supported on this OS'
+        return False, 'CUDA 10.x is not supported on {}'.format(base)
 
     return True, None
 
