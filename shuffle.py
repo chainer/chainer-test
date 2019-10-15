@@ -99,20 +99,20 @@ def _is_shuffle_params_valid(ret):
 
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
     if (cuda == 'cuda80' and
-        not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'centos6' , 'centos7'])):
-            # https://docs.nvidia.com/cuda/archive/8.0/cuda-installation-guide-linux/index.html
-            return False, 'CUDA 8.0 is not supported on this OS'
+            not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'centos6', 'centos7'])):
+        # https://docs.nvidia.com/cuda/archive/8.0/cuda-installation-guide-linux/index.html
+        return False, 'CUDA 8.0 is not supported on this OS'
     elif (cuda in ['cuda90', 'cuda91', 'cuda92'] and
-        not any(base.startswith(x) for x in ['ubuntu16', 'centos6' , 'centos7'])):
-            # https://docs.nvidia.com/cuda/archive/9.0/cuda-installation-guide-linux/index.html
-            # https://docs.nvidia.com/cuda/archive/9.1/cuda-installation-guide-linux/index.html
-            # https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-linux/index.html
-            return False, 'CUDA 9.x is not supported on this OS'
+            not any(base.startswith(x) for x in ['ubuntu16', 'centos6', 'centos7'])):
+        # https://docs.nvidia.com/cuda/archive/9.0/cuda-installation-guide-linux/index.html
+        # https://docs.nvidia.com/cuda/archive/9.1/cuda-installation-guide-linux/index.html
+        # https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-linux/index.html
+        return False, 'CUDA 9.x is not supported on this OS'
     elif (cuda in ['cuda100', 'cuda91', 'cuda92'] and
-        not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'ubuntu18', 'centos6' , 'centos7'])):
-            # https://docs.nvidia.com/cuda/archive/10.0/cuda-installation-guide-linux/index.html
-            # https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.html
-            return False, 'CUDA 10.x is not supported on this OS'
+            not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'ubuntu18', 'centos6', 'centos7'])):
+        # https://docs.nvidia.com/cuda/archive/10.0/cuda-installation-guide-linux/index.html
+        # https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.html
+        return False, 'CUDA 10.x is not supported on this OS'
 
     return True, None
 
