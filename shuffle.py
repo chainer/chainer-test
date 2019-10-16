@@ -29,72 +29,97 @@ def _is_ideep_supported(python_version):
 
 
 def get_shuffle_params(params, index):
-    random.seed(0)
+    random.seed(index)
     keys = sorted(params.keys())
     iters = [iter_shuffle(params[key]) for key in keys]
-    vals = tuple(next(itertools.islice(iter, index, None)) for iter in iters)
-    ret = dict(zip(keys, vals))
+
+    while True:
+        vals = tuple(next(iter) for iter in iters)
+        ret = dict(zip(keys, vals))
+        valid, reason = _is_shuffle_params_valid(ret)
+        if valid:
+            return ret
+        print('Skipping invalid shuffle combination ({}): {}'.format(reason, ret))
+
+
+def _is_shuffle_params_valid(ret):
+    base = ret['base']
 
     # avoid SEGV
     if ret['numpy'] == '1.9' and ret.get('h5py'):
-        ret['numpy'] = '1.10'
+        return False, 'NumPy 1.9 incompatible with h5py'
 
-    py_ver = docker.get_python_version(ret['base'])
+    py_ver = docker.get_python_version(base)
 
     # Avoid unsupported NumPy/SciPy version for the Python version.
     if py_ver[:2] == (3, 5):
         # Python 3.5 is first supported in NumPy 1.11.
         if ret['numpy'] in ['1.9', '1.10']:
-            ret['numpy'] = '1.11'
+            return False, 'NumPy version does not support Python 3.5'
     elif py_ver[:2] == (3, 6):
         # Python 3.6 is first supported in NumPy 1.12.
         if ret['numpy'] in ['1.9', '1.10', '1.11']:
-            ret['numpy'] = '1.12'
+            return False, 'NumPy version does not support Python 3.6'
         # Python 3.6 is first supported in SciPy 0.19.
         if ret.get('scipy', None) in ['0.18']:
-            ret['scipy'] = '0.19'
+            return False, 'SciPy version does not support Python 3.7'
     elif py_ver[:2] == (3, 7):
         # Python 3.7 is first supported in NumPy 1.14.4.
         if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12', '1.13']:
-            ret['numpy'] = '1.14'
+            return False, 'NumPy version does not support Python 3.7'
         # Python 3.7 is first supported in SciPy 1.0.
         if ret.get('scipy', None) in ['0.18', '0.19']:
-            ret['scipy'] = '1.0'
+            return False, 'SciPy version does not support Python 3.7'
 
     # iDeep requirements:
     # - Ubuntu 16.04 or CentOS 7.4 or OS X
     # - NumPy 1.13.0+ with Python 2.7/3.5/3.6
     # - NumPy 1.16.0+ with Python 3.7+
     if ret.get('ideep'):
-        base = ret['base']
         if (('centos6' in base or 'ubuntu14' in base) or
                 not _is_ideep_supported(py_ver)):
-            ret['ideep'] = None
+            return False, 'iDeep not supported on {}'.format(base)
         elif py_ver[:2] >= (3, 7):
             if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15']:
-                ret['numpy'] = '1.16'
+                return False, 'iDeep not supported on this Python/NumPy combination'
         else:
             if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12']:
-                ret['numpy'] = '1.13'
+                return False, 'iDeep not supported on this NumPy version'
 
     # SciPy 0.19 installation from source (--no-binary) fails with new NumPy 1.16+.
     # Theano 1.0.3 or earlier does not support NumPy 1.16+.
     if ret['numpy'] not in ['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15']:
         if ret.get('scipy', None) in ['0.18', '0.19']:
-            ret['scipy'] = '1.0'
+            return False, 'SciPy version does not support this NumPy version'
         if ret.get('theano') in ['0.8', '0.9']:
-            ret['theano'] = '1.0'
+            return False, 'Theano version does not support this NumPy version'
+
+    if 'centos6' in base and ret.get('protobuf') == 'cpp-3':
+        return False, 'protobuf cpp-3 not supported on centos6'
 
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
-    if ('centos6' in ret['base'] or
-            'ubuntu16' in ret['base'] and cuda < 'cuda8'):
-        # nccl is not supported on these environment
-        ret['cuda_cudnn_nccl'] = (cuda, cudnn, 'none')
 
-    if 'centos6' in ret['base'] and ret.get('protobuf') == 'cpp-3':
-        ret['protobuf'] = '3'
+    if 'centos6' in base and nccl != 'none':
+        # https://docs.nvidia.com/deeplearning/sdk/nccl-install-guide/index.html#rhel_centos
+        return False, 'NCCL is not supported in centos6'
 
-    return ret
+    if (cuda == 'cuda80' and
+            not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'centos6', 'centos7'])):
+        # https://docs.nvidia.com/cuda/archive/8.0/cuda-installation-guide-linux/index.html
+        return False, 'CUDA 8.0 is not supported on {}'.format(base)
+    elif (cuda in ['cuda90', 'cuda91', 'cuda92'] and
+            not any(base.startswith(x) for x in ['ubuntu16', 'centos6', 'centos7'])):
+        # https://docs.nvidia.com/cuda/archive/9.0/cuda-installation-guide-linux/index.html
+        # https://docs.nvidia.com/cuda/archive/9.1/cuda-installation-guide-linux/index.html
+        # https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-linux/index.html
+        return False, 'CUDA 9.x is not supported on {}'.format(base)
+    elif (cuda in ['cuda100', 'cuda101'] and
+            not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'ubuntu18', 'centos6', 'centos7'])):
+        # https://docs.nvidia.com/cuda/archive/10.0/cuda-installation-guide-linux/index.html
+        # https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.html
+        return False, 'CUDA 10.x is not supported on {}'.format(base)
+
+    return True, None
 
 
 def parse_version(version):
