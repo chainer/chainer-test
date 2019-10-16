@@ -108,7 +108,7 @@ def _is_shuffle_params_valid(ret):
         # https://docs.nvidia.com/cuda/archive/9.1/cuda-installation-guide-linux/index.html
         # https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-linux/index.html
         return False, 'CUDA 9.x is not supported on {}'.format(base)
-    elif (cuda in ['cuda100', 'cuda91', 'cuda92'] and
+    elif (cuda in ['cuda100', 'cuda101'] and
             not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'ubuntu18', 'centos6', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/10.0/cuda-installation-guide-linux/index.html
         # https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.html
