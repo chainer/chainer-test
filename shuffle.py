@@ -98,6 +98,11 @@ def _is_shuffle_params_valid(ret):
         return False, 'protobuf cpp-3 not supported on centos6'
 
     cuda, cudnn, nccl = ret['cuda_cudnn_nccl']
+
+    if 'centos6' in base and nccl != 'none':
+        # https://docs.nvidia.com/deeplearning/sdk/nccl-install-guide/index.html#rhel_centos
+        return False, 'NCCL is not supported in centos6'
+
     if (cuda == 'cuda80' and
             not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'centos6', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/8.0/cuda-installation-guide-linux/index.html
