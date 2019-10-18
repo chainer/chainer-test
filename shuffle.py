@@ -13,6 +13,21 @@ def iter_shuffle(lst):
             yield x
 
 
+# random.choices from Python 3.6
+def random_choices(population, weights):
+    assert len(population) == len(weights) > 0
+    acc = 0.0
+    cum_weights = []
+    for w in weights:
+        acc += w
+        cum_weights.append(acc)
+    r = random.uniform(0.0, cum_weights.pop())
+    for x, c in zip(population, cum_weights):
+        if r < c:
+            return x
+    return population[-1]
+
+
 def _is_ideep_supported(python_version):
     # https://github.com/intel/ideep#requirements
     pyver = python_version
@@ -29,17 +44,35 @@ def _is_ideep_supported(python_version):
 
 
 def get_shuffle_params(params, index):
-    random.seed(index)
-    keys = sorted(params.keys())
-    iters = [iter_shuffle(params[key]) for key in keys]
+    random.seed(index // 32)
+    ret, messages = next(itertools.islice(_iter_shuffle_params(params), index % 32, None))
+    for msg in messages:
+        sys.stderr.write('{}\n'.format(msg))
+    sys.stderr.flush()
+    return ret
 
+
+def _iter_shuffle_params(params):
+    keys = sorted(params.keys())
+    n_selected = {key: {val: 0 for val in params[key]} for key in keys}
+
+    messages = []
     while True:
-        vals = tuple(next(iter) for iter in iters)
+        vals = []
+        for key in keys:
+            weights = [
+                1.0 / (1.0 + n_selected[key][val] ** 2)
+                for val in params[key]]
+            vals.append(random_choices(params[key], weights))
         ret = dict(zip(keys, vals))
         valid, reason = _is_shuffle_params_valid(ret)
         if valid:
-            return ret
-        print('Skipping invalid shuffle combination ({}): {}'.format(reason, ret))
+            for key, val in ret.items():
+                n_selected[key][val] += 1
+            yield ret, messages
+            messages = []
+        else:
+            messages.append('Skipped invalid shuffle combination ({}): {}'.format(reason, ret))
 
 
 def _is_shuffle_params_valid(ret):
