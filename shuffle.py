@@ -146,11 +146,18 @@ def _is_shuffle_params_valid(ret):
         # https://docs.nvidia.com/cuda/archive/9.1/cuda-installation-guide-linux/index.html
         # https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-linux/index.html
         return False, 'CUDA 9.x is not supported on {}'.format(base)
-    elif (cuda in ['cuda100', 'cuda101'] and
+    elif (cuda == 'cuda100' and
             not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'ubuntu18', 'centos6', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/10.0/cuda-installation-guide-linux/index.html
+        return False, 'CUDA 10.0 is not supported on {}'.format(base)
+    elif (cuda == 'cuda101' and
+            not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'ubuntu18', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.html
-        return False, 'CUDA 10.x is not supported on {}'.format(base)
+        # CUDA 10.1+ on CentOS 6 requires different CUDA installer.
+        # For simplicity and considering the fact that it will EOL in 2020 (so
+        # CentOS 6 will not be used for new deployments), we exclude it from
+        # the test.
+        return False, 'CUDA 10.1 is not supported on {}'.format(base)
 
     return True, None
 
