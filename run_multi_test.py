@@ -20,7 +20,7 @@ if __name__ == '__main__':
                         required=True)
     parser.add_argument('--scipy', choices=['none', '0.18', '0.19', '1.0'])
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
-    parser.add_argument('--h5py', choices=['none', '2.5', '2.6', '2.7'])
+    parser.add_argument('--h5py', choices=['none', '2.5', '2.6', '2.7', '2.8', '2.9', '2.10'])
     parser.add_argument('--pillow', choices=['none', '3.4', '4.0', '4.1'])
     parser.add_argument('--theano', choices=['none', '0.8', '0.9', '1.0'])
     parser.add_argument('--type', choices=['cpu', 'gpu'], required=True)
@@ -63,6 +63,12 @@ if __name__ == '__main__':
         conf['requires'].append('h5py<2.7')
     elif args.h5py == '2.7':
         conf['requires'].append('h5py<2.8')
+    elif args.h5py == '2.8':
+        conf['requires'].append('h5py<2.9')
+    elif args.h5py == '2.9':
+        conf['requires'].append('h5py<2.10')
+    elif args.h5py == '2.10':
+        conf['requires'].append('h5py<2.11')
 
     if args.theano == '0.8':
         conf['requires'].append('theano<0.9')
