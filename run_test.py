@@ -228,7 +228,7 @@ def main():
 
     elif args.test == 'cupy-py3':
         conf = {
-            'base': 'ubuntu16_py38-pyenv',
+            'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',
