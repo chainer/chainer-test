@@ -102,7 +102,7 @@ def main():
 
     elif args.test == 'chainer-py3':
         conf = {
-            'base': 'ubuntu18_py37-pyenv',
+            'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda101',
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
@@ -227,7 +227,7 @@ def main():
 
     elif args.test == 'cupy-py3':
         conf = {
-            'base': 'ubuntu16_py37-pyenv',
+            'base': 'ubuntu16_py38-pyenv',
             'cuda': 'cuda90',
             'cudnn': 'cudnn7-cuda9',
             'nccl': 'nccl2.0-cuda9',

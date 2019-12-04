@@ -20,6 +20,7 @@ _base_choices = [
     ('ubuntu16_py37-pyenv', '3.7.0'),
     ('ubuntu18_py36', '3.6.7'),
     ('ubuntu18_py37-pyenv', '3.7.1'),
+    ('ubuntu18_py38-pyenv', '3.8.0'),
     ('centos6_py27-pyenv', '2.7.14'),
     ('centos7_py27', '2.7.5'),
     ('centos7_py34-pyenv', '3.4.8')]
@@ -276,6 +277,11 @@ codes['ubuntu18_py37-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='18.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py37-pyenv')]),
+)
+codes['ubuntu18_py38-pyenv'] = ubuntu_pyenv_base.format(
+    ubuntu_ver='18.04',
+    python_ver='.'.join(
+        [str(x) for x in get_python_version('ubuntu18_py38-pyenv')]),
 )
 
 codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
