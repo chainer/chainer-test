@@ -229,9 +229,9 @@ def main():
     elif args.test == 'cupy-py3':
         conf = {
             'base': 'ubuntu18_py38-pyenv',
-            'cuda': 'cuda90',
-            'cudnn': 'cudnn7-cuda9',
-            'nccl': 'nccl2.0-cuda9',
+            'cuda': 'cuda100',
+            'cudnn': 'cudnn75-cuda100',
+            'nccl': 'nccl2.4-cuda100',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 'setuptools<42', 'pip', 'cython==0.28.0', 'numpy<1.18',
