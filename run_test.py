@@ -287,7 +287,8 @@ def main():
             'nccl': 'nccl1.3',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13', 'numpy>=1.15',
-                'scipy>=1.0',
+                # scipy 1.4 causes error during installation.
+                'scipy>=1.0,<1.4',
             ] + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
