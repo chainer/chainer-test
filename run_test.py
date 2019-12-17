@@ -310,6 +310,9 @@ def main():
         'pytest-cov',  # For coverage report
         'nose',
         'mock',
+        # coverage 5.0 causes error:
+        # "ModuleNotFoundError: No module named '_sqlite3'"
+        'coverage<5',
         'coveralls',
         'codecov',
     ]
