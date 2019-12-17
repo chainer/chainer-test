@@ -10,8 +10,6 @@ pytest_opts=(
     -rfEX
     --timeout=300
     --junit-xml=result.xml
-    --cov
-    --no-cov-on-fail
     --showlocals  # Show local variables on error
 )
 

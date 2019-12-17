@@ -90,7 +90,3 @@ echo "Runnig DCGAN example"
 
 $run examples/dcgan/train_dcgan.py -b 1 -e 1 -i ../data/dcgan --n_hidden=10 --snapshot_interval 1 --display_interval 1
 $run examples/dcgan/train_dcgan.py -b 1 -e 1 --gpu=0 -i ../data/dcgan --n_hidden=10 --snapshot_interval 1 --display_interval 1
-
-# show coverage
-coverage report -m --include="examples/*"
-coverage xml --include="examples/*"

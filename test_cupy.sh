@@ -10,8 +10,6 @@ pytest_opts=(
     -rfEX
     --timeout=300
     --junit-xml=result.xml
-    --cov
-    --no-cov-on-fail
     --showlocals  # Show local variables on error
 )
 
@@ -22,14 +20,6 @@ else
 fi
 
 python -m pytest "${pytest_opts[@]}" tests
-
-# Submit coverage to Coveralls
-python ../push_coveralls.py
-
-# Submit coverage to Codecov
-# Codecov uses `coverage.xml` generated from `.coverage`
-coverage xml
-codecov
 
 # Run benchmark on Python 3
 if [ "$(python -c 'import sys; print(sys.version_info.major)')" = "3" ]; then

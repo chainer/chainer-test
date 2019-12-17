@@ -101,7 +101,3 @@ echo "Text classification example"
 
 $run examples/text_classification/train_text_classifier.py --dataset dbpedia -e 1 -b 1 --test
 $run examples/text_classification/train_text_classifier.py --dataset dbpedia --gpu=0 -e 1 -b 1 --test
-
-# show coverage
-coverage report -m --include="examples/*"
-coverage xml --include="examples/*"

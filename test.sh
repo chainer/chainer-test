@@ -14,8 +14,6 @@ pytest_opts=(
     -rfEX
     --timeout=300
     --junit-xml=result.xml
-    --cov
-    --no-cov-on-fail
     --showlocals  # Show local variables on error
 )
 
@@ -34,11 +32,3 @@ fi
 pytest_opts+=(-m "${pytest_marks[*]}")
 
 python -m pytest "${pytest_opts[@]}" tests/chainer_tests
-
-# Submit coverage to Coveralls
-python ../push_coveralls.py
-
-# Submit coverage to Codecov
-# Codecov uses `coverage.xml` generated from `.coverage`
-coverage xml
-codecov
