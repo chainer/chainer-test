@@ -10,10 +10,6 @@ import version
 
 
 _base_choices = [
-    ('ubuntu14_py27', '2.7.6'),
-    ('ubuntu14_py34', '3.4.0'),
-    ('ubuntu14_py35-pyenv', '3.5.5'),
-    ('ubuntu14_py36-pyenv', '3.6.5'),
     ('ubuntu16_py27', '2.7.12'),
     ('ubuntu16_py35', '3.5.2'),
     ('ubuntu16_py36-pyenv', '3.6.6'),
@@ -206,32 +202,6 @@ RUN pyenv global 2.7.14
 RUN pyenv rehash
 '''
 
-codes['ubuntu14_py27'] = '''FROM ubuntu:14.04
-
-ENV PATH /usr/lib/ccache:$PATH
-
-RUN apt-get -y update && \\
-    apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
-    apt-get -y install python-pip python-dev && \\
-    apt-get -y install libffi-dev libssl-dev && \\
-    apt-get clean
-'''
-
-codes['ubuntu14_py34'] = '''FROM ubuntu:14.04
-
-ENV PATH /usr/lib/ccache:$PATH
-
-RUN apt-get -y update && \\
-    apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
-    apt-get -y install python3-pip python3-dev && \\
-    apt-get clean
-
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
-'''
-
 ubuntu_pyenv_base = '''FROM ubuntu:{ubuntu_ver}
 
 ENV PATH /usr/lib/ccache:$PATH
@@ -253,16 +223,6 @@ RUN pyenv global {python_ver}
 RUN pyenv rehash
 '''
 
-codes['ubuntu14_py35-pyenv'] = ubuntu_pyenv_base.format(
-    ubuntu_ver='14.04',
-    python_ver='.'.join(
-        [str(x) for x in get_python_version('ubuntu14_py35-pyenv')]),
-)
-codes['ubuntu14_py36-pyenv'] = ubuntu_pyenv_base.format(
-    ubuntu_ver='14.04',
-    python_ver='.'.join(
-        [str(x) for x in get_python_version('ubuntu14_py36-pyenv')]),
-)
 codes['ubuntu16_py36-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='16.04',
     python_ver='.'.join(
