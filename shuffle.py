@@ -143,7 +143,7 @@ def _is_shuffle_params_valid(ret):
     # - NumPy 1.13.0+ with Python 2.7/3.5/3.6
     # - NumPy 1.16.0+ with Python 3.7+
     if ret.get('ideep'):
-        if (('centos6' in base or 'ubuntu14' in base) or
+        if (('centos6' in base) or
                 not _is_ideep_supported(py_ver)):
             return False, 'iDeep not supported on {}'.format(base)
         elif py_ver[:2] >= (3, 7):
@@ -171,7 +171,7 @@ def _is_shuffle_params_valid(ret):
         return False, 'NCCL is not supported in centos6'
 
     if (cuda == 'cuda80' and
-            not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'centos6', 'centos7'])):
+            not any(base.startswith(x) for x in ['ubuntu16', 'centos6', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/8.0/cuda-installation-guide-linux/index.html
         return False, 'CUDA 8.0 is not supported on {}'.format(base)
     elif (cuda in ['cuda90', 'cuda91', 'cuda92'] and
@@ -181,11 +181,11 @@ def _is_shuffle_params_valid(ret):
         # https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-linux/index.html
         return False, 'CUDA 9.x is not supported on {}'.format(base)
     elif (cuda == 'cuda100' and
-            not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'ubuntu18', 'centos6', 'centos7'])):
+            not any(base.startswith(x) for x in ['ubuntu16', 'ubuntu18', 'centos6', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/10.0/cuda-installation-guide-linux/index.html
         return False, 'CUDA 10.0 is not supported on {}'.format(base)
     elif (cuda == 'cuda101' and
-            not any(base.startswith(x) for x in ['ubuntu14', 'ubuntu16', 'ubuntu18', 'centos7'])):
+            not any(base.startswith(x) for x in ['ubuntu16', 'ubuntu18', 'centos7'])):
         # https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.html
         # CUDA 10.1+ on CentOS 6 requires different CUDA installer.
         # For simplicity and considering the fact that it will EOL in 2020 (so
