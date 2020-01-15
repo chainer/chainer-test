@@ -93,7 +93,8 @@ def main():
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.10',
+                'setuptools<45',  # 45 dropped python 2
+                'pip', 'cython==0.28.0', 'numpy<1.10',
                 'scipy<0.19', 'h5py', 'theano', 'pillow',
                 'protobuf',  # ignore broken protobuf 3.2.0rc1
             ]
@@ -220,7 +221,8 @@ def main():
             'cudnn': 'cudnn51-cuda8',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.29.13', 'numpy<1.16',
+                'setuptools<45',  # 45 dropped python 2
+                'pip', 'cython==0.29.13', 'numpy<1.16',
                 'scipy<1.1',
             ]
         }
