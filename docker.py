@@ -300,27 +300,21 @@ ENV NVCC="ccache nvcc"
 
 cuda80_run = 'cuda_8.0.44_linux-run'
 cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
-cuda80_driver = 'NVIDIA-Linux-x86_64-367.48.run'
 
 cuda90_run = 'cuda_9.0.176_384.81_linux-run'
 cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers'
-cuda90_driver = 'NVIDIA-Linux-x86_64-384.81.run'
 
 cuda91_run = 'cuda_9.1.85_387.26_linux'
 cuda91_url = 'https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers'
-cuda91_driver = 'NVIDIA-Linux-x86_64-387.26.run'
 
 cuda92_run = 'cuda_9.2.88_396.26_linux'
 cuda92_url = 'https://developer.nvidia.com/compute/cuda/9.2/Prod/local_installers'
-cuda92_driver = 'NVIDIA-Linux-x86_64-396.26.run'
 
 cuda100_run = 'cuda_10.0.130_410.48_linux'
 cuda100_url = 'https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers'
-cuda100_driver = 'NVIDIA-Linux-x86_64-410.72.run'
 
-cuda101_run = 'cuda_10.1.105_418.39_linux.run'
-cuda101_url = 'https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers'
-cuda101_driver = 'NVIDIA-Linux-x86_64-418.39.run'
+cuda101_run = 'cuda_10.1.243_418.87.00_linux.run'
+cuda101_url = 'https://developer.download.nvidia.com/compute/cuda/10.1/Prod/local_installers'
 
 
 cuda_base = '''
@@ -386,7 +380,7 @@ codes['cuda101'] = cuda_base.format(
     cuda_ver='10.1',
     cuda_run=cuda101_run,
     cuda_url=cuda101_url,
-    sha256sum='33ac60685a3e29538db5094259ea85c15906cbd0f74368733f4111eab6187c8f',
+    sha256sum='e7c22dc21278eb1b82f34a60ad7640b41ad3943d929bebda3008b72536855d31',
 )
 
 
