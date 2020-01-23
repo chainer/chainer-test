@@ -15,7 +15,7 @@ It is test scripts of chainer and dockerfiles for its test environment.
 Run test scripts with options that specify the environment to test.
 
 ```
-$ ./run_multi_test.py --base=ubuntu16_py27 --numpy=1.9 --cuda=cuda80 --cudnn=cudnn5-cuda8 --type=gpu
+$ ./run_multi_test.py --base=ubuntu16_py38-pyenv --numpy=1.9 --cuda=cuda80 --cudnn=cudnn5-cuda8 --type=gpu
 ```
 
 These test scripts create `Dockerfile`, make containers, and run appropriate test scripts.

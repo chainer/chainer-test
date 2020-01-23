@@ -10,15 +10,12 @@ import version
 
 
 _base_choices = [
-    ('ubuntu16_py27', '2.7.12'),
     ('ubuntu16_py35', '3.5.2'),
     ('ubuntu16_py36-pyenv', '3.6.6'),
     ('ubuntu16_py37-pyenv', '3.7.0'),
     ('ubuntu18_py36', '3.6.7'),
     ('ubuntu18_py37-pyenv', '3.7.1'),
     ('ubuntu18_py38-pyenv', '3.8.0'),
-    ('centos6_py27-pyenv', '2.7.14'),
-    ('centos7_py27', '2.7.5'),
     ('centos7_py34-pyenv', '3.4.8')]
 
 base_choices_all = [a[0] for a in _base_choices]
@@ -140,20 +137,6 @@ codes = {}
 
 # base
 
-codes['centos7_py27'] = '''FROM centos:7
-
-ENV PATH /usr/lib64/ccache:$PATH
-
-RUN yum -y update && \\
-    yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
-    yum -y install python-devel && \\
-    yum clean all
-RUN curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && \\
-    python /tmp/get-pip.py && \\
-    rm /tmp/get-pip.py
-'''
-
 codes['centos7_py34-pyenv'] = '''FROM centos:7
 
 ENV PATH /usr/lib64/ccache:$PATH
@@ -172,27 +155,6 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
 RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.4.8
 RUN pyenv global 3.4.8
-RUN pyenv rehash
-'''
-
-codes['centos6_py27-pyenv'] = '''FROM centos:6
-
-ENV PATH /usr/lib64/ccache:$PATH
-
-RUN yum -y update && \\
-    yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel patch which perl make autoconf && \\
-    yum -y install bzip2-devel openssl-devel readline-devel && \\
-    yum clean all
-
-RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
-ENV PYENV_ROOT=/opt/pyenv
-RUN mkdir "$PYENV_ROOT/shims"
-RUN chmod o+w "$PYENV_ROOT/shims"
-ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
-
-RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 2.7.14
-RUN pyenv global 2.7.14
 RUN pyenv rehash
 '''
 
@@ -237,17 +199,6 @@ codes['ubuntu18_py38-pyenv'] = ubuntu_pyenv_base.format(
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py38-pyenv')]),
 )
-
-codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
-
-ENV PATH /usr/lib/ccache:$PATH
-
-RUN apt-get -y update && \\
-    apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git autoconf libhdf5-dev libhdf5-serial-dev pkg-config && \\
-    apt-get -y install python-pip python-dev && \\
-    apt-get clean
-'''
 
 codes['ubuntu16_py35'] = '''FROM ubuntu:16.04
 
