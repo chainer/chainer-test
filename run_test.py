@@ -35,6 +35,11 @@ SPHINX_REQUIREMENTS_PIP = [
 ]
 
 
+def _get_job_name():
+    # Returns Jenkins job name
+    return os.environ['JOB_NAME']
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
@@ -86,6 +91,9 @@ def main():
         if not support_py2:
             print('Skipping Py2 test for master branch')
             return
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
 
         conf = {
             'base': 'ubuntu16_py27',
@@ -102,6 +110,10 @@ def main():
         script = './test.sh'
 
     elif args.test == 'chainer-py3':
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda101',
@@ -117,6 +129,10 @@ def main():
 
     elif args.test == 'chainer-py35':
         assert ideep_req is not None
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda92',
@@ -172,6 +188,10 @@ def main():
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
         conf = {
             'base': base,
@@ -183,6 +203,10 @@ def main():
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         base = 'ubuntu16_py27' if support_py2 else 'ubuntu16_py35'
         conf = {
             'base': base,
@@ -194,6 +218,10 @@ def main():
         script = './test_prev_example.sh'
 
     elif args.test == 'chainer-doc':
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
