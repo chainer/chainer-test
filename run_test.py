@@ -242,30 +242,48 @@ def main():
         script = './test_cupy.sh'
 
     elif args.test == 'cupy-py35':
+        if version.get_cupy_version() < (8,):
+            numpy_requires = 'numpy<1.10'
+        else:
+            # CuPy v8 dropped NumPy<1.15
+            numpy_requires = 'numpy<1.16'
+
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda101',
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.10', 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
         }
         script = './test_cupy.sh'
 
     elif args.test == 'cupy-slow':
+        if version.get_cupy_version() < (8,):
+            numpy_requires = 'numpy<1.11'
+        else:
+            # CuPy v8 dropped NumPy<1.15
+            numpy_requires = 'numpy<1.16'
+
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.11', 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
         }
         script = './test_cupy_slow.sh'
 
     elif args.test == 'cupy-example':
+        if version.get_cupy_version() < (8,):
+            numpy_requires = 'numpy<1.13'
+        else:
+            # CuPy v8 dropped NumPy<1.15
+            numpy_requires = 'numpy<1.16'
+
         base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
         conf = {
             'base': base,
@@ -273,7 +291,7 @@ def main():
             'cudnn': 'cudnn5-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.13', 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
         }
         script = './test_cupy_example.sh'
