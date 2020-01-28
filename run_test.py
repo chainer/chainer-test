@@ -36,8 +36,8 @@ SPHINX_REQUIREMENTS_PIP = [
 
 
 def _get_job_name():
-    # Returns Jenkins job name
-    return os.environ['JOB_NAME']
+    # Returns Jenkins job name. None if the test is not running inside Jenkins.
+    return os.getenv('JOB_NAME')
 
 
 def main():
