@@ -76,6 +76,14 @@ def main():
     support_py2 = not (version.is_master_branch('chainer') or
                        version.is_master_branch('cupy'))
 
+    skip_chainer_test = (
+        _get_job_name() == 'cupy_pr' and
+        (version.get_cupy_version() >= (8,) or
+         # is_master_branch() is required because v8 beta branch has v7 as
+         # the version number in _version.py.
+         # After releasing v8 as stable, remove this condition.
+         version.is_master_branch('cupy')))
+
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
     if ideep_min_version is None:
         ideep_req = None  # could not determine
@@ -91,7 +99,7 @@ def main():
         if not support_py2:
             print('Skipping Py2 test for master branch')
             return
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -110,7 +118,7 @@ def main():
         script = './test.sh'
 
     elif args.test == 'chainer-py3':
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -129,7 +137,7 @@ def main():
 
     elif args.test == 'chainer-py35':
         assert ideep_req is not None
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -188,7 +196,7 @@ def main():
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -203,7 +211,7 @@ def main():
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -218,7 +226,7 @@ def main():
         script = './test_prev_example.sh'
 
     elif args.test == 'chainer-doc':
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
