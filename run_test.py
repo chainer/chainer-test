@@ -76,6 +76,11 @@ def main():
     support_py2 = not (version.is_master_branch('chainer') or
                        version.is_master_branch('cupy'))
 
+    if version.get_cupy_version() < (8,):
+        numpy_min_version = '1.9'
+    else:
+        numpy_min_version = '1.15'
+
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
     if ideep_min_version is None:
         ideep_req = None  # could not determine
@@ -102,7 +107,8 @@ def main():
             'nccl': 'nccl1.3',
             'requires': [
                 'setuptools<45',  # 45 dropped python 2
-                'pip', 'cython==0.28.0', 'numpy<1.10',
+                'pip', 'cython==0.28.0',
+                'numpy>={},<1.10'.format(numpy_min_version),
                 'scipy<0.19', 'h5py', 'theano', 'pillow',
                 'protobuf',  # ignore broken protobuf 3.2.0rc1
             ]
@@ -121,7 +127,8 @@ def main():
             'nccl': 'nccl2.4-cuda101',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
-                'setuptools<42', 'pip', 'cython==0.29.13', 'numpy<1.18',
+                'setuptools<42', 'pip', 'cython==0.29.13',
+                'numpy>={},<1.18'.format(numpy_min_version),
                 'pillow',
             ],
         }
@@ -139,7 +146,8 @@ def main():
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.14',
+                'setuptools', 'cython==0.29.13',
+                'numpy>={},<1.14'.format(numpy_min_version),
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -179,7 +187,8 @@ def main():
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.16',
+                'setuptools', 'cython==0.29.13',
+                'numpy>={},<1.16'.format(numpy_min_version),
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
                 'ideep4py{}'.format(ideep_req),
@@ -198,7 +207,10 @@ def main():
             'cuda': 'cuda90',
             'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.2-cuda9',
-            'requires': ['setuptools', 'cython==0.29.13', 'numpy<1.13'],
+            'requires': [
+                'setuptools', 'cython==0.29.13',
+                'numpy>={},<1.13'.format(numpy_min_version),
+            ],
         }
         script = './test_example.sh'
 
@@ -213,7 +225,10 @@ def main():
             'cuda': 'cuda92',
             'cudnn': 'cudnn72-cuda92',
             'nccl': 'none',
-            'requires': ['setuptools', 'pip', 'cython==0.29.13', 'numpy<1.12'],
+            'requires': [
+                'setuptools', 'pip', 'cython==0.29.13',
+                'numpy>={},<1.12'.format(numpy_min_version),
+            ],
         }
         script = './test_prev_example.sh'
 
@@ -250,7 +265,8 @@ def main():
             'nccl': 'none',
             'requires': [
                 'setuptools<45',  # 45 dropped python 2
-                'pip', 'cython==0.29.13', 'numpy<1.16',
+                'pip', 'cython==0.29.13',
+                'numpy>={},<1.16'.format(numpy_min_version),
                 'scipy<1.1',
             ]
         }
@@ -264,17 +280,20 @@ def main():
             'nccl': 'nccl2.4-cuda100',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
-                'setuptools<42', 'pip', 'cython==0.28.0', 'numpy<1.18',
+                'setuptools<42', 'pip', 'cython==0.28.0',
+                'numpy>={},<1.18'.format(numpy_min_version),
             ],
         }
         script = './test_cupy.sh'
 
     elif args.test == 'cupy-py35':
         if version.get_cupy_version() < (8,):
-            numpy_requires = 'numpy<1.10'
+            numpy_upper_version = '1.10'
         else:
             # CuPy v8 dropped NumPy<1.15
-            numpy_requires = 'numpy<1.16'
+            numpy_upper_version = '1.16'
+        numpy_requires = 'numpy>={},<{}'.format(
+            numpy_min_version, numpy_upper_version)
 
         conf = {
             'base': 'ubuntu16_py35',
@@ -289,10 +308,12 @@ def main():
 
     elif args.test == 'cupy-slow':
         if version.get_cupy_version() < (8,):
-            numpy_requires = 'numpy<1.11'
+            numpy_upper_version = '1.11'
         else:
             # CuPy v8 dropped NumPy<1.15
-            numpy_requires = 'numpy<1.16'
+            numpy_upper_version = '1.16'
+        numpy_requires = 'numpy>={},<{}'.format(
+            numpy_min_version, numpy_upper_version)
 
         conf = {
             'base': 'ubuntu16_py35',
@@ -307,10 +328,12 @@ def main():
 
     elif args.test == 'cupy-example':
         if version.get_cupy_version() < (8,):
-            numpy_requires = 'numpy<1.13'
+            numpy_upper_version = '1.13'
         else:
             # CuPy v8 dropped NumPy<1.15
-            numpy_requires = 'numpy<1.16'
+            numpy_upper_version = '1.16'
+        numpy_requires = 'numpy>={},<{}'.format(
+            numpy_min_version, numpy_upper_version)
 
         base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
         conf = {
