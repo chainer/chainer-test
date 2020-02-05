@@ -35,6 +35,11 @@ SPHINX_REQUIREMENTS_PIP = [
 ]
 
 
+def _get_job_name():
+    # Returns Jenkins job name. None if the test is not running inside Jenkins.
+    return os.getenv('JOB_NAME')
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
@@ -68,6 +73,11 @@ def main():
     if args.clone_chainer:
         version.clone_chainer()
 
+    if version.get_cupy_version() < (8,):
+        numpy_min_version = '1.9'
+    else:
+        numpy_min_version = '1.15'
+
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
     if ideep_min_version is None:
         ideep_req = None  # could not determine
@@ -80,13 +90,18 @@ def main():
 
     build_chainerx = False
     if args.test == 'chainer-py3':
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda101',
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'requires': [
-                'setuptools', 'pip', 'cython==0.29.13', 'numpy<1.18',
+                'setuptools', 'pip', 'cython==0.29.13',
+                'numpy>={},<1.18'.format(numpy_min_version),
                 'pillow',
             ],
         }
@@ -94,13 +109,18 @@ def main():
 
     elif args.test == 'chainer-py35':
         assert ideep_req is not None
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda92',
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.14',
+                'setuptools', 'cython==0.29.13',
+                'numpy>={},<1.14'.format(numpy_min_version),
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -140,7 +160,8 @@ def main():
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.16',
+                'setuptools', 'cython==0.29.13',
+                'numpy>={},<1.16'.format(numpy_min_version),
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
                 'pillow',
                 'ideep4py{}'.format(ideep_req),
@@ -149,28 +170,46 @@ def main():
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         base = 'ubuntu16_py35'
         conf = {
             'base': base,
             'cuda': 'cuda90',
             'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.2-cuda9',
-            'requires': ['setuptools', 'cython==0.29.13', 'numpy<1.13'],
+            'requires': [
+                'setuptools', 'cython==0.29.13',
+                'numpy>={},<1.13'.format(numpy_min_version),
+            ],
         }
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         base = 'ubuntu16_py35'
         conf = {
             'base': base,
             'cuda': 'cuda92',
             'cudnn': 'cudnn72-cuda92',
             'nccl': 'none',
-            'requires': ['setuptools', 'pip', 'cython==0.29.13', 'numpy<1.12'],
+            'requires': [
+                'setuptools', 'pip', 'cython==0.29.13',
+                'numpy>={},<1.12'.format(numpy_min_version),
+            ],
         }
         script = './test_prev_example.sh'
 
     elif args.test == 'chainer-doc':
+        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+            print('Skipping chainer test for CuPy>=8')
+            return
+
         # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
@@ -194,36 +233,61 @@ def main():
             'cudnn': 'cudnn75-cuda100',
             'nccl': 'nccl2.4-cuda100',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.18',
+                'setuptools', 'pip', 'cython==0.28.0',
+                'numpy>={},<1.18'.format(numpy_min_version),
             ],
         }
         script = './test_cupy.sh'
 
     elif args.test == 'cupy-py35':
+        if version.get_cupy_version() < (8,):
+            numpy_upper_version = '1.10'
+        else:
+            # CuPy v8 dropped NumPy<1.15
+            numpy_upper_version = '1.16'
+        numpy_requires = 'numpy>={},<{}'.format(
+            numpy_min_version, numpy_upper_version)
+
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda101',
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.10', 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
         }
         script = './test_cupy.sh'
 
     elif args.test == 'cupy-slow':
+        if version.get_cupy_version() < (8,):
+            numpy_upper_version = '1.11'
+        else:
+            # CuPy v8 dropped NumPy<1.15
+            numpy_upper_version = '1.16'
+        numpy_requires = 'numpy>={},<{}'.format(
+            numpy_min_version, numpy_upper_version)
+
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.11', 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
         }
         script = './test_cupy_slow.sh'
 
     elif args.test == 'cupy-example':
+        if version.get_cupy_version() < (8,):
+            numpy_upper_version = '1.13'
+        else:
+            # CuPy v8 dropped NumPy<1.15
+            numpy_upper_version = '1.16'
+        numpy_requires = 'numpy>={},<{}'.format(
+            numpy_min_version, numpy_upper_version)
+
         base = 'ubuntu16_py35'
         conf = {
             'base': base,
@@ -231,7 +295,7 @@ def main():
             'cudnn': 'cudnn5-cuda8',
             'nccl': 'nccl1.3',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.13', 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
         }
         script = './test_cupy_example.sh'
