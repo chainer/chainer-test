@@ -282,6 +282,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 'setuptools<42', 'pip', 'cython==0.28.0',
                 'numpy>={},<1.18'.format(numpy_min_version),
+                'scipy<1.5',
             ],
         }
         script = './test_cupy.sh'
@@ -301,7 +302,7 @@ def main():
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'requires': [
-                'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
+                'setuptools', 'cython==0.29.13', numpy_requires,
             ],
         }
         script = './test_cupy.sh'
