@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('--numpy',
                         choices=['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16', '1.17'],
                         required=True)
-    parser.add_argument('--scipy', choices=['none', '0.18', '0.19', '1.0'])
+    parser.add_argument('--scipy', choices=['none', '0.18', '0.19', '1.0', '1.4'])
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
     parser.add_argument('--h5py', choices=['none', '2.5', '2.6', '2.7', '2.8', '2.9', '2.10'])
     parser.add_argument('--pillow', choices=['none', '3.4', '4.0', '4.1', '6.2'])
@@ -102,6 +102,8 @@ if __name__ == '__main__':
         conf['requires'].append('scipy<0.20')
     elif args.scipy == '1.0':
         conf['requires'].append('scipy<1.1')
+    elif args.scipy == '1.4':
+        conf['requires'].append('scipy<1.5')
 
     if args.protobuf == '3':
         conf['requires'].append('protobuf<4')

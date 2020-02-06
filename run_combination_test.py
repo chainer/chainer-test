@@ -16,7 +16,7 @@ params = {
     'base': None,
     'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('chainer'),
     'numpy': docker.get_numpy_choices(),
-    'scipy': [None, '0.18', '0.19', '1.0'],
+    'scipy': [None, '0.18', '0.19', '1.0', '1.4'],
     'protobuf': ['3', 'cpp-3'],
     'h5py': [None, '2.5', '2.6', '2.7', '2.8', '2.9', '2.10'],
     'pillow': [None, '3.4', '4.0', '4.1', '6.2'],

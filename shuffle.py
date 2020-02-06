@@ -126,7 +126,7 @@ def _is_shuffle_params_valid(ret):
         if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16']:
             return False, 'NumPy version does not support Python 3.8'
         # Python 3.8 is first supported in SciPy 1.3.2.
-        if ret.get('scipy', None) in ['0.18', '0.19']:
+        if ret.get('scipy', None) in ['0.18', '0.19', '1.0']:
             return False, 'SciPy version does not support Python 3.8'
         # Python 3.8 is first supported in h5py 2.10.
         if ret.get('h5py', None) in ['2.5', '2.6', '2.7', '2.8', '2.9']:
