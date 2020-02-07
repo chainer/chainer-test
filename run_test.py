@@ -73,6 +73,14 @@ def main():
     if args.clone_chainer:
         version.clone_chainer()
 
+    skip_chainer_test = (
+        _get_job_name() == 'cupy_pr' and
+        (version.get_cupy_version() >= (8,) or
+         # is_master_branch() is required because v8 beta branch has v7 as
+         # the version number in _version.py.
+         # After releasing v8 as stable, remove this condition.
+         version.is_master_branch('cupy')))
+
     if version.get_cupy_version() < (8,):
         numpy_min_version = '1.9'
     else:
@@ -90,7 +98,7 @@ def main():
 
     build_chainerx = False
     if args.test == 'chainer-py3':
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -109,7 +117,7 @@ def main():
 
     elif args.test == 'chainer-py35':
         assert ideep_req is not None
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -170,7 +178,7 @@ def main():
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -188,7 +196,7 @@ def main():
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -206,7 +214,7 @@ def main():
         script = './test_prev_example.sh'
 
     elif args.test == 'chainer-doc':
-        if _get_job_name() == 'cupy_pr' and version.get_cupy_version() >= (8,):
+        if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
 
@@ -250,9 +258,9 @@ def main():
 
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda101',
-            'cudnn': 'cudnn75-cuda101',
-            'nccl': 'nccl2.4-cuda101',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda102',
             'requires': [
                 'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
