@@ -297,9 +297,9 @@ def main():
 
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda101',
-            'cudnn': 'cudnn75-cuda101',
-            'nccl': 'nccl2.4-cuda101',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda102',
             'requires': [
                 'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
