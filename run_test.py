@@ -47,7 +47,7 @@ def main():
         'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
         'chainer-head',
-        'cupy-py3', 'cupy-py35', 'cupy-slow', 'cupy-py3-cub',
+        'cupy-py3', 'cupy-py35', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cutensor',
         'cupy-example', 'cupy-doc',
         'cupy-head',
     ], required=True)
@@ -108,6 +108,7 @@ def main():
             'cuda': 'cuda101',
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
+            'cutensor': 'none',
             'requires': [
                 'setuptools', 'pip', 'cython==0.29.13',
                 'numpy>={},<1.18'.format(numpy_min_version),
@@ -127,6 +128,7 @@ def main():
             'cuda': 'cuda92',
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
+            'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
                 'numpy>={},<1.14'.format(numpy_min_version),
@@ -143,6 +145,7 @@ def main():
             'cuda': 'cuda101',
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
+            'cutensor': 'none',
             'requires': [
                 # Use '>=0.0.dev0' to install the latest pre-release version
                 # available on PyPI.
@@ -168,6 +171,7 @@ def main():
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
+            'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
                 'numpy>={},<1.16'.format(numpy_min_version),
@@ -189,6 +193,7 @@ def main():
             'cuda': 'cuda90',
             'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.2-cuda9',
+            'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
                 'numpy>={},<1.13'.format(numpy_min_version),
@@ -207,6 +212,7 @@ def main():
             'cuda': 'cuda92',
             'cudnn': 'cudnn72-cuda92',
             'nccl': 'none',
+            'cutensor': 'none',
             'requires': [
                 'setuptools', 'pip', 'cython==0.29.13',
                 'numpy>={},<1.12'.format(numpy_min_version),
@@ -227,6 +233,7 @@ def main():
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
+            'cutensor': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13', 'matplotlib',
                 'numpy>=1.15', 'scipy>=1.0', 'theano',
@@ -241,6 +248,21 @@ def main():
             'cuda': 'cuda100',
             'cudnn': 'cudnn75-cuda100',
             'nccl': 'nccl2.4-cuda100',
+            'cutensor': 'none',
+            'requires': [
+                'setuptools', 'pip', 'cython==0.28.0',
+                'numpy>={},<1.18'.format(numpy_min_version),
+            ],
+        }
+        script = './test_cupy.sh'
+
+    elif args.test == 'cupy-py3-cutensor':
+        conf = {
+            'base': 'ubuntu18_py38-pyenv',
+            'cuda': 'cuda100',
+            'cudnn': 'cudnn75-cuda100',
+            'nccl': 'nccl2.4-cuda100',
+            'cutensor': 'cutensor1.0.1-cuda10',
             'requires': [
                 'setuptools', 'pip', 'cython==0.28.0',
                 'numpy>={},<1.18'.format(numpy_min_version),
@@ -254,6 +276,7 @@ def main():
             'cuda': 'cuda100',
             'cudnn': 'cudnn75-cuda100',
             'nccl': 'nccl2.4-cuda100',
+            'cutensor': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 'setuptools<42', 'pip', 'cython==0.28.0',
@@ -277,6 +300,7 @@ def main():
             'cuda': 'cuda102',
             'cudnn': 'cudnn76-cuda102',
             'nccl': 'nccl2.5-cuda102',
+            'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
@@ -297,6 +321,7 @@ def main():
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
+            'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
@@ -318,6 +343,7 @@ def main():
             'cuda': 'cuda80',
             'cudnn': 'cudnn5-cuda8',
             'nccl': 'nccl1.3',
+            'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13', numpy_requires, 'scipy<0.19',
             ],
@@ -333,6 +359,7 @@ def main():
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
+            'cutensor': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13', 'numpy>=1.15',
                 # scipy 1.4 causes error during installation.
