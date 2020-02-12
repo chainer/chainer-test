@@ -93,7 +93,7 @@ def git_clone(organization, name, branch):
     print('cloning %s/%s %s' % (organization, name, branch))
     repository = 'https://github.com/%s/%s.git' % (organization, name)
     subprocess.check_call([
-        'git', 'clone', repository, '--depth=1', '-b', branch])
+        'git', 'clone', '--recursive', repository, '--depth=1', '-b', branch])
 
 
 def clone_cupy():
