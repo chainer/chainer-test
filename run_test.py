@@ -44,10 +44,10 @@ def main():
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--test', choices=[
-        'chainer-py2', 'chainer-py3', 'chainer-py35', 'chainer-slow',
+        'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
         'chainer-head',
-        'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-slow',
+        'cupy-py3', 'cupy-py35', 'cupy-slow',
         'cupy-example', 'cupy-doc',
         'cupy-head',
     ], required=True)
@@ -73,9 +73,6 @@ def main():
     if args.clone_chainer:
         version.clone_chainer()
 
-    support_py2 = not (version.is_master_branch('chainer') or
-                       version.is_master_branch('cupy'))
-
     skip_chainer_test = (
         _get_job_name() == 'cupy_pr' and
         (version.get_cupy_version() >= (8,) or
@@ -100,30 +97,7 @@ def main():
         raise RuntimeError('bad ideep version: {}'.format(ideep_min_version))
 
     build_chainerx = False
-    if args.test == 'chainer-py2':
-        if not support_py2:
-            print('Skipping Py2 test for master branch')
-            return
-        if skip_chainer_test:
-            print('Skipping chainer test for CuPy>=8')
-            return
-
-        conf = {
-            'base': 'ubuntu16_py27',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn51-cuda8',
-            'nccl': 'nccl1.3',
-            'requires': [
-                'setuptools<45',  # 45 dropped python 2
-                'pip', 'cython==0.28.0',
-                'numpy>={},<1.10'.format(numpy_min_version),
-                'scipy<0.19', 'h5py', 'theano', 'pillow',
-                'protobuf',  # ignore broken protobuf 3.2.0rc1
-            ]
-        }
-        script = './test.sh'
-
-    elif args.test == 'chainer-py3':
+    if args.test == 'chainer-py3':
         if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
             return
@@ -134,8 +108,7 @@ def main():
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'requires': [
-                # TODO(kmaehashi): Remove setuptools version restrictions
-                'setuptools<42', 'pip', 'cython==0.29.13',
+                'setuptools', 'pip', 'cython==0.29.13',
                 'numpy>={},<1.18'.format(numpy_min_version),
                 'pillow',
             ],
@@ -209,7 +182,7 @@ def main():
             print('Skipping chainer test for CuPy>=8')
             return
 
-        base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
+        base = 'ubuntu16_py35'
         conf = {
             'base': base,
             'cuda': 'cuda90',
@@ -227,7 +200,7 @@ def main():
             print('Skipping chainer test for CuPy>=8')
             return
 
-        base = 'ubuntu16_py27' if support_py2 else 'ubuntu16_py35'
+        base = 'ubuntu16_py35'
         conf = {
             'base': base,
             'cuda': 'cuda92',
@@ -261,25 +234,6 @@ def main():
         script = './test_doc.sh'
         build_chainerx = True
 
-    elif args.test == 'cupy-py2':
-        if not support_py2:
-            print('Skipping Py2 test for master branch')
-            return
-
-        conf = {
-            'base': 'ubuntu16_py27',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn51-cuda8',
-            'nccl': 'none',
-            'requires': [
-                'setuptools<45',  # 45 dropped python 2
-                'pip', 'cython==0.29.13',
-                'numpy>={},<1.16'.format(numpy_min_version),
-                'scipy<1.1',
-            ]
-        }
-        script = './test_cupy.sh'
-
     elif args.test == 'cupy-py3':
         conf = {
             'base': 'ubuntu18_py38-pyenv',
@@ -287,8 +241,7 @@ def main():
             'cudnn': 'cudnn75-cuda100',
             'nccl': 'nccl2.4-cuda100',
             'requires': [
-                # TODO(kmaehashi): Remove setuptools version restrictions
-                'setuptools<42', 'pip', 'cython==0.28.0',
+                'setuptools', 'pip', 'cython==0.28.0',
                 'numpy>={},<1.18'.format(numpy_min_version),
             ],
         }
@@ -343,7 +296,7 @@ def main():
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_upper_version)
 
-        base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
+        base = 'ubuntu16_py35'
         conf = {
             'base': base,
             'cuda': 'cuda80',
