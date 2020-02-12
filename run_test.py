@@ -47,7 +47,7 @@ def main():
         'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
         'chainer-head',
-        'cupy-py3', 'cupy-py35', 'cupy-slow',
+        'cupy-py3', 'cupy-py35', 'cupy-slow', 'cupy-py3-cub',
         'cupy-example', 'cupy-doc',
         'cupy-head',
     ], required=True)
@@ -97,6 +97,7 @@ def main():
         raise RuntimeError('bad ideep version: {}'.format(ideep_min_version))
 
     build_chainerx = False
+    use_cub = False
     if args.test == 'chainer-py3':
         if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
@@ -247,6 +248,21 @@ def main():
         }
         script = './test_cupy.sh'
 
+    elif args.test == 'cupy-py3-cub':
+        conf = {
+            'base': 'ubuntu18_py38-pyenv',
+            'cuda': 'cuda100',
+            'cudnn': 'cudnn75-cuda100',
+            'nccl': 'nccl2.4-cuda100',
+            'requires': [
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                'setuptools<42', 'pip', 'cython==0.28.0',
+                'numpy>={},<1.18'.format(numpy_min_version),
+            ],
+        }
+        script = './test_cupy.sh'
+        use_cub = True
+
     elif args.test == 'cupy-py35':
         if version.get_cupy_version() < (8,):
             numpy_upper_version = '1.10'
@@ -335,6 +351,7 @@ def main():
         'CUDNN': conf['cudnn'],
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
+        'CUB_DISABLED': '0' if use_cub else '1',
     }
     conf['requires'] += [
         'attrs<19.2.0',
