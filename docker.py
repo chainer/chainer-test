@@ -161,14 +161,14 @@ RUN pyenv global 3.4.8
 RUN pyenv rehash
 '''
 
-ubuntu_pyenv_base = '''FROM ubuntu:{ubuntu_ver}
+_ubuntu_pyenv_base = '''FROM ubuntu:{ubuntu_ver}
 
 ENV PATH /usr/lib/ccache:$PATH
 
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
     apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils pkg-config && \\
-    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make cmake && \\
+    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make cmake {additional_packages} && \\
     apt-get clean
 
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
@@ -180,24 +180,43 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install {python_ver}
 RUN pyenv global {python_ver}
 RUN pyenv rehash
+
+ENV NVCC_OPTS="{nvcc_opts}"
 '''
 
-codes['ubuntu16_py36-pyenv'] = ubuntu_pyenv_base.format(
+def generate_ubuntu_pyenv_base(
+        ubuntu_ver, python_ver, additional_packages=None, nvcc_opts=''):
+    if additional_packages is None:
+        additional_packages = []
+
+    return _ubuntu_pyenv_base.format(
+        ubuntu_ver=ubuntu_ver,
+        python_ver=python_ver,
+        additional_packages=(' '.join(additional_packages)),
+        nvcc_opts=nvcc_opts
+    )
+
+
+codes['ubuntu16_py36-pyenv'] = generate_ubuntu_pyenv_base(
     ubuntu_ver='16.04',
+    additional_packages=['gcc-7'],
+    nvcc_opts='--compiler-bindir gcc-7',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py36-pyenv')]),
 )
-codes['ubuntu16_py37-pyenv'] = ubuntu_pyenv_base.format(
+codes['ubuntu16_py37-pyenv'] = generate_ubuntu_pyenv_base(
     ubuntu_ver='16.04',
+    additional_packages=['gcc-7'],
+    nvcc_opts='--compiler-bindir gcc-7',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py37-pyenv')]),
 )
-codes['ubuntu18_py37-pyenv'] = ubuntu_pyenv_base.format(
+codes['ubuntu18_py37-pyenv'] = generate_ubuntu_pyenv_base(
     ubuntu_ver='18.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py37-pyenv')]),
 )
-codes['ubuntu18_py38-pyenv'] = ubuntu_pyenv_base.format(
+codes['ubuntu18_py38-pyenv'] = generate_ubuntu_pyenv_base(
     ubuntu_ver='18.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py38-pyenv')]),
@@ -247,7 +266,7 @@ RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.5.ta
     ln -s /usr/bin/ccache x86_64-linux-gnu-g++ && \\
     ln -s /usr/bin/ccache x86_64-redhat-linux-gcc && \\
     ln -s /usr/bin/ccache x86_64-redhat-linux-g++
-ENV NVCC="ccache nvcc"
+ENV NVCC="ccache nvcc ${NVCC_OPTS}"
 '''
 
 # cuda
