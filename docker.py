@@ -16,7 +16,7 @@ _base_name_and_python = [
     ('ubuntu18_py36', '3.6.7'),
     ('ubuntu18_py37-pyenv', '3.7.1'),
     ('ubuntu18_py38-pyenv', '3.8.0'),
-    ('centos7_py34-pyenv', '3.4.8')]
+    ('centos7_py35-pyenv', '3.5.2')]
 
 base_choices = [a[0] for a in _base_name_and_python]
 
