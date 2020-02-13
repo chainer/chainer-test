@@ -184,6 +184,7 @@ RUN pyenv rehash
 ENV NVCC_OPTS="{nvcc_opts}"
 '''
 
+
 def generate_ubuntu_pyenv_base(
         ubuntu_ver, python_ver, additional_packages=None, nvcc_opts=''):
     if additional_packages is None:
