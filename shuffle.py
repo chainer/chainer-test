@@ -170,8 +170,8 @@ def _is_shuffle_params_valid(ret):
         # https://docs.nvidia.com/deeplearning/sdk/nccl-install-guide/index.html#rhel_centos
         return False, 'NCCL is not supported in centos6'
 
-    if 'centos6' in base and cutensor != 'none':
-        return False, 'cuTENSOR is not supported in centos6'
+    if 'centos' in base and cutensor != 'none':
+        return False, 'cuTENSOR is not supported in centos'
 
     if (cuda == 'cuda80' and
             not any(base.startswith(x) for x in ['ubuntu16', 'centos6', 'centos7'])):
