@@ -9,7 +9,7 @@ import sys
 import version
 
 
-_base_choices = [
+_base_name_and_python = [
     ('ubuntu16_py35', '3.5.2'),
     ('ubuntu16_py36-pyenv', '3.6.6'),
     ('ubuntu16_py37-pyenv', '3.7.0'),
@@ -18,21 +18,7 @@ _base_choices = [
     ('ubuntu18_py38-pyenv', '3.8.0'),
     ('centos7_py34-pyenv', '3.4.8')]
 
-base_choices_all = [a[0] for a in _base_choices]
-
-# Python 3.5+
-base_choices_master = [
-    a[0] for a in _base_choices if
-    (a[1].startswith('3.') and not a[1].startswith('3.4.'))]
-
-# Python 2.7 & 3.5+
-base_choices_stable_chainer = [
-    a[0] for a in _base_choices if
-    a[1].startswith('2.') or
-    (a[1].startswith('3.') and not a[1].startswith('3.4.'))]
-
-# Python 2.7 & 3.4+
-base_choices_stable_cupy = base_choices_all
+base_choices = [a[0] for a in _base_name_and_python]
 
 cuda_choices = [
     'none',
@@ -89,7 +75,7 @@ cuda_nccls = {
 
 def get_python_version(base):
     """Returns the python version to be installed in a tuple."""
-    ver = next(a[1] for a in _base_choices if a[0] == base)
+    ver = next(a[1] for a in _base_name_and_python if a[0] == base)
     return tuple([int(s) for s in ver.split('.')])
 
 

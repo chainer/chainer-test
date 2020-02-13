@@ -10,7 +10,7 @@ import version
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
-    parser.add_argument('--base', choices=docker.base_choices_all, required=True)
+    parser.add_argument('--base', choices=docker.base_choices, required=True)
     parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
     parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
     parser.add_argument('--nccl', choices=docker.nccl_choices, required=True)
