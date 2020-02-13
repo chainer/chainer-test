@@ -169,6 +169,8 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.4.8
 RUN pyenv global 3.4.8
 RUN pyenv rehash
+
+ENV CUTENSOR_URL=https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/
 '''
 
 ubuntu_pyenv_base = '''FROM ubuntu:{ubuntu_ver}
@@ -663,12 +665,23 @@ codes['nccl2.5-cuda102'] = nccl_base.format(
 # cuTENSOR
 
 codes['cutensor1.0.1-cuda10'] = '''
-RUN curl -sL -o libcutensor1_1.0.1-1_amd64.deb $CUTENSOR_URL/libcutensor1_1.0.1-1_amd64.deb && \\
-    dpkg -i libcutensor1_1.0.1-1_amd64.deb && \\
-    rm libcutensor1_1.0.1-1_amd64.deb
-RUN curl -sL -o libcutensor-dev_1.0.1-1_amd64.deb $CUTENSOR_URL/libcutensor-dev_1.0.1-1_amd64.deb && \\
-    dpkg -i libcutensor-dev_1.0.1-1_amd64.deb  && \\
-    rm libcutensor-dev_1.0.1-1_amd64.deb
+# Ubuntu
+
+RUN if [  -n "$(cat /etc/os-release | grep Ubuntu)" ]; then \\
+        curl -sL -o libcutensor1_1.0.1-1_amd64.deb $CUTENSOR_URL/libcutensor1_1.0.1-1_amd64.deb && \\
+        dpkg -i libcutensor1_1.0.1-1_amd64.deb && \\
+        rm libcutensor1_1.0.1-1_amd64.deb && \\
+        curl -sL -o libcutensor-dev_1.0.1-1_amd64.deb $CUTENSOR_URL/libcutensor-dev_1.0.1-1_amd64.deb && \\
+        dpkg -i libcutensor-dev_1.0.1-1_amd64.deb  && \\
+        rm libcutensor-dev_1.0.1-1_amd64.deb ; \\
+    else \\
+        curl -sL -o libcutensor1_1.0.1-1_amd64.rpm $CUTENSOR_URL/libcutensor1-1.0.1-1.x86_64.rpm && \\
+        rpm -i libcutensor1_1.0.1-1_amd64.rpm && \\
+        rm libcutensor1_1.0.1-1_amd64.rpm && \\
+        curl -sL -o libcutensor-dev_1.0.1-1_amd64.rpm $CUTENSOR_URL/libcutensor-devel-1.0.1-1.x86_64.rpm && \\
+        rpm -i libcutensor-dev_1.0.1-1_amd64.rpm  && \\
+        rm libcutensor-dev_1.0.1-1_amd64.rpm ; \\
+    fi
 '''
 
 protobuf_cpp_base = '''
