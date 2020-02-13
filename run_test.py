@@ -109,7 +109,9 @@ def main():
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'requires': [
-                'setuptools', 'pip', 'cython==0.29.13',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/chainer/chainer-test/issues/565
+                'setuptools<42', 'pip', 'cython==0.29.13',
                 'numpy>={},<1.18'.format(numpy_min_version),
                 'pillow',
             ],
@@ -242,7 +244,9 @@ def main():
             'cudnn': 'cudnn75-cuda100',
             'nccl': 'nccl2.4-cuda100',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.0',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/chainer/chainer-test/issues/565
+                'setuptools<42', 'pip', 'cython==0.28.0',
                 'numpy>={},<1.18'.format(numpy_min_version),
             ],
         }
@@ -256,6 +260,7 @@ def main():
             'nccl': 'nccl2.4-cuda100',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/chainer/chainer-test/issues/565
                 'setuptools<42', 'pip', 'cython==0.28.0',
                 'numpy>={},<1.18'.format(numpy_min_version),
             ],
