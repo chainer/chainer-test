@@ -47,7 +47,7 @@ if __name__ == '__main__':
     pip_require = 'pip<19.2' if docker.get_python_version(conf['base'])[:2] == (3, 4) else 'pip'
 
     conf['requires'] = [
-        'setuptools',
+        'setuptools<42',
         pip_require,
         'cython==0.29.13'
     ] + conf['requires'] + [
