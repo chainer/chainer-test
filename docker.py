@@ -664,25 +664,32 @@ codes['nccl2.5-cuda102'] = nccl_base.format(
 
 # cuTENSOR
 
-codes['cutensor1.0.1-cuda10'] = '''
-# Ubuntu
+codes['cutensor1.0.1-cuda10'] = {}
 
-RUN if [  -n "$(cat /etc/os-release | grep Ubuntu)" ]; then \\
-        curl -sL -o libcutensor1_1.0.1-1_amd64.deb $CUTENSOR_URL/libcutensor1_1.0.1-1_amd64.deb && \\
-        dpkg -i libcutensor1_1.0.1-1_amd64.deb && \\
-        rm libcutensor1_1.0.1-1_amd64.deb && \\
-        curl -sL -o libcutensor-dev_1.0.1-1_amd64.deb $CUTENSOR_URL/libcutensor-dev_1.0.1-1_amd64.deb && \\
-        dpkg -i libcutensor-dev_1.0.1-1_amd64.deb  && \\
-        rm libcutensor-dev_1.0.1-1_amd64.deb ; \\
-    else \\
-        curl -sL -o libcutensor1_1.0.1-1_amd64.rpm $CUTENSOR_URL/libcutensor1-1.0.1-1.x86_64.rpm && \\
-        rpm -i libcutensor1_1.0.1-1_amd64.rpm && \\
-        rm libcutensor1_1.0.1-1_amd64.rpm && \\
-        curl -sL -o libcutensor-dev_1.0.1-1_amd64.rpm $CUTENSOR_URL/libcutensor-devel-1.0.1-1.x86_64.rpm && \\
-        rpm -i libcutensor-dev_1.0.1-1_amd64.rpm  && \\
-        rm libcutensor-dev_1.0.1-1_amd64.rpm ; \\
-    fi
+_ubuntu_cutensor = '''
+RUN curl -sL -o libcutensor1_1.0.1-1_amd64.deb $CUTENSOR_URL/libcutensor1_1.0.1-1_amd64.deb && \\
+    dpkg -i libcutensor1_1.0.1-1_amd64.deb && \\
+    rm libcutensor1_1.0.1-1_amd64.deb && \\
+    curl -sL -o libcutensor-dev_1.0.1-1_amd64.deb $CUTENSOR_URL/libcutensor-dev_1.0.1-1_amd64.deb && \\
+    dpkg -i libcutensor-dev_1.0.1-1_amd64.deb  && \\
+    rm libcutensor-dev_1.0.1-1_amd64.deb ;
 '''
+
+codes['cutensor1.0.1-cuda10']['centos7_py34'] = '''
+RUN curl -sL -o libcutensor1_1.0.1-1_amd64.rpm $CUTENSOR_URL/libcutensor1-1.0.1-1.x86_64.rpm && \\
+    rpm -i libcutensor1_1.0.1-1_amd64.rpm && \\
+    rm libcutensor1_1.0.1-1_amd64.rpm && \\
+    curl -sL -o libcutensor-dev_1.0.1-1_amd64.rpm $CUTENSOR_URL/libcutensor-devel-1.0.1-1.x86_64.rpm && \\
+    rpm -i libcutensor-dev_1.0.1-1_amd64.rpm  && \\
+    rm libcutensor-dev_1.0.1-1_amd64.rpm ;
+'''
+
+codes['cutensor1.0.1-cuda10']['ubuntu16_py35'] = _ubuntu_cutensor
+codes['cutensor1.0.1-cuda10']['ubuntu16_py36-pyenv'] = _ubuntu_cutensor
+codes['cutensor1.0.1-cuda10']['ubuntu16_py37-pyenv'] = _ubuntu_cutensor
+codes['cutensor1.0.1-cuda10']['ubuntu18_py36'] = _ubuntu_cutensor
+codes['cutensor1.0.1-cuda10']['ubuntu18_py37-pyenv'] = _ubuntu_cutensor
+codes['cutensor1.0.1-cuda10']['ubuntu18_py38-pyenv'] = _ubuntu_cutensor
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
@@ -732,7 +739,7 @@ def make_dockerfile(conf):
     dockerfile += codes[conf['cudnn']]
     dockerfile += ccache
     dockerfile += codes[conf['nccl']]
-    dockerfile += codes[conf['cutensor']]
+    dockerfile += codes[conf['cutensor']][conf['base']]
 
     if 'protobuf-cpp' in conf:
         dockerfile += codes[conf['protobuf-cpp']]
