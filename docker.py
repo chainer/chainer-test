@@ -61,6 +61,10 @@ nccl_choices = [
     'nccl2.3-cuda9', 'nccl2.3-cuda92', 'nccl2.3-cuda100',
     'nccl2.4-cuda9', 'nccl2.4-cuda92', 'nccl2.4-cuda100', 'nccl2.4-cuda101',
 ]
+cutensor_choices = [
+    'none',
+    'cutensor1.0.1-cuda10',
+]
 
 cuda_cudnns = {
     'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
@@ -85,6 +89,10 @@ cuda_nccls = {
     'cuda101': ['nccl2.4-cuda101'],
     'cuda102': ['nccl2.5-cuda102'],
 }
+cuda_cutensors = {
+    'cuda101': ['cutensor1.0.1-cuda10'],
+    'cuda102': ['cutensor1.0.1-cuda10'],
+}
 
 
 def get_python_version(base):
@@ -93,7 +101,7 @@ def get_python_version(base):
     return tuple([int(s) for s in ver.split('.')])
 
 
-def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
+def get_cuda_libs_choices(target, with_dummy=False):
     assert target in ['chainer', 'cupy']
 
     cupy_version = version.get_cupy_version()
@@ -108,6 +116,7 @@ def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
             continue
         cudnns = ['none'] + cuda_cudnns[cuda]
         nccls = ['none'] + cuda_nccls[cuda]
+        cutensors = ['none'] + cuda_cutensors.get(cuda, [])
         if cupy_major < 2:
             # only cupy>=v2 supports cudnn7
             cudnns = [c for c in cudnns if c < 'cudnn7']
@@ -116,10 +125,11 @@ def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
 
         for cudnn in cudnns:
             for nccl in nccls:
-                choices.append((cuda, cudnn, nccl))
+                for cutensor in cutensors:
+                    choices.append((cuda, cudnn, nccl, cutensor))
 
     if target == 'chainer':
-        choices = [('none', 'none', 'none')] + choices
+        choices = [('none', 'none', 'none', 'none')] + choices
 
     return choices
 
@@ -159,6 +169,26 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.4.8
 RUN pyenv global 3.4.8
 RUN pyenv rehash
+
+ENV CUTENSOR_URL=https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/
+
+ENV CUTENSOR_INSTALL='install_cutensor() {{ curl -sL -o libcutensor1_$1-1_amd64.rpm $CUTENSOR_URL/libcutensor1-$1-1.x86_64.rpm && \\
+    rpm -i libcutensor1_$1-1_amd64.rpm && \\
+    rm libcutensor1_$1-1_amd64.rpm && \\
+    curl -sL -o libcutensor-dev_$1-1_amd64.rpm $CUTENSOR_URL/libcutensor-devel-$1-1.x86_64.rpm && \\
+    rpm -i libcutensor-dev_$1-1_amd64.rpm  && \\
+    rm libcutensor-dev_$1-1_amd64.rpm; }};'
+'''
+
+cutensor_ubuntu_install = '''
+ENV CUTENSOR_URL=https://developer.download.nvidia.com/compute/cuda/repos/ubuntu{cutensor_os_ver}/x86_64
+
+ENV CUTENSOR_INSTALL='install_cutensor() {{ curl -sL -o libcutensor1_$1-1_amd64.deb $CUTENSOR_URL/libcutensor1_$1-1_amd64.deb && \\
+    dpkg -i libcutensor1_$1-1_amd64.deb && \\
+    rm libcutensor1_$1-1_amd64.deb && \\
+    curl -sL -o libcutensor-dev_$1-1_amd64.deb $CUTENSOR_URL/libcutensor-dev_$1-1_amd64.deb && \\
+    dpkg -i libcutensor-dev_$1-1_amd64.deb  && \\
+    rm libcutensor-dev_$1-1_amd64.deb; }};'
 '''
 
 ubuntu_pyenv_base = '''FROM ubuntu:{ubuntu_ver}
@@ -180,27 +210,37 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install {python_ver}
 RUN pyenv global {python_ver}
 RUN pyenv rehash
+
+{cutensor_ubuntu_install}
 '''
 
 codes['ubuntu16_py36-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='16.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py36-pyenv')]),
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1604')
 )
 codes['ubuntu16_py37-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='16.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py37-pyenv')]),
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1604')
 )
 codes['ubuntu18_py37-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='18.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py37-pyenv')]),
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1804')
 )
 codes['ubuntu18_py38-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='18.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py38-pyenv')]),
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1804')
 )
 
 codes['ubuntu16_py35'] = '''FROM ubuntu:16.04
@@ -215,7 +255,11 @@ RUN apt-get -y update && \\
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
-'''
+
+{cutensor_ubuntu_install}
+'''.format(
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1604'))
 
 codes['ubuntu18_py36'] = '''FROM ubuntu:18.04
 
@@ -229,7 +273,11 @@ RUN apt-get -y update && \\
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
-'''
+
+{cutensor_ubuntu_install}
+'''.format(
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1604'))
 
 # ccache
 
@@ -640,6 +688,10 @@ codes['nccl2.5-cuda102'] = nccl_base.format(
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
+# cuTENSOR
+# The shell script needs to be saved in an env var due to Dockerfile limitations
+codes['cutensor1.0.1-cuda10'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.0.1;'
+
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
 RUN tmpdir=`mktemp -d` && \\
@@ -688,6 +740,7 @@ def make_dockerfile(conf):
     dockerfile += codes[conf['cudnn']]
     dockerfile += ccache
     dockerfile += codes[conf['nccl']]
+    dockerfile += codes[conf['cutensor']]
 
     if 'protobuf-cpp' in conf:
         dockerfile += codes[conf['protobuf-cpp']]

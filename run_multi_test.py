@@ -14,6 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
     parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
     parser.add_argument('--nccl', choices=docker.nccl_choices, required=True)
+    parser.add_argument('--cutensor', choices=docker.cutensor_choices, required=True)
     parser.add_argument('--ideep', choices=['none', '1.0', '2.0'], required=True)
     parser.add_argument('--numpy',
                         choices=['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16', '1.17'],
@@ -53,6 +54,7 @@ if __name__ == '__main__':
         'cuda': args.cuda,
         'cudnn': args.cudnn,
         'nccl': args.nccl,
+        'cutensor': args.cutensor,
         'requires': ['setuptools', 'pip', 'cython==0.29.6'],
     }
 
