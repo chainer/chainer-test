@@ -73,15 +73,16 @@ def main():
     if args.clone_chainer:
         version.clone_chainer()
 
-    skip_chainer_test = (
-        _get_job_name() == 'cupy_pr' and
-        (version.get_cupy_version() >= (8,) or
-         # is_master_branch() is required because v8 beta branch has v7 as
-         # the version number in _version.py.
-         # After releasing v8 as stable, remove this condition.
-         version.is_master_branch('cupy')))
+    is_cupy_8_or_later = (
+        version.get_cupy_version() >= (8,) or
+        # is_master_branch() is required because v8 beta branch has v7 as
+        # the version number in _version.py.
+        # After releasing v8 as stable, remove this condition.
+        version.is_master_branch('cupy'))
 
-    if version.get_cupy_version() < (8,):
+    skip_chainer_test = _get_job_name() == 'cupy_pr' and is_cupy_8_or_later
+
+    if not is_cupy_8_or_later:
         numpy_min_version = '1.9'
         numpy_newest_upper_version = '1.18'
         scipy_min_version = '0.18'
@@ -317,8 +318,7 @@ def main():
         use_cub = True
 
     elif args.test == 'cupy-py35':
-        # Test for old NumPy/SciPy versions
-        if version.get_cupy_version() < (8,):
+        if not is_cupy_8_or_later:
             numpy_upper_version = '1.10'
             scipy_upper_version = '0.19'
         else:
@@ -345,8 +345,7 @@ def main():
         script = './test_cupy.sh'
 
     elif args.test == 'cupy-slow':
-        # Test for old NumPy/SciPy versions
-        if version.get_cupy_version() < (8,):
+        if not is_cupy_8_or_later:
             numpy_upper_version = '1.11'
             scipy_upper_version = '0.19'
         else:
@@ -373,8 +372,7 @@ def main():
         script = './test_cupy_slow.sh'
 
     elif args.test == 'cupy-example':
-        # Test for old NumPy/SciPy versions
-        if version.get_cupy_version() < (8,):
+        if not is_cupy_8_or_later:
             numpy_upper_version = '1.13'
             scipy_upper_version = '0.19'
         else:
