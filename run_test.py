@@ -275,7 +275,7 @@ def main():
             'nccl': 'nccl2.4-cuda100',
             'cutensor': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.0',
+                'setuptools<42', 'pip', 'cython==0.28.0',
                 'numpy>={},<1.18'.format(numpy_min_version),
             ],
         }
