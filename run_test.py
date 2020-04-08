@@ -282,6 +282,8 @@ def main():
         script = './test_cupy.sh'
 
     elif args.test == 'cupy-py3-cutensor':
+        numpy_requires = 'numpy>={},<{}'.format(
+            numpy_min_version, numpy_newest_upper_version)
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda100',
