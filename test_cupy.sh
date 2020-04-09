@@ -4,6 +4,9 @@ pip install --user -e cupy/
 
 cd cupy
 
+# Shows cupy config before running the tests
+python -c 'import cupy; cupy.show_config()'
+
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 pytest_opts=(
