@@ -31,12 +31,10 @@ if __name__ == '__main__':
     argconfig.setup_argument_parser(parser)
     args = parser.parse_args()
 
+    params['base'] = docker.base_choices
     if version.is_master_branch('cupy'):
-        params['base'] = docker.base_choices_master
         params['numpy'] = ['1.15', '1.16', '1.17', '1.18']
         params['cython'] = ['0.29.13', '0.29.14']
-    else:
-        params['base'] = docker.base_choices_stable_cupy
 
     # make sdist
     # cuda, cudnn and numpy is required to make a sdist file.
