@@ -126,7 +126,7 @@ codes = {}
 
 # base
 
-codes['centos7_py34-pyenv'] = '''FROM centos:7
+codes['centos7_py35-pyenv'] = '''FROM centos:7
 
 ENV PATH /usr/lib64/ccache:$PATH
 
@@ -142,8 +142,8 @@ RUN mkdir "$PYENV_ROOT/shims"
 RUN chmod o+w "$PYENV_ROOT/shims"
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.4.8
-RUN pyenv global 3.4.8
+RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.5.2
+RUN pyenv global 3.5.2
 RUN pyenv rehash
 '''
 
