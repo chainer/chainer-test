@@ -4,6 +4,8 @@ pip install --user -e cupy/
 
 cd cupy/docs
 
+pip install --user -r requirements.txt
+
 export SPHINXOPTS=-W
 
 # Generate HTML and preserve it for preview.

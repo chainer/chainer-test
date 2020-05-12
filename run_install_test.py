@@ -11,7 +11,7 @@ import version
 
 params = {
     'base': None,
-    'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('chainer', with_dummy=True),
+    'cuda_libs': docker.get_cuda_libs_choices('chainer', with_dummy=True),
     'numpy': ['1.9', '1.10', '1.11', '1.12'],
     # Chainer does not require Cython, so it should be able to be installed
     # with any Cython version.
@@ -39,6 +39,7 @@ if __name__ == '__main__':
         'cuda': 'none',
         'cudnn': 'none',
         'nccl': 'none',
+        'cutensor': 'none',
         'requires': [],
     }
     volume = []
