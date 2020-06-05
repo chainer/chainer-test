@@ -47,8 +47,8 @@ def main():
         'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
         'chainer-head',
-        'cupy-py3', 'cupy-py35', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cutensor',
-        'cupy-example', 'cupy-doc',
+        'cupy-py3', 'cupy-py35', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cub-block',
+        'cupy-py3-cub-all', 'cupy-py3-cutensor', 'cupy-example', 'cupy-doc',
         'cupy-head',
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
@@ -105,6 +105,7 @@ def main():
 
     build_chainerx = False
     use_cub = False
+    use_cub_block = False
     if args.test == 'chainer-py3':
         if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
@@ -317,6 +318,43 @@ def main():
         script = './test_cupy.sh'
         use_cub = True
 
+    elif args.test == 'cupy-py3-cub-block':
+        numpy_requires = 'numpy>={},<{}'.format(
+            numpy_min_version, numpy_newest_upper_version)
+        conf = {
+            'base': 'ubuntu18_py38-pyenv',
+            'cuda': 'cuda100',
+            'cudnn': 'cudnn75-cuda100',
+            'nccl': 'nccl2.4-cuda100',
+            'cutensor': 'none',
+            'requires': [
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/chainer/chainer-test/issues/565
+                'setuptools<42', 'pip', 'cython==0.28.0', numpy_requires
+            ],
+        }
+        script = './test_cupy.sh'
+        use_cub_block = True
+
+    elif args.test == 'cupy-py3-cub-all':
+        numpy_requires = 'numpy>={},<{}'.format(
+            numpy_min_version, numpy_newest_upper_version)
+        conf = {
+            'base': 'ubuntu18_py38-pyenv',
+            'cuda': 'cuda100',
+            'cudnn': 'cudnn75-cuda100',
+            'nccl': 'nccl2.4-cuda100',
+            'cutensor': 'none',
+            'requires': [
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/chainer/chainer-test/issues/565
+                'setuptools<42', 'pip', 'cython==0.28.0', numpy_requires
+            ],
+        }
+        script = './test_cupy.sh'
+        use_cub = True
+        use_cub_block = True
+
     elif args.test == 'cupy-py35':
         if not is_cupy_8_or_later:
             numpy_upper_version = '1.10'
@@ -431,6 +469,7 @@ def main():
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
         'CUB_DISABLED': '0' if use_cub else '1',
+        'CUPY_CUB_BLOCK_REDUCTION_DISABLED': '0' if use_cub_block else '1',
     }
     conf['requires'] += [
         'attrs<19.2.0',
