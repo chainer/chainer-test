@@ -277,7 +277,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.28.0',
-                'numpy>={},<1.18'.format(numpy_min_version),
+                'numpy>={},<1.18'.format(numpy_min_version), 'optuna',
             ],
         }
         script = './test_cupy.sh'
@@ -415,7 +415,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13',
-                numpy_requires, scipy_requires,
+                numpy_requires, scipy_requires, 'optuna',
             ] + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
