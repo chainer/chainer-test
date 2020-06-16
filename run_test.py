@@ -267,6 +267,10 @@ def main():
         build_chainerx = True
 
     elif args.test == 'cupy-py3':
+        requires = []
+        if is_cupy_8_or_later:
+            requires = ['optuna']
+
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_newest_upper_version)
         conf = {
@@ -277,8 +281,8 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.28.0',
-                'numpy>={},<1.18'.format(numpy_min_version), 'optuna',
-            ],
+                'numpy>={},<1.18'.format(numpy_min_version),
+            ] + requires,
         }
         script = './test_cupy.sh'
 
@@ -400,6 +404,10 @@ def main():
         script = './test_cupy_example.sh'
 
     elif args.test == 'cupy-doc':
+        requires = []
+        if is_cupy_8_or_later:
+            requires = ['optuna']
+
         # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
@@ -415,8 +423,8 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13',
-                numpy_requires, scipy_requires, 'optuna',
-            ] + SPHINX_REQUIREMENTS_PIP
+                numpy_requires, scipy_requires,
+            ] + requires + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
 
