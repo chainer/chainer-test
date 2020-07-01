@@ -91,7 +91,7 @@ def main():
         numpy_min_version = '1.15'
         numpy_newest_upper_version = '1.20'
         scipy_min_version = '1.1'
-        scipy_newest_upper_version = '1.5'
+        scipy_newest_upper_version = '1.6'
 
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
     if ideep_min_version is None:
