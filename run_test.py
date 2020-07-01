@@ -89,7 +89,7 @@ def main():
         scipy_newest_upper_version = '1.5'
     else:
         numpy_min_version = '1.15'
-        numpy_newest_upper_version = '1.19'
+        numpy_newest_upper_version = '1.20'
         scipy_min_version = '1.1'
         scipy_newest_upper_version = '1.5'
 
