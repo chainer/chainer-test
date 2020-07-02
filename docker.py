@@ -193,7 +193,9 @@ ENV CUTENSOR_INSTALL='install_cutensor() {{ curl -sL -o libcutensor1_$1-1_amd64.
 '''
 
 ubuntu16_apt_install_gcc7 = '''
-RUN add-apt-repository ppa:ubuntu-toolchain-r/test && \\
+RUN apt-get update && \
+    apt-get install software-properties-common && \\
+    add-apt-repository ppa:ubuntu-toolchain-r/test && \\
     apt-get update && \\
     apt-get install g++-7 && \\
     apt-get clean
