@@ -1,5 +1,7 @@
 #!/bin/sh -ex
 
+source environment.sh
+
 pip install --user -e cupy/
 
 cd chainer

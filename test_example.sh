@@ -1,5 +1,7 @@
 #!/bin/sh -ex
 
+source environment.sh
+
 pip install -U pip --user
 
 pip install --user -e cupy/
