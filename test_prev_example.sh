@@ -1,6 +1,6 @@
 #!/bin/sh -ex
 
-. environment.sh
+. ./environment.sh
 
 PREV_VER=2.0.0
 CHAINER_DIR=chainer-${PREV_VER}
