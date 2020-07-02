@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-source environment.sh
+. environment.sh
 
 pip install --user -e chainer/
 

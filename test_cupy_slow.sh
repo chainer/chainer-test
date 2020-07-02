@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-source environment.sh
+. environment.sh
 
 pip install --user -e cupy/
 

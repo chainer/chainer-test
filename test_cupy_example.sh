@@ -1,6 +1,6 @@
 #!/bin/sh -ex
 
-source environment.sh
+. environment.sh
 
 pip install -U pip --user
 
