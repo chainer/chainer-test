@@ -104,7 +104,8 @@ def main():
         raise RuntimeError('bad ideep version: {}'.format(ideep_min_version))
 
     build_chainerx = False
-    use_cub = False
+    cupy_backends = []
+
     if args.test == 'chainer-py3':
         if skip_chainer_test:
             print('Skipping chainer test for CuPy>=8')
@@ -302,6 +303,7 @@ def main():
             ],
         }
         script = './test_cupy.sh'
+        # cupy_backends += ['cutensor']
 
     elif args.test == 'cupy-py3-cub':
         numpy_requires = 'numpy>={},<{}'.format(
@@ -319,7 +321,7 @@ def main():
             ],
         }
         script = './test_cupy.sh'
-        use_cub = True
+        cupy_backends += ['cub']
 
     elif args.test == 'cupy-py35':
         if not is_cupy_8_or_later:
@@ -438,7 +440,7 @@ def main():
         'CUDNN': conf['cudnn'],
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
-        'CUB_DISABLED': '0' if use_cub else '1',
+        'CUPY_BACKENDS': ','.join(cupy_backends),
     }
     conf['requires'] += [
         'attrs<19.2.0',
