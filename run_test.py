@@ -394,8 +394,8 @@ def main():
         base = 'ubuntu16_py35'
         conf = {
             'base': base,
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn5-cuda8',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn75-cuda92',
             'nccl': 'nccl1.3',
             'cutensor': 'none',
             'requires': [
@@ -419,8 +419,8 @@ def main():
             scipy_min_version, '1.4')
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl1.3',
             'cutensor': 'none',
             'requires': [
