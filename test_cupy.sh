@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+. ./environment.sh
+
 pip install --user -e cupy/
 
 cd cupy

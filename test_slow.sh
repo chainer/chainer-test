@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+. ./environment.sh
+
 # Chainer setup script installs specific version of CuPy.
 # We need to install Chainer first for test.
 pip install --user -e chainer/

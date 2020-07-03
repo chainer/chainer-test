@@ -1,5 +1,7 @@
 #!/bin/sh -ex
 
+. ./environment.sh
+
 timeout 20m pip install -vvvv cupy/dist/*.tar.gz --user
 
 # check if cupy is installed

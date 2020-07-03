@@ -54,7 +54,7 @@ cudnn_choices = [
 ]
 nccl_choices = [
     'none',
-    'nccl1.3',
+    'nccl1.3',  # for CUDA 8.0
     'nccl2.0-cuda8', 'nccl2.0-cuda9',
     'nccl2.1-cuda91',
     'nccl2.2-cuda9', 'nccl2.2-cuda92',
@@ -154,9 +154,10 @@ codes['centos7_py34-pyenv'] = '''FROM centos:7
 
 ENV PATH /usr/lib64/ccache:$PATH
 
+# devtoolset-6 needs to be activated by: `source /opt/rh/devtoolset-6/enable`
 RUN yum -y update && \\
-    yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
+    yum -y install centos-release-scl epel-release && \\
+    yum -y install devtoolset-6 gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -191,6 +192,15 @@ ENV CUTENSOR_INSTALL='install_cutensor() {{ curl -sL -o libcutensor1_$1-1_amd64.
     rm libcutensor-dev_$1-1_amd64.deb; }};'
 '''
 
+ubuntu16_apt_install_gcc = '''
+RUN apt-get -y update && \
+    apt-get -y install software-properties-common && \\
+    add-apt-repository ppa:ubuntu-toolchain-r/test && \\
+    apt-get -y update && \\
+    apt-get -y install g++-6 && \\
+    apt-get clean
+'''
+
 ubuntu_pyenv_base = '''FROM ubuntu:{ubuntu_ver}
 
 ENV PATH /usr/lib/ccache:$PATH
@@ -200,6 +210,8 @@ RUN apt-get -y update && \\
     apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils pkg-config && \\
     apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make cmake && \\
     apt-get clean
+
+{gcc_install}
 
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
@@ -218,6 +230,7 @@ codes['ubuntu16_py36-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='16.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py36-pyenv')]),
+    gcc_install=ubuntu16_apt_install_gcc,
     cutensor_ubuntu_install=cutensor_ubuntu_install.format(
         cutensor_os_ver='1604')
 )
@@ -225,6 +238,7 @@ codes['ubuntu16_py37-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='16.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py37-pyenv')]),
+    gcc_install=ubuntu16_apt_install_gcc,
     cutensor_ubuntu_install=cutensor_ubuntu_install.format(
         cutensor_os_ver='1604')
 )
@@ -232,6 +246,7 @@ codes['ubuntu18_py37-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='18.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py37-pyenv')]),
+    gcc_install='',
     cutensor_ubuntu_install=cutensor_ubuntu_install.format(
         cutensor_os_ver='1804')
 )
@@ -239,6 +254,7 @@ codes['ubuntu18_py38-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='18.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py38-pyenv')]),
+    gcc_install='',
     cutensor_ubuntu_install=cutensor_ubuntu_install.format(
         cutensor_os_ver='1804')
 )
@@ -253,11 +269,14 @@ RUN apt-get -y update && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
+{gcc_install}
+
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 
 {cutensor_ubuntu_install}
 '''.format(
+    gcc_install=ubuntu16_apt_install_gcc,
     cutensor_ubuntu_install=cutensor_ubuntu_install.format(
         cutensor_os_ver='1604'))
 

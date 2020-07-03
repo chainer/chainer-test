@@ -394,9 +394,9 @@ def main():
         base = 'ubuntu16_py35'
         conf = {
             'base': base,
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn5-cuda8',
-            'nccl': 'nccl1.3',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn75-cuda92',
+            'nccl': 'nccl2.2-cuda92',
             'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
@@ -419,9 +419,9 @@ def main():
             scipy_min_version, '1.4')
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
-            'nccl': 'nccl1.3',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn71-cuda92',
+            'nccl': 'nccl2.4-cuda92',
             'cutensor': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13',
@@ -437,6 +437,7 @@ def main():
 
     volume = []
     env = {
+        'CUPY_V8': '1' if is_cupy_8_or_later else '0',
         'CUDNN': conf['cudnn'],
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
