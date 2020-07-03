@@ -54,7 +54,7 @@ cudnn_choices = [
 ]
 nccl_choices = [
     'none',
-    'nccl1.3',
+    'nccl1.3',  # for CUDA 8.0
     'nccl2.0-cuda8', 'nccl2.0-cuda9',
     'nccl2.1-cuda91',
     'nccl2.2-cuda9', 'nccl2.2-cuda92',

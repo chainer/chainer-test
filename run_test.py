@@ -396,7 +396,7 @@ def main():
             'base': base,
             'cuda': 'cuda92',
             'cudnn': 'cudnn75-cuda92',
-            'nccl': 'nccl1.3',
+            'nccl': 'nccl2.2-cuda92',
             'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
@@ -421,7 +421,7 @@ def main():
             'base': 'ubuntu16_py35',
             'cuda': 'cuda92',
             'cudnn': 'cudnn71-cuda92',
-            'nccl': 'nccl1.3',
+            'nccl': 'nccl2.4-cuda92',
             'cutensor': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13',
