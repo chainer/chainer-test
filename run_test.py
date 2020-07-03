@@ -37,6 +37,7 @@ SPHINX_REQUIREMENTS_PIP = [
 
 def _get_job_name():
     # Returns Jenkins job name. None if the test is not running inside Jenkins.
+    # e.g., `chainer/cupy_pr/TEST=cupy-py3,label=mn1-p100`
     return os.getenv('JOB_NAME')
 
 
@@ -80,15 +81,15 @@ def main():
         # After releasing v8 as stable, remove this condition.
         version.is_master_branch('cupy'))
 
-    skip_chainer_test = (
-        _get_job_name() == 'chainer/cupy_pr' and is_cupy_8_or_later)
-
     if not is_cupy_8_or_later:
         numpy_min_version = '1.9'
         numpy_newest_upper_version = '1.18'
         scipy_min_version = '0.18'
         scipy_newest_upper_version = '1.5'
     else:
+        if args.test.startswith('chainer-'):
+            print('Skipping chainer test for CuPy>=8')
+            return
         numpy_min_version = '1.15'
         numpy_newest_upper_version = '1.20'
         scipy_min_version = '1.1'
@@ -108,10 +109,6 @@ def main():
     cupy_backends = []
 
     if args.test == 'chainer-py3':
-        if skip_chainer_test:
-            print('Skipping chainer test for CuPy>=8')
-            return
-
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_newest_upper_version)
         conf = {
@@ -131,9 +128,6 @@ def main():
 
     elif args.test == 'chainer-py35':
         assert ideep_req is not None
-        if skip_chainer_test:
-            print('Skipping chainer test for CuPy>=8')
-            return
 
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_newest_upper_version)
@@ -156,6 +150,7 @@ def main():
 
     elif args.test == 'chainer-head' or args.test == 'cupy-head':
         assert ideep_req is not None
+
         conf = {
             'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda101',
@@ -203,10 +198,6 @@ def main():
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
-        if skip_chainer_test:
-            print('Skipping chainer test for CuPy>=8')
-            return
-
         base = 'ubuntu16_py35'
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_newest_upper_version)
@@ -223,10 +214,6 @@ def main():
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
-        if skip_chainer_test:
-            print('Skipping chainer test for CuPy>=8')
-            return
-
         base = 'ubuntu16_py35'
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_newest_upper_version)
@@ -243,10 +230,6 @@ def main():
         script = './test_prev_example.sh'
 
     elif args.test == 'chainer-doc':
-        if skip_chainer_test:
-            print('Skipping chainer test for CuPy>=8')
-            return
-
         # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
