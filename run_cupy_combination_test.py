@@ -12,7 +12,7 @@ import version
 
 params = {
     'base': None,
-    'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('cupy'),
+    'cuda_libs': docker.get_cuda_libs_choices('cupy'),
     'numpy': docker.get_numpy_choices(),
     'scipy': [None, '0.19', '1.0', '1.4'],
 }
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     pip_require = 'pip<19.2' if docker.get_python_version(conf['base'])[:2] == (3, 4) else 'pip'
 
     conf['requires'] = [
-        'setuptools',
+        'setuptools<42',
         pip_require,
         'cython==0.29.13'
     ] + conf['requires'] + [

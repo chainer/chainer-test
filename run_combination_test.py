@@ -14,7 +14,7 @@ assert ideep_min_version is not None
 
 params = {
     'base': None,
-    'cuda_cudnn_nccl': docker.get_cuda_cudnn_nccl_choices('chainer'),
+    'cuda_libs': docker.get_cuda_libs_choices('chainer'),
     'numpy': docker.get_numpy_choices(),
     'scipy': [None, '0.18', '0.19', '1.0', '1.4'],
     'protobuf': ['3', 'cpp-3'],
