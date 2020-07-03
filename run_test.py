@@ -437,6 +437,7 @@ def main():
 
     volume = []
     env = {
+        'CUPY_V8': '1' if is_cupy_8_or_later else '0',
         'CUDNN': conf['cudnn'],
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
