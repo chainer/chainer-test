@@ -80,7 +80,8 @@ def main():
         # After releasing v8 as stable, remove this condition.
         version.is_master_branch('cupy'))
 
-    skip_chainer_test = _get_job_name() == 'cupy_pr' and is_cupy_8_or_later
+    skip_chainer_test = (
+        _get_job_name() == 'chainer/cupy_pr' and is_cupy_8_or_later)
 
     if not is_cupy_8_or_later:
         numpy_min_version = '1.9'
