@@ -287,7 +287,7 @@ def main():
             ],
         }
         script = './test_cupy.sh'
-        # cupy_accelerators += ['cutensor']
+        cupy_accelerators += ['cutensor']
 
     elif args.test == 'cupy-py3-cub':
         numpy_requires = 'numpy>={},<{}'.format(
