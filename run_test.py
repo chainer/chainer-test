@@ -258,6 +258,8 @@ def main():
 
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_newest_upper_version)
+        scipy_requires = 'scipy>={},<{}'.format(
+            scipy_min_version, scipy_newest_upper_version)
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda100',
@@ -266,7 +268,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.28.0',
-                'numpy>={},<1.18'.format(numpy_min_version),
+                numpy_requires, scipy_requires,
             ] + requires,
         }
         script = './test_cupy.sh'
