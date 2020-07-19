@@ -327,7 +327,7 @@ def main():
             'base': 'ubuntu16_py35',
             'cuda': 'cuda102',
             'cudnn': 'cudnn76-cuda102',
-            'nccl': 'nccl2.5-cuda102',
+            'nccl': 'nccl2.7-cuda102',
             'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',

@@ -60,6 +60,9 @@ nccl_choices = [
     'nccl2.2-cuda9', 'nccl2.2-cuda92',
     'nccl2.3-cuda9', 'nccl2.3-cuda92', 'nccl2.3-cuda100',
     'nccl2.4-cuda9', 'nccl2.4-cuda92', 'nccl2.4-cuda100', 'nccl2.4-cuda101',
+    'nccl2.5-cuda9', 'nccl2.5-cuda100', 'nccl2.5-cuda101', 'nccl2.5-cuda102',
+    'nccl2.6-cuda100', 'nccl2.6-cuda101', 'nccl2.6-cuda102',
+    'nccl2.7-cuda101', 'nccl2.7-cuda102', 'nccl2.7-cuda110',
 ]
 cutensor_choices = [
     'none',
@@ -82,12 +85,15 @@ cuda_nccls = {
     'cuda80': ['nccl1.3', 'nccl2.0-cuda8'],
     # CUDA 9 does not support nccl 1.3
     'cuda90': ['nccl2.0-cuda9', 'nccl2.2-cuda9', 'nccl2.3-cuda9',
-               'nccl2.4-cuda9'],
+               'nccl2.4-cuda9', 'nccl2.5-cuda9'],
     'cuda91': ['nccl2.1-cuda91'],
     'cuda92': ['nccl2.2-cuda92', 'nccl2.3-cuda9', 'nccl2.4-cuda92'],
-    'cuda100': ['nccl2.3-cuda100', 'nccl2.4-cuda100'],
-    'cuda101': ['nccl2.4-cuda101'],
-    'cuda102': ['nccl2.5-cuda102'],
+    'cuda100': ['nccl2.3-cuda100', 'nccl2.4-cuda100', 'nccl2.5-cuda100',
+                'nccl2.6-cuda100'],
+    'cuda101': ['nccl2.4-cuda101', 'nccl2.5-cuda101', 'nccl2.6-cuda101',
+                'nccl2.7-cuda101'],
+    'cuda102': ['nccl2.5-cuda102', 'nccl2.6-cuda102', 'nccl2.7-cuda102'],
+    'cuda110': ['nccl2.7-cuda110'],
 }
 cuda_cutensors = {
     'cuda101': ['cutensor1.0.1-cuda10'],
@@ -700,9 +706,72 @@ codes['nccl2.4-cuda101'] = nccl_base.format(
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
+codes['nccl2.5-cuda9'] = nccl_base.format(
+    libnccl2='libnccl2_2.5.6-1+cuda9.0_amd64',
+    libnccl_dev='libnccl-dev_2.5.6-1+cuda9.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.5-cuda100'] = nccl_base.format(
+    libnccl2='libnccl2_2.5.6-1+cuda10.0_amd64',
+    libnccl_dev='libnccl-dev_2.5.6-1+cuda10.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.5-cuda101'] = nccl_base.format(
+    libnccl2='libnccl2_2.5.6-1+cuda10.1_amd64',
+    libnccl_dev='libnccl-dev_2.5.6-1+cuda10.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
 codes['nccl2.5-cuda102'] = nccl_base.format(
     libnccl2='libnccl2_2.5.6-1+cuda10.2_amd64',
     libnccl_dev='libnccl-dev_2.5.6-1+cuda10.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.6-cuda100'] = nccl_base.format(
+    libnccl2='libnccl2_2.6.4-1+cuda10.0_amd64',
+    libnccl_dev='libnccl-dev_2.6.4-1+cuda10.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.6-cuda101'] = nccl_base.format(
+    libnccl2='libnccl2_2.6.4-1+cuda10.1_amd64',
+    libnccl_dev='libnccl-dev_2.6.4-1+cuda10.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.6-cuda102'] = nccl_base.format(
+    libnccl2='libnccl2_2.6.4-1+cuda10.2_amd64',
+    libnccl_dev='libnccl-dev_2.6.4-1+cuda10.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.7-cuda101'] = nccl_base.format(
+    libnccl2='libnccl2_2.7.3-1+cuda10.1_amd64',
+    libnccl_dev='libnccl-dev_2.7.3-1+cuda10.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.7-cuda102'] = nccl_base.format(
+    libnccl2='libnccl2_2.7.3-1+cuda10.2_amd64',
+    libnccl_dev='libnccl-dev_2.7.3-1+cuda10.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.7-cuda110'] = nccl_base.format(
+    libnccl2='libnccl2_2.7.3-1+cuda11.0_amd64',
+    libnccl_dev='libnccl-dev_2.7.3-1+cuda11.0_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
