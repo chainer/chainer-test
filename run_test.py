@@ -85,7 +85,7 @@ def main():
         numpy_min_version = '1.9'
         numpy_newest_upper_version = '1.18'
         scipy_min_version = '0.18'
-        scipy_newest_upper_version = '1.5'
+        scipy_newest_upper_version = '1.2'
     else:
         if args.test.startswith('chainer-'):
             print('Skipping chainer test for CuPy>=8')
