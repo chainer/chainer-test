@@ -254,7 +254,7 @@ def main():
     elif args.test == 'cupy-py3':
         requires = []
         if is_cupy_8_or_later:
-            requires = ['optuna']
+            requires = ['optuna<2']
 
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_newest_upper_version)
@@ -394,7 +394,7 @@ def main():
     elif args.test == 'cupy-doc':
         requires = []
         if is_cupy_8_or_later:
-            requires = ['optuna']
+            requires = ['optuna<2']
 
         # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
