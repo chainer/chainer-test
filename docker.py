@@ -599,7 +599,6 @@ codes['cudnn80-cuda110'] = cudnn_base.format(
 )
 
 
-
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
 # installed.
 codes['cudnn-latest-with-dummy'] = '''
