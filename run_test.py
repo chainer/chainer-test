@@ -198,7 +198,7 @@ def main():
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
-        base = 'ubuntu16_py35'
+        base = 'ubuntu16_py36-pyenv'
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_newest_upper_version)
         conf = {
