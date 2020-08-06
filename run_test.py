@@ -316,7 +316,7 @@ def main():
         else:
             # CuPy v8 dropped NumPy<1.15
             numpy_upper_version = '1.16'
-            scipy_upper_version = '1.2'
+            scipy_upper_version = '1.6'
 
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_upper_version)
