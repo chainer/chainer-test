@@ -325,7 +325,7 @@ ENV NVCC="ccache nvcc"
 
 # cuda
 
-cuda_mirror = 'https://jenkins.preferred.jp/userContent/cuda-installers'
+cuda_mirror = 'http://172.17.0.1:8000/cuda-installers'
 
 cuda80_run = 'cuda_8.0.44_linux-run'
 # cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
