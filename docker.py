@@ -325,26 +325,35 @@ ENV NVCC="ccache nvcc"
 
 # cuda
 
+cuda_mirror = 'https://jenkins.preferred.jp/userContent/cuda-installers'
+
 cuda80_run = 'cuda_8.0.44_linux-run'
-cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
+#cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
+cuda80_url = cuda_mirror
 
 cuda90_run = 'cuda_9.0.176_384.81_linux-run'
-cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers'
+#cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers'
+cuda90_url = cuda_mirror
 
 cuda91_run = 'cuda_9.1.85_387.26_linux'
-cuda91_url = 'https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers'
+#cuda91_url = 'https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers'
+cuda91_url = cuda_mirror
 
 cuda92_run = 'cuda_9.2.88_396.26_linux'
-cuda92_url = 'https://developer.nvidia.com/compute/cuda/9.2/Prod/local_installers'
+#cuda92_url = 'https://developer.nvidia.com/compute/cuda/9.2/Prod/local_installers'
+cuda92_url = cuda_mirror
 
 cuda100_run = 'cuda_10.0.130_410.48_linux'
-cuda100_url = 'https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers'
+#cuda100_url = 'https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers'
+cuda100_url = cuda_mirror
 
 cuda101_run = 'cuda_10.1.243_418.87.00_linux.run'
-cuda101_url = 'https://developer.download.nvidia.com/compute/cuda/10.1/Prod/local_installers'
+#cuda101_url = 'https://developer.download.nvidia.com/compute/cuda/10.1/Prod/local_installers'
+cuda101_url = cuda_mirror
 
 cuda102_run = 'cuda_10.2.89_440.33.01_linux.run'
-cuda102_url = 'https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers'
+#cuda102_url = 'https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers'
+cuda102_url = cuda_mirror
 
 
 cuda_base = '''
