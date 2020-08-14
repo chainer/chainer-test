@@ -83,7 +83,7 @@ def main():
 
     if not is_cupy_8_or_later:
         numpy_min_version = '1.9'
-        numpy_newest_upper_version = '1.18'
+        numpy_newest_upper_version = '1.20'
         scipy_min_version = '0.18'
         scipy_newest_upper_version = '1.5'
     else:
