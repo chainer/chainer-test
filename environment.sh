@@ -1,7 +1,6 @@
 #!/bin/sh
 
-# CuPy v8 requires g++-6 or later to build CUB.
-if [ "${CUPY_V8}" != 0 ]; then
+if [ "${USE_GCC6_OR_LATER}" != 0 ]; then
     if [ -f /opt/rh/devtoolset-6/enable ]; then
         # For CentOS 7, load environment variables for devtoolset-6.
         . /opt/rh/devtoolset-6/enable
