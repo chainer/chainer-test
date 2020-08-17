@@ -86,6 +86,9 @@ def main():
         numpy_newest_upper_version = '1.20'
         scipy_min_version = '0.18'
         scipy_newest_upper_version = '1.5'
+
+        # Required only for CUDA 11 (which bundles CUB) build.
+        use_gcc6_or_later = False
     else:
         if args.test.startswith('chainer-'):
             print('Skipping chainer test for CuPy>=8')
@@ -94,6 +97,9 @@ def main():
         numpy_newest_upper_version = '1.20'
         scipy_min_version = '1.1'
         scipy_newest_upper_version = '1.6'
+
+        # Always required as CUB is always available.
+        use_gcc6_or_later = True
 
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
     if ideep_min_version is None:
@@ -335,6 +341,7 @@ def main():
             ],
         }
         script = './test_cupy.sh'
+        use_gcc6_or_later = True
 
     elif args.test == 'cupy-slow':
         if not is_cupy_8_or_later:
@@ -423,7 +430,7 @@ def main():
 
     volume = []
     env = {
-        'CUPY_V8': '1' if is_cupy_8_or_later else '0',
+        'USE_GCC6_OR_LATER': '1' if use_gcc6_or_later else '0',
         'CUDNN': conf['cudnn'],
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
