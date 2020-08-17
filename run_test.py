@@ -82,20 +82,22 @@ def main():
         version.is_master_branch('cupy'))
 
     if not is_cupy_8_or_later:
+        # CuPy v7
         numpy_min_version = '1.9'
         numpy_newest_upper_version = '1.20'
         scipy_min_version = '0.18'
-        scipy_newest_upper_version = '1.5'
+        scipy_newest_upper_version = '1.6'
 
         # Required only for CUDA 11 (which bundles CUB) build.
         use_gcc6_or_later = False
     else:
+        # CuPy v8+
         if args.test.startswith('chainer-'):
             print('Skipping chainer test for CuPy>=8')
             return
-        numpy_min_version = '1.15'
+        numpy_min_version = '1.16'
         numpy_newest_upper_version = '1.20'
-        scipy_min_version = '1.1'
+        scipy_min_version = '1.3'
         scipy_newest_upper_version = '1.6'
 
         # Always required as CUB is always available.
