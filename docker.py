@@ -39,6 +39,7 @@ cuda_choices = [
     'cuda80',
     'cuda90', 'cuda91', 'cuda92',
     'cuda100', 'cuda101', 'cuda102',
+    'cuda110',
 ]
 cudnn_choices = [
     'none',
@@ -51,6 +52,7 @@ cudnn_choices = [
     'cudnn74-cuda9', 'cudnn74-cuda92', 'cudnn74-cuda100',
     'cudnn75-cuda9', 'cudnn75-cuda92', 'cudnn75-cuda100', 'cudnn75-cuda101',
     'cudnn76-cuda102',
+    'cudnn80-cuda110',
 ]
 nccl_choices = [
     'none',
@@ -67,6 +69,7 @@ nccl_choices = [
 cutensor_choices = [
     'none',
     'cutensor1.0.1-cuda10',
+    'cutensor1.2.0-cuda11',
 ]
 
 cuda_cudnns = {
@@ -80,6 +83,7 @@ cuda_cudnns = {
     'cuda100': ['cudnn73-cuda100', 'cudnn74-cuda100', 'cudnn75-cuda100'],
     'cuda101': ['cudnn75-cuda101'],
     'cuda102': ['cudnn76-cuda102'],
+    'cuda110': ['cudnn80-cuda110'],
 }
 cuda_nccls = {
     'cuda80': ['nccl1.3', 'nccl2.0-cuda8'],
@@ -98,6 +102,7 @@ cuda_nccls = {
 cuda_cutensors = {
     'cuda101': ['cutensor1.0.1-cuda10'],
     'cuda102': ['cutensor1.0.1-cuda10'],
+    'cuda110': ['cutensor1.2.0-cuda11'],
 }
 
 
@@ -346,6 +351,9 @@ cuda101_url = 'https://developer.download.nvidia.com/compute/cuda/10.1/Prod/loca
 cuda102_run = 'cuda_10.2.89_440.33.01_linux.run'
 cuda102_url = 'https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers'
 
+cuda110_run = 'cuda_11.0.2_450.51.05_linux.run'
+cuda110_url = 'https://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers'
+
 
 cuda_base = '''
 WORKDIR /opt/nvidia
@@ -418,6 +426,13 @@ codes['cuda102'] = cuda_base.format(
     cuda_run=cuda102_run,
     cuda_url=cuda102_url,
     sha256sum='560d07fdcf4a46717f2242948cd4f92c5f9b6fc7eae10dd996614da913d5ca11',
+)
+
+codes['cuda110'] = cuda_base.format(
+    cuda_ver='11.0',
+    cuda_run=cuda110_run,
+    cuda_url=cuda110_url,
+    sha256sum='48247ada0e3f106051029ae8f70fbd0c238040f58b0880e55026374a959a69c1',
 )
 
 
@@ -575,6 +590,12 @@ codes['cudnn76-cuda102'] = cudnn_base.format(
     cudnn='cudnn-10.2-linux-x64-v7.6.5.32',
     cudnn_ver='v7.6.5',
     sha256sum='600267f2caaed2fd58eb214ba669d8ea35f396a7d19b94822e6b36f9f7088c20',
+)
+
+codes['cudnn80-cuda110'] = cudnn_base.format(
+    cudnn='cudnn-11.0-linux-x64-v8.0.2.39',
+    cudnn_ver='v8.0.2',
+    sha256sum='672f46288b8edd98f8d156a4f1ff518201ca6de0cff67915ceaa37f6d6d86345',
 )
 
 

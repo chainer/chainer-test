@@ -316,7 +316,7 @@ def main():
         else:
             # CuPy v8 dropped NumPy<1.15
             numpy_upper_version = '1.16'
-            scipy_upper_version = '1.2'
+            scipy_upper_version = '1.6'
 
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_upper_version)
@@ -325,9 +325,9 @@ def main():
 
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda102',
-            'cudnn': 'cudnn76-cuda102',
-            'nccl': 'nccl2.7-cuda102',
+            'cuda': 'cuda110',
+            'cudnn': 'cudnn80-cuda110',
+            'nccl': 'nccl2.7-cuda110',
             'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
