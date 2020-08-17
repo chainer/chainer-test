@@ -322,9 +322,8 @@ def main():
             numpy_upper_version = '1.10'
             scipy_upper_version = '0.19'
         else:
-            # CuPy v8 dropped NumPy<1.15
-            numpy_upper_version = '1.16'
-            scipy_upper_version = '1.6'
+            numpy_upper_version = '1.17'
+            scipy_upper_version = '1.4'
 
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_upper_version)
@@ -350,9 +349,8 @@ def main():
             numpy_upper_version = '1.11'
             scipy_upper_version = '0.19'
         else:
-            # CuPy v8 dropped NumPy<1.15
-            numpy_upper_version = '1.16'
-            scipy_upper_version = '1.2'
+            numpy_upper_version = '1.17'
+            scipy_upper_version = '1.6'
 
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_upper_version)
@@ -377,9 +375,8 @@ def main():
             numpy_upper_version = '1.13'
             scipy_upper_version = '0.19'
         else:
-            # CuPy v8 dropped NumPy<1.15
-            numpy_upper_version = '1.16'
-            scipy_upper_version = '1.2'
+            numpy_upper_version = '1.17'
+            scipy_upper_version = '1.6'
 
         numpy_requires = 'numpy>={},<{}'.format(
             numpy_min_version, numpy_upper_version)
