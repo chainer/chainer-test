@@ -82,22 +82,12 @@ def main():
         version.is_master_branch('cupy'))
 
     if not is_cupy_8_or_later:
-        numpy_min_version = '1.9'
-        numpy_newest_upper_version = '1.20'
-        scipy_min_version = '0.18'
-        scipy_newest_upper_version = '1.5'
-
         # Required only for CUDA 11 (which bundles CUB) build.
         use_gcc6_or_later = False
     else:
         if args.test.startswith('chainer-'):
             print('Skipping chainer test for CuPy>=8')
             return
-        numpy_min_version = '1.15'
-        numpy_newest_upper_version = '1.20'
-        scipy_min_version = '1.1'
-        scipy_newest_upper_version = '1.6'
-
         # Always required as CUB is always available.
         use_gcc6_or_later = True
 
@@ -115,8 +105,6 @@ def main():
     cupy_accelerators = []
 
     if args.test == 'chainer-py3':
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_newest_upper_version)
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda101',
@@ -127,18 +115,13 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
                 'setuptools<42', 'pip', 'cython==0.29.13',
-                numpy_requires, 'pillow',
+                'numpy==1.19.*', 'pillow',
             ],
         }
         script = './test.sh'
 
     elif args.test == 'chainer-py35':
         assert ideep_req is not None
-
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_newest_upper_version)
-        scipy_requires = 'scipy>={},<{}'.format(
-            scipy_min_version, scipy_newest_upper_version)
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda92',
@@ -147,7 +130,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
-                numpy_requires, scipy_requires,
+                'numpy==1.18.*', 'scipy==1.4.*',
                 'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -184,10 +167,6 @@ def main():
     elif args.test == 'chainer-slow':
         assert ideep_req is not None
 
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_newest_upper_version)
-        scipy_requires = 'scipy>={},<{}'.format(
-            scipy_min_version, scipy_newest_upper_version)
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
@@ -196,7 +175,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
-                numpy_requires, scipy_requires,
+                'numpy==1.18.*', 'scipy==1.4.*',
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3', 'pillow',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -205,8 +184,6 @@ def main():
 
     elif args.test == 'chainer-example':
         base = 'ubuntu16_py35'
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_newest_upper_version)
         conf = {
             'base': base,
             'cuda': 'cuda90',
@@ -214,15 +191,13 @@ def main():
             'nccl': 'nccl2.2-cuda9',
             'cutensor': 'none',
             'requires': [
-                'setuptools', 'cython==0.29.13', numpy_requires,
+                'setuptools', 'cython==0.29.13', 'numpy==1.18.*',
             ],
         }
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
         base = 'ubuntu16_py35'
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_newest_upper_version)
         conf = {
             'base': base,
             'cuda': 'cuda92',
@@ -230,7 +205,7 @@ def main():
             'nccl': 'none',
             'cutensor': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.29.13', numpy_requires,
+                'setuptools', 'pip', 'cython==0.29.13', 'numpy==1.18.*',
             ],
         }
         script = './test_prev_example.sh'
@@ -239,10 +214,6 @@ def main():
         # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
-        numpy_requires = 'numpy>={},<{}'.format(
-            '1.15', numpy_newest_upper_version)
-        scipy_requires = 'scipy>={},<{}'.format(
-            scipy_min_version, scipy_newest_upper_version)
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
@@ -251,7 +222,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13', 'matplotlib',
-                numpy_requires, scipy_requires, 'theano',
+                'numpy==1.18.*', 'scipy==1.4.*', 'theano',
             ] + SPHINX_REQUIREMENTS_CONDA
         }
         script = './test_doc.sh'
@@ -261,11 +232,6 @@ def main():
         requires = []
         if is_cupy_8_or_later:
             requires = ['optuna<2']
-
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_newest_upper_version)
-        scipy_requires = 'scipy>={},<{}'.format(
-            scipy_min_version, scipy_newest_upper_version)
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda100',
@@ -274,14 +240,12 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.28.0',
-                numpy_requires, scipy_requires,
+                'numpy==1.19.*', 'scipy==1.5.*',
             ] + requires,
         }
         script = './test_cupy.sh'
 
     elif args.test == 'cupy-py3-cutensor':
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_newest_upper_version)
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda100',
@@ -291,15 +255,13 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
-                'setuptools<42', 'pip', 'cython==0.28.0', numpy_requires
+                'setuptools<42', 'pip', 'cython==0.28.0', 'numpy==1.19.*',
             ],
         }
         script = './test_cupy.sh'
         cupy_accelerators += ['cutensor']
 
     elif args.test == 'cupy-py3-cub':
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_newest_upper_version)
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda100',
@@ -309,7 +271,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
-                'setuptools<42', 'pip', 'cython==0.28.0', numpy_requires
+                'setuptools<42', 'pip', 'cython==0.28.0', 'numpy==1.19.*',
             ],
         }
         script = './test_cupy.sh'
@@ -317,17 +279,11 @@ def main():
 
     elif args.test == 'cupy-py35':
         if not is_cupy_8_or_later:
-            numpy_upper_version = '1.10'
-            scipy_upper_version = '0.19'
+            numpy_requires = 'numpy==1.9.*'
+            scipy_requires = 'scipy==0.18.*'
         else:
-            # CuPy v8 dropped NumPy<1.15
-            numpy_upper_version = '1.16'
-            scipy_upper_version = '1.6'
-
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_upper_version)
-        scipy_requires = 'scipy>={},<{}'.format(
-            scipy_min_version, scipy_upper_version)
+            numpy_requires = 'numpy==1.16.*'
+            scipy_requires = 'scipy==1.4.*'
 
         conf = {
             'base': 'ubuntu16_py35',
@@ -345,17 +301,11 @@ def main():
 
     elif args.test == 'cupy-slow':
         if not is_cupy_8_or_later:
-            numpy_upper_version = '1.11'
-            scipy_upper_version = '0.19'
+            numpy_requires = 'numpy==1.10.*'
+            scipy_requires = 'scipy==0.18.*'
         else:
-            # CuPy v8 dropped NumPy<1.15
-            numpy_upper_version = '1.16'
-            scipy_upper_version = '1.2'
-
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_upper_version)
-        scipy_requires = 'scipy>={},<{}'.format(
-            scipy_min_version, scipy_upper_version)
+            numpy_requires = 'numpy==1.16.*'
+            scipy_requires = 'scipy==1.4.*'
 
         conf = {
             'base': 'ubuntu16_py35',
@@ -372,17 +322,11 @@ def main():
 
     elif args.test == 'cupy-example':
         if not is_cupy_8_or_later:
-            numpy_upper_version = '1.13'
-            scipy_upper_version = '0.19'
+            numpy_requires = 'numpy==1.12.*'
+            scipy_requires = 'scipy==0.18.*'
         else:
-            # CuPy v8 dropped NumPy<1.15
-            numpy_upper_version = '1.16'
-            scipy_upper_version = '1.2'
-
-        numpy_requires = 'numpy>={},<{}'.format(
-            numpy_min_version, numpy_upper_version)
-        scipy_requires = 'scipy>={},<{}'.format(
-            scipy_min_version, scipy_upper_version)
+            numpy_requires = 'numpy==1.16.*'
+            scipy_requires = 'scipy==1.4.*'
 
         base = 'ubuntu16_py35'
         conf = {
@@ -406,10 +350,6 @@ def main():
         # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
-        numpy_requires = 'numpy>={},<{}'.format(
-            '1.15', numpy_newest_upper_version)
-        scipy_requires = 'scipy>={},<{}'.format(
-            scipy_min_version, '1.4')
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda92',
@@ -418,7 +358,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13',
-                numpy_requires, scipy_requires,
+                'numpy==1.16.*', 'scipy==1.3.*',
             ] + requires + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
