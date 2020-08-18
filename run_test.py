@@ -130,7 +130,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
-                'numpy==1.19.*', 'scipy==1.5.*',
+                'numpy==1.18.*', 'scipy==1.4.*',
                 'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -175,7 +175,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools', 'cython==0.29.13',
-                'numpy==1.19.*', 'scipy==1.5.*',
+                'numpy==1.18.*', 'scipy==1.4.*',
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3', 'pillow',
                 'ideep4py{}'.format(ideep_req),
             ],
@@ -191,7 +191,7 @@ def main():
             'nccl': 'nccl2.2-cuda9',
             'cutensor': 'none',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy==1.19.*',
+                'setuptools', 'cython==0.29.13', 'numpy==1.18.*',
             ],
         }
         script = './test_example.sh'
@@ -205,7 +205,7 @@ def main():
             'nccl': 'none',
             'cutensor': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.29.13', 'numpy==1.19.*',
+                'setuptools', 'pip', 'cython==0.29.13', 'numpy==1.18.*',
             ],
         }
         script = './test_prev_example.sh'
@@ -222,7 +222,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'pip==9.0.1', 'setuptools', 'cython==0.29.13', 'matplotlib',
-                'numpy==1.19.*', 'scipy==1.5.*', 'theano',
+                'numpy==1.18.*', 'scipy==1.4.*', 'theano',
             ] + SPHINX_REQUIREMENTS_CONDA
         }
         script = './test_doc.sh'
@@ -283,7 +283,7 @@ def main():
             scipy_requires = 'scipy==0.18.*'
         else:
             numpy_requires = 'numpy==1.16.*'
-            scipy_requires = 'scipy==1.5.*'
+            scipy_requires = 'scipy==1.4.*'
 
         conf = {
             'base': 'ubuntu16_py35',
@@ -305,7 +305,7 @@ def main():
             scipy_requires = 'scipy==0.18.*'
         else:
             numpy_requires = 'numpy==1.16.*'
-            scipy_requires = 'scipy==1.5.*'
+            scipy_requires = 'scipy==1.4.*'
 
         conf = {
             'base': 'ubuntu16_py35',
@@ -326,7 +326,7 @@ def main():
             scipy_requires = 'scipy==0.18.*'
         else:
             numpy_requires = 'numpy==1.16.*'
-            scipy_requires = 'scipy==0.5.*'
+            scipy_requires = 'scipy==1.4.*'
 
         base = 'ubuntu16_py35'
         conf = {
