@@ -231,7 +231,7 @@ def main():
     elif args.test == 'cupy-py3':
         requires = []
         if is_cupy_8_or_later:
-            requires = ['optuna<2']
+            requires = ['optuna']
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda100',
