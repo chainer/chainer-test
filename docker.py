@@ -856,7 +856,7 @@ def make_dockerfile(conf):
 
     # Update old packages provided by OS.
     dockerfile += '''
-RUN pip install -U pip six setuptools && rm -rf ~/.cache/pip
+RUN pip install -U pip six 'setuptools<50' && rm -rf ~/.cache/pip
 '''
 
     if 'ubuntu' in conf['base']:
