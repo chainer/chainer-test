@@ -10,7 +10,7 @@ import version
 
 
 _base_choices = [
-    ('ubuntu16_py35', '3.5.2'),
+    ('ubuntu16_py35', '3.5.9'),
     ('ubuntu16_py36-pyenv', '3.6.6'),
     ('ubuntu16_py37-pyenv', '3.7.0'),
     ('ubuntu18_py36', '3.6.7'),
