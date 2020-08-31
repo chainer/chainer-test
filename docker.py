@@ -905,7 +905,7 @@ RUN apt-get remove -y \\
             # SciPy depends on C-API interface of NumPy.
             # When you install different version of NumPy, it breaks compatibility and causes an error.
             # So you need to install SciPy from its source to link NumPy you use.
-            dockerfile += 'RUN pip install --no-binary scipy -U "%s" && rm -rf ~/.cache/pip\n' % scipy
+            dockerfile += 'RUN pip install --no-binary scipy "%s" && rm -rf ~/.cache/pip\n' % scipy
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
