@@ -856,7 +856,7 @@ def make_dockerfile(conf):
 
     # Update old packages provided by OS.
     dockerfile += '''
-RUN pip install -U pip six setuptools && rm -rf ~/.cache/pip
+RUN pip install -U pip six 'setuptools<50' && rm -rf ~/.cache/pip
 '''
 
     if 'ubuntu' in conf['base']:
@@ -889,23 +889,16 @@ RUN apt-get remove -y \\
                 dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
 
         pillow, requires = partition_requirements('pillow', requires)
-        scipy, requires = partition_requirements('scipy', requires)
 
         if pillow is not None:
-            dockerfile += ('RUN pip install -U olefile && '
+            dockerfile += ('RUN pip install olefile && '
                            'pip install --global-option="build_ext" '
                            '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
 
         if 0 < len(requires):
             dockerfile += (
-                'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
+                'RUN pip install %s && rm -rf ~/.cache/pip\n' %
                 ' '.join(['"%s"' % req for req in requires]))
-
-        if scipy is not None:
-            # SciPy depends on C-API interface of NumPy.
-            # When you install different version of NumPy, it breaks compatibility and causes an error.
-            # So you need to install SciPy from its source to link NumPy you use.
-            dockerfile += 'RUN pip install --no-binary scipy -U "%s" && rm -rf ~/.cache/pip\n' % scipy
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
