@@ -891,13 +891,13 @@ RUN apt-get remove -y \\
         pillow, requires = partition_requirements('pillow', requires)
 
         if pillow is not None:
-            dockerfile += ('RUN pip install -U olefile && '
+            dockerfile += ('RUN pip install olefile && '
                            'pip install --global-option="build_ext" '
                            '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
 
         if 0 < len(requires):
             dockerfile += (
-                'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
+                'RUN pip install %s && rm -rf ~/.cache/pip\n' %
                 ' '.join(['"%s"' % req for req in requires]))
 
     # Make a user and home directory to install chainer
