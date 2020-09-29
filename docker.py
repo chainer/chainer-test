@@ -68,8 +68,8 @@ nccl_choices = [
 ]
 cutensor_choices = [
     'none',
-    'cutensor1.0.1-cuda10',
-    'cutensor1.2.0-cuda11',
+    'cutensor1.2.1-cuda10',
+    'cutensor1.2.1-cuda11',
 ]
 
 cuda_cudnns = {
@@ -100,9 +100,9 @@ cuda_nccls = {
     'cuda110': ['nccl2.7-cuda110'],
 }
 cuda_cutensors = {
-    'cuda101': ['cutensor1.0.1-cuda10'],
-    'cuda102': ['cutensor1.0.1-cuda10'],
-    'cuda110': ['cutensor1.2.0-cuda11'],
+    'cuda101': ['cutensor1.2.1-cuda10'],
+    'cuda102': ['cutensor1.2.1-cuda10'],
+    'cuda110': ['cutensor1.2.1-cuda11'],
 }
 
 
@@ -799,7 +799,8 @@ codes['nccl2.7-cuda110'] = nccl_base.format(
 
 # cuTENSOR
 # The shell script needs to be saved in an env var due to Dockerfile limitations
-codes['cutensor1.0.1-cuda10'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.0.1;'
+codes['cutensor1.2.1-cuda10'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1;'
+codes['cutensor1.2.1-cuda11'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1;'
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
