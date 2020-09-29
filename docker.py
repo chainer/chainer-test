@@ -799,8 +799,8 @@ codes['nccl2.7-cuda110'] = nccl_base.format(
 
 # cuTENSOR
 # The shell script needs to be saved in an env var due to Dockerfile limitations
-codes['cutensor1.2.1-cuda10'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1;'
-codes['cutensor1.2.1-cuda11'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1;'
+codes['cutensor1.2.1-cuda10'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1.7;'
+codes['cutensor1.2.1-cuda11'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1.7;'
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
