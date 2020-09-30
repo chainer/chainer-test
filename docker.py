@@ -68,8 +68,9 @@ nccl_choices = [
 ]
 cutensor_choices = [
     'none',
-    'cutensor1.2.1-cuda10',
-    'cutensor1.2.1-cuda11',
+    'cutensor1.2.0-cuda101',
+    'cutensor1.2.0-cuda102',
+    'cutensor1.2.0-cuda110',
 ]
 
 cuda_cudnns = {
@@ -100,9 +101,9 @@ cuda_nccls = {
     'cuda110': ['nccl2.7-cuda110'],
 }
 cuda_cutensors = {
-    'cuda101': ['cutensor1.2.1-cuda10'],
-    'cuda102': ['cutensor1.2.1-cuda10'],
-    'cuda110': ['cutensor1.2.1-cuda11'],
+    'cuda101': ['cutensor1.2.0-cuda101'],
+    'cuda102': ['cutensor1.2.0-cuda102'],
+    'cuda110': ['cutensor1.2.0-cuda110'],
 }
 
 
@@ -189,7 +190,9 @@ ENV CUTENSOR_INSTALL='install_cutensor() {{ curl -sL -o libcutensor1_$1-1_amd64.
     rm libcutensor1_$1-1_amd64.rpm && \\
     curl -sL -o libcutensor-dev_$1-1_amd64.rpm $CUTENSOR_URL/libcutensor-devel-$1-1.x86_64.rpm && \\
     rpm -i libcutensor-dev_$1-1_amd64.rpm  && \\
-    rm libcutensor-dev_$1-1_amd64.rpm; }};'
+    rm libcutensor-dev_$1-1_amd64.rpm && \\
+    update-alternatives --set libcutensor.so.$2 /usr/lib64/libcutensor/$3/libcutensor.so.$2 ; \\
+    }}';
 '''
 
 cutensor_ubuntu_install = '''
@@ -200,7 +203,9 @@ ENV CUTENSOR_INSTALL='install_cutensor() {{ curl -sL -o libcutensor1_$1-1_amd64.
     rm libcutensor1_$1-1_amd64.deb && \\
     curl -sL -o libcutensor-dev_$1-1_amd64.deb $CUTENSOR_URL/libcutensor-dev_$1-1_amd64.deb && \\
     dpkg -i libcutensor-dev_$1-1_amd64.deb  && \\
-    rm libcutensor-dev_$1-1_amd64.deb; }};'
+    rm libcutensor-dev_$1-1_amd64.deb && \\
+    update-alternatives --set libcutensor.so.$2 /usr/lib/x86_64-linux-gnu/libcutensor/$3/libcutensor.so.$2 ; \\
+    }};'
 '''
 
 ubuntu16_apt_install_gcc = '''
@@ -799,8 +804,9 @@ codes['nccl2.7-cuda110'] = nccl_base.format(
 
 # cuTENSOR
 # The shell script needs to be saved in an env var due to Dockerfile limitations
-codes['cutensor1.2.1-cuda10'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1.7;'
-codes['cutensor1.2.1-cuda11'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1.7;'
+codes['cutensor1.2.0-cuda101'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 10.1;'
+codes['cutensor1.2.0-cuda102'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 10.2;'
+codes['cutensor1.2.0-cuda110'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 11.0;'
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
