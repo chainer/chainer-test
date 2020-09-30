@@ -258,10 +258,10 @@ def main():
     elif args.test == 'cupy-py3-cutensor':
         conf = {
             'base': 'ubuntu18_py38-pyenv',
-            'cuda': 'cuda100',
-            'cudnn': 'cudnn75-cuda100',
-            'nccl': 'nccl2.4-cuda100',
-            'cutensor': 'cutensor1.2.1-cuda10',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda102',
+            'cutensor': 'cutensor1.2.1-cuda102',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
