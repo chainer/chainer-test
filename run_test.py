@@ -261,7 +261,7 @@ def main():
             'cuda': 'cuda102',
             'cudnn': 'cudnn76-cuda102',
             'nccl': 'nccl2.5-cuda102',
-            'cutensor': 'cutensor1.2.1-cuda102',
+            'cutensor': 'cutensor1.2.0-cuda102',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
