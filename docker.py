@@ -154,7 +154,7 @@ def get_numpy_choices():
             '1.17']
     else:
         # cupy v8 or later
-        choices = ['1.15', '1.16', '1.17']
+        choices = ['1.16', '1.17', '1.18', '1.19']
     return choices
 
 
