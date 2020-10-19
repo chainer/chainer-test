@@ -36,18 +36,15 @@ base_choices_stable_cupy = base_choices_all
 
 cuda_choices = [
     'none',
-    'cuda80',
-    'cuda90', 'cuda91', 'cuda92',
+    'cuda90', 'cuda92',
     'cuda100', 'cuda101', 'cuda102',
     'cuda110',
 ]
 cudnn_choices = [
     'none',
-    'cudnn5-cuda8', 'cudnn51-cuda8',
-    'cudnn6-cuda8',
-    'cudnn7-cuda8', 'cudnn7-cuda9', 'cudnn7-cuda91',
-    'cudnn71-cuda8', 'cudnn71-cuda9', 'cudnn71-cuda91', 'cudnn71-cuda92',
-    'cudnn72-cuda8', 'cudnn72-cuda9', 'cudnn72-cuda92',
+    'cudnn7-cuda9',
+    'cudnn71-cuda9', 'cudnn71-cuda92',
+    'cudnn72-cuda9', 'cudnn72-cuda92',
     'cudnn73-cuda9', 'cudnn73-cuda92', 'cudnn73-cuda100',
     'cudnn74-cuda9', 'cudnn74-cuda92', 'cudnn74-cuda100',
     'cudnn75-cuda9', 'cudnn75-cuda92', 'cudnn75-cuda100', 'cudnn75-cuda101',
@@ -56,9 +53,7 @@ cudnn_choices = [
 ]
 nccl_choices = [
     'none',
-    'nccl1.3',  # for CUDA 8.0
-    'nccl2.0-cuda8', 'nccl2.0-cuda9',
-    'nccl2.1-cuda91',
+    'nccl2.0-cuda9',
     'nccl2.2-cuda9', 'nccl2.2-cuda92',
     'nccl2.3-cuda9', 'nccl2.3-cuda92', 'nccl2.3-cuda100',
     'nccl2.4-cuda9', 'nccl2.4-cuda92', 'nccl2.4-cuda100', 'nccl2.4-cuda101',
@@ -74,11 +69,8 @@ cutensor_choices = [
 ]
 
 cuda_cudnns = {
-    'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
-               'cudnn7-cuda8', 'cudnn71-cuda8', 'cudnn72-cuda8'],
     'cuda90': ['cudnn7-cuda9', 'cudnn71-cuda9', 'cudnn72-cuda9',
                'cudnn73-cuda9', 'cudnn74-cuda9', 'cudnn75-cuda9'],
-    'cuda91': ['cudnn7-cuda91', 'cudnn71-cuda91', 'cudnn73-cuda9'],
     'cuda92': ['cudnn71-cuda92', 'cudnn72-cuda92', 'cudnn73-cuda92',
                'cudnn74-cuda92', 'cudnn75-cuda92'],
     'cuda100': ['cudnn73-cuda100', 'cudnn74-cuda100', 'cudnn75-cuda100'],
@@ -87,11 +79,9 @@ cuda_cudnns = {
     'cuda110': ['cudnn80-cuda110'],
 }
 cuda_nccls = {
-    'cuda80': ['nccl1.3', 'nccl2.0-cuda8'],
     # CUDA 9 does not support nccl 1.3
     'cuda90': ['nccl2.0-cuda9', 'nccl2.2-cuda9', 'nccl2.3-cuda9',
                'nccl2.4-cuda9', 'nccl2.5-cuda9'],
-    'cuda91': ['nccl2.1-cuda91'],
     'cuda92': ['nccl2.2-cuda92', 'nccl2.3-cuda9', 'nccl2.4-cuda92'],
     'cuda100': ['nccl2.3-cuda100', 'nccl2.4-cuda100', 'nccl2.5-cuda100',
                 'nccl2.6-cuda100'],
@@ -335,14 +325,8 @@ ENV NVCC="ccache nvcc"
 
 # cuda
 
-cuda80_run = 'cuda_8.0.44_linux-run'
-cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
-
 cuda90_run = 'cuda_9.0.176_384.81_linux-run'
 cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers'
-
-cuda91_run = 'cuda_9.1.85_387.26_linux'
-cuda91_url = 'https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers'
 
 cuda92_run = 'cuda_9.2.88_396.26_linux'
 cuda92_url = 'https://developer.nvidia.com/compute/cuda/9.2/Prod/local_installers'
@@ -384,25 +368,11 @@ LABEL com.nvidia.volumes.needed="nvidia_driver"
 LABEL com.nvidia.cuda.version="{cuda_ver}"
 '''
 
-codes['cuda80'] = cuda_base.format(
-    cuda_ver='8.0',
-    cuda_run=cuda80_run,
-    cuda_url=cuda80_url,
-    sha256sum='64dc4ab867261a0d690735c46d7cc9fc60d989da0d69dc04d1714e409cacbdf0',
-)
-
 codes['cuda90'] = cuda_base.format(
     cuda_ver='9.0',
     cuda_run=cuda90_run,
     cuda_url=cuda90_url,
     sha256sum='96863423feaa50b5c1c5e1b9ec537ef7ba77576a3986652351ae43e66bcd080c',
-)
-
-codes['cuda91'] = cuda_base.format(
-    cuda_ver='9.1',
-    cuda_run=cuda91_run,
-    cuda_url=cuda91_url,
-    sha256sum='8496c72b16fee61889f9281449b5d633d0b358b46579175c275d85c9205fe953',
 )
 
 codes['cuda92'] = cuda_base.format(
@@ -453,46 +423,10 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
 ENV CUDNN_VER {cudnn_ver}
 '''
 
-codes['cudnn5-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v5.0-ga',
-    cudnn_ver='v5',
-    sha256sum='af80eb1ce0cb51e6a734b2bdc599e6d50b676eab3921e5bddfe5443485df86b6',
-)
-
-codes['cudnn51-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v5.1',
-    cudnn_ver='v5.1',
-    sha256sum='c10719b36f2dd6e9ddc63e3189affaa1a94d7d027e63b71c3f64d449ab0645ce',
-)
-
-codes['cudnn6-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v6.0',
-    cudnn_ver='v6.0',
-    sha256sum='9b09110af48c9a4d7b6344eb4b3e344daa84987ed6177d5c44319732f3bb7f9c',
-)
-
-codes['cudnn7-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v7',
-    cudnn_ver='v7.0.5',
-    sha256sum='9e0b31735918fe33a79c4b3e612143d33f48f61c095a3b993023cdab46f6d66e',
-)
-
 codes['cudnn7-cuda9'] = cudnn_base.format(
     cudnn='cudnn-9.0-linux-x64-v7',
     cudnn_ver='v7.0.5',
     sha256sum='1a3e076447d5b9860c73d9bebe7087ffcb7b0c8814fd1e506096435a2ad9ab0e',
-)
-
-codes['cudnn7-cuda91'] = cudnn_base.format(
-    cudnn='cudnn-9.1-linux-x64-v7',
-    cudnn_ver='v7.0.5',
-    sha256sum='1ead5da7324db35dcdb3721a8d4fc020b217c68cdb3b3daa1be81eb2456bd5e5',
-)
-
-codes['cudnn71-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v7.1',
-    cudnn_ver='v7.1.3',
-    sha256sum='31ed3c3bfb9c515c228c1dcbb306277ce08836e84e3facedef6182d872f8cd3d',
 )
 
 codes['cudnn71-cuda9'] = cudnn_base.format(
@@ -501,22 +435,10 @@ codes['cudnn71-cuda9'] = cudnn_base.format(
     sha256sum='60b581d0f05324c33323024a264aa3fb185c533e2f67dae7fda847b926bb7e57',
 )
 
-codes['cudnn71-cuda91'] = cudnn_base.format(
-    cudnn='cudnn-9.1-linux-x64-v7.1',
-    cudnn_ver='v7.1.3',
-    sha256sum='dd616d3794167ceb923d706bf73e8d6acdda770751492b921ee6827cdf190228',
-)
-
 codes['cudnn71-cuda92'] = cudnn_base.format(
     cudnn='cudnn-9.2-linux-x64-v7.1',
     cudnn_ver='v7.1.4',
     sha256sum='f875340f812b942408098e4c9807cb4f8bdaea0db7c48613acece10c7c827101',
-)
-
-codes['cudnn72-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v7.2.1.38',
-    cudnn_ver='v7.2.1',
-    sha256sum='c2d58788fd51d892fb84a1fae578d8cb432f7301b279d0a1cf7b38faf79993f4',
 )
 
 codes['cudnn72-cuda9'] = cudnn_base.format(
@@ -648,13 +570,6 @@ RUN mkdir nccl && cd nccl && \\
     cd .. && rm -rf nccl
 '''
 
-codes['nccl2.0-cuda8'] = nccl_base.format(
-    libnccl2='libnccl2_2.0.5-2+cuda8.0_amd64',
-    libnccl_dev='libnccl-dev_2.0.5-2+cuda8.0_amd64',
-    include_dir='/usr/include',
-    lib_dir='/usr/lib/x86_64-linux-gnu',
-)
-
 codes['nccl2.0-cuda9'] = nccl_base.format(
     libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
@@ -665,13 +580,6 @@ codes['nccl2.0-cuda9'] = nccl_base.format(
 codes['nccl2.2-cuda9'] = nccl_base.format(
     libnccl2='libnccl2_2.2.13-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.2.13-1+cuda9.0_amd64',
-    include_dir='/usr/include',
-    lib_dir='/usr/lib/x86_64-linux-gnu',
-)
-
-codes['nccl2.1-cuda91'] = nccl_base.format(
-    libnccl2='libnccl2_2.1.15-1+cuda9.1_amd64',
-    libnccl_dev='libnccl-dev_2.1.15-1+cuda9.1_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
