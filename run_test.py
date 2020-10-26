@@ -297,9 +297,9 @@ def main():
 
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda110',
-            'cudnn': 'cudnn80-cuda110',
-            'nccl': 'nccl2.7-cuda110',
+            'cuda': 'cuda111',
+            'cudnn': 'cudnn80-cuda111',
+            'nccl': 'nccl2.7-cuda111',
             'cutensor': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
