@@ -38,7 +38,7 @@ cuda_choices = [
     'none',
     'cuda90', 'cuda92',
     'cuda100', 'cuda101', 'cuda102',
-    'cuda110',
+    'cuda110', 'cuda111',
 ]
 cudnn_choices = [
     'none',
@@ -49,7 +49,7 @@ cudnn_choices = [
     'cudnn74-cuda9', 'cudnn74-cuda92', 'cudnn74-cuda100',
     'cudnn75-cuda9', 'cudnn75-cuda92', 'cudnn75-cuda100', 'cudnn75-cuda101',
     'cudnn76-cuda102',
-    'cudnn80-cuda110',
+    'cudnn80-cuda110', 'cudnn80-cuda111',
 ]
 nccl_choices = [
     'none',
@@ -59,13 +59,14 @@ nccl_choices = [
     'nccl2.4-cuda9', 'nccl2.4-cuda92', 'nccl2.4-cuda100', 'nccl2.4-cuda101',
     'nccl2.5-cuda9', 'nccl2.5-cuda100', 'nccl2.5-cuda101', 'nccl2.5-cuda102',
     'nccl2.6-cuda100', 'nccl2.6-cuda101', 'nccl2.6-cuda102',
-    'nccl2.7-cuda101', 'nccl2.7-cuda102', 'nccl2.7-cuda110',
+    'nccl2.7-cuda101', 'nccl2.7-cuda102', 'nccl2.7-cuda110', 'nccl2.7-cuda111'
 ]
 cutensor_choices = [
     'none',
     'cutensor1.2.0-cuda101',
     'cutensor1.2.0-cuda102',
     'cutensor1.2.0-cuda110',
+    'cutensor1.2.0-cuda111',
 ]
 
 cuda_cudnns = {
@@ -77,6 +78,7 @@ cuda_cudnns = {
     'cuda101': ['cudnn75-cuda101'],
     'cuda102': ['cudnn76-cuda102'],
     'cuda110': ['cudnn80-cuda110'],
+    'cuda111': ['cudnn80-cuda111'],
 }
 cuda_nccls = {
     # CUDA 9 does not support nccl 1.3
@@ -89,11 +91,13 @@ cuda_nccls = {
                 'nccl2.7-cuda101'],
     'cuda102': ['nccl2.5-cuda102', 'nccl2.6-cuda102', 'nccl2.7-cuda102'],
     'cuda110': ['nccl2.7-cuda110'],
+    'cuda111': ['nccl2.7-cuda111'],
 }
 cuda_cutensors = {
     'cuda101': ['cutensor1.2.0-cuda101'],
     'cuda102': ['cutensor1.2.0-cuda102'],
     'cuda110': ['cutensor1.2.0-cuda110'],
+    'cuda111': ['cutensor1.2.0-cuda111'],
 }
 
 
@@ -343,6 +347,9 @@ cuda102_url = 'https://developer.download.nvidia.com/compute/cuda/10.2/Prod/loca
 cuda110_run = 'cuda_11.0.2_450.51.05_linux.run'
 cuda110_url = 'https://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers'
 
+cuda111_run = 'cuda_11.1.0_455.23.05_linux.run'
+cuda111_url = 'https://developer.download.nvidia.com/compute/cuda/11.1.0/local_installers'
+
 
 cuda_base = '''
 WORKDIR /opt/nvidia
@@ -408,6 +415,13 @@ codes['cuda110'] = cuda_base.format(
     cuda_run=cuda110_run,
     cuda_url=cuda110_url,
     sha256sum='48247ada0e3f106051029ae8f70fbd0c238040f58b0880e55026374a959a69c1',
+)
+
+codes['cuda111'] = cuda_base.format(
+    cuda_ver='11.1',
+    cuda_run=cuda111_run,
+    cuda_url=cuda111_url,
+    sha256sum='858cbab091fde94556a249b9580fadff55a46eafbcb4d4a741d2dcd358ab94a5',
 )
 
 
@@ -523,6 +537,11 @@ codes['cudnn80-cuda110'] = cudnn_base.format(
     cudnn='cudnn-11.0-linux-x64-v8.0.2.39',
     cudnn_ver='v8.0.2',
     sha256sum='672f46288b8edd98f8d156a4f1ff518201ca6de0cff67915ceaa37f6d6d86345',
+)
+codes['cudnn80-cuda111'] = cudnn_base.format(
+    cudnn='cudnn-11.1-linux-x64-v8.0.4.30',
+    cudnn_ver='v8.0.4',
+    sha256sum='8f4c662343afce5998ce963500fe3bb167e9a508c1a1a949d821a4b80fa9beab',
 )
 
 
@@ -709,6 +728,13 @@ codes['nccl2.7-cuda110'] = nccl_base.format(
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
+codes['nccl2.7-cuda111'] = nccl_base.format(
+    libnccl2='libnccl2_2.7.8-1+cuda11.1_amd64',
+    libnccl_dev='libnccl-dev_2.7.8-1+cuda11.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
 
 # cuTENSOR
 # The shell script needs to be saved in an env var due to Dockerfile limitations
