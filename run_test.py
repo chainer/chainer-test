@@ -48,7 +48,7 @@ def main():
         'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
         'chainer-head',
-        'cupy-py3', 'cupy-py35', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cutensor',
+        'cupy-py3', 'cupy-py35-v8', 'cupy-py36', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cutensor',
         'cupy-example', 'cupy-doc',
         'cupy-head',
     ], required=True)
@@ -84,6 +84,9 @@ def main():
     if not is_cupy_8_or_later:
         # Required only for CUDA 11 (which bundles CUB) build.
         use_gcc6_or_later = False
+    elif version.get_cupy_version() >= (9,) and args.test.endswith('-v8'):
+        print('Skipping chainer test for CuPy>=9')
+        return
     else:
         if args.test.startswith('chainer-'):
             print('Skipping chainer test for CuPy>=8')
@@ -287,7 +290,7 @@ def main():
         script = './test_cupy.sh'
         cupy_accelerators += ['cub']
 
-    elif args.test == 'cupy-py35':
+    elif args.test == 'cupy-py35-v8':
         if not is_cupy_8_or_later:
             numpy_requires = 'numpy==1.9.*'
             scipy_requires = 'scipy==0.18.*'
@@ -311,6 +314,30 @@ def main():
         script = './test_cupy.sh'
         use_gcc6_or_later = True
 
+    elif args.test == 'cupy-py36':
+        if not is_cupy_8_or_later:
+            numpy_requires = 'numpy==1.9.*'
+            scipy_requires = 'scipy==0.18.*'
+        else:
+            numpy_requires = 'numpy==1.16.*'
+            scipy_requires = 'scipy==1.4.*'
+
+        conf = {
+            'base': 'ubuntu18_py36',
+            'cuda': 'cuda111',
+            'cudnn': 'cudnn80-cuda111',
+            'nccl': 'nccl2.7-cuda111',
+            'cutensor': 'none',
+            'requires': [
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'cython==0.29.13',
+                numpy_requires, scipy_requires,
+            ],
+        }
+        script = './test_cupy.sh'
+        use_gcc6_or_later = True
+
     elif args.test == 'cupy-slow':
         if not is_cupy_8_or_later:
             numpy_requires = 'numpy==1.10.*'
@@ -320,7 +347,7 @@ def main():
             scipy_requires = 'scipy==1.4.*'
 
         conf = {
-            'base': 'ubuntu16_py35',
+            'base': 'ubuntu18_py36',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
@@ -342,7 +369,7 @@ def main():
             numpy_requires = 'numpy==1.16.*'
             scipy_requires = 'scipy==1.4.*'
 
-        base = 'ubuntu16_py35'
+        base = 'ubuntu18_py36'
         conf = {
             'base': base,
             'cuda': 'cuda92',
@@ -367,7 +394,7 @@ def main():
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
-            'base': 'ubuntu16_py35',
+            'base': 'ubuntu18_py36',
             'cuda': 'cuda92',
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.4-cuda92',
