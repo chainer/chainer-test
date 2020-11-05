@@ -84,6 +84,9 @@ def main():
     if not is_cupy_8_or_later:
         # Required only for CUDA 11 (which bundles CUB) build.
         use_gcc6_or_later = False
+    elif version.get_cupy_version() >= (9,) and args.test.endswith('-v8'):
+        print('Skipping chainer test for CuPy>=9')
+        return
     else:
         if args.test.startswith('chainer-'):
             print('Skipping chainer test for CuPy>=8')
