@@ -9,6 +9,12 @@ import sys
 import version
 
 
+def get_python_version(base):
+    """Returns the python version to be installed in a tuple."""
+    ver = next(a[1] for a in _base_choices if a[0] == base)
+    return tuple([int(s) for s in ver.split('.')])
+
+
 _base_choices = [
     ('ubuntu16_py35', '3.5.2'),
     ('ubuntu16_py36-pyenv', '3.6.6'),
@@ -21,15 +27,20 @@ _base_choices = [
 base_choices_all = [a[0] for a in _base_choices]
 
 # Python 3.5+
-base_choices_master = [
+base_choices_master_chainer = [
     a[0] for a in _base_choices if
-    (a[1].startswith('3.') and not a[1].startswith('3.4.'))]
+    get_python_version(a) >= (3, 5)]
 
 # Python 2.7 & 3.5+
 base_choices_stable_chainer = [
     a[0] for a in _base_choices if
     a[1].startswith('2.') or
     (a[1].startswith('3.') and not a[1].startswith('3.4.'))]
+
+# Python 3.6+
+base_choices_master_cupy = [
+    a[0] for a in _base_choices if
+    get_python_version(a) >= (3, 6)]
 
 # Python 2.7 & 3.4+
 base_choices_stable_cupy = base_choices_all
@@ -99,12 +110,6 @@ cuda_cutensors = {
     'cuda110': ['cutensor1.2.0-cuda110'],
     'cuda111': ['cutensor1.2.0-cuda111'],
 }
-
-
-def get_python_version(base):
-    """Returns the python version to be installed in a tuple."""
-    ver = next(a[1] for a in _base_choices if a[0] == base)
-    return tuple([int(s) for s in ver.split('.')])
 
 
 def get_cuda_libs_choices(target, with_dummy=False):

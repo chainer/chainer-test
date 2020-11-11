@@ -33,7 +33,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if version.is_master_branch('cupy'):
-        params['base'] = docker.base_choices_master
+        params['base'] = docker.base_choices_master_cupy
     else:
         params['base'] = docker.base_choices_stable_cupy
 
