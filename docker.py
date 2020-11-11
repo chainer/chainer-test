@@ -9,38 +9,34 @@ import sys
 import version
 
 
-def get_python_version(base):
-    """Returns the python version to be installed in a tuple."""
-    ver = next(a[1] for a in _base_choices if a[0] == base)
-    return tuple([int(s) for s in ver.split('.')])
-
-
 _base_choices = [
-    ('ubuntu16_py35', '3.5.2'),
-    ('ubuntu16_py36-pyenv', '3.6.6'),
-    ('ubuntu16_py37-pyenv', '3.7.0'),
-    ('ubuntu18_py36', '3.6.7'),
-    ('ubuntu18_py37-pyenv', '3.7.1'),
-    ('ubuntu18_py38-pyenv', '3.8.0'),
-    ('centos7_py34-pyenv', '3.4.8')]
+    (name, tuple([int(s) for s in ver.split('.')]))
+    for name, ver in [
+        ('ubuntu16_py35', '3.5.2'),
+        ('ubuntu16_py36-pyenv', '3.6.6'),
+        ('ubuntu16_py37-pyenv', '3.7.0'),
+        ('ubuntu18_py36', '3.6.7'),
+        ('ubuntu18_py37-pyenv', '3.7.1'),
+        ('ubuntu18_py38-pyenv', '3.8.0'),
+        ('centos7_py34-pyenv', '3.4.8')]]
 
-base_choices_all = [a[0] for a in _base_choices]
+
+base_choices_all = [name for name, ver in _base_choices]
 
 # Python 3.5+
 base_choices_master_chainer = [
-    a[0] for a in _base_choices if
-    get_python_version(a) >= (3, 5)]
+    name for name, ver in _base_choices
+    if ver >= (3, 5)]
 
 # Python 2.7 & 3.5+
 base_choices_stable_chainer = [
-    a[0] for a in _base_choices if
-    a[1].startswith('2.') or
-    (a[1].startswith('3.') and not a[1].startswith('3.4.'))]
+    name for name, ver in _base_choices
+    if ver[0] == 2 or ver >= (3, 5)]
 
 # Python 3.6+
 base_choices_master_cupy = [
-    a[0] for a in _base_choices if
-    get_python_version(a) >= (3, 6)]
+    name for name, ver in _base_choices
+    if ver >= (3, 6)]
 
 # Python 2.7 & 3.4+
 base_choices_stable_cupy = base_choices_all
@@ -110,6 +106,11 @@ cuda_cutensors = {
     'cuda110': ['cutensor1.2.0-cuda110'],
     'cuda111': ['cutensor1.2.0-cuda111'],
 }
+
+
+def get_python_version(base):
+    """Returns the python version to be installed in a tuple."""
+    return next(a[1] for a in _base_choices if a[0] == base)
 
 
 def get_cuda_libs_choices(target, with_dummy=False):
