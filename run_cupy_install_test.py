@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # make sdist
     # cuda, cudnn and numpy is required to make a sdist file.
     build_conf = {
-        'base': 'ubuntu18_py36',
+        'base': 'ubuntu16_py36-pyenv',
         'cuda': 'cuda90',
         'cudnn': 'cudnn7-cuda9',
         'nccl': 'none',
