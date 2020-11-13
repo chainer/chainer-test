@@ -32,7 +32,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if version.is_master_branch('cupy'):
-        params['base'] = docker.base_choices_master
+        params['base'] = docker.base_choices_master_cupy
         params['numpy'] = ['1.15', '1.16', '1.17', '1.18']
         params['cython'] = ['0.29.13', '0.29.14']
     else:
