@@ -747,7 +747,7 @@ codes['nccl2.7-cuda111'] = nccl_base.format(
 codes['cutensor1.2.0-cuda101'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 10.1;'
 codes['cutensor1.2.0-cuda102'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 10.2;'
 codes['cutensor1.2.0-cuda110'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 11.0;'
-codes['cutensor1.2.1-cuda111'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1.2 1.2.1 11.1;'
+codes['cutensor1.2.1-cuda111'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1.7 1.2.1 11.1;'
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
