@@ -64,7 +64,7 @@ if __name__ == '__main__':
         'attrs<19.2.0',
         'pytest<4.2',
         'pytest-timeout',  # For timeout
-        'pytest-cov',  # For coverage report
+        'pytest-cov<2.10',  # For coverage report
         'nose',
         'mock',
         # coverage 5.0 causes error:
