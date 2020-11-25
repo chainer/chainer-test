@@ -1,8 +1,12 @@
 #!/bin/sh -ex
 
+. ./environment.sh
+
 pip install --user -e cupy/[jenkins]
 
 cd cupy/docs
+
+pip install --user -r requirements.txt
 
 export SPHINXOPTS=-W
 

@@ -10,93 +10,110 @@ import version
 
 
 _base_choices = [
-    ('ubuntu14_py27', '2.7.6'),
-    ('ubuntu14_py34', '3.4.0'),
-    ('ubuntu14_py35-pyenv', '3.5.5'),
-    ('ubuntu14_py36-pyenv', '3.6.5'),
-    ('ubuntu16_py27', '2.7.12'),
-    ('ubuntu16_py35', '3.5.2'),
-    ('ubuntu16_py36-pyenv', '3.6.6'),
-    ('ubuntu16_py37-pyenv', '3.7.0'),
-    ('ubuntu18_py36', '3.6.7'),
-    ('ubuntu18_py37-pyenv', '3.7.1'),
-    ('centos6_py27-pyenv', '2.7.14'),
-    ('centos7_py27', '2.7.5'),
-    ('centos7_py34-pyenv', '3.4.8')]
+    (name, tuple([int(s) for s in ver.split('.')]))
+    for name, ver in [
+        ('ubuntu16_py35', '3.5.2'),
+        ('ubuntu16_py36-pyenv', '3.6.6'),
+        ('ubuntu16_py37-pyenv', '3.7.0'),
+        ('ubuntu18_py36', '3.6.7'),
+        ('ubuntu18_py37-pyenv', '3.7.1'),
+        ('ubuntu18_py38-pyenv', '3.8.0'),
+        ('centos7_py34-pyenv', '3.4.8')]]
 
-base_choices_all = [a[0] for a in _base_choices]
+
+base_choices_all = [name for name, ver in _base_choices]
 
 # Python 3.5+
-base_choices_master = [
-    a[0] for a in _base_choices if
-    (a[1].startswith('3.') and not a[1].startswith('3.4.'))]
+base_choices_master_chainer = [
+    name for name, ver in _base_choices
+    if ver >= (3, 5)]
 
 # Python 2.7 & 3.5+
 base_choices_stable_chainer = [
-    a[0] for a in _base_choices if
-    a[1].startswith('2.') or
-    (a[1].startswith('3.') and not a[1].startswith('3.4.'))]
+    name for name, ver in _base_choices
+    if ver[0] == 2 or ver >= (3, 5)]
+
+# Python 3.6+
+base_choices_master_cupy = [
+    name for name, ver in _base_choices
+    if ver >= (3, 6)]
 
 # Python 2.7 & 3.4+
 base_choices_stable_cupy = base_choices_all
 
 cuda_choices = [
     'none',
-    'cuda80',
-    'cuda90', 'cuda91', 'cuda92',
-    'cuda100', 'cuda101',
+    'cuda90', 'cuda92',
+    'cuda100', 'cuda101', 'cuda102',
+    'cuda110', 'cuda111',
 ]
 cudnn_choices = [
     'none',
-    'cudnn5-cuda8', 'cudnn51-cuda8',
-    'cudnn6-cuda8',
-    'cudnn7-cuda8', 'cudnn7-cuda9', 'cudnn7-cuda91',
-    'cudnn71-cuda8', 'cudnn71-cuda9', 'cudnn71-cuda91', 'cudnn71-cuda92',
-    'cudnn72-cuda8', 'cudnn72-cuda9', 'cudnn72-cuda92',
+    'cudnn7-cuda9',
+    'cudnn71-cuda9', 'cudnn71-cuda92',
+    'cudnn72-cuda9', 'cudnn72-cuda92',
     'cudnn73-cuda9', 'cudnn73-cuda92', 'cudnn73-cuda100',
     'cudnn74-cuda9', 'cudnn74-cuda92', 'cudnn74-cuda100',
     'cudnn75-cuda9', 'cudnn75-cuda92', 'cudnn75-cuda100', 'cudnn75-cuda101',
+    'cudnn76-cuda102',
+    'cudnn80-cuda110', 'cudnn80-cuda111',
 ]
 nccl_choices = [
     'none',
-    'nccl1.3',
-    'nccl2.0-cuda8', 'nccl2.0-cuda9',
-    'nccl2.1-cuda91',
+    'nccl2.0-cuda9',
     'nccl2.2-cuda9', 'nccl2.2-cuda92',
     'nccl2.3-cuda9', 'nccl2.3-cuda92', 'nccl2.3-cuda100',
     'nccl2.4-cuda9', 'nccl2.4-cuda92', 'nccl2.4-cuda100', 'nccl2.4-cuda101',
+    'nccl2.5-cuda9', 'nccl2.5-cuda100', 'nccl2.5-cuda101', 'nccl2.5-cuda102',
+    'nccl2.6-cuda100', 'nccl2.6-cuda101', 'nccl2.6-cuda102',
+    'nccl2.7-cuda101', 'nccl2.7-cuda102', 'nccl2.7-cuda110', 'nccl2.7-cuda111'
+]
+cutensor_choices = [
+    'none',
+    'cutensor1.2.0-cuda101',
+    'cutensor1.2.0-cuda102',
+    'cutensor1.2.0-cuda110',
+    'cutensor1.2.1-cuda111',
 ]
 
 cuda_cudnns = {
-    'cuda80': ['cudnn5-cuda8', 'cudnn51-cuda8', 'cudnn6-cuda8',
-               'cudnn7-cuda8', 'cudnn71-cuda8', 'cudnn72-cuda8'],
     'cuda90': ['cudnn7-cuda9', 'cudnn71-cuda9', 'cudnn72-cuda9',
                'cudnn73-cuda9', 'cudnn74-cuda9', 'cudnn75-cuda9'],
-    'cuda91': ['cudnn7-cuda91', 'cudnn71-cuda91', 'cudnn73-cuda9'],
     'cuda92': ['cudnn71-cuda92', 'cudnn72-cuda92', 'cudnn73-cuda92',
                'cudnn74-cuda92', 'cudnn75-cuda92'],
     'cuda100': ['cudnn73-cuda100', 'cudnn74-cuda100', 'cudnn75-cuda100'],
     'cuda101': ['cudnn75-cuda101'],
+    'cuda102': ['cudnn76-cuda102'],
+    'cuda110': ['cudnn80-cuda110'],
+    'cuda111': ['cudnn80-cuda111'],
 }
 cuda_nccls = {
-    'cuda80': ['nccl1.3', 'nccl2.0-cuda8'],
     # CUDA 9 does not support nccl 1.3
     'cuda90': ['nccl2.0-cuda9', 'nccl2.2-cuda9', 'nccl2.3-cuda9',
-               'nccl2.4-cuda9'],
-    'cuda91': ['nccl2.1-cuda91'],
+               'nccl2.4-cuda9', 'nccl2.5-cuda9'],
     'cuda92': ['nccl2.2-cuda92', 'nccl2.3-cuda9', 'nccl2.4-cuda92'],
-    'cuda100': ['nccl2.3-cuda100', 'nccl2.4-cuda100'],
-    'cuda101': ['nccl2.4-cuda101'],
+    'cuda100': ['nccl2.3-cuda100', 'nccl2.4-cuda100', 'nccl2.5-cuda100',
+                'nccl2.6-cuda100'],
+    'cuda101': ['nccl2.4-cuda101', 'nccl2.5-cuda101', 'nccl2.6-cuda101',
+                'nccl2.7-cuda101'],
+    'cuda102': ['nccl2.5-cuda102', 'nccl2.6-cuda102', 'nccl2.7-cuda102'],
+    'cuda110': ['nccl2.7-cuda110'],
+    'cuda111': ['nccl2.7-cuda111'],
+}
+cuda_cutensors = {
+    'cuda101': ['cutensor1.2.0-cuda101'],
+    'cuda102': ['cutensor1.2.0-cuda102'],
+    'cuda110': ['cutensor1.2.0-cuda110'],
+    'cuda111': ['cutensor1.2.1-cuda111'],
 }
 
 
 def get_python_version(base):
     """Returns the python version to be installed in a tuple."""
-    ver = next(a[1] for a in _base_choices if a[0] == base)
-    return tuple([int(s) for s in ver.split('.')])
+    return next(a[1] for a in _base_choices if a[0] == base)
 
 
-def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
+def get_cuda_libs_choices(target, with_dummy=False):
     assert target in ['chainer', 'cupy']
 
     cupy_version = version.get_cupy_version()
@@ -111,6 +128,7 @@ def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
             continue
         cudnns = ['none'] + cuda_cudnns[cuda]
         nccls = ['none'] + cuda_nccls[cuda]
+        cutensors = ['none'] + cuda_cutensors.get(cuda, [])
         if cupy_major < 2:
             # only cupy>=v2 supports cudnn7
             cudnns = [c for c in cudnns if c < 'cudnn7']
@@ -119,29 +137,24 @@ def get_cuda_cudnn_nccl_choices(target, with_dummy=False):
 
         for cudnn in cudnns:
             for nccl in nccls:
-                choices.append((cuda, cudnn, nccl))
+                for cutensor in cutensors:
+                    choices.append((cuda, cudnn, nccl, cutensor))
 
     if target == 'chainer':
-        choices = [('none', 'none', 'none')] + choices
+        choices = [('none', 'none', 'none', 'none')] + choices
 
     return choices
 
 
 def get_numpy_choices():
-    choices = ['1.9', '1.10', '1.11', '1.12']
     cupy_version = version.get_cupy_version()
-    if cupy_version is not None:
-        if cupy_version[0] >= 2:
-            # cupy v2 or later
-            choices.append('1.13')
-        if cupy_version[0:2] >= (4, 1):
-            # cupy v4.1 or later
-            choices.append('1.14')
-        if cupy_version[0] >= 5:
-            # cupy v5 or later
-            choices.append('1.15')
-            choices.append('1.16')
-            choices.append('1.17')
+    if cupy_version[0] < 8:
+        choices = [
+            '1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16',
+            '1.17']
+    else:
+        # cupy v8 or later
+        choices = ['1.16', '1.17', '1.18', '1.19']
     return choices
 
 
@@ -149,27 +162,14 @@ codes = {}
 
 # base
 
-codes['centos7_py27'] = '''FROM centos:7
-
-ENV PATH /usr/lib64/ccache:$PATH
-
-RUN yum -y update && \\
-    yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
-    yum -y install python-devel && \\
-    yum clean all
-RUN curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && \\
-    python /tmp/get-pip.py && \\
-    rm /tmp/get-pip.py
-'''
-
 codes['centos7_py34-pyenv'] = '''FROM centos:7
 
 ENV PATH /usr/lib64/ccache:$PATH
 
+# devtoolset-6 needs to be activated by: `source /opt/rh/devtoolset-6/enable`
 RUN yum -y update && \\
-    yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
+    yum -y install centos-release-scl epel-release && \\
+    yum -y install devtoolset-6 gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
     yum -y install bzip2-devel openssl-devel readline-devel && \\
     yum clean all
 
@@ -182,53 +182,39 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.4.8
 RUN pyenv global 3.4.8
 RUN pyenv rehash
+
+ENV CUTENSOR_URL=https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/
+
+ENV CUTENSOR_INSTALL='install_cutensor() {{ curl -sL -o libcutensor1_$1-1_amd64.rpm $CUTENSOR_URL/libcutensor1-$1-1.x86_64.rpm && \\
+    rpm -i libcutensor1_$1-1_amd64.rpm && \\
+    rm libcutensor1_$1-1_amd64.rpm && \\
+    curl -sL -o libcutensor-dev_$1-1_amd64.rpm $CUTENSOR_URL/libcutensor-devel-$1-1.x86_64.rpm && \\
+    rpm -i libcutensor-dev_$1-1_amd64.rpm  && \\
+    rm libcutensor-dev_$1-1_amd64.rpm && \\
+    update-alternatives --set libcutensor.so.$2 /usr/lib64/libcutensor/$3/libcutensor.so.$2 ; \\
+    }}';
 '''
 
-codes['centos6_py27-pyenv'] = '''FROM centos:6
+cutensor_ubuntu_install = '''
+ENV CUTENSOR_URL=https://developer.download.nvidia.com/compute/cuda/repos/ubuntu{cutensor_os_ver}/x86_64
 
-ENV PATH /usr/lib64/ccache:$PATH
-
-RUN yum -y update && \\
-    yum -y install epel-release && \\
-    yum -y install gcc gcc-c++ git kmod hdf5-devel patch which perl make autoconf && \\
-    yum -y install bzip2-devel openssl-devel readline-devel && \\
-    yum clean all
-
-RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
-ENV PYENV_ROOT=/opt/pyenv
-RUN mkdir "$PYENV_ROOT/shims"
-RUN chmod o+w "$PYENV_ROOT/shims"
-ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
-
-RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 2.7.14
-RUN pyenv global 2.7.14
-RUN pyenv rehash
+ENV CUTENSOR_INSTALL='install_cutensor() {{ curl -sL -o libcutensor1_$1-1_amd64.deb $CUTENSOR_URL/libcutensor1_$1-1_amd64.deb && \\
+    dpkg -i libcutensor1_$1-1_amd64.deb && \\
+    rm libcutensor1_$1-1_amd64.deb && \\
+    curl -sL -o libcutensor-dev_$1-1_amd64.deb $CUTENSOR_URL/libcutensor-dev_$1-1_amd64.deb && \\
+    dpkg -i libcutensor-dev_$1-1_amd64.deb  && \\
+    rm libcutensor-dev_$1-1_amd64.deb && \\
+    update-alternatives --set libcutensor.so.$2 /usr/lib/x86_64-linux-gnu/libcutensor/$3/libcutensor.so.$2 ; \\
+    }};'
 '''
 
-codes['ubuntu14_py27'] = '''FROM ubuntu:14.04
-
-ENV PATH /usr/lib/ccache:$PATH
-
-RUN apt-get -y update && \\
-    apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
-    apt-get -y install python-pip python-dev && \\
-    apt-get -y install libffi-dev libssl-dev && \\
+ubuntu16_apt_install_gcc = '''
+RUN apt-get -y update && \
+    apt-get -y install software-properties-common && \\
+    add-apt-repository ppa:ubuntu-toolchain-r/test && \\
+    apt-get -y update && \\
+    apt-get -y install g++-6 && \\
     apt-get clean
-'''
-
-codes['ubuntu14_py34'] = '''FROM ubuntu:14.04
-
-ENV PATH /usr/lib/ccache:$PATH
-
-RUN apt-get -y update && \\
-    apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils && \\
-    apt-get -y install python3-pip python3-dev && \\
-    apt-get clean
-
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 '''
 
 ubuntu_pyenv_base = '''FROM ubuntu:{ubuntu_ver}
@@ -241,6 +227,8 @@ RUN apt-get -y update && \\
     apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make cmake && \\
     apt-get clean
 
+{gcc_install}
+
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
 ENV PYENV_ROOT=/opt/pyenv
 RUN mkdir "$PYENV_ROOT/shims"
@@ -250,44 +238,42 @@ ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN cd "$PYENV_ROOT" && git pull && cd - && env CFLAGS="-fPIC" PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install {python_ver}
 RUN pyenv global {python_ver}
 RUN pyenv rehash
+
+{cutensor_ubuntu_install}
 '''
 
-codes['ubuntu14_py35-pyenv'] = ubuntu_pyenv_base.format(
-    ubuntu_ver='14.04',
-    python_ver='.'.join(
-        [str(x) for x in get_python_version('ubuntu14_py35-pyenv')]),
-)
-codes['ubuntu14_py36-pyenv'] = ubuntu_pyenv_base.format(
-    ubuntu_ver='14.04',
-    python_ver='.'.join(
-        [str(x) for x in get_python_version('ubuntu14_py36-pyenv')]),
-)
 codes['ubuntu16_py36-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='16.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py36-pyenv')]),
+    gcc_install=ubuntu16_apt_install_gcc,
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1604')
 )
 codes['ubuntu16_py37-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='16.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu16_py37-pyenv')]),
+    gcc_install=ubuntu16_apt_install_gcc,
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1604')
 )
 codes['ubuntu18_py37-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='18.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py37-pyenv')]),
+    gcc_install='',
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1804')
 )
-
-codes['ubuntu16_py27'] = '''FROM ubuntu:16.04
-
-ENV PATH /usr/lib/ccache:$PATH
-
-RUN apt-get -y update && \\
-    apt-get -y upgrade && \\
-    apt-get -y install curl g++ gfortran git autoconf libhdf5-dev libhdf5-serial-dev pkg-config && \\
-    apt-get -y install python-pip python-dev && \\
-    apt-get clean
-'''
+codes['ubuntu18_py38-pyenv'] = ubuntu_pyenv_base.format(
+    ubuntu_ver='18.04',
+    python_ver='.'.join(
+        [str(x) for x in get_python_version('ubuntu18_py38-pyenv')]),
+    gcc_install='',
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1804')
+)
 
 codes['ubuntu16_py35'] = '''FROM ubuntu:16.04
 
@@ -299,9 +285,16 @@ RUN apt-get -y update && \\
     apt-get -y install python3-pip python3-dev && \\
     apt-get clean
 
+{gcc_install}
+
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
-'''
+
+{cutensor_ubuntu_install}
+'''.format(
+    gcc_install=ubuntu16_apt_install_gcc,
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1604'))
 
 codes['ubuntu18_py36'] = '''FROM ubuntu:18.04
 
@@ -315,7 +308,11 @@ RUN apt-get -y update && \\
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
-'''
+
+{cutensor_ubuntu_install}
+'''.format(
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1604'))
 
 # ccache
 
@@ -338,29 +335,26 @@ ENV NVCC="ccache nvcc"
 
 # cuda
 
-cuda80_run = 'cuda_8.0.44_linux-run'
-cuda80_url = 'https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers'
-cuda80_driver = 'NVIDIA-Linux-x86_64-367.48.run'
-
 cuda90_run = 'cuda_9.0.176_384.81_linux-run'
 cuda90_url = 'https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers'
-cuda90_driver = 'NVIDIA-Linux-x86_64-384.81.run'
-
-cuda91_run = 'cuda_9.1.85_387.26_linux'
-cuda91_url = 'https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers'
-cuda91_driver = 'NVIDIA-Linux-x86_64-387.26.run'
 
 cuda92_run = 'cuda_9.2.88_396.26_linux'
 cuda92_url = 'https://developer.nvidia.com/compute/cuda/9.2/Prod/local_installers'
-cuda92_driver = 'NVIDIA-Linux-x86_64-396.26.run'
 
 cuda100_run = 'cuda_10.0.130_410.48_linux'
 cuda100_url = 'https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers'
-cuda100_driver = 'NVIDIA-Linux-x86_64-410.72.run'
 
-cuda101_run = 'cuda_10.1.105_418.39_linux.run'
-cuda101_url = 'https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers'
-cuda101_driver = 'NVIDIA-Linux-x86_64-418.39.run'
+cuda101_run = 'cuda_10.1.243_418.87.00_linux.run'
+cuda101_url = 'https://developer.download.nvidia.com/compute/cuda/10.1/Prod/local_installers'
+
+cuda102_run = 'cuda_10.2.89_440.33.01_linux.run'
+cuda102_url = 'https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers'
+
+cuda110_run = 'cuda_11.0.2_450.51.05_linux.run'
+cuda110_url = 'https://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers'
+
+cuda111_run = 'cuda_11.1.0_455.23.05_linux.run'
+cuda111_url = 'https://developer.download.nvidia.com/compute/cuda/11.1.0/local_installers'
 
 
 cuda_base = '''
@@ -387,25 +381,11 @@ LABEL com.nvidia.volumes.needed="nvidia_driver"
 LABEL com.nvidia.cuda.version="{cuda_ver}"
 '''
 
-codes['cuda80'] = cuda_base.format(
-    cuda_ver='8.0',
-    cuda_run=cuda80_run,
-    cuda_url=cuda80_url,
-    sha256sum='64dc4ab867261a0d690735c46d7cc9fc60d989da0d69dc04d1714e409cacbdf0',
-)
-
 codes['cuda90'] = cuda_base.format(
     cuda_ver='9.0',
     cuda_run=cuda90_run,
     cuda_url=cuda90_url,
     sha256sum='96863423feaa50b5c1c5e1b9ec537ef7ba77576a3986652351ae43e66bcd080c',
-)
-
-codes['cuda91'] = cuda_base.format(
-    cuda_ver='9.1',
-    cuda_run=cuda91_run,
-    cuda_url=cuda91_url,
-    sha256sum='8496c72b16fee61889f9281449b5d633d0b358b46579175c275d85c9205fe953',
 )
 
 codes['cuda92'] = cuda_base.format(
@@ -426,7 +406,28 @@ codes['cuda101'] = cuda_base.format(
     cuda_ver='10.1',
     cuda_run=cuda101_run,
     cuda_url=cuda101_url,
-    sha256sum='33ac60685a3e29538db5094259ea85c15906cbd0f74368733f4111eab6187c8f',
+    sha256sum='e7c22dc21278eb1b82f34a60ad7640b41ad3943d929bebda3008b72536855d31',
+)
+
+codes['cuda102'] = cuda_base.format(
+    cuda_ver='10.2',
+    cuda_run=cuda102_run,
+    cuda_url=cuda102_url,
+    sha256sum='560d07fdcf4a46717f2242948cd4f92c5f9b6fc7eae10dd996614da913d5ca11',
+)
+
+codes['cuda110'] = cuda_base.format(
+    cuda_ver='11.0',
+    cuda_run=cuda110_run,
+    cuda_url=cuda110_url,
+    sha256sum='48247ada0e3f106051029ae8f70fbd0c238040f58b0880e55026374a959a69c1',
+)
+
+codes['cuda111'] = cuda_base.format(
+    cuda_ver='11.1',
+    cuda_run=cuda111_run,
+    cuda_url=cuda111_url,
+    sha256sum='858cbab091fde94556a249b9580fadff55a46eafbcb4d4a741d2dcd358ab94a5',
 )
 
 
@@ -442,46 +443,10 @@ RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/c
 ENV CUDNN_VER {cudnn_ver}
 '''
 
-codes['cudnn5-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v5.0-ga',
-    cudnn_ver='v5',
-    sha256sum='af80eb1ce0cb51e6a734b2bdc599e6d50b676eab3921e5bddfe5443485df86b6',
-)
-
-codes['cudnn51-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v5.1',
-    cudnn_ver='v5.1',
-    sha256sum='c10719b36f2dd6e9ddc63e3189affaa1a94d7d027e63b71c3f64d449ab0645ce',
-)
-
-codes['cudnn6-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v6.0',
-    cudnn_ver='v6.0',
-    sha256sum='9b09110af48c9a4d7b6344eb4b3e344daa84987ed6177d5c44319732f3bb7f9c',
-)
-
-codes['cudnn7-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v7',
-    cudnn_ver='v7.0.5',
-    sha256sum='9e0b31735918fe33a79c4b3e612143d33f48f61c095a3b993023cdab46f6d66e',
-)
-
 codes['cudnn7-cuda9'] = cudnn_base.format(
     cudnn='cudnn-9.0-linux-x64-v7',
     cudnn_ver='v7.0.5',
     sha256sum='1a3e076447d5b9860c73d9bebe7087ffcb7b0c8814fd1e506096435a2ad9ab0e',
-)
-
-codes['cudnn7-cuda91'] = cudnn_base.format(
-    cudnn='cudnn-9.1-linux-x64-v7',
-    cudnn_ver='v7.0.5',
-    sha256sum='1ead5da7324db35dcdb3721a8d4fc020b217c68cdb3b3daa1be81eb2456bd5e5',
-)
-
-codes['cudnn71-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v7.1',
-    cudnn_ver='v7.1.3',
-    sha256sum='31ed3c3bfb9c515c228c1dcbb306277ce08836e84e3facedef6182d872f8cd3d',
 )
 
 codes['cudnn71-cuda9'] = cudnn_base.format(
@@ -490,22 +455,10 @@ codes['cudnn71-cuda9'] = cudnn_base.format(
     sha256sum='60b581d0f05324c33323024a264aa3fb185c533e2f67dae7fda847b926bb7e57',
 )
 
-codes['cudnn71-cuda91'] = cudnn_base.format(
-    cudnn='cudnn-9.1-linux-x64-v7.1',
-    cudnn_ver='v7.1.3',
-    sha256sum='dd616d3794167ceb923d706bf73e8d6acdda770751492b921ee6827cdf190228',
-)
-
 codes['cudnn71-cuda92'] = cudnn_base.format(
     cudnn='cudnn-9.2-linux-x64-v7.1',
     cudnn_ver='v7.1.4',
     sha256sum='f875340f812b942408098e4c9807cb4f8bdaea0db7c48613acece10c7c827101',
-)
-
-codes['cudnn72-cuda8'] = cudnn_base.format(
-    cudnn='cudnn-8.0-linux-x64-v7.2.1.38',
-    cudnn_ver='v7.2.1',
-    sha256sum='c2d58788fd51d892fb84a1fae578d8cb432f7301b279d0a1cf7b38faf79993f4',
 )
 
 codes['cudnn72-cuda9'] = cudnn_base.format(
@@ -580,6 +533,24 @@ codes['cudnn75-cuda101'] = cudnn_base.format(
     sha256sum='c31697d6b71afe62838ad2e57da3c3c9419c4e9f5635d14b683ebe63f904fbc8',
 )
 
+codes['cudnn76-cuda102'] = cudnn_base.format(
+    cudnn='cudnn-10.2-linux-x64-v7.6.5.32',
+    cudnn_ver='v7.6.5',
+    sha256sum='600267f2caaed2fd58eb214ba669d8ea35f396a7d19b94822e6b36f9f7088c20',
+)
+
+codes['cudnn80-cuda110'] = cudnn_base.format(
+    cudnn='cudnn-11.0-linux-x64-v8.0.2.39',
+    cudnn_ver='v8.0.2',
+    sha256sum='672f46288b8edd98f8d156a4f1ff518201ca6de0cff67915ceaa37f6d6d86345',
+)
+codes['cudnn80-cuda111'] = cudnn_base.format(
+    cudnn='cudnn-11.1-linux-x64-v8.0.4.30',
+    cudnn_ver='v8.0.4',
+    sha256sum='8f4c662343afce5998ce963500fe3bb167e9a508c1a1a949d821a4b80fa9beab',
+)
+
+
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
 # installed.
 codes['cudnn-latest-with-dummy'] = '''
@@ -624,13 +595,6 @@ RUN mkdir nccl && cd nccl && \\
     cd .. && rm -rf nccl
 '''
 
-codes['nccl2.0-cuda8'] = nccl_base.format(
-    libnccl2='libnccl2_2.0.5-2+cuda8.0_amd64',
-    libnccl_dev='libnccl-dev_2.0.5-2+cuda8.0_amd64',
-    include_dir='/usr/include',
-    lib_dir='/usr/lib/x86_64-linux-gnu',
-)
-
 codes['nccl2.0-cuda9'] = nccl_base.format(
     libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
@@ -641,13 +605,6 @@ codes['nccl2.0-cuda9'] = nccl_base.format(
 codes['nccl2.2-cuda9'] = nccl_base.format(
     libnccl2='libnccl2_2.2.13-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.2.13-1+cuda9.0_amd64',
-    include_dir='/usr/include',
-    lib_dir='/usr/lib/x86_64-linux-gnu',
-)
-
-codes['nccl2.1-cuda91'] = nccl_base.format(
-    libnccl2='libnccl2_2.1.15-1+cuda9.1_amd64',
-    libnccl_dev='libnccl-dev_2.1.15-1+cuda9.1_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
@@ -708,6 +665,90 @@ codes['nccl2.4-cuda101'] = nccl_base.format(
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
+codes['nccl2.5-cuda9'] = nccl_base.format(
+    libnccl2='libnccl2_2.5.6-1+cuda9.0_amd64',
+    libnccl_dev='libnccl-dev_2.5.6-1+cuda9.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.5-cuda100'] = nccl_base.format(
+    libnccl2='libnccl2_2.5.6-1+cuda10.0_amd64',
+    libnccl_dev='libnccl-dev_2.5.6-1+cuda10.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.5-cuda101'] = nccl_base.format(
+    libnccl2='libnccl2_2.5.6-1+cuda10.1_amd64',
+    libnccl_dev='libnccl-dev_2.5.6-1+cuda10.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.5-cuda102'] = nccl_base.format(
+    libnccl2='libnccl2_2.5.6-1+cuda10.2_amd64',
+    libnccl_dev='libnccl-dev_2.5.6-1+cuda10.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.6-cuda100'] = nccl_base.format(
+    libnccl2='libnccl2_2.6.4-1+cuda10.0_amd64',
+    libnccl_dev='libnccl-dev_2.6.4-1+cuda10.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.6-cuda101'] = nccl_base.format(
+    libnccl2='libnccl2_2.6.4-1+cuda10.1_amd64',
+    libnccl_dev='libnccl-dev_2.6.4-1+cuda10.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.6-cuda102'] = nccl_base.format(
+    libnccl2='libnccl2_2.6.4-1+cuda10.2_amd64',
+    libnccl_dev='libnccl-dev_2.6.4-1+cuda10.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.7-cuda101'] = nccl_base.format(
+    libnccl2='libnccl2_2.7.3-1+cuda10.1_amd64',
+    libnccl_dev='libnccl-dev_2.7.3-1+cuda10.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.7-cuda102'] = nccl_base.format(
+    libnccl2='libnccl2_2.7.3-1+cuda10.2_amd64',
+    libnccl_dev='libnccl-dev_2.7.3-1+cuda10.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.7-cuda110'] = nccl_base.format(
+    libnccl2='libnccl2_2.7.3-1+cuda11.0_amd64',
+    libnccl_dev='libnccl-dev_2.7.3-1+cuda11.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+codes['nccl2.7-cuda111'] = nccl_base.format(
+    libnccl2='libnccl2_2.7.8-1+cuda11.1_amd64',
+    libnccl_dev='libnccl-dev_2.7.8-1+cuda11.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+
+# cuTENSOR
+# The shell script needs to be saved in an env var due to Dockerfile limitations
+codes['cutensor1.2.0-cuda101'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 10.1;'
+codes['cutensor1.2.0-cuda102'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 10.2;'
+codes['cutensor1.2.0-cuda110'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 11.0;'
+codes['cutensor1.2.1-cuda111'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1.7 1.2.1 11.1;'
+
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
 RUN tmpdir=`mktemp -d` && \\
@@ -756,13 +797,14 @@ def make_dockerfile(conf):
     dockerfile += codes[conf['cudnn']]
     dockerfile += ccache
     dockerfile += codes[conf['nccl']]
+    dockerfile += codes[conf['cutensor']]
 
     if 'protobuf-cpp' in conf:
         dockerfile += codes[conf['protobuf-cpp']]
 
     # Update old packages provided by OS.
     dockerfile += '''
-RUN pip install -U pip six setuptools && rm -rf ~/.cache/pip
+RUN pip install -U pip six 'setuptools<50' && rm -rf ~/.cache/pip
 '''
 
     if 'ubuntu' in conf['base']:
@@ -795,23 +837,16 @@ RUN apt-get remove -y \\
                 dockerfile += 'RUN yum -y update && yum -y install lapack-devel && yum clean all\n'
 
         pillow, requires = partition_requirements('pillow', requires)
-        scipy, requires = partition_requirements('scipy', requires)
 
         if pillow is not None:
-            dockerfile += ('RUN pip install -U olefile && '
+            dockerfile += ('RUN pip install olefile && '
                            'pip install --global-option="build_ext" '
                            '--global-option="--disable-jpeg" -U "%s" && rm -rf ~/.cache/pip\n' % pillow)
 
         if 0 < len(requires):
             dockerfile += (
-                'RUN pip install -U %s && rm -rf ~/.cache/pip\n' %
+                'RUN pip install %s && rm -rf ~/.cache/pip\n' %
                 ' '.join(['"%s"' % req for req in requires]))
-
-        if scipy is not None:
-            # SciPy depends on C-API interface of NumPy.
-            # When you install different version of NumPy, it breaks compatibility and causes an error.
-            # So you need to install SciPy from its source to link NumPy you use.
-            dockerfile += 'RUN pip install --no-binary scipy -U "%s" && rm -rf ~/.cache/pip\n' % scipy
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()

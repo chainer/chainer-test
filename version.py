@@ -93,7 +93,7 @@ def git_clone(organization, name, branch):
     print('cloning %s/%s %s' % (organization, name, branch))
     repository = 'https://github.com/%s/%s.git' % (organization, name)
     subprocess.check_call([
-        'git', 'clone', repository, '--depth=1', '-b', branch])
+        'git', 'clone', '--recursive', repository, '--depth=1', '-b', branch])
 
 
 def clone_cupy():
@@ -116,9 +116,11 @@ def clone_chainer():
         chainer_branch = 'master'
     else:
         cupy_major, _, _, _ = get_cupy_version()
-        if 4 <= cupy_major:
-            chainer_branch = 'v%d' % cupy_major
-        else:
+        if cupy_major < 4:
             # chainer v(n+1) for cupy v(n)
             chainer_branch = 'v%d' % (cupy_major + 1)
+        elif cupy_major < 7:
+            chainer_branch = 'v%d' % cupy_major
+        else:
+            chainer_branch = 'master'
     git_clone('chainer', 'chainer', chainer_branch)

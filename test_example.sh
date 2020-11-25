@@ -1,5 +1,7 @@
 #!/bin/sh -ex
 
+. ./environment.sh
+
 pip install -U pip --user
 
 pip install --user -e cupy/
@@ -14,7 +16,8 @@ cd ..
 python -m pip install coverage matplotlib nltk progressbar2 --user
 python -m pip install olefile --user
 python -m pip install --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
-python -m pip install --extra-index-url https://developer.download.nvidia.com/compute/redist nvidia-dali --user
+#python -m pip install --extra-index-url https://developer.download.nvidia.com/compute/redist nvidia-dali --user
+python -m pip install 'https://developer.download.nvidia.com/compute/redist/nvidia-dali/nvidia_dali-0.7.0-624544-cp35-cp35m-manylinux1_x86_64.whl' --user
 
 run="coverage run -a --branch"
 

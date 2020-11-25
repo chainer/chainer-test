@@ -1,6 +1,8 @@
 #!/bin/sh -ex
 
-timeout 20m pip install -vvvv cupy/dist/*.tar.gz --user
+. ./environment.sh
+
+timeout 60m pip install -vvvv cupy/dist/*.tar.gz --user
 
 # check if cupy is installed
 if [ -z "$CUDNN_VER" ]; then

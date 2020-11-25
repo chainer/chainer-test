@@ -14,14 +14,15 @@ if __name__ == '__main__':
     parser.add_argument('--cuda', choices=docker.cuda_choices, required=True)
     parser.add_argument('--cudnn', choices=docker.cudnn_choices, required=True)
     parser.add_argument('--nccl', choices=docker.nccl_choices, required=True)
+    parser.add_argument('--cutensor', choices=docker.cutensor_choices, required=True)
     parser.add_argument('--ideep', choices=['none', '1.0', '2.0'], required=True)
     parser.add_argument('--numpy',
                         choices=['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15', '1.16', '1.17'],
                         required=True)
-    parser.add_argument('--scipy', choices=['none', '0.18', '0.19', '1.0'])
+    parser.add_argument('--scipy', choices=['none', '0.18', '0.19', '1.0', '1.4'])
     parser.add_argument('--protobuf', choices=['2', '3', 'cpp-3'])
-    parser.add_argument('--h5py', choices=['none', '2.5', '2.6', '2.7'])
-    parser.add_argument('--pillow', choices=['none', '3.4', '4.0', '4.1'])
+    parser.add_argument('--h5py', choices=['none', '2.5', '2.6', '2.7', '2.8', '2.9', '2.10'])
+    parser.add_argument('--pillow', choices=['none', '3.4', '4.0', '4.1', '6.2'])
     parser.add_argument('--theano', choices=['none', '0.8', '0.9', '1.0'])
     parser.add_argument('--type', choices=['cpu', 'gpu'], required=True)
     parser.add_argument('--cache')
@@ -53,6 +54,7 @@ if __name__ == '__main__':
         'cuda': args.cuda,
         'cudnn': args.cudnn,
         'nccl': args.nccl,
+        'cutensor': args.cutensor,
         'requires': ['setuptools', 'pip', 'cython==0.29.6'],
     }
 
@@ -63,6 +65,12 @@ if __name__ == '__main__':
         conf['requires'].append('h5py<2.7')
     elif args.h5py == '2.7':
         conf['requires'].append('h5py<2.8')
+    elif args.h5py == '2.8':
+        conf['requires'].append('h5py<2.9')
+    elif args.h5py == '2.9':
+        conf['requires'].append('h5py<2.10')
+    elif args.h5py == '2.10':
+        conf['requires'].append('h5py<2.11')
 
     if args.theano == '0.8':
         conf['requires'].append('theano<0.9')
@@ -96,6 +104,8 @@ if __name__ == '__main__':
         conf['requires'].append('scipy<0.20')
     elif args.scipy == '1.0':
         conf['requires'].append('scipy<1.1')
+    elif args.scipy == '1.4':
+        conf['requires'].append('scipy<1.5')
 
     if args.protobuf == '3':
         conf['requires'].append('protobuf<4')
@@ -110,6 +120,8 @@ if __name__ == '__main__':
         conf['requires'].append('pillow<4.1')
     elif args.pillow == '4.1':
         conf['requires'].append('pillow<4.2')
+    elif args.pillow == '6.2':
+        conf['requires'].append('pillow<6.3')
 
     if args.ideep == '1.0':
         conf['requires'].append('ideep4py<1.1')

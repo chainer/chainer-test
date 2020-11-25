@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+. ./environment.sh
+
 pip install --user -e chainer/[jenkins]
 # It's not possible to install only requirements.
 # Chainer is uninstalled after the installation.

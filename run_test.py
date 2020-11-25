@@ -35,14 +35,20 @@ SPHINX_REQUIREMENTS_PIP = [
 ]
 
 
+def _get_job_name():
+    # Returns Jenkins job name. None if the test is not running inside Jenkins.
+    # e.g., `chainer/cupy_pr/TEST=cupy-py3,label=mn1-p100`
+    return os.getenv('JOB_NAME')
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Test script for multi-environment')
     parser.add_argument('--test', choices=[
-        'chainer-py2', 'chainer-py3', 'chainer-py35', 'chainer-slow',
+        'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
         'chainer-head',
-        'cupy-py2', 'cupy-py3', 'cupy-py35', 'cupy-slow',
+        'cupy-py3', 'cupy-py35-v8', 'cupy-py36', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cutensor',
         'cupy-example', 'cupy-doc',
         'cupy-head',
     ], required=True)
@@ -68,8 +74,25 @@ def main():
     if args.clone_chainer:
         version.clone_chainer()
 
-    support_py2 = not (version.is_master_branch('chainer') or
-                       version.is_master_branch('cupy'))
+    is_cupy_8_or_later = (
+        version.get_cupy_version() >= (8,) or
+        # is_master_branch() is required because v8 beta branch has v7 as
+        # the version number in _version.py.
+        # After releasing v8 as stable, remove this condition.
+        version.is_master_branch('cupy'))
+
+    if not is_cupy_8_or_later:
+        # Required only for CUDA 11 (which bundles CUB) build.
+        use_gcc6_or_later = False
+    elif version.get_cupy_version() >= (9,) and args.test.endswith('-v8'):
+        print('Skipping chainer test for CuPy>=9')
+        return
+    else:
+        if args.test.startswith('chainer-'):
+            print('Skipping chainer test for CuPy>=8')
+            return
+        # Always required as CUB is always available.
+        use_gcc6_or_later = True
 
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
     if ideep_min_version is None:
@@ -82,33 +105,20 @@ def main():
         raise RuntimeError('bad ideep version: {}'.format(ideep_min_version))
 
     build_chainerx = False
-    if args.test == 'chainer-py2':
-        if not support_py2:
-            print('Skipping Py2 test for master branch')
-            return
+    cupy_accelerators = []
 
+    if args.test == 'chainer-py3':
         conf = {
-            'base': 'ubuntu16_py27',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn51-cuda8',
-            'nccl': 'nccl1.3',
-            'requires': [
-                'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.10',
-                'scipy<0.19', 'h5py', 'theano', 'pillow',
-                'protobuf',  # ignore broken protobuf 3.2.0rc1
-            ]
-        }
-        script = './test.sh'
-
-    elif args.test == 'chainer-py3':
-        conf = {
-            'base': 'ubuntu18_py37-pyenv',
+            'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda101',
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
+            'cutensor': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.29.13', 'numpy<1.18',
-                'pillow',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/chainer/chainer-test/issues/565
+                'setuptools<42', 'pip', 'cython==0.29.13',
+                'numpy==1.19.*', 'pillow',
             ],
         }
         script = './test.sh'
@@ -120,9 +130,13 @@ def main():
             'cuda': 'cuda92',
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
+            'cutensor': 'none',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.14',
-                'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'cython==0.29.13',
+                'numpy==1.18.*', 'scipy==1.4.*',
+                'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
             ],
         }
@@ -130,11 +144,13 @@ def main():
 
     elif args.test == 'chainer-head' or args.test == 'cupy-head':
         assert ideep_req is not None
+
         conf = {
             'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda101',
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
+            'cutensor': 'none',
             'requires': [
                 # Use '>=0.0.dev0' to install the latest pre-release version
                 # available on PyPI.
@@ -155,39 +171,53 @@ def main():
 
     elif args.test == 'chainer-slow':
         assert ideep_req is not None
+
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
+            'cutensor': 'none',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.16',
-                'scipy<1.1', 'h5py', 'theano', 'protobuf<3',
-                'pillow',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'cython==0.29.13',
+                'numpy==1.18.*', 'scipy==1.4.*',
+                'scipy<1.1', 'h5py', 'theano', 'protobuf<3', 'pillow',
                 'ideep4py{}'.format(ideep_req),
             ],
         }
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
-        base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
+        base = 'ubuntu16_py35'
         conf = {
             'base': base,
             'cuda': 'cuda90',
             'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.2-cuda9',
-            'requires': ['setuptools', 'cython==0.29.13', 'numpy<1.13'],
+            'cutensor': 'none',
+            'requires': [
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'cython==0.29.13', 'numpy==1.18.*',
+            ],
         }
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
-        base = 'ubuntu16_py27' if support_py2 else 'ubuntu16_py35'
+        base = 'ubuntu16_py35'
         conf = {
             'base': base,
             'cuda': 'cuda92',
             'cudnn': 'cudnn72-cuda92',
             'nccl': 'none',
-            'requires': ['setuptools', 'pip', 'cython==0.29.13', 'numpy<1.12'],
+            'cutensor': 'none',
+            'requires': [
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'pip', 'cython==0.29.13', 'numpy==1.18.*',
+            ],
         }
         script = './test_prev_example.sh'
 
@@ -200,93 +230,181 @@ def main():
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
+            'cutensor': 'none',
             'requires': [
-                'pip==9.0.1', 'setuptools', 'cython==0.29.13', 'matplotlib',
-                'numpy>=1.15', 'scipy>=1.0', 'theano',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'pip==9.0.1', 'setuptools<50', 'cython==0.29.13', 'matplotlib',
+                'numpy==1.18.*', 'scipy==1.4.*', 'theano',
             ] + SPHINX_REQUIREMENTS_CONDA
         }
         script = './test_doc.sh'
         build_chainerx = True
 
-    elif args.test == 'cupy-py2':
-        if not support_py2:
-            print('Skipping Py2 test for master branch')
-            return
-
+    elif args.test == 'cupy-py3':
+        requires = []
+        if is_cupy_8_or_later:
+            requires = ['optuna']
         conf = {
-            'base': 'ubuntu16_py27',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn51-cuda8',
-            'nccl': 'none',
+            'base': 'ubuntu18_py38-pyenv',
+            'cuda': 'cuda100',
+            'cudnn': 'cudnn75-cuda100',
+            'nccl': 'nccl2.4-cuda100',
+            'cutensor': 'none',
             'requires': [
-                'setuptools', 'pip', 'cython==0.29.13', 'numpy<1.16',
-                'scipy<1.1',
-            ]
+                'setuptools<42', 'pip', 'cython==0.28.0',
+                'numpy==1.19.*', 'scipy==1.5.*',
+            ] + requires,
         }
         script = './test_cupy.sh'
 
-    elif args.test == 'cupy-py3':
+    elif args.test == 'cupy-py3-cutensor':
         conf = {
-            'base': 'ubuntu16_py37-pyenv',
-            'cuda': 'cuda90',
-            'cudnn': 'cudnn7-cuda9',
-            'nccl': 'nccl2.0-cuda9',
+            'base': 'ubuntu18_py38-pyenv',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda102',
+            'cutensor': 'cutensor1.2.0-cuda102',
             'requires': [
-                'setuptools', 'pip', 'cython==0.28.0', 'numpy<1.18',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/chainer/chainer-test/issues/565
+                'setuptools<42', 'pip', 'cython==0.28.0', 'numpy==1.19.*',
             ],
         }
         script = './test_cupy.sh'
+        cupy_accelerators += ['cutensor']
 
-    elif args.test == 'cupy-py35':
+    elif args.test == 'cupy-py3-cub':
+        conf = {
+            'base': 'ubuntu18_py38-pyenv',
+            'cuda': 'cuda100',
+            'cudnn': 'cudnn75-cuda100',
+            'nccl': 'nccl2.4-cuda100',
+            'cutensor': 'none',
+            'requires': [
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/chainer/chainer-test/issues/565
+                'setuptools<42', 'pip', 'cython==0.28.0', 'numpy==1.19.*',
+            ],
+        }
+        script = './test_cupy.sh'
+        cupy_accelerators += ['cub']
+
+    elif args.test == 'cupy-py35-v8':
+        if not is_cupy_8_or_later:
+            numpy_requires = 'numpy==1.9.*'
+            scipy_requires = 'scipy==0.18.*'
+        else:
+            numpy_requires = 'numpy==1.16.*'
+            scipy_requires = 'scipy==1.4.*'
+
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda101',
-            'cudnn': 'cudnn75-cuda101',
-            'nccl': 'nccl2.4-cuda101',
+            'cuda': 'cuda111',
+            'cudnn': 'cudnn80-cuda111',
+            'nccl': 'nccl2.7-cuda111',
+            'cutensor': 'none',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.10', 'scipy<0.19',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'cython==0.29.13',
+                numpy_requires, scipy_requires,
             ],
         }
         script = './test_cupy.sh'
+        use_gcc6_or_later = True
+
+    elif args.test == 'cupy-py36':
+        if not is_cupy_8_or_later:
+            numpy_requires = 'numpy==1.9.*'
+            scipy_requires = 'scipy==0.18.*'
+        else:
+            numpy_requires = 'numpy==1.16.*'
+            scipy_requires = 'scipy==1.4.*'
+
+        conf = {
+            'base': 'ubuntu18_py36',
+            'cuda': 'cuda111',
+            'cudnn': 'cudnn80-cuda111',
+            'nccl': 'nccl2.7-cuda111',
+            'cutensor': 'none',
+            'requires': [
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'cython==0.29.13',
+                numpy_requires, scipy_requires,
+            ],
+        }
+        script = './test_cupy.sh'
+        use_gcc6_or_later = True
 
     elif args.test == 'cupy-slow':
+        if not is_cupy_8_or_later:
+            numpy_requires = 'numpy==1.10.*'
+            scipy_requires = 'scipy==0.18.*'
+        else:
+            numpy_requires = 'numpy==1.16.*'
+            scipy_requires = 'scipy==1.4.*'
+
         conf = {
-            'base': 'ubuntu16_py35',
+            'base': 'ubuntu18_py36',
             'cuda': 'cuda80',
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
+            'cutensor': 'none',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.11', 'scipy<0.19',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'cython==0.29.13',
+                numpy_requires, scipy_requires,
             ],
         }
         script = './test_cupy_slow.sh'
 
     elif args.test == 'cupy-example':
-        base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
+        if not is_cupy_8_or_later:
+            numpy_requires = 'numpy==1.12.*'
+            scipy_requires = 'scipy==0.18.*'
+        else:
+            numpy_requires = 'numpy==1.16.*'
+            scipy_requires = 'scipy==1.4.*'
+
+        base = 'ubuntu18_py36'
         conf = {
             'base': base,
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn5-cuda8',
-            'nccl': 'nccl1.3',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn75-cuda92',
+            'nccl': 'nccl2.2-cuda92',
+            'cutensor': 'none',
             'requires': [
-                'setuptools', 'cython==0.29.13', 'numpy<1.13', 'scipy<0.19',
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'cython==0.29.13',
+                numpy_requires, scipy_requires,
             ],
         }
         script = './test_cupy_example.sh'
 
     elif args.test == 'cupy-doc':
+        requires = []
+        if is_cupy_8_or_later:
+            requires = ['optuna<2']
+
         # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
-            'base': 'ubuntu16_py35',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
-            'nccl': 'nccl1.3',
+            'base': 'ubuntu18_py36',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn71-cuda92',
+            'nccl': 'nccl2.4-cuda92',
+            'cutensor': 'none',
             'requires': [
-                'pip==9.0.1', 'setuptools', 'cython==0.29.13', 'numpy>=1.15',
-                'scipy>=1.0',
-            ] + SPHINX_REQUIREMENTS_PIP
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'pip==9.0.1', 'setuptools<50', 'cython==0.29.13',
+                'numpy==1.16.*', 'scipy==1.3.*',
+            ] + requires + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
 
@@ -297,9 +415,11 @@ def main():
 
     volume = []
     env = {
+        'USE_GCC6_OR_LATER': '1' if use_gcc6_or_later else '0',
         'CUDNN': conf['cudnn'],
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
+        'CUPY_ACCELERATORS': ','.join(cupy_accelerators),
     }
 
     argconfig.parse_args(args, env, conf, volume)
