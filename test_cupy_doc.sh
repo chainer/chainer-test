@@ -1,6 +1,6 @@
 #!/bin/sh -ex
 
-pip install --user -e cupy/
+pip install --user -e cupy/[jenkins]
 
 cd cupy/docs
 
