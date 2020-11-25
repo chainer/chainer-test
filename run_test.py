@@ -82,11 +82,6 @@ def main():
         raise RuntimeError('bad ideep version: {}'.format(ideep_min_version))
 
     build_chainerx = False
-    # A workaround for cupy tests whose base requirements are not defined in
-    # cupy's setup.py, unlike chainer.
-    # TODO(niboshi): Move requirements to cupy's setup.py.
-    add_base_requires = False
-
     if args.test == 'chainer-py2':
         if not support_py2:
             print('Skipping Py2 test for master branch')
@@ -155,7 +150,6 @@ def main():
             script = './test.sh'
         elif args.test == 'cupy-head':
             script = './test_cupy.sh'
-            add_base_requires = True
         else:
             assert False  # should not reach
 
@@ -230,7 +224,6 @@ def main():
             ]
         }
         script = './test_cupy.sh'
-        add_base_requires = True
 
     elif args.test == 'cupy-py3':
         conf = {
@@ -243,7 +236,6 @@ def main():
             ],
         }
         script = './test_cupy.sh'
-        add_base_requires = True
 
     elif args.test == 'cupy-py35':
         conf = {
@@ -256,7 +248,6 @@ def main():
             ],
         }
         script = './test_cupy.sh'
-        add_base_requires = True
 
     elif args.test == 'cupy-slow':
         conf = {
@@ -269,7 +260,6 @@ def main():
             ],
         }
         script = './test_cupy_slow.sh'
-        add_base_requires = True
 
     elif args.test == 'cupy-example':
         base = 'centos7_py27' if support_py2 else 'ubuntu16_py35'
@@ -283,7 +273,6 @@ def main():
             ],
         }
         script = './test_cupy_example.sh'
-        add_base_requires = True
 
     elif args.test == 'cupy-doc':
         # Note that NumPy 1.14 or later is required to run doctest, as
@@ -300,7 +289,6 @@ def main():
             ] + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
-        add_base_requires = True
 
     else:
         raise
@@ -313,18 +301,6 @@ def main():
         'IDEEP': 'ideep4py' if use_ideep else 'none',
         'CHAINER_BUILD_CHAINERX': '1' if build_chainerx else '0',
     }
-
-    if add_base_requires:
-        conf['requires'] += [
-            'attrs<19.2.0',
-            'pytest<4.2',
-            'pytest-timeout',  # For timeout
-            'pytest-cov',  # For coverage report
-            'nose',
-            'mock',
-            'coveralls',
-            'codecov',
-        ]
 
     argconfig.parse_args(args, env, conf, volume)
 
