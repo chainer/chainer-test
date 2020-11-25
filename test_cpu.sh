@@ -3,13 +3,6 @@
 . ./environment.sh
 
 pip install --user -e chainer/[jenkins]
-# It's not possible to install only requirements.
-# Chainer is uninstalled after the installation.
-# TODO(niboshi): Use other installation tool
-# (https://github.com/chainer/chainer/issues/5862)
-pip uninstall -y chainer
-
-pip install --user -e chainer/
 
 cd chainer
 
