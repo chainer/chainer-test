@@ -20,7 +20,7 @@ python -m pip install coverage matplotlib --user
 python -m pip install olefile --user
 python -m pip install --global-option="build_ext" --global-option="--disable-jpeg" pillow --user
 
-run="coverage run -a --branch"
+run="python -m coverage run -a --branch"
 
 export MPLBACKEND=Agg
 
@@ -94,5 +94,5 @@ $run examples/dcgan/train_dcgan.py -b 1 -e 1 -i ../data/dcgan --n_hidden=10 --sn
 $run examples/dcgan/train_dcgan.py -b 1 -e 1 --gpu=0 -i ../data/dcgan --n_hidden=10 --snapshot_interval 1 --display_interval 1
 
 # show coverage
-coverage report -m --include="examples/*"
-coverage xml --include="examples/*"
+python -m coverage report -m --include="examples/*"
+python -m coverage xml --include="examples/*"

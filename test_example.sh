@@ -19,7 +19,7 @@ python -m pip install --global-option="build_ext" --global-option="--disable-jpe
 #python -m pip install --extra-index-url https://developer.download.nvidia.com/compute/redist nvidia-dali --user
 python -m pip install 'https://developer.download.nvidia.com/compute/redist/nvidia-dali/nvidia_dali-0.7.0-624544-cp35-cp35m-manylinux1_x86_64.whl' --user
 
-run="coverage run -a --branch"
+run="python -m coverage run -a --branch"
 
 export MPLBACKEND=Agg
 
@@ -106,5 +106,5 @@ $run examples/text_classification/train_text_classifier.py --dataset dbpedia -e 
 $run examples/text_classification/train_text_classifier.py --dataset dbpedia --gpu=0 -e 1 -b 1 --test
 
 # show coverage
-coverage report -m --include="examples/*"
-coverage xml --include="examples/*"
+python -m coverage report -m --include="examples/*"
+python -m coverage xml --include="examples/*"

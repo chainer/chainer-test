@@ -13,7 +13,7 @@ cd ..
 
 python -m pip install "coverage<5" matplotlib --user
 
-run="coverage run -a --branch"
+run="python -m coverage run -a --branch"
 
 export MPLBACKEND=Agg
 

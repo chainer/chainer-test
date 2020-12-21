@@ -42,5 +42,5 @@ python ../push_coveralls.py
 
 # Submit coverage to Codecov
 # Codecov uses `coverage.xml` generated from `.coverage`
-coverage xml
-codecov
+python -m coverage xml
+python -m codecov
