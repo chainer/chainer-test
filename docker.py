@@ -1,3 +1,5 @@
+import collections
+import itertools
 import logging
 import os
 import random
@@ -80,9 +82,10 @@ cuda_cudnns = {
     'cuda90': ['cudnn7-cuda9', 'cudnn71-cuda9', 'cudnn72-cuda9',
                'cudnn73-cuda9', 'cudnn74-cuda9', 'cudnn75-cuda9'],
     'cuda92': ['cudnn71-cuda92', 'cudnn72-cuda92', 'cudnn73-cuda92',
-               'cudnn74-cuda92', 'cudnn75-cuda92'],
-    'cuda100': ['cudnn73-cuda100', 'cudnn74-cuda100', 'cudnn75-cuda100'],
-    'cuda101': ['cudnn75-cuda101'],
+               'cudnn74-cuda92', 'cudnn75-cuda92', 'cudnn76-cuda92'],
+    'cuda100': ['cudnn73-cuda100', 'cudnn74-cuda100', 'cudnn75-cuda100',
+                'cudnn76-cuda100'],
+    'cuda101': ['cudnn75-cuda101', 'cudnn76-cuda101'],
     'cuda102': ['cudnn76-cuda102'],
     'cuda110': ['cudnn80-cuda110'],
     'cuda111': ['cudnn80-cuda111'],
@@ -91,7 +94,7 @@ cuda_nccls = {
     # CUDA 9 does not support nccl 1.3
     'cuda90': ['nccl2.0-cuda9', 'nccl2.2-cuda9', 'nccl2.3-cuda9',
                'nccl2.4-cuda9', 'nccl2.5-cuda9'],
-    'cuda92': ['nccl2.2-cuda92', 'nccl2.3-cuda9', 'nccl2.4-cuda92'],
+    'cuda92': ['nccl2.2-cuda92', 'nccl2.3-cuda92', 'nccl2.4-cuda92'],
     'cuda100': ['nccl2.3-cuda100', 'nccl2.4-cuda100', 'nccl2.5-cuda100',
                 'nccl2.6-cuda100'],
     'cuda101': ['nccl2.4-cuda101', 'nccl2.5-cuda101', 'nccl2.6-cuda101',
@@ -106,6 +109,17 @@ cuda_cutensors = {
     'cuda110': ['cutensor1.2.0-cuda110'],
     'cuda111': ['cutensor1.2.1-cuda111'],
 }
+
+def _check_cuda_combination(lis, dic):
+    x = collections.Counter(itertools.chain.from_iterable(dic.values()))
+    y = collections.Counter(lis)
+    del y['none']
+    assert x == y
+
+_check_cuda_combination(cudnn_choices, cuda_cudnns)
+_check_cuda_combination(nccl_choices, cuda_nccls)
+_check_cuda_combination(cutensor_choices, cuda_cutensors)
+del _check_cuda_combination
 
 
 def get_python_version(base):
