@@ -110,11 +110,13 @@ cuda_cutensors = {
     'cuda111': ['cutensor1.2.1-cuda111'],
 }
 
+
 def _check_cuda_combination(lis, dic):
     x = collections.Counter(itertools.chain.from_iterable(dic.values()))
     y = collections.Counter(lis)
     del y['none']
     assert x == y
+
 
 _check_cuda_combination(cudnn_choices, cuda_cudnns)
 _check_cuda_combination(nccl_choices, cuda_nccls)
