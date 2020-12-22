@@ -70,9 +70,48 @@ class Picker:
         self.n_selected[val] += 1
 
 
+class CudaPicker:
+
+    def __init__(self, values):
+        self.values = list(values)
+        transposed = zip(*[self._extract(val) for val in self.values])
+        self.n_selected = [
+            {val: 0 for val in set(vals)}
+            for vals in transposed
+        ]
+
+    @staticmethod
+    def _extract(cuda_tuple):
+        cuda, cudnn, nccl, cutensor = cuda_tuple
+        return (
+            cuda,
+            cudnn.split('-')[0],
+            nccl.split('-')[0],
+            cutensor.split('-')[0],
+        )
+
+    def _weight(self, val):
+        w = 1.0
+        for ns, sub_val in zip(self.n_selected, self._extract(val)):
+            n = ns[sub_val]
+            w /= 1.0 + n ** 2
+        return w
+
+    def ask(self):
+        weights = [self._weight(val) for val in self.values]
+        return random_choices(self.values, weights)
+
+    def tell(self, val):
+        for ns, sub_val in zip(self.n_selected, self._extract(val)):
+            ns[sub_val] += 1
+
+
 def _iter_shuffle_params(params):
     keys = sorted(params.keys())
-    pickers = {key: Picker(params[key]) for key in keys}
+    assert 'cuda_libs' in keys
+    pickers = {
+        key: (CudaPicker if key == 'cuda_libs' else Picker)(params[key])
+        for key in keys}
 
     messages = []
     while True:
