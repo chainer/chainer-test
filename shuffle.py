@@ -54,23 +54,33 @@ def get_shuffle_params(params, index):
     return ret
 
 
+class Picker:
+
+    def __init__(self, values):
+        self.values = list(values)
+        self.n_selected = {val: 0 for val in self.values}
+
+    def ask(self):
+        weights = [
+            1.0 / (1.0 + self.n_selected[val] ** 2)
+            for val in self.values]
+        return random_choices(self.values, weights)
+
+    def tell(self, val):
+        self.n_selected[val] += 1
+
+
 def _iter_shuffle_params(params):
     keys = sorted(params.keys())
-    n_selected = {key: {val: 0 for val in params[key]} for key in keys}
+    pickers = {key: Picker(params[key]) for key in keys}
 
     messages = []
     while True:
-        vals = []
-        for key in keys:
-            weights = [
-                1.0 / (1.0 + n_selected[key][val] ** 2)
-                for val in params[key]]
-            vals.append(random_choices(params[key], weights))
-        ret = dict(zip(keys, vals))
+        ret = {key: pickers[key].ask() for key in keys}
         valid, reason = _is_shuffle_params_valid(ret)
         if valid:
             for key, val in ret.items():
-                n_selected[key][val] += 1
+                pickers[key].tell(val)
             yield ret, messages
             messages = []
         else:
