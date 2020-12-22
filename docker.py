@@ -143,9 +143,15 @@ def get_cuda_libs_choices(target, with_dummy=False):
         cudnns = ['none'] + cuda_cudnns[cuda]
         nccls = ['none'] + cuda_nccls[cuda]
         cutensors = ['none'] + cuda_cutensors.get(cuda, [])
-        if cupy_major < 2:
-            # only cupy>=v2 supports cudnn7
-            cudnns = [c for c in cudnns if c < 'cudnn7']
+        if cupy_major >= 9:
+            # cupy v9 requires cuda >= 9.2
+            if int(cuda[4:]) < 92:
+                continue
+            # cupy v9 requires cudnn >= 7.6
+            cudnns = [
+                c for c in cudnns
+                if c == 'none' or int(c.split('-')[0][5:]) >= 76
+            ]
         if with_dummy:
             cudnns += ['cudnn-latest-with-dummy']
 
