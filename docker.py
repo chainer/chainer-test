@@ -55,7 +55,7 @@ cudnn_choices = [
     'cudnn73-cuda9', 'cudnn73-cuda92', 'cudnn73-cuda100',
     'cudnn74-cuda9', 'cudnn74-cuda92', 'cudnn74-cuda100',
     'cudnn75-cuda9', 'cudnn75-cuda92', 'cudnn75-cuda100', 'cudnn75-cuda101',
-    'cudnn76-cuda102',
+    'cudnn76-cuda92', 'cudnn76-cuda100', 'cudnn76-cuda101', 'cudnn76-cuda102',
     'cudnn80-cuda110', 'cudnn80-cuda111',
 ]
 nccl_choices = [
@@ -533,6 +533,21 @@ codes['cudnn75-cuda101'] = cudnn_base.format(
     sha256sum='c31697d6b71afe62838ad2e57da3c3c9419c4e9f5635d14b683ebe63f904fbc8',
 )
 
+codes['cudnn76-cuda92'] = cudnn_base.format(
+    cudnn='cudnn-9.2-linux-x64-v7.6.5.32',
+    cudnn_ver='v7.6.5',
+    sha256sum='a2a2c7a8ba7b16d323b651766ee37dcfdbc2b50d920f73f8fde85005424960e4',
+)
+codes['cudnn76-cuda100'] = cudnn_base.format(
+    cudnn='cudnn-10.0-linux-x64-v7.6.5.32',
+    cudnn_ver='v7.6.5',
+    sha256sum='28355e395f0b2b93ac2c83b61360b35ba6cd0377e44e78be197b6b61b4b492ba',
+)
+codes['cudnn76-cuda101'] = cudnn_base.format(
+    cudnn='cudnn-10.1-linux-x64-v7.6.5.32',
+    cudnn_ver='v7.6.5',
+    sha256sum='7eaec8039a2c30ab0bc758d303588767693def6bf49b22485a2c00bf2e136cb3',
+)
 codes['cudnn76-cuda102'] = cudnn_base.format(
     cudnn='cudnn-10.2-linux-x64-v7.6.5.32',
     cudnn_ver='v7.6.5',

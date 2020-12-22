@@ -248,7 +248,7 @@ def main():
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda100',
-            'cudnn': 'cudnn75-cuda100',
+            'cudnn': 'cudnn76-cuda100',
             'nccl': 'nccl2.4-cuda100',
             'cutensor': 'none',
             'requires': [
@@ -278,7 +278,7 @@ def main():
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda100',
-            'cudnn': 'cudnn75-cuda100',
+            'cudnn': 'cudnn76-cuda100',
             'nccl': 'nccl2.4-cuda100',
             'cutensor': 'none',
             'requires': [
@@ -373,7 +373,7 @@ def main():
         conf = {
             'base': base,
             'cuda': 'cuda92',
-            'cudnn': 'cudnn75-cuda92',
+            'cudnn': 'cudnn76-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'cutensor': 'none',
             'requires': [
@@ -396,7 +396,7 @@ def main():
         conf = {
             'base': 'ubuntu18_py36',
             'cuda': 'cuda92',
-            'cudnn': 'cudnn71-cuda92',
+            'cudnn': 'cudnn76-cuda92',
             'nccl': 'nccl2.4-cuda92',
             'cutensor': 'none',
             'requires': [
