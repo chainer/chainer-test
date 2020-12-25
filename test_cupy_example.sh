@@ -11,7 +11,7 @@ cd dist
 pip install *.tar.gz --user
 cd ..
 
-python -m pip install "coverage<5" matplotlib --user
+python -m pip install coverage matplotlib --user
 
 run="python -m coverage run -a --branch"
 
