@@ -53,7 +53,7 @@ def main():
         'cupy-head',
     ], required=True)
     parser.add_argument('--no-cache', action='store_true')
-    parser.add_argument('--timeout', default='2h')
+    parser.add_argument('--timeout', default='3h')
     parser.add_argument('-i', '--interactive', action='store_true')
     parser.add_argument(
         '--clone-cupy', action='store_true',
