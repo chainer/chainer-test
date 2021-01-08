@@ -1,0 +1,28 @@
+on: [push, pull_request]
+
+jobs:
+  pretest:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.5'
+
+    - name: install
+      run: |
+        pip install -U pip wheel
+        # TODO(kmaehashi) fix to use the latest flake8
+        pip install 'flake8<3.6.0' autopep8
+
+    - name: flake8
+      run: |
+        flake8
+
+    - name: autopep8
+      run: |
+        autopep8 *.py --global-config .pep8 --diff | tee check_autopep8
+        test ! -s check_autopep8

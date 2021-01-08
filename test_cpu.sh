@@ -2,7 +2,7 @@
 
 . ./environment.sh
 
-pip install --user -e chainer/
+pip install --user -e chainer/[jenkins]
 
 cd chainer
 

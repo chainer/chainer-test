@@ -43,7 +43,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if version.is_master_branch('chainer'):
-        params['base'] = docker.base_choices_master
+        params['base'] = docker.base_choices_master_chainer
     else:
         params['base'] = docker.base_choices_stable_chainer
 
@@ -60,19 +60,7 @@ if __name__ == '__main__':
         'setuptools',
         pip_require,
         'cython==0.29.13'
-    ] + conf['requires'] + [
-        'attrs<19.2.0',
-        'pytest<4.2',
-        'pytest-timeout',  # For timeout
-        'pytest-cov',  # For coverage report
-        'nose',
-        'mock',
-        # coverage 5.0 causes error:
-        # "ModuleNotFoundError: No module named '_sqlite3'"
-        'coverage<5',
-        'coveralls',
-        'codecov',
-    ]
+    ] + conf['requires']
 
     use_ideep = any(['ideep4py' in req for req in conf['requires']])
 

@@ -2,7 +2,7 @@
 
 . ./environment.sh
 
-pip install --user -e cupy/
+pip install --user -e cupy/[jenkins]
 
 cd cupy
 
@@ -33,8 +33,8 @@ python ../push_coveralls.py
 
 # Submit coverage to Codecov
 # Codecov uses `coverage.xml` generated from `.coverage`
-coverage xml
-codecov
+python -m coverage xml
+python -m codecov
 
 # Run benchmark on Python 3
 if [ "$(python -c 'import sys; print(sys.version_info.major)')" = "3" ]; then

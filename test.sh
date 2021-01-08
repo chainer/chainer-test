@@ -4,9 +4,9 @@
 
 # Chainer setup script installs specific version of CuPy.
 # We need to install Chainer first for test.
-pip install --user -e chainer/
+pip install --user -e chainer/[jenkins]
 
-pip install --user -e cupy/
+pip install --user -e cupy/[jenkins]
 
 cd chainer
 
@@ -42,5 +42,5 @@ python ../push_coveralls.py
 
 # Submit coverage to Codecov
 # Codecov uses `coverage.xml` generated from `.coverage`
-coverage xml
-codecov
+python -m coverage xml
+python -m codecov

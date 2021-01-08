@@ -136,20 +136,6 @@ if __name__ == '__main__':
         'IDEEP': 'ideep4py' if use_ideep else 'none',
     }
 
-    conf['requires'] += [
-        'attrs<19.2.0',
-        'pytest<4.2',
-        'pytest-timeout',  # For timeout
-        'pytest-cov',  # For coverage report
-        'nose',
-        'mock',
-        # coverage 5.0 causes error:
-        # "ModuleNotFoundError: No module named '_sqlite3'"
-        'coverage<5',
-        'coveralls',
-        'codecov',
-    ]
-
     if args.cache:
         volume.append(args.cache)
         env['CUDA_CACHE_PATH'] = os.path.join(args.cache, '.nv')

@@ -9,6 +9,6 @@ if [ "${USE_GCC6_OR_LATER}" != 0 ]; then
     if which g++-6; then
         # For Ubuntu 16.04 and CentOS 7, use g++-6.
         # For Ubuntu 18.04, uses the default g++-7.
-        export NVCC="${NVCC} --compiler-bindir gcc-6"
+        export NVCC="${NVCC} --compiler-bindir g++-6"
     fi
 fi
