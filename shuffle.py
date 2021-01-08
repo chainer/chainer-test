@@ -161,6 +161,13 @@ def _is_shuffle_params_valid(ret):
         if ret.get('theano') in ['0.8', '0.9']:
             return False, 'Theano version does not support this NumPy version'
 
+    if ret.get('scipy', None) == '1.6':
+        # Python 3.7+ and NumPy 1.16.5+
+        if py_ver[:2] < (3, 7):
+            return False, 'SciPy version does not support this Python version'
+        if ret['numpy'] in ['1.9', '1.10', '1.11', '1.12', '1.13', '1.14', '1.15']:
+            return False, 'SciPy version does not support this NumPy version'
+
     if 'centos6' in base and ret.get('protobuf') == 'cpp-3':
         return False, 'protobuf cpp-3 not supported on centos6'
 
