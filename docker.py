@@ -191,7 +191,7 @@ def get_scipy_choices():
     else:
         # cupy v9 or later
         choices = [None, '1.4', '1.5', '1.6']
-        return choices
+    return choices
 
 
 codes = {}
