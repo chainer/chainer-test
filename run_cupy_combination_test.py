@@ -14,7 +14,7 @@ params = {
     'base': None,
     'cuda_libs': docker.get_cuda_libs_choices('cupy'),
     'numpy': docker.get_numpy_choices(),
-    'scipy': [None, '1.3', '1.4', '1.5'],
+    'scipy': docker.get_scipy_choices(),
 }
 
 
