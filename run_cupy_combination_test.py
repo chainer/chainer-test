@@ -14,7 +14,7 @@ params = {
     'base': None,
     'cuda_libs': docker.get_cuda_libs_choices('cupy'),
     'numpy': docker.get_numpy_choices(),
-    'scipy': [None, '1.4', '1.5', '1.6'],
+    'scipy': docker.get_scipy_choices(),
 }
 
 
@@ -36,8 +36,6 @@ if __name__ == '__main__':
         params['base'] = docker.base_choices_master_cupy
     else:
         params['base'] = docker.base_choices_stable_cupy
-        # cupy v8
-        params['scipy'] += ['1.3']
 
     if args.clone_chainer:
         version.clone_chainer()

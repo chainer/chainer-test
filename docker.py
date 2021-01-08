@@ -180,6 +180,20 @@ def get_numpy_choices():
     return choices
 
 
+def get_scipy_choices():
+    cupy_version = version.get_cupy_version()
+    if cupy_version[0] < 8:
+        choices = [
+            None, '0.18', '0.19', '1.0', '1.1', '1.2', '1.3', '1.4', '1.5']
+    elif cupy_version[0] < 9:
+        # cupy v8
+        choices = [None, '1.3', '1.4', '1.5', '1.6']
+    else:
+        # cupy v9 or later
+        choices = [None, '1.4', '1.5', '1.6']
+        return choices
+
+
 codes = {}
 
 # base
