@@ -253,7 +253,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.28.0',
-                'numpy==1.19.*', 'scipy==1.5.*',
+                'numpy==1.19.*', 'scipy==1.6.*',
             ] + requires,
         }
         script = './test_cupy.sh'
@@ -394,7 +394,7 @@ def main():
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
-            'base': 'ubuntu18_py36',
+            'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda92',
             'cudnn': 'cudnn76-cuda92',
             'nccl': 'nccl2.4-cuda92',
@@ -403,7 +403,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
                 'pip==9.0.1', 'setuptools<50', 'cython==0.29.13',
-                'numpy==1.16.*', 'scipy==1.3.*',
+                'numpy==1.19.*', 'scipy==1.6.*', 'wheel==0.36.2'
             ] + requires + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
