@@ -394,7 +394,7 @@ def main():
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
-            'base': 'ubuntu18_py36',
+            'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda92',
             'cudnn': 'cudnn76-cuda92',
             'nccl': 'nccl2.4-cuda92',
