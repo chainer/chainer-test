@@ -853,9 +853,9 @@ def make_dockerfile(conf):
     if 'protobuf-cpp' in conf:
         dockerfile += codes[conf['protobuf-cpp']]
 
-    # Update old packages provided by OS.
+    # Update pip to v20 which is the last version supporting Python 3.5.
     dockerfile += '''
-RUN pip install -U pip six 'setuptools<50' && rm -rf ~/.cache/pip
+RUN pip install -U 'pip<21' && rm -rf ~/.cache/pip
 '''
 
     if 'ubuntu' in conf['base']:
@@ -879,6 +879,10 @@ RUN apt-get remove -y \\
         python3-chardet python-chardet python-chardet-whl
 '''
 
+    # Update installation packages.
+    dockerfile += '''
+RUN pip install -U pip six 'setuptools<50' && rm -rf ~/.cache/pip
+'''
     if 'requires' in conf:
         requires = conf['requires']
         if any(['theano' in req or 'scipy' in req for req in requires]):
