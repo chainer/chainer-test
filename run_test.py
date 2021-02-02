@@ -156,7 +156,7 @@ def main():
                 # available on PyPI.
                 # https://pip.pypa.io/en/stable/reference/pip_install/#pre-release-versions
                 # TODO(kmaehashi) rewrite iDeep constraints after v2.0 support
-                'setuptools>=0.0.dev0', 'cython>=0.0.dev0', 'numpy>=0.0.dev0',
+                'setuptools>=0.0.dev0', 'cython>=0.0.dev0,<3', 'numpy>=0.0.dev0',
                 'scipy>=0.0.dev0', 'h5py>=0.0.dev0', 'theano>=0.0.dev0',
                 'protobuf>=0.0.dev0',
                 'ideep4py>=0.0.dev0, {}'.format(ideep_req),
