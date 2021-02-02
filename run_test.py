@@ -118,7 +118,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
                 'setuptools<42', 'pip', 'cython==0.29.13',
-                'numpy==1.19.*', 'pillow',
+                'numpy==1.20.*', 'pillow',
             ],
         }
         script = './test.sh'
@@ -253,7 +253,7 @@ def main():
             'cutensor': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.28.0',
-                'numpy==1.19.*', 'scipy==1.6.*',
+                'numpy==1.20.*', 'scipy==1.6.*',
             ] + requires,
         }
         script = './test_cupy.sh'
@@ -403,7 +403,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
                 'pip==9.0.1', 'setuptools<50', 'cython==0.29.13',
-                'numpy==1.19.*', 'scipy==1.6.*', 'wheel==0.36.2'
+                'numpy==1.20.*', 'scipy==1.6.*', 'wheel==0.36.2'
             ] + requires + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
