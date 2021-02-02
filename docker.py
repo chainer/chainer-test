@@ -206,7 +206,7 @@ ENV PATH /usr/lib64/ccache:$PATH
 RUN yum -y update && \\
     yum -y install centos-release-scl epel-release && \\
     yum -y install devtoolset-6 gcc gcc-c++ git kmod hdf5-devel which perl make autoconf xz && \\
-    yum -y install bzip2-devel openssl-devel readline-devel && \\
+    yum -y install bzip2-devel openssl-devel readline-devel sqlite-devel && \\
     yum clean all
 
 RUN git clone git://github.com/yyuu/pyenv.git /opt/pyenv
@@ -260,7 +260,7 @@ ENV PATH /usr/lib/ccache:$PATH
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
     apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils pkg-config && \\
-    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev make cmake && \\
+    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev libsqlite3-dev make cmake && \\
     apt-get clean
 
 {gcc_install}
