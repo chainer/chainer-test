@@ -32,6 +32,8 @@ pushd cupy/tests
 python -m pytest "${pytest_opts[@]}" cupy_tests cupyx_tests example_tests
 popd
 
+pushd cupy
+
 # Submit coverage to Coveralls
 python ../push_coveralls.py
 
@@ -48,3 +50,5 @@ if [ "$(python -c 'import sys; print(sys.version_info.major)')" = "3" ]; then
   python run.py --show-gpu
   popd
 fi
+
+popd
