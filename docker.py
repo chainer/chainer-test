@@ -47,7 +47,7 @@ cuda_choices = [
     'none',
     'cuda90', 'cuda92',
     'cuda100', 'cuda101', 'cuda102',
-    'cuda110', 'cuda111',
+    'cuda110', 'cuda111', 'cuda112',
 ]
 cudnn_choices = [
     'none',
@@ -59,7 +59,7 @@ cudnn_choices = [
     'cudnn75-cuda9', 'cudnn75-cuda92', 'cudnn75-cuda100', 'cudnn75-cuda101',
     'cudnn76-cuda92', 'cudnn76-cuda100', 'cudnn76-cuda101', 'cudnn76-cuda102',
     'cudnn80-cuda110', 'cudnn80-cuda111',
-    'cudnn81-cuda110', 'cudnn81-cuda111',
+    'cudnn81-cuda110', 'cudnn81-cuda111', 'cudnn81-cuda112',
 ]
 nccl_choices = [
     'none',
@@ -69,7 +69,8 @@ nccl_choices = [
     'nccl2.4-cuda9', 'nccl2.4-cuda92', 'nccl2.4-cuda100', 'nccl2.4-cuda101',
     'nccl2.5-cuda9', 'nccl2.5-cuda100', 'nccl2.5-cuda101', 'nccl2.5-cuda102',
     'nccl2.6-cuda100', 'nccl2.6-cuda101', 'nccl2.6-cuda102',
-    'nccl2.7-cuda101', 'nccl2.7-cuda102', 'nccl2.7-cuda110', 'nccl2.7-cuda111'
+    'nccl2.7-cuda101', 'nccl2.7-cuda102', 'nccl2.7-cuda110', 'nccl2.7-cuda111',
+    'nccl2.8-cuda112'
 ]
 cutensor_choices = [
     'none',
@@ -77,6 +78,7 @@ cutensor_choices = [
     'cutensor1.2.0-cuda102',
     'cutensor1.2.0-cuda110',
     'cutensor1.2.1-cuda111',
+    'cutensor1.2.2-cuda112',
 ]
 
 cuda_cudnns = {
@@ -90,6 +92,7 @@ cuda_cudnns = {
     'cuda102': ['cudnn76-cuda102'],
     'cuda110': ['cudnn80-cuda110', 'cudnn81-cuda110'],
     'cuda111': ['cudnn80-cuda111', 'cudnn81-cuda111'],
+    'cuda112': ['cudnn80-cuda112', 'cudnn81-cuda112'],
 }
 cuda_nccls = {
     # CUDA 9 does not support nccl 1.3
@@ -103,12 +106,14 @@ cuda_nccls = {
     'cuda102': ['nccl2.5-cuda102', 'nccl2.6-cuda102', 'nccl2.7-cuda102'],
     'cuda110': ['nccl2.7-cuda110'],
     'cuda111': ['nccl2.7-cuda111'],
+    'cuda112': ['nccl2.8-cuda112'],
 }
 cuda_cutensors = {
     'cuda101': ['cutensor1.2.0-cuda101'],
     'cuda102': ['cutensor1.2.0-cuda102'],
     'cuda110': ['cutensor1.2.0-cuda110'],
     'cuda111': ['cutensor1.2.1-cuda111'],
+    'cuda112': ['cutensor1.2.2-cuda112'],
 }
 
 
@@ -393,6 +398,8 @@ cuda110_url = 'https://developer.download.nvidia.com/compute/cuda/11.0.2/local_i
 cuda111_run = 'cuda_11.1.0_455.23.05_linux.run'
 cuda111_url = 'https://developer.download.nvidia.com/compute/cuda/11.1.0/local_installers'
 
+cuda112_run = 'cuda_11.2.1_460.32.03_linux.run'
+cuda112_url = 'https://developer.download.nvidia.com/compute/cuda/11.2.1/local_installers'
 
 cuda_base = '''
 WORKDIR /opt/nvidia
@@ -465,6 +472,13 @@ codes['cuda111'] = cuda_base.format(
     cuda_run=cuda111_run,
     cuda_url=cuda111_url,
     sha256sum='858cbab091fde94556a249b9580fadff55a46eafbcb4d4a741d2dcd358ab94a5',
+)
+
+codes['cuda112'] = cuda_base.format(
+    cuda_ver='11.2',
+    cuda_run=cuda112_run,
+    cuda_url=cuda112_url,
+    sha256sum='1da98cb897cc5f58a7445a4a66ca4f6926867706cb3af58a669cdcd8dc3d17c8',
 )
 
 
@@ -608,6 +622,7 @@ codes['cudnn81-cuda110'] = cudnn_base.format(
     sha256sum='dbe82faf071d91ba9bcf00480146ad33f462482dfee56caf4479c1b8dabe3ecb',
 )
 codes['cudnn81-cuda111'] = codes['cudnn81-cuda110']
+codes['cudnn81-cuda112'] = codes['cudnn81-cuda110']
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
 # installed.
@@ -642,8 +657,8 @@ RUN curl -sL -o nccl1.3.4.tar.gz https://github.com/NVIDIA/nccl/archive/v1.3.4-1
 
 nccl_base = '''
 RUN mkdir nccl && cd nccl && \\
-    curl -sL -o {libnccl2}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/{libnccl2}.deb && \\
-    curl -sL -o {libnccl_dev}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/{libnccl_dev}.deb && \\
+    curl -sL -o {libnccl2}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu{nccl_os_ver}/x86_64/{libnccl2}.deb && \\
+    curl -sL -o {libnccl_dev}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu{nccl_os_ver}/x86_64/{libnccl_dev}.deb && \\
     ar vx {libnccl2}.deb && \\
     tar xvf data.tar.xz && \\
     ar vx {libnccl_dev}.deb && \\
@@ -654,6 +669,7 @@ RUN mkdir nccl && cd nccl && \\
 '''
 
 codes['nccl2.0-cuda9'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
     include_dir='/usr/include',
@@ -661,6 +677,7 @@ codes['nccl2.0-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.2-cuda9'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.2.13-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.2.13-1+cuda9.0_amd64',
     include_dir='/usr/include',
@@ -668,6 +685,7 @@ codes['nccl2.2-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.2-cuda92'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.2.13-1+cuda9.2_amd64',
     libnccl_dev='libnccl-dev_2.2.13-1+cuda9.2_amd64',
     include_dir='/usr/include',
@@ -675,6 +693,7 @@ codes['nccl2.2-cuda92'] = nccl_base.format(
 )
 
 codes['nccl2.3-cuda9'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.3.7-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.3.7-1+cuda9.0_amd64',
     include_dir='/usr/include',
@@ -682,6 +701,7 @@ codes['nccl2.3-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.3-cuda92'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.3.7-1+cuda9.2_amd64',
     libnccl_dev='libnccl-dev_2.3.7-1+cuda9.2_amd64',
     include_dir='/usr/include',
@@ -689,6 +709,7 @@ codes['nccl2.3-cuda92'] = nccl_base.format(
 )
 
 codes['nccl2.3-cuda100'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.3.7-1+cuda10.0_amd64',
     libnccl_dev='libnccl-dev_2.3.7-1+cuda10.0_amd64',
     include_dir='/usr/include',
@@ -696,6 +717,7 @@ codes['nccl2.3-cuda100'] = nccl_base.format(
 )
 
 codes['nccl2.4-cuda9'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.4.2-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.4.2-1+cuda9.0_amd64',
     include_dir='/usr/include',
@@ -703,6 +725,7 @@ codes['nccl2.4-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.4-cuda92'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.4.2-1+cuda9.2_amd64',
     libnccl_dev='libnccl-dev_2.4.2-1+cuda9.2_amd64',
     include_dir='/usr/include',
@@ -710,6 +733,7 @@ codes['nccl2.4-cuda92'] = nccl_base.format(
 )
 
 codes['nccl2.4-cuda100'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.4.2-1+cuda10.0_amd64',
     libnccl_dev='libnccl-dev_2.4.2-1+cuda10.0_amd64',
     include_dir='/usr/include',
@@ -717,6 +741,7 @@ codes['nccl2.4-cuda100'] = nccl_base.format(
 )
 
 codes['nccl2.4-cuda101'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.4.2-1+cuda10.1_amd64',
     libnccl_dev='libnccl-dev_2.4.2-1+cuda10.1_amd64',
     include_dir='/usr/include',
@@ -724,6 +749,7 @@ codes['nccl2.4-cuda101'] = nccl_base.format(
 )
 
 codes['nccl2.5-cuda9'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.5.6-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.5.6-1+cuda9.0_amd64',
     include_dir='/usr/include',
@@ -731,6 +757,7 @@ codes['nccl2.5-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.5-cuda100'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.5.6-1+cuda10.0_amd64',
     libnccl_dev='libnccl-dev_2.5.6-1+cuda10.0_amd64',
     include_dir='/usr/include',
@@ -738,6 +765,7 @@ codes['nccl2.5-cuda100'] = nccl_base.format(
 )
 
 codes['nccl2.5-cuda101'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.5.6-1+cuda10.1_amd64',
     libnccl_dev='libnccl-dev_2.5.6-1+cuda10.1_amd64',
     include_dir='/usr/include',
@@ -745,6 +773,7 @@ codes['nccl2.5-cuda101'] = nccl_base.format(
 )
 
 codes['nccl2.5-cuda102'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.5.6-1+cuda10.2_amd64',
     libnccl_dev='libnccl-dev_2.5.6-1+cuda10.2_amd64',
     include_dir='/usr/include',
@@ -752,6 +781,7 @@ codes['nccl2.5-cuda102'] = nccl_base.format(
 )
 
 codes['nccl2.6-cuda100'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.6.4-1+cuda10.0_amd64',
     libnccl_dev='libnccl-dev_2.6.4-1+cuda10.0_amd64',
     include_dir='/usr/include',
@@ -759,6 +789,7 @@ codes['nccl2.6-cuda100'] = nccl_base.format(
 )
 
 codes['nccl2.6-cuda101'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.6.4-1+cuda10.1_amd64',
     libnccl_dev='libnccl-dev_2.6.4-1+cuda10.1_amd64',
     include_dir='/usr/include',
@@ -766,6 +797,7 @@ codes['nccl2.6-cuda101'] = nccl_base.format(
 )
 
 codes['nccl2.6-cuda102'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.6.4-1+cuda10.2_amd64',
     libnccl_dev='libnccl-dev_2.6.4-1+cuda10.2_amd64',
     include_dir='/usr/include',
@@ -773,6 +805,7 @@ codes['nccl2.6-cuda102'] = nccl_base.format(
 )
 
 codes['nccl2.7-cuda101'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.7.3-1+cuda10.1_amd64',
     libnccl_dev='libnccl-dev_2.7.3-1+cuda10.1_amd64',
     include_dir='/usr/include',
@@ -780,6 +813,7 @@ codes['nccl2.7-cuda101'] = nccl_base.format(
 )
 
 codes['nccl2.7-cuda102'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.7.3-1+cuda10.2_amd64',
     libnccl_dev='libnccl-dev_2.7.3-1+cuda10.2_amd64',
     include_dir='/usr/include',
@@ -787,14 +821,25 @@ codes['nccl2.7-cuda102'] = nccl_base.format(
 )
 
 codes['nccl2.7-cuda110'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.7.3-1+cuda11.0_amd64',
     libnccl_dev='libnccl-dev_2.7.3-1+cuda11.0_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
+
 codes['nccl2.7-cuda111'] = nccl_base.format(
+    nccl_os_ver='1604',
     libnccl2='libnccl2_2.7.8-1+cuda11.1_amd64',
     libnccl_dev='libnccl-dev_2.7.8-1+cuda11.1_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.8-cuda112'] = nccl_base.format(
+    nccl_os_ver='1804',
+    libnccl2='libnccl2_2.8.3-1+cuda11.2_amd64.deb',
+    libnccl_dev='libnccl-dev_2.8.3-1+cuda11.2_amd64.deb',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
@@ -806,6 +851,7 @@ codes['cutensor1.2.0-cuda101'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor
 codes['cutensor1.2.0-cuda102'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 10.2;'
 codes['cutensor1.2.0-cuda110'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 11.0;'
 codes['cutensor1.2.1-cuda111'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1.7 1.2.1 11.1;'
+codes['cutensor1.2.2-cuda112'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.2.5 1.2.2 11.2;'
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf

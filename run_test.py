@@ -300,9 +300,9 @@ def main():
 
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda111',
-            'cudnn': 'cudnn81-cuda111',
-            'nccl': 'nccl2.7-cuda111',
+            'cuda': 'cuda112',
+            'cudnn': 'cudnn81-cuda112',
+            'nccl': 'nccl2.8-cuda112',
             'cutensor': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
@@ -324,9 +324,9 @@ def main():
 
         conf = {
             'base': 'ubuntu18_py36',
-            'cuda': 'cuda111',
-            'cudnn': 'cudnn81-cuda111',
-            'nccl': 'nccl2.7-cuda111',
+            'cuda': 'cuda112',
+            'cudnn': 'cudnn81-cuda112',
+            'nccl': 'nccl2.8-cuda112',
             'cutensor': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
@@ -348,8 +348,8 @@ def main():
 
         conf = {
             'base': 'ubuntu18_py36',
-            'cuda': 'cuda111',
-            'cudnn': 'cudnn81-cuda111',
+            'cuda': 'cuda112',
+            'cudnn': 'cudnn81-cuda112',
             'nccl': 'none',
             'cutensor': 'none',
             'requires': [
