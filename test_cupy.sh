@@ -4,8 +4,6 @@
 
 pip install --user cupy/[jenkins]
 
-cd cupy/tests
-
 # Shows cupy config before running the tests
 python -c 'import cupy; cupy.show_config()'
 
@@ -26,7 +24,13 @@ else
   pytest_opts+=(-m 'not slow')
 fi
 
-python -m pytest "${pytest_opts[@]}" .
+pushd cupy
+python -m pytest "${pytest_opts[@]}" tests/install_tests
+popd
+
+pushd cupy/tests
+python -m pytest "${pytest_opts[@]}" cupy_tests cupyx_tests example_tests
+popd
 
 # Submit coverage to Coveralls
 python ../push_coveralls.py
