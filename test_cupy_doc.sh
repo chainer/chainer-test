@@ -2,7 +2,7 @@
 
 . ./environment.sh
 
-pip install --user -e cupy/[jenkins]
+pip install --user cupy/[jenkins]
 
 cd cupy/docs
 
