@@ -30,12 +30,9 @@ popd
 
 pushd cupy/tests
 python -m pytest "${pytest_opts[@]}" cupy_tests cupyx_tests example_tests
-popd
-
-pushd cupy
 
 # Submit coverage to Coveralls
-python ../push_coveralls.py
+python ../../push_coveralls.py
 
 # Submit coverage to Codecov
 # Codecov uses `coverage.xml` generated from `.coverage`
