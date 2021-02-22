@@ -301,7 +301,7 @@ def main():
         conf = {
             'base': 'ubuntu16_py35',
             'cuda': 'cuda111',
-            'cudnn': 'cudnn80-cuda111',
+            'cudnn': 'cudnn81-cuda111',
             'nccl': 'nccl2.7-cuda111',
             'cutensor': 'none',
             'requires': [
@@ -325,7 +325,7 @@ def main():
         conf = {
             'base': 'ubuntu18_py36',
             'cuda': 'cuda111',
-            'cudnn': 'cudnn80-cuda111',
+            'cudnn': 'cudnn81-cuda111',
             'nccl': 'nccl2.7-cuda111',
             'cutensor': 'none',
             'requires': [
@@ -349,7 +349,7 @@ def main():
         conf = {
             'base': 'ubuntu18_py36',
             'cuda': 'cuda111',
-            'cudnn': 'cudnn80-cuda111',
+            'cudnn': 'cudnn81-cuda111',
             'nccl': 'none',
             'cutensor': 'none',
             'requires': [
