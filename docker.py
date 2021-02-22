@@ -20,6 +20,7 @@ _base_choices = [
         ('ubuntu18_py36', '3.6.7'),
         ('ubuntu18_py37-pyenv', '3.7.1'),
         ('ubuntu18_py38-pyenv', '3.8.0'),
+        ('ubuntu18_py39-pyenv', '3.9.0'),
         ('centos7_py34-pyenv', '3.4.8')]]
 
 
@@ -306,6 +307,14 @@ codes['ubuntu18_py38-pyenv'] = ubuntu_pyenv_base.format(
     ubuntu_ver='18.04',
     python_ver='.'.join(
         [str(x) for x in get_python_version('ubuntu18_py38-pyenv')]),
+    gcc_install='',
+    cutensor_ubuntu_install=cutensor_ubuntu_install.format(
+        cutensor_os_ver='1804')
+)
+codes['ubuntu18_py39-pyenv'] = ubuntu_pyenv_base.format(
+    ubuntu_ver='18.04',
+    python_ver='.'.join(
+        [str(x) for x in get_python_version('ubuntu18_py39-pyenv')]),
     gcc_install='',
     cutensor_ubuntu_install=cutensor_ubuntu_install.format(
         cutensor_os_ver='1804')

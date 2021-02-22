@@ -246,7 +246,7 @@ def main():
         if is_cupy_8_or_later:
             requires = ['optuna']
         conf = {
-            'base': 'ubuntu18_py38-pyenv',
+            'base': 'ubuntu18_py39-pyenv',
             'cuda': 'cuda100',
             'cudnn': 'cudnn76-cuda100',
             'nccl': 'nccl2.4-cuda100',
