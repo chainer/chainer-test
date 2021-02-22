@@ -36,7 +36,7 @@ python ../../push_coveralls.py
 
 # Submit coverage to Codecov
 # Codecov uses `coverage.xml` generated from `.coverage`
-python -m coverage xml
+python -m coverage xml --ignore-errors
 python -m codecov
 
 # Run benchmark on Python 3
