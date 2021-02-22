@@ -117,7 +117,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
-                'setuptools<42', 'pip', 'cython==0.29.13',
+                'setuptools<42', 'pip', 'cython==0.29.22',
                 'numpy==1.20.*', 'pillow',
             ],
         }
@@ -134,7 +134,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.13',
+                'setuptools<50', 'cython==0.29.22',
                 'numpy==1.18.*', 'scipy==1.4.*',
                 'h5py', 'theano', 'protobuf<3',
                 'ideep4py{}'.format(ideep_req),
@@ -181,7 +181,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.13',
+                'setuptools<50', 'cython==0.29.22',
                 'numpy==1.18.*', 'scipy==1.4.*',
                 'scipy<1.1', 'h5py', 'theano', 'protobuf<3', 'pillow',
                 'ideep4py{}'.format(ideep_req),
@@ -200,7 +200,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.13', 'numpy==1.18.*',
+                'setuptools<50', 'cython==0.29.22', 'numpy==1.18.*',
             ],
         }
         script = './test_example.sh'
@@ -216,7 +216,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'pip', 'cython==0.29.13', 'numpy==1.18.*',
+                'setuptools<50', 'pip', 'cython==0.29.22', 'numpy==1.18.*',
             ],
         }
         script = './test_prev_example.sh'
@@ -234,7 +234,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'pip==9.0.1', 'setuptools<50', 'cython==0.29.13', 'matplotlib',
+                'pip==9.0.1', 'setuptools<50', 'cython==0.29.22', 'matplotlib',
                 'numpy==1.18.*', 'scipy==1.4.*', 'theano',
             ] + SPHINX_REQUIREMENTS_CONDA
         }
@@ -252,7 +252,7 @@ def main():
             'nccl': 'nccl2.4-cuda100',
             'cutensor': 'none',
             'requires': [
-                'setuptools<42', 'pip', 'cython==0.28.0',
+                'setuptools<42', 'pip', 'cython==0.29.22',
                 'numpy==1.20.*', 'scipy==1.6.*',
             ] + requires,
         }
@@ -268,7 +268,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
-                'setuptools<42', 'pip', 'cython==0.28.0', 'numpy==1.19.*',
+                'setuptools<42', 'pip', 'cython==0.29.22', 'numpy==1.19.*',
             ],
         }
         script = './test_cupy.sh'
@@ -284,7 +284,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
-                'setuptools<42', 'pip', 'cython==0.28.0', 'numpy==1.19.*',
+                'setuptools<42', 'pip', 'cython==0.29.22', 'numpy==1.19.*',
             ],
         }
         script = './test_cupy.sh'
@@ -307,7 +307,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.13',
+                'setuptools<50', 'cython==0.29.22',
                 numpy_requires, scipy_requires,
             ],
         }
@@ -331,7 +331,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.13',
+                'setuptools<50', 'cython==0.29.22',
                 numpy_requires, scipy_requires,
             ],
         }
@@ -355,7 +355,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.13',
+                'setuptools<50', 'cython==0.29.22',
                 numpy_requires, scipy_requires,
             ],
         }
@@ -379,7 +379,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.13',
+                'setuptools<50', 'cython==0.29.22',
                 numpy_requires, scipy_requires,
             ],
         }
@@ -402,7 +402,7 @@ def main():
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
-                'pip==9.0.1', 'setuptools<50', 'cython==0.29.13',
+                'pip==9.0.1', 'setuptools<50', 'cython==0.29.22',
                 'numpy==1.20.*', 'scipy==1.6.*', 'wheel==0.36.2'
             ] + requires + SPHINX_REQUIREMENTS_PIP
         }

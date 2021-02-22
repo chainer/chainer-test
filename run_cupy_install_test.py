@@ -13,7 +13,7 @@ params = {
     'base': None,
     'cuda_libs': docker.get_cuda_libs_choices('cupy', with_dummy=True),
     'numpy': ['1.17', '1.18', '1.19'],
-    'cython': ['0.29.13', '0.29.21'],
+    'cython': ['0.29.22'],
     'pip': [None, '7', '8', '9', '10'],
     'wheel': [False, True],
 }
@@ -44,7 +44,7 @@ if __name__ == '__main__':
         'cudnn': 'cudnn76-cuda100',
         'nccl': 'none',
         'cutensor': 'none',
-        'requires': ['cython==0.29.13', 'numpy==1.17.5'],
+        'requires': ['cython==0.29.22', 'numpy==1.17.5'],
     }
     volume = []
     env = {}

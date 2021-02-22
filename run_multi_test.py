@@ -55,7 +55,7 @@ if __name__ == '__main__':
         'cudnn': args.cudnn,
         'nccl': args.nccl,
         'cutensor': args.cutensor,
-        'requires': ['setuptools', 'pip', 'cython==0.29.6'],
+        'requires': ['setuptools', 'pip', 'cython==0.29.22'],
     }
 
     if args.h5py == '2.5':

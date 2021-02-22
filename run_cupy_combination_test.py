@@ -49,7 +49,7 @@ if __name__ == '__main__':
     conf['requires'] = [
         'setuptools<42',
         pip_require,
-        'cython==0.29.13'
+        'cython==0.29.22'
     ] + conf['requires']
 
     volume = []
