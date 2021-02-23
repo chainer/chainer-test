@@ -838,8 +838,8 @@ codes['nccl2.7-cuda111'] = nccl_base.format(
 
 codes['nccl2.8-cuda112'] = nccl_base.format(
     nccl_os_ver='1804',
-    libnccl2='libnccl2_2.8.4-1+cuda11.2_amd64',
-    libnccl_dev='libnccl-dev_2.8.4-1+cuda11.2_amd64',
+    libnccl2='libnccl2_2.8.3-1+cuda11.2_amd64',
+    libnccl_dev='libnccl-dev_2.8.3-1+cuda11.2_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
