@@ -2,9 +2,7 @@
 
 . ./environment.sh
 
-pip install --user -e cupy/[jenkins]
-
-cd cupy
+pip install --user cupy/[jenkins]
 
 # Shows cupy config before running the tests
 python -c 'import cupy; cupy.show_config()'
@@ -26,14 +24,19 @@ else
   pytest_opts+=(-m 'not slow')
 fi
 
-python -m pytest "${pytest_opts[@]}" tests
+pushd cupy
+python -m pytest "${pytest_opts[@]}" tests/install_tests
+popd
+
+pushd cupy/tests
+python -m pytest "${pytest_opts[@]}" cupy_tests cupyx_tests example_tests
 
 # Submit coverage to Coveralls
-python ../push_coveralls.py
+python ../../push_coveralls.py
 
 # Submit coverage to Codecov
 # Codecov uses `coverage.xml` generated from `.coverage`
-python -m coverage xml
+python -m coverage xml --ignore-errors
 python -m codecov
 
 # Run benchmark on Python 3
@@ -44,3 +47,5 @@ if [ "$(python -c 'import sys; print(sys.version_info.major)')" = "3" ]; then
   python run.py --show-gpu
   popd
 fi
+
+popd

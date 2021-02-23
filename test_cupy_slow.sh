@@ -2,9 +2,7 @@
 
 . ./environment.sh
 
-pip install --user -e cupy/[jenkins]
-
-cd cupy
+pip install --user cupy/[jenkins]
 
 export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
@@ -23,4 +21,10 @@ else
   pytest_opts+=(-m 'slow')
 fi
 
-python -m pytest "${pytest_opts[@]}" tests
+pushd cupy
+python -m pytest "${pytest_opts[@]}" tests/install_tests
+popd
+
+pushd cupy/tests
+python -m pytest "${pytest_opts[@]}" cupy_tests cupyx_tests example_tests
+popd
