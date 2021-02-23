@@ -47,6 +47,11 @@ def get_version_from_version_file(version_file_path):
 
 
 def get_version(path, module):
+    version_path = os.path.join(path, 'VERSION')
+    if os.path.exists(version_path):
+        with open(version_path) as f:
+            return f.read().strip()
+
     version_path = os.path.join(path, module, '_version.py')
     if os.path.exists(version_path):
         return get_version_from_version_file(version_path)
