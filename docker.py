@@ -92,7 +92,7 @@ cuda_cudnns = {
     'cuda102': ['cudnn76-cuda102'],
     'cuda110': ['cudnn80-cuda110', 'cudnn81-cuda110'],
     'cuda111': ['cudnn80-cuda111', 'cudnn81-cuda111'],
-    'cuda112': ['cudnn80-cuda112', 'cudnn81-cuda112'],
+    'cuda112': ['cudnn81-cuda112'],
 }
 cuda_nccls = {
     # CUDA 9 does not support nccl 1.3
