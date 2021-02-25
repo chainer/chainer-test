@@ -380,7 +380,15 @@ RUN curl -L -s -o ccache.tar.gz https://github.com/ccache/ccache/archive/v3.5.ta
     ln -s /usr/bin/ccache x86_64-linux-gnu-gcc && \\
     ln -s /usr/bin/ccache x86_64-linux-gnu-g++ && \\
     ln -s /usr/bin/ccache x86_64-redhat-linux-gcc && \\
-    ln -s /usr/bin/ccache x86_64-redhat-linux-g++
+    ln -s /usr/bin/ccache x86_64-redhat-linux-g++ && \\
+    if which g++-6; then \\
+        ln -s /usr/bin/ccache gcc-6 && \\
+        ln -s /usr/bin/ccache g++-6 && \\
+        ln -s /usr/bin/ccache x86_64-linux-gnu-gcc-6 && \\
+        ln -s /usr/bin/ccache x86_64-linux-gnu-g++-6 && \\
+        ln -s /usr/bin/ccache x86_64-redhat-linux-gcc-6 && \\
+        ln -s /usr/bin/ccache x86_64-redhat-linux-g++-6; \\
+    fi
 ENV NVCC="ccache nvcc"
 '''
 
