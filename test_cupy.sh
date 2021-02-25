@@ -2,7 +2,7 @@
 
 . ./environment.sh
 
-pip install --user cupy/[jenkins]
+pip install --user -vvv cupy/[jenkins]
 
 # Shows cupy config before running the tests
 python -c 'import cupy; cupy.show_config()'
