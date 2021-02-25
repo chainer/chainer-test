@@ -10,5 +10,7 @@ if [ "${USE_GCC6_OR_LATER}" != 0 ]; then
         # For Ubuntu 16.04 and CentOS 7, use g++-6.
         # For Ubuntu 18.04, uses the default g++-7.
         export NVCC="${NVCC} --compiler-bindir g++-6"
+        export CXX="g++-6"
+        export CC="gcc-6"
     fi
 fi
