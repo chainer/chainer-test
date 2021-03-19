@@ -23,7 +23,7 @@ if __name__ == '__main__':
         description='Test script for multi-environment')
     parser.add_argument('--id', type=int, required=True)
     parser.add_argument('--no-cache', action='store_true')
-    parser.add_argument('--timeout', default='2h')
+    parser.add_argument('--timeout', default='4h')
     parser.add_argument('--interactive', action='store_true')
     parser.add_argument(
         '--clone-chainer', action='store_true',
