@@ -12,6 +12,7 @@ export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 pytest_opts=(
     -rfEX
     --timeout=300
+    --maxfail=500  # to prevent output log flow
     --junit-xml=result.xml
     --cov
     --no-cov-on-fail
