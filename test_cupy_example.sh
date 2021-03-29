@@ -30,3 +30,30 @@ if [ -f examples/gemm/sgemm.py ]; then
   $run examples/gemm/sgemm.py
 fi
 
+
+# cg
+
+$run examples/cg/cg.py
+
+
+# cuTENSOR
+
+$run examples/cutensor/contraction.py
+$run examples/cutensor/elementwise_binary.py
+$run examples/cutensor/elementwise_trinary.py
+$run examples/cutensor/elementwise_reduction.py
+
+
+# stream
+
+$run examples/stream/cublas.py
+$run examples/stream/cudnn.py
+$run examples/stream/cufft.py
+$run examples/stream/cupy_event.py
+$run examples/stream/cupy_kernel.py
+$run examples/stream/cupy_memcpy.py
+$run examples/stream/curand.py
+$run examples/stream/cusolver.py
+$run examples/stream/cusparse.py
+$run examples/stream/map_reduce.py
+$run examples/stream/thrust.py
