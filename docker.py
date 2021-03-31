@@ -895,10 +895,9 @@ RUN tmpdir=`mktemp -d` && \\
     curl -sL -o {cusparselt}.tar.gz https://developer.download.nvidia.com/compute/libcusparse-lt/{cusparselt_ver}/local_installers/{cusparselt}.tar.gz && \\
     tar -xzf {cusparselt}.tar.gz && \\
     cd libcusparse_lt && \\
-    cp ./include/* /usr/local/cuda/include && \\
-    cp ./lib64/* /usr/local/cuda/lib64 && \\
+    cp -a ./include/* /usr/local/cuda/include && \\
+    cp -a ./lib64/* /usr/local/cuda/lib64 && \\
     cd /tmp && rm -rf $tmpdir
-WORKDIR /tmp
 '''
 
 codes['cusparselt-0.0.1'] = cusparselt_base.format(
