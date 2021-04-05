@@ -14,3 +14,5 @@ if [ "${USE_GCC6_OR_LATER}" != 0 ]; then
         export CC="gcc-6"
     fi
 fi
+
+env
