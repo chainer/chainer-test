@@ -888,6 +888,24 @@ codes['protobuf-cpp-3'] = protobuf_cpp_base.format(
     protobuf='3.3.0',
 )
 
+# cuSPARSELt
+cusparselt_base = '''
+RUN tmpdir=`mktemp -d` && \\
+    cd $tmpdir && \\
+    curl -sL -o {cusparselt}.tar.gz https://developer.download.nvidia.com/compute/libcusparse-lt/{cusparselt_ver}/local_installers/{cusparselt}.tar.gz && \\
+    tar -xzf {cusparselt}.tar.gz && \\
+    cd libcusparse_lt && \\
+    cp -a ./include/* /usr/local/cuda/include && \\
+    cp -a ./lib64/* /usr/local/cuda/lib64 && \\
+    cd /tmp && rm -rf $tmpdir
+'''
+
+codes['cusparselt-0.0.1'] = cusparselt_base.format(
+    cusparselt='libcusparse_lt-linux-x86_64-0.0.1.73',
+    cusparselt_ver='0.0.1',
+)
+
+
 codes['none'] = ''
 
 
@@ -922,6 +940,9 @@ def make_dockerfile(conf):
 
     if 'protobuf-cpp' in conf:
         dockerfile += codes[conf['protobuf-cpp']]
+
+    if conf['cuda'] != 'none':
+        dockerfile += codes['cusparselt-0.0.1']
 
     # Update pip to v20 which is the last version supporting Python 3.5.
     dockerfile += '''
