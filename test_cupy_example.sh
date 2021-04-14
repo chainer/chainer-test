@@ -28,7 +28,7 @@ $run kmeans/kmeans.py -m 1 -o kmeans.png
 
 # SGEMM
 
-$run gemm/sgemm.py
+PYTHONPATH=gemm $run gemm/sgemm.py
 
 # cg
 
@@ -40,7 +40,7 @@ $run cg/cg.py
 $run cutensor/contraction.py
 $run cutensor/elementwise_binary.py
 $run cutensor/elementwise_trinary.py
-$run cutensor/elementwise_reduction.py
+$run cutensor/reduction.py
 
 
 # stream
