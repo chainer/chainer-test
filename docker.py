@@ -1006,7 +1006,7 @@ def write_dockerfile(conf):
 
 
 def build_image(name, no_cache=False):
-    cmd = ['docker', 'build', '-t', name]
+    cmd = ['docker', 'build', '--force-rm', '-t', name]
     if not sys.stdout.isatty():
         cmd.append('-q')
     if no_cache:
