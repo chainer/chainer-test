@@ -363,26 +363,33 @@ def main():
 
     elif args.test == 'cupy-example':
         if not is_cupy_8_or_later:
-            numpy_requires = 'numpy==1.12.*'
-            scipy_requires = 'scipy==0.18.*'
+            conf = {
+                'base': 'ubuntu18_py36',
+                'cuda': 'cuda92',
+                'cudnn': 'cudnn76-cuda92',
+                'nccl': 'nccl2.2-cuda92',
+                'cutensor': 'none',
+                'requires': [
+                    # TODO(kmaehashi): Remove setuptools version restrictions
+                    # https://github.com/pypa/setuptools/issues/2352
+                    'setuptools<50', 'cython==0.29.22',
+                    'numpy==1.12.*', 'scipy==0.18.*',
+                ],
+            }
         else:
-            numpy_requires = 'numpy==1.16.*'
-            scipy_requires = 'scipy==1.4.*'
-
-        base = 'ubuntu18_py36'
-        conf = {
-            'base': base,
-            'cuda': 'cuda92',
-            'cudnn': 'cudnn76-cuda92',
-            'nccl': 'nccl2.2-cuda92',
-            'cutensor': 'none',
-            'requires': [
-                # TODO(kmaehashi): Remove setuptools version restrictions
-                # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.22',
-                numpy_requires, scipy_requires,
-            ],
-        }
+            conf = {
+                'base': 'ubuntu18_py38-pyenv',
+                'cuda': 'cuda102',
+                'cudnn': 'cudnn76-cuda102',
+                'nccl': 'nccl2.5-cuda102',
+                'cutensor': 'cutensor1.2.0-cuda102',
+                'requires': [
+                    # TODO(kmaehashi): Remove setuptools version restrictions
+                    # https://github.com/pypa/setuptools/issues/2352
+                    'setuptools<50', 'cython==0.29.22',
+                    'numpy==1.19.*', 'scipy==1.6.*',
+                ],
+            }
         script = './test_cupy_example.sh'
 
     elif args.test == 'cupy-doc':

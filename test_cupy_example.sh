@@ -13,20 +13,46 @@ cd ..
 
 python -m pip install coverage matplotlib --user
 
+cd examples
+
 run="python -m coverage run -a --branch"
 
 export MPLBACKEND=Agg
 
 # K-means
 
-$run examples/kmeans/kmeans.py -m 1
-$run examples/kmeans/kmeans.py -m 1 --use-custom-kernel
-$run examples/kmeans/kmeans.py -m 1 -o kmeans.png
+$run kmeans/kmeans.py -m 1
+$run kmeans/kmeans.py -m 1 --use-custom-kernel
+$run kmeans/kmeans.py -m 1 -o kmeans.png
 
 
 # SGEMM
 
-if [ -f examples/gemm/sgemm.py ]; then
-  $run examples/gemm/sgemm.py
-fi
+PYTHONPATH=gemm $run gemm/sgemm.py
 
+# cg
+
+$run cg/cg.py
+
+
+# cuTENSOR
+
+$run cutensor/contraction.py
+$run cutensor/elementwise_binary.py
+$run cutensor/elementwise_trinary.py
+$run cutensor/reduction.py
+
+
+# stream
+
+$run stream/cublas.py
+$run stream/cudnn.py
+$run stream/cufft.py
+$run stream/cupy_event.py
+$run stream/cupy_kernel.py
+$run stream/cupy_memcpy.py
+$run stream/curand.py
+$run stream/cusolver.py
+$run stream/cusparse.py
+$run stream/map_reduce.py
+$run stream/thrust.py
