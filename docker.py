@@ -59,6 +59,7 @@ cudnn_choices = [
     'cudnn76-cuda92', 'cudnn76-cuda100', 'cudnn76-cuda101', 'cudnn76-cuda102',
     'cudnn80-cuda110', 'cudnn80-cuda111',
     'cudnn81-cuda110', 'cudnn81-cuda111', 'cudnn81-cuda112',
+    'cudnn82-cuda110', 'cudnn82-cuda111', 'cudnn82-cuda112',
 ]
 nccl_choices = [
     'none',
@@ -89,9 +90,9 @@ cuda_cudnns = {
                 'cudnn76-cuda100'],
     'cuda101': ['cudnn75-cuda101', 'cudnn76-cuda101'],
     'cuda102': ['cudnn76-cuda102'],
-    'cuda110': ['cudnn80-cuda110', 'cudnn81-cuda110'],
-    'cuda111': ['cudnn80-cuda111', 'cudnn81-cuda111'],
-    'cuda112': ['cudnn81-cuda112'],
+    'cuda110': ['cudnn80-cuda110', 'cudnn81-cuda110', 'cudnn82-cuda110'],
+    'cuda111': ['cudnn80-cuda111', 'cudnn81-cuda111', 'cudnn82-cuda111'],
+    'cuda112': ['cudnn81-cuda112', 'cudnn82-cuda112'],
 }
 cuda_nccls = {
     # CUDA 9 does not support nccl 1.3
@@ -638,6 +639,14 @@ codes['cudnn81-cuda110'] = cudnn_base.format(
 )
 codes['cudnn81-cuda111'] = codes['cudnn81-cuda110']
 codes['cudnn81-cuda112'] = codes['cudnn81-cuda110']
+
+codes['cudnn82-cuda110'] = cudnn_base.format(
+    cudnn='cudnn-11.3-linux-x64-v8.2.0.53',
+    cudnn_ver='v8.2.0',
+    sha256sum='7a195dc93a7cda2bdd4d9b73958d259c784be422cd941a9a625aab75309f19dc',
+)
+codes['cudnn82-cuda111'] = codes['cudnn82-cuda110']
+codes['cudnn82-cuda112'] = codes['cudnn82-cuda110']
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
 # installed.
