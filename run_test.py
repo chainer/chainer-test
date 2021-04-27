@@ -325,7 +325,7 @@ def main():
         conf = {
             'base': 'ubuntu18_py36',
             'cuda': 'cuda112',
-            'cudnn': 'cudnn81-cuda112',
+            'cudnn': 'cudnn82-cuda112',
             'nccl': 'nccl2.8-cuda112',
             'cutensor': 'none',
             'requires': [
