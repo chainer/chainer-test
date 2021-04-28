@@ -40,9 +40,7 @@ base_choices_stable_chainer = [
 base_choices_master_cupy = [
     name for name, ver in _base_choices
     if ver >= (3, 6)]
-
-# Python 2.7 & 3.4+
-base_choices_stable_cupy = base_choices_all
+base_choices_stable_cupy = base_choices_master_cupy
 
 cuda_choices = [
     'none',
