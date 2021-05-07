@@ -936,9 +936,6 @@ def make_dockerfile(conf):
     dockerfile += codes[conf['nccl']]
     dockerfile += codes[conf['cutensor']]
 
-    if 'protobuf-cpp' in conf:
-        dockerfile += codes[conf['protobuf-cpp']]
-
     if conf['cuda'] != 'none':
         dockerfile += codes['cusparselt-0.0.1']
 
@@ -991,6 +988,9 @@ RUN pip install -U pip six 'setuptools<50' && rm -rf ~/.cache/pip
             dockerfile += (
                 'RUN pip install %s && rm -rf ~/.cache/pip\n' %
                 ' '.join(['"%s"' % req for req in requires]))
+
+    if 'protobuf-cpp' in conf:
+        dockerfile += codes[conf['protobuf-cpp']]
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
