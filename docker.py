@@ -40,9 +40,7 @@ base_choices_stable_chainer = [
 base_choices_master_cupy = [
     name for name, ver in _base_choices
     if ver >= (3, 6)]
-
-# Python 2.7 & 3.4+
-base_choices_stable_cupy = base_choices_all
+base_choices_stable_cupy = base_choices_master_cupy
 
 cuda_choices = [
     'none',
@@ -938,9 +936,6 @@ def make_dockerfile(conf):
     dockerfile += codes[conf['nccl']]
     dockerfile += codes[conf['cutensor']]
 
-    if 'protobuf-cpp' in conf:
-        dockerfile += codes[conf['protobuf-cpp']]
-
     if conf['cuda'] != 'none':
         dockerfile += codes['cusparselt-0.0.1']
 
@@ -993,6 +988,9 @@ RUN pip install -U pip six 'setuptools<50' && rm -rf ~/.cache/pip
             dockerfile += (
                 'RUN pip install %s && rm -rf ~/.cache/pip\n' %
                 ' '.join(['"%s"' % req for req in requires]))
+
+    if 'protobuf-cpp' in conf:
+        dockerfile += codes[conf['protobuf-cpp']]
 
     # Make a user and home directory to install chainer
     dockerfile += 'RUN useradd -m -u %d user\n' % os.getuid()
