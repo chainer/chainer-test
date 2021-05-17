@@ -70,6 +70,7 @@ nccl_choices = [
     'nccl2.6-cuda100', 'nccl2.6-cuda101', 'nccl2.6-cuda102',
     'nccl2.7-cuda101', 'nccl2.7-cuda102', 'nccl2.7-cuda110', 'nccl2.7-cuda111',
     'nccl2.8-cuda112'
+    'nccl2.9-cuda102', 'nccl2.9-cuda110',
 ]
 cutensor_choices = [
     'none',
@@ -102,8 +103,9 @@ cuda_nccls = {
                 'nccl2.6-cuda100'],
     'cuda101': ['nccl2.4-cuda101', 'nccl2.5-cuda101', 'nccl2.6-cuda101',
                 'nccl2.7-cuda101'],
-    'cuda102': ['nccl2.5-cuda102', 'nccl2.6-cuda102', 'nccl2.7-cuda102'],
-    'cuda110': ['nccl2.7-cuda110'],
+    'cuda102': ['nccl2.5-cuda102', 'nccl2.6-cuda102', 'nccl2.7-cuda102',
+                'nccl2.9-cuda102'],
+    'cuda110': ['nccl2.7-cuda110', 'nccl2.9-cuda110'],
     'cuda111': ['nccl2.7-cuda111'],
     'cuda112': ['nccl2.8-cuda112'],
 }
@@ -672,8 +674,8 @@ RUN curl -sL -o nccl1.3.4.tar.gz https://github.com/NVIDIA/nccl/archive/v1.3.4-1
 
 nccl_base = '''
 RUN mkdir nccl && cd nccl && \\
-    curl -sL -o {libnccl2}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu{nccl_os_ver}/x86_64/{libnccl2}.deb && \\
-    curl -sL -o {libnccl_dev}.deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu{nccl_os_ver}/x86_64/{libnccl_dev}.deb && \\
+    curl -sL -o {libnccl2}.deb https://developer.download.nvidia.com/compute/{nccl_sub_dir}/repos/ubuntu{nccl_os_ver}/x86_64/{libnccl2}.deb && \\
+    curl -sL -o {libnccl_dev}.deb https://developer.download.nvidia.com/compute/{nccl_sub_dir}/repos/ubuntu{nccl_os_ver}/x86_64/{libnccl_dev}.deb && \\
     ar vx {libnccl2}.deb && \\
     tar xvf data.tar.xz && \\
     ar vx {libnccl_dev}.deb && \\
@@ -684,6 +686,7 @@ RUN mkdir nccl && cd nccl && \\
 '''
 
 codes['nccl2.0-cuda9'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.0.5-3+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.0.5-3+cuda9.0_amd64',
@@ -692,6 +695,7 @@ codes['nccl2.0-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.2-cuda9'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.2.13-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.2.13-1+cuda9.0_amd64',
@@ -700,6 +704,7 @@ codes['nccl2.2-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.2-cuda92'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.2.13-1+cuda9.2_amd64',
     libnccl_dev='libnccl-dev_2.2.13-1+cuda9.2_amd64',
@@ -708,6 +713,7 @@ codes['nccl2.2-cuda92'] = nccl_base.format(
 )
 
 codes['nccl2.3-cuda9'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.3.7-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.3.7-1+cuda9.0_amd64',
@@ -716,6 +722,7 @@ codes['nccl2.3-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.3-cuda92'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.3.7-1+cuda9.2_amd64',
     libnccl_dev='libnccl-dev_2.3.7-1+cuda9.2_amd64',
@@ -724,7 +731,9 @@ codes['nccl2.3-cuda92'] = nccl_base.format(
 )
 
 codes['nccl2.3-cuda100'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
+    nccl_sub_dir='machine-learning',
     libnccl2='libnccl2_2.3.7-1+cuda10.0_amd64',
     libnccl_dev='libnccl-dev_2.3.7-1+cuda10.0_amd64',
     include_dir='/usr/include',
@@ -732,6 +741,7 @@ codes['nccl2.3-cuda100'] = nccl_base.format(
 )
 
 codes['nccl2.4-cuda9'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.4.2-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.4.2-1+cuda9.0_amd64',
@@ -740,6 +750,7 @@ codes['nccl2.4-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.4-cuda92'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.4.2-1+cuda9.2_amd64',
     libnccl_dev='libnccl-dev_2.4.2-1+cuda9.2_amd64',
@@ -748,6 +759,7 @@ codes['nccl2.4-cuda92'] = nccl_base.format(
 )
 
 codes['nccl2.4-cuda100'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.4.2-1+cuda10.0_amd64',
     libnccl_dev='libnccl-dev_2.4.2-1+cuda10.0_amd64',
@@ -756,6 +768,7 @@ codes['nccl2.4-cuda100'] = nccl_base.format(
 )
 
 codes['nccl2.4-cuda101'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.4.2-1+cuda10.1_amd64',
     libnccl_dev='libnccl-dev_2.4.2-1+cuda10.1_amd64',
@@ -764,6 +777,7 @@ codes['nccl2.4-cuda101'] = nccl_base.format(
 )
 
 codes['nccl2.5-cuda9'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.5.6-1+cuda9.0_amd64',
     libnccl_dev='libnccl-dev_2.5.6-1+cuda9.0_amd64',
@@ -772,6 +786,7 @@ codes['nccl2.5-cuda9'] = nccl_base.format(
 )
 
 codes['nccl2.5-cuda100'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.5.6-1+cuda10.0_amd64',
     libnccl_dev='libnccl-dev_2.5.6-1+cuda10.0_amd64',
@@ -780,6 +795,7 @@ codes['nccl2.5-cuda100'] = nccl_base.format(
 )
 
 codes['nccl2.5-cuda101'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.5.6-1+cuda10.1_amd64',
     libnccl_dev='libnccl-dev_2.5.6-1+cuda10.1_amd64',
@@ -788,6 +804,7 @@ codes['nccl2.5-cuda101'] = nccl_base.format(
 )
 
 codes['nccl2.5-cuda102'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.5.6-1+cuda10.2_amd64',
     libnccl_dev='libnccl-dev_2.5.6-1+cuda10.2_amd64',
@@ -796,6 +813,7 @@ codes['nccl2.5-cuda102'] = nccl_base.format(
 )
 
 codes['nccl2.6-cuda100'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.6.4-1+cuda10.0_amd64',
     libnccl_dev='libnccl-dev_2.6.4-1+cuda10.0_amd64',
@@ -804,6 +822,7 @@ codes['nccl2.6-cuda100'] = nccl_base.format(
 )
 
 codes['nccl2.6-cuda101'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.6.4-1+cuda10.1_amd64',
     libnccl_dev='libnccl-dev_2.6.4-1+cuda10.1_amd64',
@@ -812,6 +831,7 @@ codes['nccl2.6-cuda101'] = nccl_base.format(
 )
 
 codes['nccl2.6-cuda102'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.6.4-1+cuda10.2_amd64',
     libnccl_dev='libnccl-dev_2.6.4-1+cuda10.2_amd64',
@@ -820,6 +840,7 @@ codes['nccl2.6-cuda102'] = nccl_base.format(
 )
 
 codes['nccl2.7-cuda101'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.7.3-1+cuda10.1_amd64',
     libnccl_dev='libnccl-dev_2.7.3-1+cuda10.1_amd64',
@@ -828,6 +849,7 @@ codes['nccl2.7-cuda101'] = nccl_base.format(
 )
 
 codes['nccl2.7-cuda102'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.7.3-1+cuda10.2_amd64',
     libnccl_dev='libnccl-dev_2.7.3-1+cuda10.2_amd64',
@@ -836,6 +858,7 @@ codes['nccl2.7-cuda102'] = nccl_base.format(
 )
 
 codes['nccl2.7-cuda110'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.7.3-1+cuda11.0_amd64',
     libnccl_dev='libnccl-dev_2.7.3-1+cuda11.0_amd64',
@@ -844,6 +867,7 @@ codes['nccl2.7-cuda110'] = nccl_base.format(
 )
 
 codes['nccl2.7-cuda111'] = nccl_base.format(
+    nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
     libnccl2='libnccl2_2.7.8-1+cuda11.1_amd64',
     libnccl_dev='libnccl-dev_2.7.8-1+cuda11.1_amd64',
@@ -852,13 +876,31 @@ codes['nccl2.7-cuda111'] = nccl_base.format(
 )
 
 codes['nccl2.8-cuda112'] = nccl_base.format(
+    nccl_sub_dir='cuda',
     nccl_os_ver='1804',
-    libnccl2='libnccl2_2.8.3-1+cuda11.2_amd64',
-    libnccl_dev='libnccl-dev_2.8.3-1+cuda11.2_amd64',
+    libnccl2='libnccl2_2.8.4-1+cuda11.2_amd64',
+    libnccl_dev='libnccl-dev_2.8.4-1+cuda11.2_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
+codes['nccl2.9-cuda102'] = nccl_base.format(
+    nccl_sub_dir='cuda',
+    nccl_os_ver='1804',
+    libnccl2='libnccl2_2.9.8-1+cuda10.2_amd64',
+    libnccl_dev='libnccl-dev_2.9.8-1+cuda10.2_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
+
+codes['nccl2.9-cuda110'] = nccl_base.format(
+    nccl_sub_dir='cuda',
+    nccl_os_ver='1804',
+    libnccl2='libnccl2_2.9.8-1+cuda11.0_amd64',
+    libnccl_dev='libnccl-dev_2.9.8-1+cuda11.0_amd64',
+    include_dir='/usr/include',
+    lib_dir='/usr/lib/x86_64-linux-gnu',
+)
 
 # cuTENSOR
 # The shell script needs to be saved in an env var due to Dockerfile limitations
