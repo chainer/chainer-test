@@ -733,7 +733,6 @@ codes['nccl2.3-cuda92'] = nccl_base.format(
 codes['nccl2.3-cuda100'] = nccl_base.format(
     nccl_sub_dir='machine-learning',
     nccl_os_ver='1604',
-    nccl_sub_dir='machine-learning',
     libnccl2='libnccl2_2.3.7-1+cuda10.0_amd64',
     libnccl_dev='libnccl-dev_2.3.7-1+cuda10.0_amd64',
     include_dir='/usr/include',
