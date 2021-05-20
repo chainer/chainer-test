@@ -46,7 +46,7 @@ cuda_choices = [
     'none',
     'cuda90', 'cuda92',
     'cuda100', 'cuda101', 'cuda102',
-    'cuda110', 'cuda111', 'cuda112',
+    'cuda110', 'cuda111', 'cuda112', 'cuda113',
 ]
 cudnn_choices = [
     'none',
@@ -59,7 +59,7 @@ cudnn_choices = [
     'cudnn76-cuda92', 'cudnn76-cuda100', 'cudnn76-cuda101', 'cudnn76-cuda102',
     'cudnn80-cuda110', 'cudnn80-cuda111',
     'cudnn81-cuda110', 'cudnn81-cuda111', 'cudnn81-cuda112',
-    'cudnn82-cuda110', 'cudnn82-cuda111', 'cudnn82-cuda112',
+    'cudnn82-cuda110', 'cudnn82-cuda111', 'cudnn82-cuda112', 'cudnn82-cuda113',
 ]
 nccl_choices = [
     'none',
@@ -70,7 +70,8 @@ nccl_choices = [
     'nccl2.5-cuda9', 'nccl2.5-cuda100', 'nccl2.5-cuda101', 'nccl2.5-cuda102',
     'nccl2.6-cuda100', 'nccl2.6-cuda101', 'nccl2.6-cuda102',
     'nccl2.7-cuda101', 'nccl2.7-cuda102', 'nccl2.7-cuda110', 'nccl2.7-cuda111',
-    'nccl2.8-cuda112'
+    'nccl2.8-cuda112',
+    'nccl2.9-cuda113',
 ]
 cutensor_choices = [
     'none',
@@ -80,7 +81,8 @@ cutensor_choices = [
     'cutensor1.2.1-cuda111',
     'cutensor1.2.2-cuda112',
     'cutensor1.3.0-cuda102', 'cutensor1.3.0-cuda110', 'cutensor1.3.0-cuda111',
-    'cutensor1.3.0-cuda112'
+    'cutensor1.3.0-cuda112',
+    'cutensor1.3.0-cuda113',
 ]
 
 cuda_cudnns = {
@@ -95,6 +97,7 @@ cuda_cudnns = {
     'cuda110': ['cudnn80-cuda110', 'cudnn81-cuda110', 'cudnn82-cuda110'],
     'cuda111': ['cudnn80-cuda111', 'cudnn81-cuda111', 'cudnn82-cuda111'],
     'cuda112': ['cudnn81-cuda112', 'cudnn82-cuda112'],
+    'cuda113': ['cudnn82-cuda113'],
 }
 cuda_nccls = {
     # CUDA 9 does not support nccl 1.3
@@ -109,6 +112,7 @@ cuda_nccls = {
     'cuda110': ['nccl2.7-cuda110'],
     'cuda111': ['nccl2.7-cuda111'],
     'cuda112': ['nccl2.8-cuda112'],
+    'cuda113': ['nccl2.9-cuda113'],
 }
 cuda_cutensors = {
     'cuda101': ['cutensor1.2.0-cuda101'],
@@ -116,6 +120,7 @@ cuda_cutensors = {
     'cuda110': ['cutensor1.2.0-cuda110', 'cutensor1.3.0-cuda110'],
     'cuda111': ['cutensor1.2.1-cuda111', 'cutensor1.3.0-cuda111'],
     'cuda112': ['cutensor1.2.2-cuda112', 'cutensor1.3.0-cuda112'],
+    'cuda113': ['cutensor1.3.0-cuda113'],
 }
 
 
@@ -649,6 +654,7 @@ codes['cudnn82-cuda110'] = cudnn_base.format(
 )
 codes['cudnn82-cuda111'] = codes['cudnn82-cuda110']
 codes['cudnn82-cuda112'] = codes['cudnn82-cuda110']
+codes['cudnn82-cuda113'] = codes['cudnn82-cuda110']
 
 # This is a test for CFLAGS and LDFLAGS to specify a directory where cuDNN is
 # installed.
@@ -877,11 +883,12 @@ codes['cutensor1.2.0-cuda101'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor
 codes['cutensor1.2.0-cuda102'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 10.2;'
 codes['cutensor1.2.0-cuda110'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.0.2 1.2.0 11.0;'
 codes['cutensor1.2.1-cuda111'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.1.7 1.2.1 11.1;'
-codes['cutensor1.2.2-cuda112'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.2.5 1.2.2 11.2;'
+codes['cutensor1.2.2-cuda112'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.2.2.5 1.2.2 11;'
 codes['cutensor1.3.0-cuda102'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 10.2;'
 codes['cutensor1.3.0-cuda110'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 11.0;'
-codes['cutensor1.3.0-cuda111'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 11.1;'
-codes['cutensor1.3.0-cuda112'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 11.2;'
+codes['cutensor1.3.0-cuda111'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 11;'
+codes['cutensor1.3.0-cuda112'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 11;'
+codes['cutensor1.3.0-cuda113'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 11;'
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
