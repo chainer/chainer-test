@@ -69,7 +69,7 @@ nccl_choices = [
     'nccl2.5-cuda9', 'nccl2.5-cuda100', 'nccl2.5-cuda101', 'nccl2.5-cuda102',
     'nccl2.6-cuda100', 'nccl2.6-cuda101', 'nccl2.6-cuda102',
     'nccl2.7-cuda101', 'nccl2.7-cuda102', 'nccl2.7-cuda110', 'nccl2.7-cuda111',
-    'nccl2.8-cuda112'
+    'nccl2.8-cuda112',
     'nccl2.9-cuda102', 'nccl2.9-cuda110',
 ]
 cutensor_choices = [
