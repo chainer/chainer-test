@@ -402,9 +402,9 @@ def main():
         # NumPy 1.14.
         conf = {
             'base': 'ubuntu18_py38-pyenv',
-            'cuda': 'cuda92',
-            'cudnn': 'cudnn76-cuda92',
-            'nccl': 'nccl2.4-cuda92',
+            'cuda': 'cuda100',
+            'cudnn': 'cudnn76-cuda100',
+            'nccl': 'nccl2.4-cuda100',
             'cutensor': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
