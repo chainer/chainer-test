@@ -424,7 +424,7 @@ cuda111_url = 'https://developer.download.nvidia.com/compute/cuda/11.1.0/local_i
 cuda112_run = 'cuda_11.2.1_460.32.03_linux.run'
 cuda112_url = 'https://developer.download.nvidia.com/compute/cuda/11.2.1/local_installers'
 
-cuda113_run = 'cuda_11.3.1_465.19.01_linux'
+cuda113_run = 'cuda_11.3.1_465.19.01_linux.run'
 cuda113_url = 'https://developer.download.nvidia.com/compute/cuda/11.3.1/local_installers'
 
 cuda_base = '''
@@ -505,6 +505,13 @@ codes['cuda112'] = cuda_base.format(
     cuda_run=cuda112_run,
     cuda_url=cuda112_url,
     sha256sum='1da98cb897cc5f58a7445a4a66ca4f6926867706cb3af58a669cdcd8dc3d17c8',
+)
+
+codes['cuda113'] = cuda_base.format(
+    cuda_ver='11.3',
+    cuda_run=cuda113_run,
+    cuda_url=cuda113_url,
+    sha256sum='ad93ea98efced35855c58d3a0fc326377c60917cb3e8c017d3e6d88819bf2934',
 )
 
 
