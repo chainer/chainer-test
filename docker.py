@@ -424,6 +424,9 @@ cuda111_url = 'https://developer.download.nvidia.com/compute/cuda/11.1.0/local_i
 cuda112_run = 'cuda_11.2.1_460.32.03_linux.run'
 cuda112_url = 'https://developer.download.nvidia.com/compute/cuda/11.2.1/local_installers'
 
+cuda113_run = 'cuda_11.3.1_465.19.01_linux'
+cuda113_url = 'https://developer.download.nvidia.com/compute/cuda/11.3.1/local_installers'
+
 cuda_base = '''
 WORKDIR /opt/nvidia
 RUN curl -sL -o {cuda_run} {cuda_url}/{cuda_run} && \\
