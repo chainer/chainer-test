@@ -44,6 +44,7 @@ if __name__ == '__main__':
         'cudnn': 'cudnn76-cuda100',
         'nccl': 'none',
         'cutensor': 'none',
+        'cusparselt': 'none',
         'requires': ['cython==0.29.22', 'numpy==1.17.5'],
     }
     volume = []

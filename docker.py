@@ -83,6 +83,12 @@ cutensor_choices = [
     'cutensor1.3.0-cuda102', 'cutensor1.3.0-cuda110', 'cutensor1.3.0-cuda111',
     'cutensor1.3.0-cuda112'
 ]
+cusparselt_choices = [
+    'none',
+    'cusparselt0.0.1-cuda110', 'cusparselt0.0.1-cuda111', 'cusparselt0.0.1-cuda112',
+    'cusparselt0.1.0-cuda112',
+]
+
 
 cuda_cudnns = {
     'cuda90': ['cudnn7-cuda9', 'cudnn71-cuda9', 'cudnn72-cuda9',
@@ -119,7 +125,11 @@ cuda_cutensors = {
     'cuda111': ['cutensor1.2.1-cuda111', 'cutensor1.3.0-cuda111'],
     'cuda112': ['cutensor1.2.2-cuda112', 'cutensor1.3.0-cuda112'],
 }
-
+cuda_cusparselts = {
+    'cuda110': ['cusparselt0.0.1-cuda110'],
+    'cuda111': ['cusparselt0.0.1-cuda111'],
+    'cuda112': ['cusparselt0.0.1-cuda112', 'cusparselt0.1.0-cuda112'],
+}
 
 def _check_cuda_combination(lis, dic):
     x = collections.Counter(itertools.chain.from_iterable(dic.values()))
@@ -131,6 +141,7 @@ def _check_cuda_combination(lis, dic):
 _check_cuda_combination(cudnn_choices, cuda_cudnns)
 _check_cuda_combination(nccl_choices, cuda_nccls)
 _check_cuda_combination(cutensor_choices, cuda_cutensors)
+_check_cuda_combination(cusparselt_choices, cuda_cusparselts)
 del _check_cuda_combination
 
 
@@ -155,6 +166,7 @@ def get_cuda_libs_choices(target, with_dummy=False):
         cudnns = ['none'] + cuda_cudnns[cuda]
         nccls = ['none'] + cuda_nccls[cuda]
         cutensors = ['none'] + cuda_cutensors.get(cuda, [])
+        cusparselts = ['none'] + cuda_cusparselts.get(cuda, [])
         if cupy_major >= 9:
             # cupy v9 requires cuda >= 9.2
             if int(cuda[4:]) < 92:
@@ -170,7 +182,9 @@ def get_cuda_libs_choices(target, with_dummy=False):
         for cudnn in cudnns:
             for nccl in nccls:
                 for cutensor in cutensors:
-                    choices.append((cuda, cudnn, nccl, cutensor))
+                    for cusparselt in cusparselts:
+                        choices.append(
+                            (cuda, cudnn, nccl, cutensor, cusparselt))
 
     if target == 'chainer':
         choices = [('none', 'none', 'none', 'none')] + choices
@@ -959,6 +973,10 @@ codes['cusparselt-0.0.1'] = cusparselt_base.format(
     cusparselt_ver='0.0.1',
 )
 
+codes['cusparselt-0.1.0'] = cusparselt_base.format(
+    cusparselt='libcusparse_lt-linux-x86_64-0.1.0.2',
+    cusparselt_ver='0.1.0',
+)
 
 codes['none'] = ''
 
@@ -993,7 +1011,7 @@ def make_dockerfile(conf):
     dockerfile += codes[conf['cutensor']]
 
     if conf['cuda'] != 'none':
-        dockerfile += codes['cusparselt-0.0.1']
+        dockerfile += codes[conf['cusparselt']]
 
     # Update pip to v20 which is the last version supporting Python 3.5.
     dockerfile += '''

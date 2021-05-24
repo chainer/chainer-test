@@ -114,6 +114,7 @@ def main():
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
@@ -131,6 +132,7 @@ def main():
             'cudnn': 'cudnn71-cuda92',
             'nccl': 'nccl2.2-cuda92',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
@@ -151,6 +153,7 @@ def main():
             'cudnn': 'cudnn75-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # Use '>=0.0.dev0' to install the latest pre-release version
                 # available on PyPI.
@@ -178,6 +181,7 @@ def main():
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'nccl1.3',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
@@ -197,6 +201,7 @@ def main():
             'cudnn': 'cudnn73-cuda9',
             'nccl': 'nccl2.2-cuda9',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
@@ -213,6 +218,7 @@ def main():
             'cudnn': 'cudnn72-cuda92',
             'nccl': 'none',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
@@ -231,6 +237,7 @@ def main():
             'cudnn': 'cudnn6-cuda8',
             'nccl': 'none',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
@@ -251,6 +258,7 @@ def main():
             'cudnn': 'cudnn76-cuda100',
             'nccl': 'nccl2.4-cuda100',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.29.22',
                 'numpy==1.20.*', 'scipy==1.6.*',
@@ -265,6 +273,7 @@ def main():
             'cudnn': 'cudnn76-cuda102',
             'nccl': 'nccl2.5-cuda102',
             'cutensor': 'cutensor1.3.0-cuda102',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
@@ -281,6 +290,7 @@ def main():
             'cudnn': 'cudnn76-cuda100',
             'nccl': 'nccl2.4-cuda100',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
@@ -304,6 +314,7 @@ def main():
             'cudnn': 'cudnn81-cuda112',
             'nccl': 'nccl2.8-cuda112',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
@@ -328,6 +339,7 @@ def main():
             'cudnn': 'cudnn82-cuda112',
             'nccl': 'nccl2.8-cuda112',
             'cutensor': 'none',
+            'cusparselt': 'cusparselt0.1.0-cuda112',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
@@ -352,6 +364,7 @@ def main():
             'cudnn': 'cudnn81-cuda112',
             'nccl': 'none',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
@@ -369,6 +382,7 @@ def main():
                 'cudnn': 'cudnn76-cuda92',
                 'nccl': 'nccl2.2-cuda92',
                 'cutensor': 'none',
+                'cusparselt': 'none',
                 'requires': [
                     # TODO(kmaehashi): Remove setuptools version restrictions
                     # https://github.com/pypa/setuptools/issues/2352
@@ -383,6 +397,7 @@ def main():
                 'cudnn': 'cudnn76-cuda102',
                 'nccl': 'nccl2.5-cuda102',
                 'cutensor': 'cutensor1.2.0-cuda102',
+                'cusparselt': 'none',
                 'requires': [
                     # TODO(kmaehashi): Remove setuptools version restrictions
                     # https://github.com/pypa/setuptools/issues/2352
@@ -406,6 +421,7 @@ def main():
             'cudnn': 'cudnn76-cuda92',
             'nccl': 'nccl2.4-cuda92',
             'cutensor': 'none',
+            'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
