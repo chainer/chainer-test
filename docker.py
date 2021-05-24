@@ -968,12 +968,22 @@ RUN tmpdir=`mktemp -d` && \\
     cd /tmp && rm -rf $tmpdir
 '''
 
-codes['cusparselt-0.0.1'] = cusparselt_base.format(
+codes['cusparselt0.0.1-cuda110'] = cusparselt_base.format(
     cusparselt='libcusparse_lt-linux-x86_64-0.0.1.73',
     cusparselt_ver='0.0.1',
 )
 
-codes['cusparselt-0.1.0'] = cusparselt_base.format(
+codes['cusparselt0.0.1-cuda111'] = cusparselt_base.format(
+    cusparselt='libcusparse_lt-linux-x86_64-0.0.1.73',
+    cusparselt_ver='0.0.1',
+)
+
+codes['cusparselt0.0.1-cuda112'] = cusparselt_base.format(
+    cusparselt='libcusparse_lt-linux-x86_64-0.0.1.73',
+    cusparselt_ver='0.0.1',
+)
+
+codes['cusparselt0.1.0-cuda112'] = cusparselt_base.format(
     cusparselt='libcusparse_lt-linux-x86_64-0.1.0.2',
     cusparselt_ver='0.1.0',
 )
