@@ -177,7 +177,7 @@ def _is_shuffle_params_valid(ret):
     if 'centos6' in base and ret.get('protobuf') == 'cpp-3':
         return False, 'protobuf cpp-3 not supported on centos6'
 
-    cuda, cudnn, nccl, cutensor = ret['cuda_libs']
+    cuda, cudnn, nccl, cutensor, cusparselt = ret['cuda_libs']
 
     if 'centos6' in base and nccl != 'none':
         # https://docs.nvidia.com/deeplearning/sdk/nccl-install-guide/index.html#rhel_centos
@@ -245,7 +245,7 @@ def make_conf(params):
     if 'base' in params:
         conf['base'] = params['base']
     if 'cuda_libs' in params:
-        conf['cuda'], conf['cudnn'], conf['nccl'], conf['cutensor'] = params['cuda_libs']
+        conf['cuda'], conf['cudnn'], conf['nccl'], conf['cutensor'], conf['cusparselt'] = params['cuda_libs']
 
     append_require(params, conf, 'setuptools')
     append_require(params, conf, 'pip')
