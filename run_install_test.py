@@ -43,6 +43,7 @@ if __name__ == '__main__':
         'cudnn': 'none',
         'nccl': 'none',
         'cutensor': 'none',
+        'cusparselt': 'none',
         'requires': [],
     }
     volume = []
