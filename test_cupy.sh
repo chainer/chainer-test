@@ -25,12 +25,8 @@ else
   pytest_opts+=(-m 'not slow')
 fi
 
-pushd cupy
-python -m pytest "${pytest_opts[@]}" tests/install_tests
-popd
-
 pushd cupy/tests
-python -m pytest "${pytest_opts[@]}" cupy_tests cupyx_tests example_tests
+python -m pytest "${pytest_opts[@]}" .
 
 # Submit coverage to Coveralls
 python ../../push_coveralls.py
