@@ -171,9 +171,9 @@ def main():
 
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
-            'nccl': 'nccl1.3',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn76-cuda92',
+            'nccl': 'nccl2.4-cuda92',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [
@@ -227,8 +227,8 @@ def main():
         # NumPy 1.14.
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn76-cuda92',
             'nccl': 'none',
             'cutensor': 'none',
             'cusparselt': 'none',
