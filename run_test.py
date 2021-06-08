@@ -48,7 +48,7 @@ def main():
         'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
         'chainer-head',
-        'cupy-py3', 'cupy-py35-v8', 'cupy-py36', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cutensor',
+        'cupy-py3', 'cupy-py36', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cutensor',
         'cupy-example', 'cupy-doc',
         'cupy-head',
     ], required=True)
@@ -84,13 +84,7 @@ def main():
     if not is_cupy_8_or_later:
         # Required only for CUDA 11 (which bundles CUB) build.
         use_gcc6_or_later = False
-    elif version.get_cupy_version() >= (9,) and args.test.endswith('-v8'):
-        print('Skipping chainer test for CuPy>=9')
-        return
     else:
-        if args.test.startswith('chainer-'):
-            print('Skipping chainer test for CuPy>=8')
-            return
         # Always required as CUB is always available.
         use_gcc6_or_later = True
 
@@ -177,9 +171,9 @@ def main():
 
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
-            'nccl': 'nccl1.3',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn76-cuda92',
+            'nccl': 'nccl2.4-cuda92',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [
@@ -233,8 +227,8 @@ def main():
         # NumPy 1.14.
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn76-cuda92',
             'nccl': 'none',
             'cutensor': 'none',
             'cusparselt': 'none',
@@ -299,31 +293,6 @@ def main():
         }
         script = './test_cupy.sh'
         cupy_accelerators += ['cub']
-
-    elif args.test == 'cupy-py35-v8':
-        if not is_cupy_8_or_later:
-            numpy_requires = 'numpy==1.9.*'
-            scipy_requires = 'scipy==0.18.*'
-        else:
-            numpy_requires = 'numpy==1.16.*'
-            scipy_requires = 'scipy==1.4.*'
-
-        conf = {
-            'base': 'ubuntu16_py35',
-            'cuda': 'cuda112',
-            'cudnn': 'cudnn81-cuda112',
-            'nccl': 'nccl2.8-cuda112',
-            'cutensor': 'none',
-            'cusparselt': 'none',
-            'requires': [
-                # TODO(kmaehashi): Remove setuptools version restrictions
-                # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.22',
-                numpy_requires, scipy_requires,
-            ],
-        }
-        script = './test_cupy.sh'
-        use_gcc6_or_later = True
 
     elif args.test == 'cupy-py36':
         if not is_cupy_8_or_later:
