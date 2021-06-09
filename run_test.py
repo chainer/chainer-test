@@ -188,12 +188,12 @@ def main():
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
-        base = 'ubuntu16_py35'
+        base = 'ubuntu16_py36-pyenv'
         conf = {
             'base': base,
-            'cuda': 'cuda90',
-            'cudnn': 'cudnn73-cuda9',
-            'nccl': 'nccl2.2-cuda9',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda102',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [
@@ -205,7 +205,7 @@ def main():
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
-        base = 'ubuntu16_py35'
+        base = 'ubuntu16_py36-pyenv'
         conf = {
             'base': base,
             'cuda': 'cuda92',
@@ -226,7 +226,7 @@ def main():
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
-            'base': 'ubuntu16_py35',
+            'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda92',
             'cudnn': 'cudnn76-cuda92',
             'nccl': 'none',
@@ -236,7 +236,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
                 'pip==9.0.1', 'setuptools<50', 'cython==0.29.22', 'matplotlib',
-                'numpy==1.18.*', 'scipy==1.4.*', 'theano',
+                'numpy==1.18.*', 'scipy==1.4.*', 'theano', 'wheel',
             ] + SPHINX_REQUIREMENTS_CONDA
         }
         script = './test_doc.sh'
