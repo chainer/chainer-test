@@ -188,7 +188,7 @@ def main():
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
-        base = 'ubuntu16_py35'
+        base = 'ubuntu16_py36-pyenv'
         conf = {
             'base': base,
             'cuda': 'cuda90',
@@ -205,7 +205,7 @@ def main():
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
-        base = 'ubuntu16_py35'
+        base = 'ubuntu16_py36-pyenv'
         conf = {
             'base': base,
             'cuda': 'cuda92',
@@ -226,7 +226,7 @@ def main():
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
-            'base': 'ubuntu16_py35',
+            'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda92',
             'cudnn': 'cudnn76-cuda92',
             'nccl': 'none',
