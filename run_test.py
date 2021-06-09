@@ -191,9 +191,9 @@ def main():
         base = 'ubuntu16_py36-pyenv'
         conf = {
             'base': base,
-            'cuda': 'cuda90',
-            'cudnn': 'cudnn73-cuda9',
-            'nccl': 'nccl2.2-cuda9',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda102',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [
