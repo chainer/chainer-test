@@ -105,7 +105,7 @@ def main():
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda101',
-            'cudnn': 'cudnn75-cuda101',
+            'cudnn': 'cudnn76-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'cutensor': 'none',
             'cusparselt': 'none',
@@ -144,7 +144,7 @@ def main():
         conf = {
             'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda101',
-            'cudnn': 'cudnn75-cuda101',
+            'cudnn': 'cudnn76-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'cutensor': 'none',
             'cusparselt': 'none',
