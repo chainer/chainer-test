@@ -104,7 +104,7 @@ def git_clone(organization, name, branch):
 def clone_cupy():
     """Clone cupy repository based on chainer version."""
     if is_master_branch('chainer'):
-        cupy_branch = 'v9'
+        cupy_branch = 'v8'
     else:
         chainer_major, _, _, _ = get_chainer_version()
         if 4 <= chainer_major:
