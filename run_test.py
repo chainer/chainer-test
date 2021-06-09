@@ -236,7 +236,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
                 'pip==9.0.1', 'setuptools<50', 'cython==0.29.22', 'matplotlib',
-                'numpy==1.18.*', 'scipy==1.4.*', 'theano', 'wheel',
+                'numpy==1.18.*', 'scipy==1.4.*', 'theano', 'wheel', 'pytest',
             ] + SPHINX_REQUIREMENTS_CONDA
         }
         script = './test_doc.sh'
