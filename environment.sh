@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export CHAINER_WARN_VERSION_MISMATCH=1
+
 if [ "${USE_GCC6_OR_LATER}" != 0 ]; then
     if [ -f /opt/rh/devtoolset-6/enable ]; then
         # For CentOS 7, load environment variables for devtoolset-6.
