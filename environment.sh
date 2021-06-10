@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export CHAINER_WARN_VERSION_MISMATCH=1
+export CHAINER_WARN_VERSION_MISMATCH=0
 
 if [ "${USE_GCC6_OR_LATER}" != 0 ]; then
     if [ -f /opt/rh/devtoolset-6/enable ]; then
