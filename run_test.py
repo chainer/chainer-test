@@ -113,7 +113,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
                 'setuptools<42', 'pip', 'cython==0.29.22',
-                'numpy==1.20.*', 'pillow',
+                'numpy==1.19.*', 'pillow',
             ],
         }
         script = './test.sh'
@@ -255,7 +255,7 @@ def main():
             'cusparselt': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.29.22',
-                'numpy==1.20.*', 'scipy==1.6.*',
+                'numpy==1.19.*', 'scipy==1.6.*',
             ] + requires,
         }
         script = './test_cupy.sh'
