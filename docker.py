@@ -936,8 +936,8 @@ codes['nccl2.8-cuda112'] = nccl_base.format(
 codes['nccl2.9-cuda102'] = nccl_base.format(
     nccl_sub_dir='cuda',
     nccl_os_ver='1804',
-    libnccl2='libnccl2_2.9.8-1+cuda10.2_amd64',
-    libnccl_dev='libnccl-dev_2.9.8-1+cuda10.2_amd64',
+    libnccl2='libnccl2_2.9.9-1+cuda10.2_amd64',
+    libnccl_dev='libnccl-dev_2.9.9-1+cuda10.2_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
@@ -945,16 +945,16 @@ codes['nccl2.9-cuda102'] = nccl_base.format(
 codes['nccl2.9-cuda110'] = nccl_base.format(
     nccl_sub_dir='cuda',
     nccl_os_ver='1804',
-    libnccl2='libnccl2_2.9.8-1+cuda11.0_amd64',
-    libnccl_dev='libnccl-dev_2.9.8-1+cuda11.0_amd64',
+    libnccl2='libnccl2_2.9.9-1+cuda11.0_amd64',
+    libnccl_dev='libnccl-dev_2.9.9-1+cuda11.0_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 codes['nccl2.9-cuda113'] = nccl_base.format(
     nccl_sub_dir='cuda',
     nccl_os_ver='1804',
-    libnccl2='libnccl2_2.9.8-1+cuda11.3_amd64',
-    libnccl_dev='libnccl-dev_2.9.8-1+cuda11.3_amd64',
+    libnccl2='libnccl2_2.9.9-1+cuda11.3_amd64',
+    libnccl_dev='libnccl-dev_2.9.9-1+cuda11.3_amd64',
     include_dir='/usr/include',
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
