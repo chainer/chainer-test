@@ -304,9 +304,9 @@ def main():
 
         conf = {
             'base': 'ubuntu18_py36',
-            'cuda': 'cuda112',
-            'cudnn': 'cudnn82-cuda112',
-            'nccl': 'nccl2.8-cuda112',
+            'cuda': 'cuda113',
+            'cudnn': 'cudnn82-cuda113',
+            'nccl': 'nccl2.9-cuda113',
             'cutensor': 'none',
             'cusparselt': 'cusparselt0.1.0-cuda112',
             'requires': [
