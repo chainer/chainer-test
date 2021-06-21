@@ -266,7 +266,7 @@ def main():
             'cuda': 'cuda102',
             'cudnn': 'cudnn76-cuda102',
             'nccl': 'nccl2.5-cuda102',
-            'cutensor': 'cutensor1.3.0-cuda102',
+            'cutensor': 'cutensor1.3.1-cuda102',
             'cusparselt': 'none',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions

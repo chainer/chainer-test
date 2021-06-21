@@ -81,8 +81,9 @@ cutensor_choices = [
     'cutensor1.2.1-cuda111',
     'cutensor1.2.2-cuda112',
     'cutensor1.3.0-cuda102', 'cutensor1.3.0-cuda110', 'cutensor1.3.0-cuda111',
-    'cutensor1.3.0-cuda112',
-    'cutensor1.3.0-cuda113',
+    'cutensor1.3.0-cuda112', 'cutensor1.3.0-cuda113',
+    'cutensor1.3.1-cuda102', 'cutensor1.3.1-cuda110', 'cutensor1.3.1-cuda111',
+    'cutensor1.3.1-cuda112', 'cutensor1.3.1-cuda113',
 ]
 cusparselt_choices = [
     'none',
@@ -123,11 +124,15 @@ cuda_nccls = {
 }
 cuda_cutensors = {
     'cuda101': ['cutensor1.2.0-cuda101'],
-    'cuda102': ['cutensor1.2.0-cuda102', 'cutensor1.3.0-cuda102'],
-    'cuda110': ['cutensor1.2.0-cuda110', 'cutensor1.3.0-cuda110'],
-    'cuda111': ['cutensor1.2.1-cuda111', 'cutensor1.3.0-cuda111'],
-    'cuda112': ['cutensor1.2.2-cuda112', 'cutensor1.3.0-cuda112'],
-    'cuda113': ['cutensor1.3.0-cuda113'],
+    'cuda102': ['cutensor1.2.0-cuda102', 'cutensor1.3.0-cuda102',
+                'cutensor1.3.1-cuda102'],
+    'cuda110': ['cutensor1.2.0-cuda110', 'cutensor1.3.0-cuda110',
+                'cutensor1.3.1-cuda110'],
+    'cuda111': ['cutensor1.2.1-cuda111', 'cutensor1.3.0-cuda111',
+                'cutensor1.3.1-cuda111'],
+    'cuda112': ['cutensor1.2.2-cuda112', 'cutensor1.3.0-cuda112',
+                'cutensor1.3.1-cuda112'],
+    'cuda113': ['cutensor1.3.0-cuda113', 'cutensor1.3.1-cuda113'],
 }
 cuda_cusparselts = {
     'cuda110': ['cusparselt0.0.1-cuda110'],
@@ -971,6 +976,12 @@ codes['cutensor1.3.0-cuda110'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor
 codes['cutensor1.3.0-cuda111'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 11;'
 codes['cutensor1.3.0-cuda112'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 11;'
 codes['cutensor1.3.0-cuda113'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.0.3 1.3.0 11;'
+codes['cutensor1.3.1-cuda102'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.1.3 1.3.1 10.2;'
+codes['cutensor1.3.1-cuda110'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.1.3 1.3.1 11.0;'
+codes['cutensor1.3.1-cuda111'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.1.3 1.3.1 11;'
+codes['cutensor1.3.1-cuda112'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.1.3 1.3.1 11;'
+codes['cutensor1.3.1-cuda113'] = 'RUN eval $CUTENSOR_INSTALL && install_cutensor 1.3.1.3 1.3.1 11;'
+
 
 protobuf_cpp_base = '''
 RUN echo /usr/local/lib >> /etc/ld.so.conf
