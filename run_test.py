@@ -48,7 +48,7 @@ def main():
         'chainer-py3', 'chainer-py35', 'chainer-slow',
         'chainer-example', 'chainer-prev_example', 'chainer-doc',
         'chainer-head',
-        'cupy-py3', 'cupy-py35-v8', 'cupy-py36', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cutensor',
+        'cupy-py3', 'cupy-py36', 'cupy-slow', 'cupy-py3-cub', 'cupy-py3-cutensor',
         'cupy-example', 'cupy-doc',
         'cupy-head',
     ], required=True)
@@ -84,13 +84,7 @@ def main():
     if not is_cupy_8_or_later:
         # Required only for CUDA 11 (which bundles CUB) build.
         use_gcc6_or_later = False
-    elif version.get_cupy_version() >= (9,) and args.test.endswith('-v8'):
-        print('Skipping chainer test for CuPy>=9')
-        return
     else:
-        if args.test.startswith('chainer-'):
-            print('Skipping chainer test for CuPy>=8')
-            return
         # Always required as CUB is always available.
         use_gcc6_or_later = True
 
@@ -111,7 +105,7 @@ def main():
         conf = {
             'base': 'ubuntu18_py38-pyenv',
             'cuda': 'cuda101',
-            'cudnn': 'cudnn75-cuda101',
+            'cudnn': 'cudnn76-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'cutensor': 'none',
             'cusparselt': 'none',
@@ -119,7 +113,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/chainer/chainer-test/issues/565
                 'setuptools<42', 'pip', 'cython==0.29.22',
-                'numpy==1.20.*', 'pillow',
+                'numpy==1.19.*', 'pillow',
             ],
         }
         script = './test.sh'
@@ -150,7 +144,7 @@ def main():
         conf = {
             'base': 'ubuntu16_py36-pyenv',
             'cuda': 'cuda101',
-            'cudnn': 'cudnn75-cuda101',
+            'cudnn': 'cudnn76-cuda101',
             'nccl': 'nccl2.4-cuda101',
             'cutensor': 'none',
             'cusparselt': 'none',
@@ -177,9 +171,9 @@ def main():
 
         conf = {
             'base': 'ubuntu16_py35',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
-            'nccl': 'nccl1.3',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn76-cuda92',
+            'nccl': 'nccl2.4-cuda92',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [
@@ -194,12 +188,12 @@ def main():
         script = './test_slow.sh'
 
     elif args.test == 'chainer-example':
-        base = 'ubuntu16_py35'
+        base = 'ubuntu16_py36-pyenv'
         conf = {
             'base': base,
-            'cuda': 'cuda90',
-            'cudnn': 'cudnn73-cuda9',
-            'nccl': 'nccl2.2-cuda9',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda102',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [
@@ -211,7 +205,7 @@ def main():
         script = './test_example.sh'
 
     elif args.test == 'chainer-prev_example':
-        base = 'ubuntu16_py35'
+        base = 'ubuntu16_py36-pyenv'
         conf = {
             'base': base,
             'cuda': 'cuda92',
@@ -232,9 +226,9 @@ def main():
         # the document uses new textual representation of arrays introduced in
         # NumPy 1.14.
         conf = {
-            'base': 'ubuntu16_py35',
-            'cuda': 'cuda80',
-            'cudnn': 'cudnn6-cuda8',
+            'base': 'ubuntu16_py36-pyenv',
+            'cuda': 'cuda92',
+            'cudnn': 'cudnn76-cuda92',
             'nccl': 'none',
             'cutensor': 'none',
             'cusparselt': 'none',
@@ -242,7 +236,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
                 'pip==9.0.1', 'setuptools<50', 'cython==0.29.22', 'matplotlib',
-                'numpy==1.18.*', 'scipy==1.4.*', 'theano',
+                'numpy==1.18.*', 'scipy==1.4.*', 'theano', 'wheel', 'pytest',
             ] + SPHINX_REQUIREMENTS_CONDA
         }
         script = './test_doc.sh'
@@ -261,7 +255,7 @@ def main():
             'cusparselt': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.29.22',
-                'numpy==1.20.*', 'scipy==1.6.*',
+                'numpy==1.19.*', 'scipy==1.6.*',
             ] + requires,
         }
         script = './test_cupy.sh'
@@ -300,31 +294,6 @@ def main():
         script = './test_cupy.sh'
         cupy_accelerators += ['cub']
 
-    elif args.test == 'cupy-py35-v8':
-        if not is_cupy_8_or_later:
-            numpy_requires = 'numpy==1.9.*'
-            scipy_requires = 'scipy==0.18.*'
-        else:
-            numpy_requires = 'numpy==1.16.*'
-            scipy_requires = 'scipy==1.4.*'
-
-        conf = {
-            'base': 'ubuntu16_py35',
-            'cuda': 'cuda112',
-            'cudnn': 'cudnn81-cuda112',
-            'nccl': 'nccl2.8-cuda112',
-            'cutensor': 'none',
-            'cusparselt': 'none',
-            'requires': [
-                # TODO(kmaehashi): Remove setuptools version restrictions
-                # https://github.com/pypa/setuptools/issues/2352
-                'setuptools<50', 'cython==0.29.22',
-                numpy_requires, scipy_requires,
-            ],
-        }
-        script = './test_cupy.sh'
-        use_gcc6_or_later = True
-
     elif args.test == 'cupy-py36':
         if not is_cupy_8_or_later:
             numpy_requires = 'numpy==1.9.*'
@@ -335,9 +304,9 @@ def main():
 
         conf = {
             'base': 'ubuntu18_py36',
-            'cuda': 'cuda112',
-            'cudnn': 'cudnn82-cuda112',
-            'nccl': 'nccl2.8-cuda112',
+            'cuda': 'cuda113',
+            'cudnn': 'cudnn82-cuda113',
+            'nccl': 'nccl2.9-cuda113',
             'cutensor': 'none',
             'cusparselt': 'cusparselt0.1.0-cuda112',
             'requires': [
@@ -417,9 +386,9 @@ def main():
         # NumPy 1.14.
         conf = {
             'base': 'ubuntu18_py38-pyenv',
-            'cuda': 'cuda92',
-            'cudnn': 'cudnn76-cuda92',
-            'nccl': 'nccl2.4-cuda92',
+            'cuda': 'cuda100',
+            'cudnn': 'cudnn76-cuda100',
+            'nccl': 'nccl2.4-cuda100',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [

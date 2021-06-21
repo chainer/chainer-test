@@ -8,7 +8,7 @@ export CUPY_DUMP_CUDA_SOURCE_ON_ERROR=1
 
 pytest_opts=(
     -rfEX
-    --timeout=300
+    --timeout=600
     --junit-xml=result.xml
     --cov
     --no-cov-on-fail
@@ -21,10 +21,6 @@ else
   pytest_opts+=(-m 'slow')
 fi
 
-pushd cupy
-python -m pytest "${pytest_opts[@]}" tests/install_tests
-popd
-
 pushd cupy/tests
-python -m pytest "${pytest_opts[@]}" cupy_tests cupyx_tests example_tests
+python -m pytest "${pytest_opts[@]}" .
 popd
