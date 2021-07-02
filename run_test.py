@@ -304,11 +304,11 @@ def main():
 
         conf = {
             'base': 'ubuntu18_py36',
-            'cuda': 'cuda113',
-            'cudnn': 'cudnn82-cuda113',
-            'nccl': 'nccl2.9-cuda113',
+            'cuda': 'cuda114',
+            'cudnn': 'cudnn82-cuda114',
+            'nccl': 'nccl2.9-cuda114',
             'cutensor': 'none',
-            'cusparselt': 'cusparselt0.1.0-cuda112',
+            'cusparselt': 'cusparselt0.1.0-cuda114',
             'requires': [
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
