@@ -303,7 +303,7 @@ ENV PATH /usr/lib/ccache:$PATH
 RUN apt-get -y update && \\
     apt-get -y upgrade && \\
     apt-get -y install curl g++ gfortran git libhdf5-dev autoconf xz-utils pkg-config && \\
-    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev libsqlite3-dev make cmake && \\
+    apt-get -y install libbz2-dev libreadline-dev libffi-dev libssl-dev libsqlite3-dev liblzma-dev make cmake && \\
     apt-get clean
 
 {gcc_install}
