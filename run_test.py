@@ -255,7 +255,7 @@ def main():
             'cusparselt': 'none',
             'requires': [
                 'setuptools<42', 'pip', 'cython==0.29.22',
-                'numpy==1.21.*', 'scipy==1.6.*',
+                'numpy==1.21.*', 'scipy==1.7.*',
             ] + requires,
         }
         script = './test_cupy.sh'
@@ -395,7 +395,7 @@ def main():
                 # TODO(kmaehashi): Remove setuptools version restrictions
                 # https://github.com/pypa/setuptools/issues/2352
                 'pip==9.0.1', 'setuptools<50', 'cython==0.29.22',
-                'numpy==1.21.*', 'scipy==1.6.*', 'wheel==0.36.2'
+                'numpy==1.21.*', 'scipy==1.7.*', 'wheel==0.36.2'
             ] + requires + SPHINX_REQUIREMENTS_PIP
         }
         script = './test_cupy_doc.sh'
