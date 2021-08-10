@@ -965,7 +965,7 @@ codes['nccl2.9-cuda113'] = nccl_base.format(
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
-codes['nccl2.9-cuda102'] = nccl_base.format(
+codes['nccl2.10-cuda102'] = nccl_base.format(
     nccl_sub_dir='cuda',
     nccl_os_ver='1804',
     libnccl2='libnccl2_2.10.3-1+cuda10.2_amd64',
@@ -974,7 +974,7 @@ codes['nccl2.9-cuda102'] = nccl_base.format(
     lib_dir='/usr/lib/x86_64-linux-gnu',
 )
 
-codes['nccl2.9-cuda110'] = nccl_base.format(
+codes['nccl2.10-cuda110'] = nccl_base.format(
     nccl_sub_dir='cuda',
     nccl_os_ver='1804',
     libnccl2='libnccl2_2.10.3-1+cuda11.0_amd64',
