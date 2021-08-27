@@ -550,7 +550,7 @@ codes['cuda113'] = cuda_base.format(
 
 cudnn_base = '''
 WORKDIR /opt/cudnn
-RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
+RUN curl -s -o {cudnn}.tgz https://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
     echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
     tar -xzf {cudnn}.tgz -C /usr/local && \\
     rm {cudnn}.tgz
@@ -701,7 +701,7 @@ codes['cudnn82-cuda113'] = codes['cudnn82-cuda110']
 # installed.
 codes['cudnn-latest-with-dummy'] = '''
 WORKDIR /opt/cudnn
-RUN curl -s -o {cudnn}.tgz http://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
+RUN curl -s -o {cudnn}.tgz https://developer.download.nvidia.com/compute/redist/cudnn/{cudnn_ver}/{cudnn}.tgz && \\
     echo "{sha256sum}  {cudnn}.tgz" | sha256sum -cw --quiet - && \\
     tar -xzf {cudnn}.tgz -C /opt/cudnn && \\
     rm {cudnn}.tgz
