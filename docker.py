@@ -689,9 +689,9 @@ codes['cudnn81-cuda111'] = codes['cudnn81-cuda110']
 codes['cudnn81-cuda112'] = codes['cudnn81-cuda110']
 
 codes['cudnn82-cuda110'] = cudnn_base.format(
-    cudnn='cudnn-11.4-linux-x64-v8.2.2.26',
-    cudnn_ver='v8.2.2',
-    sha256sum='fbc631ce19688e87d7d2420403b20db97885b17f718f0f51d7e9fc0905d86e07',
+    cudnn='cudnn-11.4-linux-x64-v8.2.4.15',
+    cudnn_ver='v8.2.4',
+    sha256sum='0e5d2df890b9967efa6619da421310d97323565a79f05a1a8cb9b7165baad0d7',
 )
 codes['cudnn82-cuda111'] = codes['cudnn82-cuda110']
 codes['cudnn82-cuda112'] = codes['cudnn82-cuda110']
