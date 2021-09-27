@@ -74,7 +74,7 @@ def main():
     if args.clone_chainer:
         version.clone_chainer()
 
-    is_cupy_master = version.is_master_branch('cupy')  # NOQA
+    is_cupy_master = version.is_master_branch('cupy')
     use_gcc6_or_later = True
 
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
@@ -130,8 +130,12 @@ def main():
     elif args.test == 'chainer-head' or args.test == 'cupy-head':
         assert ideep_req is not None
 
+        base = 'ubuntu16_py36-pyenv'
+        if is_cupy_master:
+            base = 'ubuntu16_py37-pyenv'
+
         conf = {
-            'base': 'ubuntu16_py36-pyenv',
+            'base': base,
             'cuda': 'cuda101',
             'cudnn': 'cudnn76-cuda101',
             'nccl': 'nccl2.4-cuda101',
@@ -306,8 +310,12 @@ def main():
         numpy_requires = 'numpy==1.16.*'
         scipy_requires = 'scipy==1.4.*'
 
+        base = 'ubuntu18_py36'
+        if is_cupy_master:
+            base = 'ubuntu18_py37-pyenv'
+
         conf = {
-            'base': 'ubuntu18_py36',
+            'base': base,
             'cuda': 'cuda112',
             'cudnn': 'cudnn81-cuda112',
             'nccl': 'none',
