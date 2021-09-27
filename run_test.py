@@ -74,19 +74,8 @@ def main():
     if args.clone_chainer:
         version.clone_chainer()
 
-    is_cupy_8_or_later = (
-        version.get_cupy_version() >= (8,) or
-        # is_master_branch() is required because v8 beta branch has v7 as
-        # the version number in _version.py.
-        # After releasing v8 as stable, remove this condition.
-        version.is_master_branch('cupy'))
-
-    if not is_cupy_8_or_later:
-        # Required only for CUDA 11 (which bundles CUB) build.
-        use_gcc6_or_later = False
-    else:
-        # Always required as CUB is always available.
-        use_gcc6_or_later = True
+    is_cupy_master = version.is_master_branch('cupy')  # NOQA
+    use_gcc6_or_later = True
 
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
     if ideep_min_version is None:
@@ -243,9 +232,7 @@ def main():
         build_chainerx = True
 
     elif args.test == 'cupy-py3':
-        requires = []
-        if is_cupy_8_or_later:
-            requires = ['optuna']
+        requires = ['optuna']
         conf = {
             'base': 'ubuntu18_py39-pyenv',
             'cuda': 'cuda100',
@@ -295,12 +282,8 @@ def main():
         cupy_accelerators += ['cub']
 
     elif args.test == 'cupy-py36':
-        if not is_cupy_8_or_later:
-            numpy_requires = 'numpy==1.9.*'
-            scipy_requires = 'scipy==0.18.*'
-        else:
-            numpy_requires = 'numpy==1.16.*'
-            scipy_requires = 'scipy==1.4.*'
+        numpy_requires = 'numpy==1.16.*'
+        scipy_requires = 'scipy==1.4.*'
 
         conf = {
             'base': 'ubuntu18_py36',
@@ -320,12 +303,8 @@ def main():
         use_gcc6_or_later = True
 
     elif args.test == 'cupy-slow':
-        if not is_cupy_8_or_later:
-            numpy_requires = 'numpy==1.10.*'
-            scipy_requires = 'scipy==0.18.*'
-        else:
-            numpy_requires = 'numpy==1.16.*'
-            scipy_requires = 'scipy==1.4.*'
+        numpy_requires = 'numpy==1.16.*'
+        scipy_requires = 'scipy==1.4.*'
 
         conf = {
             'base': 'ubuntu18_py36',
@@ -344,42 +323,24 @@ def main():
         script = './test_cupy_slow.sh'
 
     elif args.test == 'cupy-example':
-        if not is_cupy_8_or_later:
-            conf = {
-                'base': 'ubuntu18_py36',
-                'cuda': 'cuda92',
-                'cudnn': 'cudnn76-cuda92',
-                'nccl': 'nccl2.2-cuda92',
-                'cutensor': 'none',
-                'cusparselt': 'none',
-                'requires': [
-                    # TODO(kmaehashi): Remove setuptools version restrictions
-                    # https://github.com/pypa/setuptools/issues/2352
-                    'setuptools<50', 'cython==0.29.22',
-                    'numpy==1.12.*', 'scipy==0.18.*',
-                ],
-            }
-        else:
-            conf = {
-                'base': 'ubuntu18_py38-pyenv',
-                'cuda': 'cuda102',
-                'cudnn': 'cudnn76-cuda102',
-                'nccl': 'nccl2.5-cuda102',
-                'cutensor': 'cutensor1.2.0-cuda102',
-                'cusparselt': 'none',
-                'requires': [
-                    # TODO(kmaehashi): Remove setuptools version restrictions
-                    # https://github.com/pypa/setuptools/issues/2352
-                    'setuptools<50', 'cython==0.29.22',
-                    'numpy==1.21.*', 'scipy==1.6.*',
-                ],
-            }
+        conf = {
+            'base': 'ubuntu18_py38-pyenv',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda102',
+            'cutensor': 'cutensor1.2.0-cuda102',
+            'cusparselt': 'none',
+            'requires': [
+                # TODO(kmaehashi): Remove setuptools version restrictions
+                # https://github.com/pypa/setuptools/issues/2352
+                'setuptools<50', 'cython==0.29.22',
+                'numpy==1.19.*', 'scipy==1.6.*',
+            ],
+        }
         script = './test_cupy_example.sh'
 
     elif args.test == 'cupy-doc':
-        requires = []
-        if is_cupy_8_or_later:
-            requires = ['optuna<2']
+        requires = ['optuna<2']
 
         # Note that NumPy 1.14 or later is required to run doctest, as
         # the document uses new textual representation of arrays introduced in
