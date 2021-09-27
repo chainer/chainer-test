@@ -74,7 +74,7 @@ def main():
     if args.clone_chainer:
         version.clone_chainer()
 
-    is_cupy_master = version.is_master_branch('cupy')
+    is_cupy_master = version.is_master_branch('cupy')  # NOQA
     use_gcc6_or_later = True
 
     ideep_min_version = version.get_ideep_version_from_chainer_docs()
