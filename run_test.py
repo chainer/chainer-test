@@ -239,9 +239,9 @@ def main():
         requires = ['optuna']
         conf = {
             'base': 'ubuntu18_py39-pyenv',
-            'cuda': 'cuda100',
-            'cudnn': 'cudnn76-cuda100',
-            'nccl': 'nccl2.4-cuda100',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda102',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [
@@ -271,9 +271,9 @@ def main():
     elif args.test == 'cupy-py3-cub':
         conf = {
             'base': 'ubuntu18_py38-pyenv',
-            'cuda': 'cuda100',
-            'cudnn': 'cudnn76-cuda100',
-            'nccl': 'nccl2.4-cuda100',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda100',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [
@@ -355,9 +355,9 @@ def main():
         # NumPy 1.14.
         conf = {
             'base': 'ubuntu18_py38-pyenv',
-            'cuda': 'cuda100',
-            'cudnn': 'cudnn76-cuda100',
-            'nccl': 'nccl2.4-cuda100',
+            'cuda': 'cuda102',
+            'cudnn': 'cudnn76-cuda102',
+            'nccl': 'nccl2.5-cuda100',
             'cutensor': 'none',
             'cusparselt': 'none',
             'requires': [
