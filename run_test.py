@@ -286,7 +286,7 @@ def main():
         cupy_accelerators += ['cub']
 
     elif args.test == 'cupy-py36':
-        numpy_requires = 'numpy==1.16.*'
+        numpy_requires = 'numpy==1.17.*'
         scipy_requires = 'scipy==1.4.*'
 
         conf = {
@@ -307,7 +307,7 @@ def main():
         use_gcc6_or_later = True
 
     elif args.test == 'cupy-slow':
-        numpy_requires = 'numpy==1.16.*'
+        numpy_requires = 'numpy==1.17.*'
         scipy_requires = 'scipy==1.4.*'
 
         base = 'ubuntu18_py36'
