@@ -307,8 +307,8 @@ def main():
         use_gcc6_or_later = True
 
     elif args.test == 'cupy-slow':
-        numpy_requires = 'numpy==1.17.*'
-        scipy_requires = 'scipy==1.4.*'
+        numpy_requires = 'numpy==1.18.*'
+        scipy_requires = 'scipy==1.7.*'
 
         base = 'ubuntu18_py36'
         if is_cupy_master:
